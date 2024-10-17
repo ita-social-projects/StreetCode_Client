@@ -6,7 +6,7 @@
   @include mut.flex-centered();
 
   .slick-dots {
-    @include mut.positioned-as($bottom: -58px, $left: 15px);
+    @include mut.positioned-as($bottom: -58px);
   }
 
   .slick-next:before,

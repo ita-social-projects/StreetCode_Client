@@ -61,9 +61,9 @@ const TagsMainPage: React.FC = observer(() => {
                                 () => {
                                     if (tag.id != undefined) {
                                         tagsStore.deleteTag(tag.id)
-                                            .catch((e) => {
-                                                console.log(e);
-                                            });
+                                        .catch((e) => {
+                                            console.error(e);
+                                        });
                                         modalStore.setConfirmationModal('confirmation');
                                     }
                                 },

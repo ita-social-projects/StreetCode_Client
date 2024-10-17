@@ -17,7 +17,7 @@ export default class PositionsStore {
         try {
             return await PositionsApi.getAll().then((resp) => resp.positions);
         } catch (error: unknown) {
-            console.log(error);
+            console.error(error);
         }
         return [];
     }
@@ -27,7 +27,7 @@ export default class PositionsStore {
             .then((value) => {
                 this.positions = value.positions.map((s) => ({ id: s.id, position: s.position }));
             }).catch((error) => {
-                console.log(error);
+                console.error(error);
             });
     };
 

@@ -50,6 +50,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
     const [filePreview, setFilePreview] = useState<UploadFile | null>(null);
     const isEditing = !!initialData;
     const [fileList, setFileList] = useState<UploadFile[]>([]);
+    const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
 
     useAsync(() => sourcesAdminStore.fetchSourceCategories(), []);
 
@@ -92,6 +93,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
 
     const closeModal = () => {
         setIsModalOpen(false);
+        setIsSaveButtonDisabled(true);
     };
 
     const validateCategory = uniquenessValidator(
@@ -139,7 +141,9 @@ const SourceModal: React.FC<SourceModalProps> = ({
         try {
             await form.validateFields();
 
+
             const title = form.getFieldValue('title');
+
 
             if (!title.trim()) {
                 message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
@@ -147,6 +151,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
             }
             form.submit();
             message.success(`Категорію успішно ${isEditing ? "змінено" : "додано"}!`, 2);
+            setIsSaveButtonDisabled(true);
         } catch (error) {
             message.config({
                 top: 100,
@@ -158,12 +163,20 @@ const SourceModal: React.FC<SourceModalProps> = ({
         }
     };
 
+    const handleInputChange = () => setIsSaveButtonDisabled(false);
+
     const checkFile = (file: UploadFile) => checkImageFileType(file.type);
 
     const handleFileChange = async (param: UploadChangeParam<UploadFile<unknown>>) => {
         if (checkFile(param.file)) {
             setFileList(param.fileList);
         }
+        handleInputChange();
+    };
+
+    const handleRemove = (file: UploadFile) => {
+        setFileList([]);
+        setImage(null!);
     };
 
     return (
@@ -189,7 +202,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                         ]}
                         getValueProps={(value) => ({ value: normaliseWhitespaces(value) })}
                     >
-                        <Input maxLength={23} showCount />
+                        <Input placeholder="Title" maxLength={23} showCount onChange={handleInputChange} />
                     </Form.Item>
                     <Form.Item
                         name="image"
@@ -211,6 +224,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                             fileList={fileList}
                             onSuccessUpload={handleImageChange}
                             onPreview={handlePreview}
+                            onRemove={handleRemove}
                             defaultFileList={initialData
                                 ? [{
                                     name: '',
@@ -225,7 +239,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                     </Form.Item>
                     <div className="center">
                         <Button
-                            disabled={fileList?.length === 0}
+                            disabled={fileList?.length === 0 || isSaveButtonDisabled || !image}
                             className="streetcode-custom-button"
                             onClick={() => handleOk()}
                         >

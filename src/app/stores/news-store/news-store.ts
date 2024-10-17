@@ -85,7 +85,9 @@ export default class NewsStore {
             .then((news) => {
                 this.CurrentNewsId = news.id;
             })
-            .catch((error) => console.error(error));
+            .catch((error) => {
+                console.error(error);
+            });
     };
 
     public getAll = async (pageSize?: number) => {
@@ -94,7 +96,9 @@ export default class NewsStore {
                 this.PaginationInfo.TotalItems = resp.totalAmount;
                 this.setNewsMap(resp.news);
             })
-            .catch((error) => console.error(error));
+            .catch((error) => {
+                console.error(error);
+            });
     };
 
     public createNews = async (news: News) => {

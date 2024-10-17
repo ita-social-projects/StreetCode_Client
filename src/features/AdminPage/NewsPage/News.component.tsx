@@ -93,7 +93,7 @@ const Newss: React.FC = observer(() => {
                                     newsStore.deleteNews(news.id).then(() => {
                                         imagesStore.deleteImage(news.imageId);
                                     }).catch((e) => {
-                                        console.log(e);
+                                        console.error(e);
                                     });
                                     modalStore.setConfirmationModal('confirmation');
                                 },

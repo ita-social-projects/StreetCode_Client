@@ -98,7 +98,7 @@ const CategoriesMainPage: React.FC = observer(() => {
                                                 sourcesStore.srcCategoriesMap.delete(srcCategory.id);
                                             }
                                         }).catch((e) => {
-                                            console.log(e);
+                                            console.error(e);
                                         });
                                         modalStore.setConfirmationModal('confirmation');
                                     }

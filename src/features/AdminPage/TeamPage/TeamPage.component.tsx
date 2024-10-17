@@ -147,7 +147,7 @@ const TeamPage = () => {
                                     teamStore.deleteTeam(team.id).then(() => {
                                         teamStore.TeamMap.delete(team.id);
                                     }).catch((e) => {
-                                        console.log(e);
+                                        console.error(e);
                                     });
                                     modalStore.setConfirmationModal('confirmation');
                                 },

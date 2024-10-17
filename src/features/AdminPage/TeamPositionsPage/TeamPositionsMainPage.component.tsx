@@ -26,7 +26,6 @@ const TeamPositionsMainPage: React.FC = observer(() => {
 
     const updatedPositions = () => {
         const data = teamPositionsStore.fetchPositions();
-        console.log(data);
     };
 
     useEffect(() => {
@@ -66,7 +65,7 @@ const TeamPositionsMainPage: React.FC = observer(() => {
                                     if (positions.id != undefined) {
                                         teamPositionsStore.deletePosition(positions.id)
                                             .catch((e) => {
-                                                console.log(e);
+                                                console.error(e);
                                             });
                                         modalStore.setConfirmationModal('confirmation');
                                     }
