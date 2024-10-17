@@ -10,7 +10,17 @@ import { PartnerCreateUpdate } from '../../../models/partners/partners.model';
 const PartnersApi = {
     getById: (id: number) => Agent.get<Partner>(`${API_ROUTES.PARTNERS.GET}/${id}`),
 
-    getAll: () => Agent.get<Partner[]>(`${API_ROUTES.PARTNERS.GET_ALL}`),
+    getAll: (page?: number, pageSize?: number) => {
+        const params = Object.entries({
+            page: page?.toString() ?? '',
+            pageSize: pageSize?.toString() ?? '',
+        });
+
+        const queryParams = params.filter(p => !!p[1]);
+
+        const searchParams = new URLSearchParams(queryParams);
+        return Agent.get<{totalAmount: number, partners: Partner[]}>(`${API_ROUTES.PARTNERS.GET_ALL}`, searchParams)
+    },
 
     getAllByIsKeyPartner: (isKeyPartner : boolean) => Agent.get<Partner[]>(
         `${API_ROUTES.PARTNERS.GET_ALL_BY_IS_KEY_PARTNERS}/${isKeyPartner}`,

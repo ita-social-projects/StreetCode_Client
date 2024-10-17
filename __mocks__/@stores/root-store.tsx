@@ -1,6 +1,6 @@
 import Context, { ContextCreate } from '@models/additional-content/context.model';
 import ContextsApi from '@api/additional-content/contexts.api';
-import TeampositionsApi from '@api/additional-content/teampositions.api';
+import TeampositionsApi from '@api/team/teampositions.api';
 import Position from '@models/additional-content/teampositions.model';
 import { SourceCategoryAdmin, StreetcodeCategoryContent } from '@/models/sources/sources.model';
 import sourcesApi from '@/app/api/sources/sources.api';
@@ -60,6 +60,12 @@ export const store = ({
     },
     contextStore: {
         fetchContexts: jest.fn(),
+        PaginationInfo: {
+            PageSize: 10,
+            TotalPages: 1,
+            TotalItems: 1,
+            CurrentPage: 1,
+        },
         createContext: (context: ContextCreate) => {
             ContextsApi.create(context);
         },
@@ -82,6 +88,12 @@ export const store = ({
     },
     teamPositionsStore: {
         fetchPositions: jest.fn(),
+        PaginationInfo: {
+            PageSize: 10,
+            TotalPages: 1,
+            TotalItems: 1,
+            CurrentPage: 1,
+        },
         createPosition: (position: Position) => {
             TeampositionsApi.create(position);
         },

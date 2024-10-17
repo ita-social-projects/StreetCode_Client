@@ -35,7 +35,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
     const isEditing = !!initialData;
 	const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
 
-    useAsync(() => tagsStore.fetchTags(), []);
+    useAsync(() => tagsStore.fetchAllTags(), []);
 
     useEffect(() => {
         if (initialData && isModalVisible) {

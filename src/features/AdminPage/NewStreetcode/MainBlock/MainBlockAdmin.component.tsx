@@ -100,7 +100,7 @@ const MainBlockAdmin = React.memo(({
     };
 
     useEffect(() => {
-        TagsApi.getAll().then((tgs) => setTags(tgs));
+        TagsApi.getAll().then((resp) => setTags(resp.tags));
     }, []);
 
     const onSelectTag = (selectedValue: string) => {

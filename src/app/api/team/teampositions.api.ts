@@ -1,13 +1,24 @@
 import Agent from '@api/agent.api';
 import { API_ROUTES } from '@constants/api-routes.constants';
-import Position, {PositionCreate} from '@models/additional-content/teampositions.model';
+import Position, { PositionCreate } from '@models/additional-content/teampositions.model';
 
 const PositionsApi = {
     getById: (id: number) => Agent.get<Position>(`${API_ROUTES.POSITION.GET_BY_ID}/${id}`),
 
     getByTitle: (title: string) => Agent.get<Position>(`${API_ROUTES.POSITION.GET_BY_TITLE}/${title}`),
 
-    getAll: () => Agent.get<Position[]>(`${API_ROUTES.POSITION.GET_ALL}`),
+    getAll: (page?: number, pageSize?: number) => {
+        const params = Object.entries({
+            page: page?.toString() ?? '',
+            pageSize: pageSize?.toString() ?? '',
+        });
+
+        const queryParams = params.filter(p => !!p[1]);
+
+        const searchParams = new URLSearchParams(queryParams);
+
+        return Agent.get<{ totalAmount: number, positions: Position[] }>(`${API_ROUTES.POSITIONS.GET_ALL}`, searchParams)
+    },
 
     create: (position: PositionCreate) => Agent.post<Position>(`${API_ROUTES.POSITION.CREATE}`, position),
 

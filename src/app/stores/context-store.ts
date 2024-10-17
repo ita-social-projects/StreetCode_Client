@@ -1,6 +1,7 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import Context, { StreetcodeContextUpdate, ContextCreate } from '@models/additional-content/context.model';
 import ContextsApi from '@api/additional-content/contexts.api';
+import { PaginationInfo } from '@/models/pagination/pagination.model';
 
 export default class ContextStore {
     public AllContextsMap = new Map<number, Context>();
@@ -10,6 +11,15 @@ export default class ContextStore {
     public ContextCatalogMap = new Map<number, Context>();
 
     public ContextToDeleteArray: StreetcodeContextUpdate[] = [];
+
+    private defaultPageSize = 10;
+
+    private paginationInfo: PaginationInfo = {
+        PageSize: this.defaultPageSize,
+        TotalPages: 1,
+        TotalItems: 1,
+        CurrentPage: 1,
+    };
 
     public constructor() {
         makeAutoObservable(this);
@@ -65,16 +75,25 @@ export default class ContextStore {
         return Array.from(this.ContextCatalogMap.values());
     }
 
-    public fetchAllContexts = async () => {
-        try {
-            this.setInternalAllTags = await ContextsApi.getAll();
-        } catch (error: unknown) { /* empty */ }
-    };
+    public setCurrentPage(currPage: number) {
+        this.paginationInfo.CurrentPage = currPage;
+    }
+    
+    public set PaginationInfo(paginationInfo: PaginationInfo) {
+        this.paginationInfo = paginationInfo;
+    }
 
-    public fetchContexts = async () => {
-        try {
-            this.setInternalMap = await ContextsApi.getAll();
-        } catch (error: unknown) { /* empty */ }
+    public get PaginationInfo(): PaginationInfo {
+        return this.paginationInfo;
+    }
+
+    public fetchContexts = async (pageSize?: number) => {
+        await ContextsApi.getAll(this.PaginationInfo.CurrentPage, pageSize ?? this.paginationInfo.PageSize)
+            .then((resp) => {
+                this.PaginationInfo.TotalItems = resp.totalAmount;
+                this.setInternalMap = resp.historicalContexts;
+            })
+            .catch((error) => console.error(error));        
     };
 
     public createContext = async (context: ContextCreate) => {

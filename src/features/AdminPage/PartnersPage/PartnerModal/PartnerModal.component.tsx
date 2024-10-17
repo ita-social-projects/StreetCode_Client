@@ -74,7 +74,7 @@ const PartnerModal: React.FC< {
 
         const updatedPartners = () => {
             Promise.all([
-                partnersStore?.fetchPartnersAll(),
+                partnersStore?.getAll(),
             ]).then(() => {
                 partnersStore?.PartnerMap.forEach((val, key) => {
                     ImageStore.getImageById(val.logoId).then((logo) => {
