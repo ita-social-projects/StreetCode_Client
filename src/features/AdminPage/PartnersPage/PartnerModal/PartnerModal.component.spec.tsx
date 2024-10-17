@@ -60,7 +60,7 @@ jest.mock("@stores/root-store", () => ({
           isKeyPartner: false,
           isVisibleEverywhere: false,
           title: 'something',
-          logoId: 999,
+          logoId: 998,
           partnerSourceLinks: [],
           streetcodes: [],
         } as Partner] as Partner[],
@@ -187,13 +187,14 @@ describe("PartnerModal", () => {
 
     const fileInput = screen.getByTestId("fileuploader");
     const inputElement = fileInput as HTMLInputElement;
+    
+    await userEvent.type(nameInput, "something name");
+    await userEvent.upload(fileInput, file);
 
     await waitFor(() => {
-      userEvent.type(nameInput, "something name");
-      userEvent.upload(fileInput, file);
+      expect(nameInput).toHaveValue("something name");
     });
 
-    expect(nameInput).toHaveValue("something name");
     if (inputElement.files) {
       expect(inputElement.files[0]).toStrictEqual(file);
     } else {
