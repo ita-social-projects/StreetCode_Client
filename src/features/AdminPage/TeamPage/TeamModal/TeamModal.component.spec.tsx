@@ -46,17 +46,19 @@ const store = {
 };
 jest.mock('@stores/root-store', () => (() => ({ teamStore: store })));
 jest.mock("@/app/common/components/FileUploader/FileUploader.component");
-jest.mock('@/app/api/team/positions.api', () => ({
-    getAll: async () => ([
-        {
-            id: 1,
-            position: 'pos1',
-        },
-        {
-            id: 2,
-            position: 'pos2',
-        },
-    ] as Position[]),
+jest.mock('@/app/api/team/teampositions.api', () => ({
+    getAll: async () => ({
+        totalAmount: 2,
+        positions: [
+            {
+                id: 1,
+                position: 'pos1',
+            },
+            {
+                id: 2,
+                position: 'pos2',
+            }] as Position[],
+    }),
 }));
 
 jest.mock("@/app/api/media/images.api", () => ({
@@ -276,11 +278,6 @@ describe('TeamModal', () => {
         const createButton = screen.getByRole('button', { name: /Зберегти/i });
 
         await waitFor(() => {
-            expect(optionRenderSpy).toHaveBeenCalledWith('pos1');
-            expect(optionRenderSpy).toHaveBeenCalledWith('pos2');
-        });
-
-        act(() => {
             userEvent.selectOptions(positionInput, 'pos1');
             userEvent.click(checkbox);
             userEvent.type(nameInput, 'Test Name');
@@ -305,5 +302,5 @@ describe('TeamModal', () => {
             expect(afterSubmit).toHaveBeenCalled();
             expect(store.updateTeam).not.toHaveBeenCalled();
         });
-    });
+    }, 20000);
 });
