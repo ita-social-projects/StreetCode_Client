@@ -21,7 +21,7 @@ import {
 } from 'antd';
 
 
-import PositionsApi from '@/app/api/team/positions.api';
+import PositionsApi from '@/app/api/team/teampositions.api';
 import FileUploader from '@components/FileUploader/FileUploader.component';
 
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
