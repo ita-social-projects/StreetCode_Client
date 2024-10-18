@@ -20,8 +20,10 @@ import {
     Form, Input, message, Modal, Popover, Select, UploadFile,
 } from 'antd';
 
+
 import PositionsApi from '@/app/api/team/positions.api';
 import FileUploader from '@components/FileUploader/FileUploader.component';
+
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import validateSocialLink from '@/app/common/components/modals/validators/socialLinkValidator';
 import TeamLink from '@/features/AdminPage/TeamPage/TeamLink.component';
@@ -69,7 +71,7 @@ const TeamModal: React.FC<{
 
     useEffect(() => {
         if (open) {
-            PositionsApi.getAll().then((pos) => setPositions(pos));
+            PositionsApi.getAll().then((resp) => setPositions(resp.positions));
         }
     }, [open]);
 

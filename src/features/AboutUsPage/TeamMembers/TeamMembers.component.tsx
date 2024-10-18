@@ -2,7 +2,7 @@ import './TeamMembers.component.scss';
 
 import { useEffect, useState } from 'react';
 
-import PositionsApi from '@/app/api/team/positions.api';
+import PositionsApi from '@/app/api/team/teampositions.api';
 import TeamApi from '@/app/api/team/team.api';
 import { SCREEN_SIZES } from '@/app/common/constants/screen-sizes.constants';
 import TeamMember, { Positions } from '@/models/team/team.model';
