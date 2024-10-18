@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-restricted-imports */
+import './News.styles.scss';
+
 import { observer } from 'mobx-react-lite';
 import React, { useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
@@ -26,7 +28,7 @@ const Newss: React.FC = observer(() => {
 
     useQuery({
         queryKey: ['news', newsStore.CurrentPage],
-        queryFn: () => newsStore.getAll(10),
+        queryFn: () => {newsStore.getAll()},
     });
 
     const columns: ColumnsType<News> = [
@@ -135,8 +137,8 @@ const Newss: React.FC = observer(() => {
                     <br />
                     <div className="underTableElement">
                         <Pagination
-                            className="pagenationElement"
-                            simple
+                            className="paginationElement"
+                            showSizeChanger={false}
                             defaultCurrent={1}
                             current={newsStore.PaginationInfo.CurrentPage}
                             total={newsStore.PaginationInfo.TotalItems}

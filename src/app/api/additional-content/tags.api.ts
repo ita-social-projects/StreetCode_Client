@@ -7,7 +7,18 @@ const TagsApi = {
 
     getByTitle: (title: string) => Agent.get<Tag>(`${API_ROUTES.TAGS.GET_BY_TITLE}/${title}`),
 
-    getAll: () => Agent.get<Tag[]>(`${API_ROUTES.TAGS.GET_ALL}`),
+    getAll: (page?: number, pageSize?: number) => {
+        const params = Object.entries({
+            page: page?.toString() ?? '',
+            pageSize: pageSize?.toString() ?? '',
+        });
+
+        const queryParams = params.filter(p => !!p[1]);
+
+        const searchParams = new URLSearchParams(queryParams);
+
+        return Agent.get<{totalAmount: number, tags: Tag[]}>(`${API_ROUTES.TAGS.GET_ALL}`, searchParams);
+    },
 
     getTagsByStreetcodeId: (streetcodeId: number) => Agent.get<Tag[]>(
         `${API_ROUTES.TAGS.GET_BY_STREETCODE_ID}/${streetcodeId}`,

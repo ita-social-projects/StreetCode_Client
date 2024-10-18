@@ -3,17 +3,39 @@ import Partners from '@features/AdminPage/PartnersPage/Partners.component';
 import { render, screen, waitFor } from '@testing-library/react';
 
 import '@testing-library/jest-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const mockImageStore = {
     getImageById: jest.fn(() => Promise.resolve({})),
 };
 
+// needed to render component without errors
+Object.defineProperty(window, 'matchMedia', {
+    writable: true,
+    value: (query: any) => ({
+        matches: false,
+        media: query,
+        onchange: null,
+        addListener: () => {},
+        removeListener: () => {},
+        addEventListener: () => {},
+        removeEventListener: () => {},
+        dispatchEvent: () => {},
+    }),
+});
+
 jest.mock('@stores/root-store', () => ({
     __esModule: true, // This is required for mocking default exports
     default: () => ({
         partnersStore: {
-            fetchPartnersAll: jest.fn().mockResolvedValue([]),
+            getAll: jest.fn().mockResolvedValue([]),
             PartnerMap: new Map(),
+            PaginationInfo: {
+                PageSize: 10,
+                TotalPages: 1,
+                TotalItems: 1,
+                CurrentPage: 1,
+            },
             getPartnerArray: jest.fn(),
             setInternalMap: jest.fn(),
         },
@@ -99,12 +121,16 @@ jest.mock('antd/es/table', () => ({ dataSource, columns }: any) => {
 
 jest.mock('antd/es/upload', () => () => <div>Upload</div>);
 
-describe('Partners.component', () => {
+describe('Partners.component', () => {    
+    const queryClient = new QueryClient();
+    
     test('should render without crashing', async () => {
         render(
-            <MemoryRouter>
-                <Partners />
-            </MemoryRouter>,
+            <QueryClientProvider client={queryClient}>
+                <MemoryRouter>
+                    <Partners />
+                </MemoryRouter>
+            </QueryClientProvider>,
         );
 
         await waitFor(() => {

@@ -1,6 +1,7 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import Position, {PositionCreate, StreetcodePosition} from '@models/additional-content/teampositions.model';
-import teampositionsApi from '@api/additional-content/teampositions.api';
+import teampositionsApi from '@api/team/teampositions.api';
+import { PaginationInfo } from '@/models/pagination/pagination.model';
 
 export default class TeamPositionsStore {
     public AllPositionsMap = new Map<number, Position>();
@@ -10,6 +11,15 @@ export default class TeamPositionsStore {
     public PositionsCatalogMap = new Map<number, Position>();
 
     public PositionsToDeleteArray: StreetcodePosition[] = [];
+
+    private defaultPageSize = 10;
+
+    private paginationInfo: PaginationInfo = {
+        PageSize: this.defaultPageSize,
+        TotalPages: 1,
+        TotalItems: 1,
+        CurrentPage: 1,
+    };
 
     public constructor() {
         makeAutoObservable(this);
@@ -21,7 +31,7 @@ export default class TeamPositionsStore {
     }
 
     private set setInternalMap(positions: Position[]) {
-        this.AllPositionsMap.clear();
+        this.PositionsMap.clear();
         positions.forEach(this.setItem);
     }
 
@@ -65,16 +75,31 @@ export default class TeamPositionsStore {
         return Array.from(this.PositionsCatalogMap.values());
     }
 
+    public setCurrentPage(currPage: number) {
+        this.paginationInfo.CurrentPage = currPage;
+    }
+    
+    public set PaginationInfo(paginationInfo: PaginationInfo) {
+        this.paginationInfo = paginationInfo;
+    }
+
+    public get PaginationInfo(): PaginationInfo {
+        return this.paginationInfo;
+    }
+
     public fetchAllPositions = async () => {
-        try {
-            this.setInternalAllPositions = await teampositionsApi.getAll();
-        } catch (error: unknown) { /* empty */ }
+        // try {
+        //     this.setInternalAllPositions = await teampositionsApi.getAll();
+        // } catch (error: unknown) { /* empty */ }
     };
 
-    public fetchPositions = async () => {
-        try {
-            this.setInternalMap = await teampositionsApi.getAll();
-        } catch (error: unknown) { /* empty */ }
+    public fetchPositions = async (pageSize?: number) => {
+        await teampositionsApi.getAll(this.PaginationInfo.CurrentPage, pageSize ?? this.paginationInfo.PageSize)
+            .then((resp) => {
+                this.PaginationInfo.TotalItems = resp.totalAmount;
+                this.setInternalMap = resp.positions;
+            })
+            .catch((error) => console.error(error));
     };
 
     public fetchAllPositionsWithMembers = async () => {

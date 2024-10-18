@@ -5,11 +5,12 @@ import React, { useEffect, useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import useMobx, { useModalContext } from '@stores/root-store';
 
-import { Button } from 'antd';
+import { Button, Pagination } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 
 import TeamPositionsAdminModal from './TeamPositionsModal/TeamPositionsAdminModal.component';
 import Position from '@/models/additional-content/teampositions.model';
+import { useQuery } from '@tanstack/react-query';
 
 const TeamPositionsMainPage: React.FC = observer(() => {
     const { modalStore } = useModalContext();
@@ -17,6 +18,11 @@ const TeamPositionsMainPage: React.FC = observer(() => {
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
     const [positionToEdit, setPositionToEdit] = useState<Position>();
+
+    useQuery({
+        queryKey: ['positions', teamPositionsStore.PaginationInfo.CurrentPage],
+        queryFn: () => { teamPositionsStore.fetchPositions() },
+    });
 
     const updatedPositions = () => {
         const data = teamPositionsStore.fetchPositions();
@@ -93,12 +99,28 @@ const TeamPositionsMainPage: React.FC = observer(() => {
                     </Button>
                 </div>
                 <Table
-                    pagination={{ pageSize: 10 }}
+                    pagination={false}
                     className="positions-table"
                     columns={columns}
                     dataSource={teamPositionsStore.getPositionsArray}
                     rowKey="id"
                 />
+                <div className="underTableZone">
+                    <br />
+                    <div className="underTableElement">
+                        <Pagination
+                            className="paginationElement"
+                            showSizeChanger={false}
+                            defaultCurrent={1}
+                            current={teamPositionsStore.PaginationInfo.CurrentPage}
+                            total={teamPositionsStore.PaginationInfo.TotalItems}
+                            pageSize={teamPositionsStore.PaginationInfo.PageSize}
+                            onChange={(value: any) => {
+                                teamPositionsStore.setCurrentPage(value);
+                            }}
+                        />
+                    </div>
+                </div>
             </div>
             <TeamPositionsAdminModal isModalVisible={modalAddOpened} setIsModalOpen={setModalAddOpened} />
             <TeamPositionsAdminModal isModalVisible={modalEditOpened} setIsModalOpen={setModalEditOpened} initialData={positionToEdit} />

@@ -5,7 +5,18 @@ import TeamMember, { TeamCreateUpdate } from '@models/team/team.model';
 const TeamApi = {
     getById: (id: number) => Agent.get<TeamMember>(`${API_ROUTES.TEAM.GET}/${id}`),
 
-    getAll: () => Agent.get<TeamMember[]>(`${API_ROUTES.TEAM.GET_ALL}`),
+    getAll: (page?: number, pageSize?: number) => {
+        const params = Object.entries({
+            page: page?.toString() ?? '',
+            pageSize: pageSize?.toString() ?? '',
+        });
+
+        const queryParams = params.filter(p => !!p[1]);
+
+        const searchParams = new URLSearchParams(queryParams);
+
+        return Agent.get<{totalAmount: number, teamMembers: TeamMember[]}>(`${API_ROUTES.TEAM.GET_ALL}`, searchParams)
+    },
 
     getAllMain: () => Agent.get<TeamMember[]>(`${API_ROUTES.TEAM.GET_ALL_MAIN}`),
 

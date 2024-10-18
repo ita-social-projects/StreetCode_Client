@@ -3,13 +3,14 @@ import React, { useEffect, useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import useMobx, { useModalContext } from '@stores/root-store';
 
-import { Button } from 'antd';
+import { Button, Pagination } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 
 import ContextAdminModalComponent from '@features/AdminPage/ContextPage/ContextModal/ContextAdminModal.component';
 import Context from '@/models/additional-content/context.model';
 
 import './ContextMainPage.style.scss';
+import { useQuery } from '@tanstack/react-query';
 
 const ContextMainPage: React.FC = observer(() => {
     const { modalStore } = useModalContext();
@@ -17,6 +18,11 @@ const ContextMainPage: React.FC = observer(() => {
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
     const [contextToEdit, setContextToEdit] = useState<Context>();
+
+    useQuery({
+        queryKey: ['contexts', contextStore.PaginationInfo.CurrentPage],
+        queryFn: () => {contextStore.fetchContexts()},
+    });
 
     const updatedContexts = () => {
         contextStore.fetchContexts();
@@ -90,12 +96,28 @@ const ContextMainPage: React.FC = observer(() => {
                     </Button>
                 </div>
                 <Table
-                    pagination={{ pageSize: 10 }}
+                    pagination={false}
                     className="partners-table"
                     columns={columns}
                     dataSource={contextStore.getContextArray}
                     rowKey="id"
                 />
+                <div className="underTableZone">
+                    <br />
+                    <div className="underTableElement">
+                        <Pagination
+                            className="paginationElement"
+                            showSizeChanger={false}
+                            defaultCurrent={1}
+                            current={contextStore.PaginationInfo.CurrentPage}
+                            total={contextStore.PaginationInfo.TotalItems}
+                            pageSize={contextStore.PaginationInfo.PageSize}
+                            onChange={(value: any) => {
+                                contextStore.setCurrentPage(value);
+                            }}
+                        />
+                    </div>
+                </div>
             </div>
             <ContextAdminModalComponent isModalVisible={modalAddOpened} setIsModalOpen={setModalAddOpened} />
             <ContextAdminModalComponent isModalVisible={modalEditOpened} setIsModalOpen={setModalEditOpened} initialData={contextToEdit} />
