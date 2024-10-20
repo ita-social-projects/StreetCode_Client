@@ -126,7 +126,7 @@ describe('NewsModal', () => {
         );
 
         const titleInput = screen.getByLabelText('Заголовок:') as HTMLInputElement;
-        const urlInput = screen.getByLabelText('Посилання:') as HTMLInputElement;
+        const urlInput = screen.getByLabelText('Транслітерація для URL:') as HTMLInputElement;
         const textInput = screen.getByTestId('mockEditor') as HTMLTextAreaElement;
         const fileUpload = screen.getByTestId('fileuploader') as HTMLInputElement;
         const button = screen.getByRole('button', { name: 'Зберегти' });
@@ -192,7 +192,7 @@ describe('NewsModal', () => {
         render(<NewsModal open setIsModalOpen={() => { }} />);
 
         const titleInput = screen.getByLabelText('Заголовок:') as HTMLInputElement;
-        const urlInput = screen.getByLabelText('Посилання:') as HTMLInputElement;
+        const urlInput = screen.getByLabelText('Транслітерація для URL:') as HTMLInputElement;
         const textInput = screen.getByTestId('mockEditor') as HTMLTextAreaElement;
         const fileUpload = screen.getByTestId('fileuploader') as HTMLInputElement;
 
@@ -242,7 +242,7 @@ describe('NewsModal', () => {
         );
 
         const titleInput = screen.getByLabelText('Заголовок:') as HTMLInputElement;
-        const urlInput = screen.getByLabelText('Посилання:') as HTMLInputElement;
+        const urlInput = screen.getByLabelText('Транслітерація для URL:') as HTMLInputElement;
         const dateInput = screen.getByRole('textbox', { name: "date" }) as HTMLInputElement;
         const button = screen.getByRole('button', { name: 'Зберегти' });
 
@@ -299,7 +299,7 @@ describe('NewsModal', () => {
         );
 
         const titleInput = screen.getByLabelText('Заголовок:') as HTMLInputElement;
-        const urlInput = screen.getByLabelText('Посилання:') as HTMLInputElement;
+        const urlInput = screen.getByLabelText('Транслітерація для URL:') as HTMLInputElement;
         const textInput = screen.getByTestId('mockEditor') as HTMLTextAreaElement;
         const dateInput = screen.getByRole('textbox', { name: "date" }) as HTMLInputElement;
         const fileUpload = screen.getByTestId('fileuploader') as HTMLInputElement;
