@@ -10,7 +10,7 @@ import { format } from 'date-fns';
 import { uk } from 'date-fns/locale';
 
 import {
-    Button, Dropdown, Empty, MenuProps, Pagination, Space 
+    Button, Dropdown, Empty, MenuProps, Pagination, Space
 } from 'antd';
 import Table from 'antd/es/table/Table';
 

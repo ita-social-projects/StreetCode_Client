@@ -4,7 +4,6 @@ import '@features/AdminPage/AdminModal.styles.scss';
 
 import CancelBtn from '@images/utils/Cancel_btn.svg';
 
-import { runInAction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
@@ -24,7 +23,6 @@ import FileUploader from '@/app/common/components/FileUploader/FileUploader.comp
 import imageValidator, { checkImageFileType } from '@/app/common/components/modals/validators/imageValidator';
 import validateSocialLink from '@/app/common/components/modals/validators/socialLinkValidator';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
-import ImageStore from '@/app/stores/image-store';
 import PartnerLink from '@/features/AdminPage/PartnersPage/PartnerLink.component';
 import Audio from '@/models/media/audio.model';
 import Image from '@/models/media/image.model';
