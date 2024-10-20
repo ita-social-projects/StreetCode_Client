@@ -98,19 +98,49 @@
     }
 
     @media screen and (max-width: 1151px) {
+        &.catalog {
+            @include mut.sized($height: 312px);
 
+            .mainContainer {
+                .textContainer {
+                    p.title {
+                        height: 100%;
+                    }
+                }
+            }
+        }
+
+        &.support {
+            .mainContainer {
+                .textContainer {
+                    p.title {
+                        font-size: f.pxToRem(28px);
+                        @include mut.rem-margined($bottom: 20px);
+                    }
+                }
+
+                .redirectButton {
+                    margin-left: 1.2rem !important;
+                }
+            }
+        }
+    }
+
+    @media screen and (max-width: 1025px) {
         .left,
         .right {
             display: none;
         }
 
         &.catalog {
+            @include mut.sized($height: 225px);
             @include mut.flexed($direction: column, $justify-content: center, $align-items: center);
 
             .mainContainer {
                 .textContainer {
                     p.title {
                         @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 28px);
+                        @include mut.sized($height: 30px);
                     }
 
                     p.content {
@@ -122,6 +152,21 @@
                     @include mut.sized($width: 223px, $height: 59px);
                     @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 17px);
                     min-width: f.pxToRem(223px);
+                }
+            }
+        }
+
+        &.support {
+            .mainContainer {
+                .textContainer {
+                    p.title {
+                        font-size: f.pxToRem(30px);
+                        @include mut.rem-margined($bottom: 30px);
+                    }
+                }
+
+                .redirectButton {
+                    @include mut.rem-margined($left: 60px);
                 }
             }
         }

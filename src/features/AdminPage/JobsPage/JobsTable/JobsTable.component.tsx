@@ -1,22 +1,30 @@
+import './JobsTable.styles.scss';
+
+import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import { DeleteOutlined, DownOutlined, EditOutlined } from '@ant-design/icons';
+import { useQuery } from '@tanstack/react-query';
 
 import {
-    Button, Dropdown, Empty, MenuProps, Space, Table,
+    Button, Dropdown, Empty, MenuProps, Pagination, Space, Table,
 } from 'antd';
 
 import JobApi from '@/app/api/job/Job.api';
-import { useModalContext } from '@/app/stores/root-store';
+import useMobx, { useModalContext } from '@/app/stores/root-store';
 
 import JobsModalComponent from '../JobsModal/JobsModal.component';
-import './JobsTable.styles.scss'
 
-const JobsTable = () => {
-    const [mappedJobsShort, setMappedJobsShort] = useState<JobShort[]>([]);
+const JobsTable = observer(() => {
+    const { jobsStore } = useMobx();
+
     const [currentId, setCurrentId] = useState<number>(0);
     const { modalStore } = useModalContext();
     const [open, setOpen] = useState(false);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+
+    const { isLoading } = useQuery({
+        queryKey: ['jobs', jobsStore.PaginationInfo.CurrentPage],
+        queryFn: () => { jobsStore.getAll() },
+    });
 
     const DeleteJob = (id: number) => {
         modalStore.setConfirmationModal(
@@ -25,16 +33,12 @@ const JobsTable = () => {
                 JobApi.deleteJob(id)
                     .then(
                         () => {
-                            setMappedJobsShort(
-                                mappedJobsShort.filter(
-                                    (j) => (j.id !== id),
-                                ),
-                            );
+                            jobsStore.JobsMap.delete(id);
                         },
                     )
                     .catch(
                         (e) => {
-                            console.log(e);
+                            console.error(e);
                         },
                     );
                 modalStore.setConfirmationModal('confirmation');
@@ -63,18 +67,18 @@ const JobsTable = () => {
                     try {
                         await JobApi.changeStatus(currentId, currentStatus);
 
-                        setMappedJobsShort((prevJobs) => prevJobs
+                        jobsStore.setInternalMap(jobsStore.getJobsArray
                             .map((job) => (job.id === currentId ? { ...job, status: currentStatus } : job)));
 
                         modalStore.setConfirmationModal('confirmation');
                     } catch (e) {
-                        console.log(e);
+                        console.error(e);
                     }
                 },
                 'Ви впевнені, що хочете змінити статус вакансії?',
             );
         } catch (error) {
-            console.error('Error occurred:', error);
+            console.error(error);
         }
     };
 
@@ -103,7 +107,7 @@ const JobsTable = () => {
                 <Dropdown menu={menuProps} trigger={['click']}>
                     <Button onClick={() => setCurrentId(job.id)}>
                         <Space>
-                            { job.status === false ? 'Не активна' : 'Активна' }
+                            {job.status === false ? 'Не активна' : 'Активна'}
                             <DownOutlined />
                         </Space>
                     </Button>
@@ -116,11 +120,11 @@ const JobsTable = () => {
             key: 'actions',
             render: (id: number) => (
                 <div className="partner-page-actions">
-                    <DeleteOutlined 
-                        onClick={() => DeleteJob(id)} 
+                    <DeleteOutlined
+                        onClick={() => DeleteJob(id)}
                         className="actionButton"
                     />
-                    <EditOutlined 
+                    <EditOutlined
                         onClick={() => {
                             setOpen(true);
                             setCurrentId(id);
@@ -132,17 +136,9 @@ const JobsTable = () => {
         },
     ];
 
-    const fetchJobsData = () => {
-        setIsLoading(true);
-        JobApi.getAllShort().then((response) => {
-            setMappedJobsShort(response);
-            setIsLoading(false);
-        });
-    };
-
     useEffect(() => {
         if (!open) {
-            fetchJobsData();
+            jobsStore.getAll();
         }
     }, [open]);
 
@@ -167,8 +163,9 @@ const JobsTable = () => {
                 setOpen={setOpen}
             />
             <Table
+                pagination={false}
                 columns={columnsNames}
-                dataSource={isLoading ? [] : mappedJobsShort}
+                dataSource={jobsStore.getJobsArray || []}
                 className="job-table"
                 rowKey="id"
                 locale={{
@@ -181,8 +178,24 @@ const JobsTable = () => {
                     ),
                 }}
             />
+            <div className="underTableZone">
+                <br />
+                <div className="underTableElement">
+                    <Pagination
+                        className="paginationElement"
+                        showSizeChanger={false}
+                        defaultCurrent={1}
+                        current={jobsStore.PaginationInfo.CurrentPage}
+                        total={jobsStore.PaginationInfo.TotalItems}
+                        pageSize={jobsStore.PaginationInfo.PageSize}
+                        onChange={(value: any) => {
+                            jobsStore.setCurrentPage(value);
+                        }}
+                    />
+                </div>
+            </div>
         </div>
     );
-};
+});
 
 export default JobsTable;

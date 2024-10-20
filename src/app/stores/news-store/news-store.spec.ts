@@ -198,7 +198,7 @@ describe('news-store', () => {
 
             expect(paginationInfo).toBeTruthy();
             expect(paginationInfo.PageSize).toBe(10);
-            expect(paginationInfo.CurrentPage).toBe(0);
+            expect(paginationInfo.CurrentPage).toBe(1);
             expect(paginationInfo.TotalItems).toBe(1);
             expect(paginationInfo.TotalPages).toBe(1);
         });

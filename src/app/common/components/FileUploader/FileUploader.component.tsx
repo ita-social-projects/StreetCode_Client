@@ -1,5 +1,5 @@
-import React, { useRef } from 'react';
-
+import { useRef } from 'react';
+import * as React from 'react';
 import Upload, { RcFile, UploadChangeParam, UploadFile, UploadProps } from 'antd/es/upload';
 import {UploadRequestOption} from 'rc-upload/lib/interface'
 import AudiosApi from '@/app/api/media/audios.api';
@@ -22,7 +22,8 @@ const FileUploader:React.FC<Props> = ({
     const imageDataAsURL = useRef<any | null>(null);
 
     const applyGrayscale = (url:string) => {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => 
+            {
             const img = new Image();
             
             img.onload = () => {
@@ -56,7 +57,7 @@ const FileUploader:React.FC<Props> = ({
                 }
             };
             
-            img.onerror = () => {
+            img.onerror = (e) => {
                 reject(new Error('Failed to load image'));
             };
             

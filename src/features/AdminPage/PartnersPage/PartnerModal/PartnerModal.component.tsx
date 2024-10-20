@@ -4,6 +4,7 @@ import '@features/AdminPage/AdminModal.styles.scss';
 
 import CancelBtn from '@images/utils/Cancel_btn.svg';
 
+import { runInAction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
@@ -17,9 +18,13 @@ import {
 } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
+import { UploadChangeParam } from 'antd/es/upload';
 
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
+import imageValidator, { checkImageFileType } from '@/app/common/components/modals/validators/imageValidator';
+import validateSocialLink from '@/app/common/components/modals/validators/socialLinkValidator';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
+import ImageStore from '@/app/stores/image-store';
 import PartnerLink from '@/features/AdminPage/PartnersPage/PartnerLink.component';
 import Audio from '@/models/media/audio.model';
 import Image from '@/models/media/image.model';
@@ -29,14 +34,15 @@ import Partner, {
     PartnerSourceLinkCreateUpdate,
 } from '@/models/partners/partners.model';
 import { StreetcodeShort } from '@/models/streetcode/streetcode-types.model';
+
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 
 const PartnerModal: React.FC< {
-  partnerItem?: Partner;
-  open: boolean;
-  isStreetcodeVisible?: boolean;
-  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  afterSubmit?: (partner: Partner) => void;
+    partnerItem?: Partner;
+    open: boolean;
+    isStreetcodeVisible?: boolean;
+    setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    afterSubmit?: (partner: Partner) => void;
 }> = observer(
     ({
         partnerItem,
@@ -47,6 +53,7 @@ const PartnerModal: React.FC< {
     }) => {
         // eslint-disable-next-line max-len,no-useless-escape
         const URL_REGEX_VALIDATION_PATTERN = /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,256}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
+        const LOGO_TYPES = Object.keys(LogoType).filter((key) => Number.isNaN(Number(key)));
         const [form] = Form.useForm();
         const [urlTitleEnabled, setUrlTitleEnabled] = useState<string>('');
         const [urlTitleValue, setUrlTitleValue] = useState<string>('');
@@ -63,6 +70,7 @@ const PartnerModal: React.FC< {
         const imageId = useRef<number>(0);
         const [actionSuccess, setActionSuccess] = useState(false);
         const [waitingForApiResponse, setWaitingForApiResponse] = useState(false);
+        const [isSaved, setIsSaved] = useState(true);
 
         message.config({
             top: 100,
@@ -152,6 +160,7 @@ const PartnerModal: React.FC< {
                 await form.validateFields();
                 form.submit();
                 message.success('Партнера успішно додано!');
+				        setIsSaved(true);
             } catch (error) {
                 setWaitingForApiResponse(false);
                 message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
@@ -176,6 +185,7 @@ const PartnerModal: React.FC< {
         const closeModal = () => {
             if (!waitingForApiResponse) {
                 setIsModalOpen(false);
+								setIsSaved(true);
             }
         };
 
@@ -200,6 +210,7 @@ const PartnerModal: React.FC< {
             partnerLinksForm.resetFields();
             setShowSecondForm(false);
             setShowSecondFormButton(true);
+			      handleInputChange();
         };
 
         const handleUrlChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -207,6 +218,7 @@ const PartnerModal: React.FC< {
             try {
                 await form.validateFields(['url']);
                 setUrlTitleEnabled(value);
+				        handleInputChange();
             } catch (error) {
                 setUrlTitleEnabled('');
             }
@@ -217,6 +229,7 @@ const PartnerModal: React.FC< {
         ) => {
             const { value } = e.target;
             setUrlTitleValue(value);
+			      handleInputChange();
         };
 
         const handleShowSecondForm = () => {
@@ -270,7 +283,6 @@ const PartnerModal: React.FC< {
                 } else {
                     partner.id = (await partnersStore.createPartner(partner)).id;
                 }
-                console.log('Success');
                 if (afterSubmit) {
                     const partnerWithLogo = partnersStore.PartnerMap.get(partner.id) as Partner;
                     afterSubmit(partnerWithLogo);
@@ -279,6 +291,17 @@ const PartnerModal: React.FC< {
             } catch (e: unknown) {
                 message.error('Не вдалось оновити/створити партнера. Спробуйте ще раз.');
                 setWaitingForApiResponse(false);
+            }
+        };
+
+		const handleInputChange = () => setIsSaved(false);
+
+        const checkFile = (file: UploadFile) => checkImageFileType(file.type);
+
+        const handleFileChange = (param: UploadChangeParam<UploadFile<unknown>>) => {
+            if (checkFile(param.file)) {
+                handleInputChange();
+                setFileList(param.fileList);
             }
         };
 
@@ -314,7 +337,7 @@ const PartnerModal: React.FC< {
                                 valuePropName="checked"
                                 label="Ключовий партнер: "
                             >
-                                <Checkbox />
+                                <Checkbox onChange={handleInputChange} />
                             </Form.Item>
 
                             <Form.Item
@@ -323,7 +346,7 @@ const PartnerModal: React.FC< {
                                 valuePropName="checked"
                                 label="Видимий для всіх: "
                             >
-                                <Checkbox />
+                                <Checkbox onChange={handleInputChange} />
                             </Form.Item>
                         </div>
 
@@ -332,7 +355,7 @@ const PartnerModal: React.FC< {
                             label="Назва: "
                             rules={[{ required: true, message: 'Введіть назву' }]}
                         >
-                            <Input maxLength={100} showCount />
+                            <Input maxLength={100} showCount onChange={handleInputChange} />
                         </Form.Item>
 
                         <Form.Item
@@ -358,30 +381,26 @@ const PartnerModal: React.FC< {
                         </Form.Item>
                         {urlTitleEnabled === '' && urlTitleValue && (
                             <p className="error-text">
-                Введіть правильне посилання для збереження назви посилання.
+                                Введіть правильне посилання для збереження назви посилання.
                             </p>
                         )}
 
                         <Form.Item name="description" label="Опис: ">
-                            <TextArea showCount maxLength={450} />
+                            <TextArea showCount maxLength={450} onChange={handleInputChange} />
                         </Form.Item>
 
                         <Form.Item
                             name="logo"
                             label="Лого"
-                            valuePropName="fileList"
-                            getValueFromEvent={(e: any) => {
-                                if (Array.isArray(e)) {
-                                    return e;
-                                }
-                                return e?.fileList;
-                            }}
-                            rules={[{ required: true, message: 'Завантажте лого' }]}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Завантажте лого',
+                                },
+                                { validator: imageValidator },
+                            ]}
                         >
                             <FileUploader
-                                onChange={(param) => {
-                                    setFileList(param.fileList);
-                                }}
                                 fileList={fileList}
                                 className="logo-uploader"
                                 multiple={false}
@@ -389,6 +408,8 @@ const PartnerModal: React.FC< {
                                 listType="picture-card"
                                 maxCount={1}
                                 onPreview={handlePreview}
+                                beforeUpload={checkFile}
+                                onChange={handleFileChange}
                                 onRemove={() => {
                                     imageId.current = 0;
                                 }}
@@ -410,6 +431,7 @@ const PartnerModal: React.FC< {
                             <Form.Item name="partnersStreetcodes" label="Стріткоди: ">
                                 <Select
                                     mode="multiple"
+									                  onChange={handleInputChange}
                                     onSelect={onStreetcodeSelect}
                                     onDeselect={onStreetcodeDeselect}
                                 >
@@ -432,7 +454,7 @@ const PartnerModal: React.FC< {
                             className="partner-source-list-item"
                         >
                             <PartnerLink link={link} />
-                            <p>{link.targetUrl}</p>
+                            <p className="partner-source-text">{link.targetUrl}</p>
                             <DeleteOutlined
                                 onClick={() => setPartnersSourceLinks(
                                     partnerSourceLinks.filter((l) => l.id !== link.id),
@@ -446,7 +468,7 @@ const PartnerModal: React.FC< {
                         onClick={handleShowSecondForm}
                         className="add-social-media-button"
                     >
-            Додати соціальну мережу
+                        Додати соціальну мережу
                     </Button>
                 )}
                 <Form
@@ -458,7 +480,7 @@ const PartnerModal: React.FC< {
                         <div>
                             <div className="button-container">
                                 <Button onClick={handleHideSecondForm} className="close-button">
-                  Закрити
+                                    Закрити
                                 </Button>
                             </div>
                             <div className="link-container">
@@ -468,7 +490,10 @@ const PartnerModal: React.FC< {
                                     rules={[{ required: true, message: 'Виберіть соц. мережу' }]}
                                     className="social-media-form-item"
                                 >
-                                    <Select options={SOCIAL_OPTIONS} />
+                                    <Select
+                                        options={SOCIAL_OPTIONS}
+                                        onChange={() => partnerLinksForm.validateFields(['url'])}
+                                    />
                                 </FormItem>
                                 <Form.Item
                                     label="Посилання"
@@ -481,15 +506,14 @@ const PartnerModal: React.FC< {
                                         },
                                         {
                                             validator: (_, value) => {
-                                                const logotype = partnerLinksForm.getFieldValue('logotype');
-
-                                                if (!value || !logotype || value.toLowerCase().includes(logotype)) {
-                                                    return Promise.resolve();
-                                                }
-
-                                                return Promise.reject(new Error(
-                                                    'Посилання не співпадає з вибраним текстом',
-                                                ));
+                                                const socialName = partnerLinksForm.getFieldValue('logotype');
+                                                return validateSocialLink<LogoType>(
+                                                    value,
+                                                    SOCIAL_OPTIONS,
+                                                    LOGO_TYPES,
+                                                    partnerSourceLinks,
+                                                    socialName,
+                                                );
                                             },
                                         },
                                     ]}
@@ -514,17 +538,17 @@ const PartnerModal: React.FC< {
                         <Popover content="Завершіть додавання соціальної мережі" trigger="hover">
                             <span>
                                 <Button disabled className="streetcode-custom-button save">
-                  Зберегти
+                                    Зберегти
                                 </Button>
                             </span>
                         </Popover>
                     ) : (
                         <Button
-                            disabled={showSecondForm || fileList.length === 0}
+                            disabled={showSecondForm || fileList.length === 0 || isSaved}
                             className="streetcode-custom-button save"
                             onClick={handleOk}
                         >
-              Зберегти
+                            Зберегти
                         </Button>
                     )}
                 </div>

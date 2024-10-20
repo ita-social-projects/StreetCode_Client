@@ -3,14 +3,23 @@ import teamApi from '@api/team/team.api';
 import TeamMember, { TeamCreateUpdate } from '@models/team/team.model';
 
 import ImagesApi from '../api/media/images.api';
+import { PaginationInfo } from '@/models/pagination/pagination.model';
 
 export default class TeamStore {
     public TeamMap = new Map<number, TeamMember>();
+    
+    private defaultPageSize = 10;
+
+    private paginationInfo: PaginationInfo = {
+        PageSize: this.defaultPageSize,
+        TotalPages: 1,
+        TotalItems: 1,
+        CurrentPage: 1,
+    };
 
     public constructor() {
         makeAutoObservable(this, {
             TeamMap: observable,
-            fetchTeamAll: action,
             getAll: action,
             getById: action,
             setInternalMap: action,
@@ -19,6 +28,7 @@ export default class TeamStore {
     }
 
     public setInternalMap(team: TeamMember[]) {
+        this.TeamMap.clear();
         team.forEach(this.setItem);
     }
 
@@ -29,28 +39,33 @@ export default class TeamStore {
     get getTeamArray() {
         return Array.from(this.TeamMap.values());
     }
+    
+    public setCurrentPage(currPage: number) {
+        this.paginationInfo.CurrentPage = currPage;
+    }
+    
+    public set PaginationInfo(paginationInfo: PaginationInfo) {
+        this.paginationInfo = paginationInfo;
+    }
 
-    public getAll = async () => {
-        try {
-            this.setInternalMap(await teamApi.getAll());
-        } catch (error: unknown) {
-            console.log(error);
-        }
+    public get PaginationInfo(): PaginationInfo {
+        return this.paginationInfo;
+    }
+
+    public getAll = async (pageSize?: number) => {
+        await teamApi.getAll(this.PaginationInfo.CurrentPage, pageSize ?? this.paginationInfo.PageSize)
+            .then((resp) => {
+                this.PaginationInfo.TotalItems = resp.totalAmount;
+                this.setInternalMap(resp.teamMembers);
+            })
+            .catch((error) => console.error(error));
     };
 
     public getById = async (teamId: number) => {
         try {
             this.setItem(await teamApi.getById(teamId));
         } catch (error: unknown) {
-            console.log(error);
-        }
-    };
-
-    public fetchTeamAll = async () => {
-        try {
-            this.setInternalMap(await teamApi.getAll());
-        } catch (error: unknown) {
-            console.log(error);
+            console.error(error);
         }
     };
 
@@ -76,7 +91,7 @@ export default class TeamStore {
                 this.TeamMap.delete(teamId);
             });
         } catch (error: unknown) {
-            console.log(error);
+            console.error(error);
         }
     };
 }

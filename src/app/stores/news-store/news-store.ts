@@ -20,7 +20,7 @@ export default class NewsStore {
         PageSize: this.defaultPageSize,
         TotalPages: 1,
         TotalItems: 1,
-        CurrentPage: 0,
+        CurrentPage: 1,
     };
 
     public constructor() {
@@ -53,6 +53,7 @@ export default class NewsStore {
 
     public setCurrentPage(currPage: number) {
         this.CurrentPage = currPage;
+        this.paginationInfo.CurrentPage = currPage;
     }
 
     public set CurrentNewsId(id: number) {
@@ -84,17 +85,20 @@ export default class NewsStore {
             .then((news) => {
                 this.CurrentNewsId = news.id;
             })
-            .catch((error) => console.error(error));
+            .catch((error) => {
+                console.error(error);
+            });
     };
 
     public getAll = async (pageSize?: number) => {
-        await NewsApi.getAll(this.CurrentPage, pageSize ?? 1)
+        await NewsApi.getAll(this.CurrentPage, pageSize ?? this.paginationInfo.PageSize)
             .then((resp) => {
-                console.log(resp);
-                this.PaginationInfo = resp.paginationInfo;
-                this.setNewsMap(resp.data);
+                this.PaginationInfo.TotalItems = resp.totalAmount;
+                this.setNewsMap(resp.news);
             })
-            .catch((error) => console.error(error));
+            .catch((error) => {
+                console.error(error);
+            });
     };
 
     public createNews = async (news: News) => {

@@ -1,6 +1,6 @@
 import { action, makeAutoObservable, observable } from 'mobx';
-import HistoricalContextApi from '@api/timeline/historicalcontext.api';
 import { HistoricalContext } from '@models/timeline/chronology.model';
+import ContextsApi from '../api/additional-content/contexts.api';
 
 export default class HistoricalContextStore {
     public historicalContextArray = new Array<HistoricalContext>();
@@ -27,7 +27,7 @@ export default class HistoricalContextStore {
 
     public fetchHistoricalContextAll = async () => {
         try {
-            const response = await HistoricalContextApi.getAll();
+            const response = await ContextsApi.getAll().then((resp) => resp.historicalContexts);
             this.setInternalMap(response);
         } catch (error) { /* empty */ }
     };

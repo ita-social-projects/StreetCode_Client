@@ -71,7 +71,7 @@ import {
     Text,
     TextCreateUpdate,
 } from '@/models/streetcode/text-contents.model';
-import { TransactionLink } from '@/models/transactions/transaction-link.model';
+import { TransactionLink, TransactionLinkUpdate } from '@/models/transactions/transaction-link.model';
 
 import ARBlock from './ARBlock/ARBlock.component';
 import CategoriesBlock from './CategoriesBlock/CategoriesBlock.component';
@@ -151,9 +151,6 @@ const NewStreetcode = () => {
             ? { when: false, message: '' }
             : { when: true, message: navigationString }
     );
-    const handleTabClosing = () => {
-        console.log('Close tab');
-    };
 
     const alertUser = (event: BeforeUnloadEvent) => {
         event.preventDefault();
@@ -187,10 +184,8 @@ const NewStreetcode = () => {
     useEffect(() => {
         if (!savedChanges) {
             window.addEventListener('beforeunload', alertUser);
-            window.addEventListener('unload', handleTabClosing);
             return () => {
                 window.removeEventListener('beforeunload', alertUser);
-                window.removeEventListener('unload', handleTabClosing);
             };
         }
     });
@@ -276,7 +271,7 @@ const NewStreetcode = () => {
                             }));
 
                         setPartners(persistedPartners);
-                    }
+                    },
                 );
                 SubtitlesApi.getSubtitlesByStreetcodeId(parseId)
                     .then((resultSubtitle) => {
@@ -284,7 +279,9 @@ const NewStreetcode = () => {
                             setSubTitle(resultSubtitle);
                         }
                     })
-                    .catch((error) => {});
+                    .catch((error) => {
+                        console.error(error);
+                    });
                 SourcesApi.getCategoriesByStreetcodeId(parseId).then(
                     (result) => {
                         const id = result.map((x) => x.id);
@@ -386,11 +383,16 @@ const NewStreetcode = () => {
             .then(() => {
                 data.stopPropagation();
 
-                const subtitles: SubtitleCreate[] = [
-                    { subtitleText: subTitle?.subtitleText ?? '' },
-                ];
-
-            const videos: VideoCreate[] = [{  url: inputInfo?.title ? (inputInfo.link ?? '') : '' }];
+                let subtitles: SubtitleCreate[] = [];
+                if (subTitle != null && subTitle.subtitleText) {
+                    subtitles = [
+                        { subtitleText: subTitle!.subtitleText },
+                    ];
+                }
+                let videos: VideoCreate[] = [];
+                if (inputInfo != null && inputInfo.link) {
+                    videos = [{ url: inputInfo.link }];
+                }
 
                 const text: TextCreateUpdate = {
                     id: inputInfo?.id ?? 0,
@@ -422,8 +424,8 @@ const NewStreetcode = () => {
                         'streetcodeSecondDate'
                     )
                         ? dayjs
-                              .utc(form.getFieldValue('streetcodeSecondDate'))
-                              .toDate()
+                            .utc(form.getFieldValue('streetcodeSecondDate'))
+                            .toDate()
                         : null,
                     imagesIds: createUpdateMediaStore.getImageIds(),
                     audioId: createUpdateMediaStore.audioId,
@@ -509,17 +511,14 @@ const NewStreetcode = () => {
                         })
                     );
 
-                const videosUpdate: Video[] = [{
-                    ...video,
-                    url: inputInfo?.title ? (inputInfo.link ?? '') : ''
-                  } as Video];
-
-                    const subtitleUpdate: Subtitle[] = [
-                        {
-                            ...subTitle,
-                            subtitleText: subTitle?.subtitleText ?? '',
-                        } as Subtitle,
-                    ];
+                    let videosUpdate: Video[] = [];
+                    if (inputInfo != null && inputInfo.link) {
+                        videosUpdate = [{ ...video, url: inputInfo.link } as Video];
+                    }
+                    let subtitleUpdate: Subtitle[] = [];
+                    if (subTitle != null && subTitle.subtitleText) {
+                        subtitleUpdate = [{ ...subTitle, subtitleText: subTitle!.subtitleText } as Subtitle];
+                    }
 
                     const tags = [
                         ...(reindex(selectedTags) as StreetcodeTagUpdate[]).map(
@@ -532,61 +531,65 @@ const NewStreetcode = () => {
                     ];
 
                     const arUrl = form.getFieldValue('arlink');
-                    const arLinkUpdated: TransactionLink = {
+                    let arLinkUpdated: TransactionLinkUpdate | null = {
                         id: arLink?.id ?? 0,
                         streetcodeId: parseId,
                         url: arLink?.url ?? '',
                         urlTitle: arLink?.urlTitle ?? '',
-                    };
-
-                if (text.id !== 0 && !text.title) {
-                    text.modelState = ModelState.Deleted;
-                }
-
-                const streetcodeUpdate: StreetcodeUpdate = {
-                    id: parseId,
-                    index: form.getFieldValue('streetcodeNumber'),
-                    firstName: null,
-                    lastName: null,
-                    title: form.getFieldValue('mainTitle'),
-                    alias: form.getFieldValue('alias'),
-                    status: tempStatus,
-                    transliterationUrl: form.getFieldValue('streetcodeUrlName'),
-                    streetcodeType: streetcodeType.current,
-                    eventStartOrPersonBirthDate: dayjs.utc(form.getFieldValue('streetcodeFirstDate')).toDate(),
-                    eventEndOrPersonDeathDate: form.getFieldValue('streetcodeSecondDate')
-                        ? dayjs.utc(form.getFieldValue('streetcodeSecondDate')).toDate() : null,
-                    teaser: form.getFieldValue('teaser'),
-                    dateString: form.getFieldValue('dateString'),
-                    videos: videosUpdate,
-                    relatedFigures: relatedFiguresUpdate,
-                    timelineItems: timelineItemStore.getTimelineItemArrayToUpdate,
-                    facts: reindex(factsStore.getFactArrayToUpdate.map((item) => ({  ...item,
-                        streetcodeId: parseId,
-                        id: item.id < 0 ? 0 : item.id }))),
-                    partners: partnersUpdate,
-                    subtitles: subtitleUpdate,
-                    text: text.modelState === ModelState.Deleted || text.title ? text : null,
-                    streetcodeCategoryContents: sourceCreateUpdateStreetcode.getCategoryContentsArrayToUpdate
-                        .map((content) => ({ ...content, streetcodeId: parseId })),
-                    arts: artStore.arts,
-                    streetcodeArtSlides: streetcodeArtSlideStore.getArtSlidesAsDTO(),
-                    tags: tags.map((tag) => ({ ...tag, id: tag.id < 0 ? 0 : tag.id })),
-                    statisticRecords: statisticRecordStore.getStatisticRecordArrayToUpdate
-                        .map((record) => ({ ...record, streetcodeId: parseId })),
-                    toponyms: newStreetcodeInfoStore.selectedToponyms,
-                    images: createUpdateMediaStore.imagesUpdate.map((img): ImageCreateUpdate => ({ id: img.id, modelState: img.modelState, streetcodeId: img.streetcodeId })),
-                    audioId: createUpdateMediaStore.audioId,
-                    audios: createUpdateMediaStore.audioUpdate.map((a): AudioUpdate => ({ id: a.id, modelState: a.modelState, streetcodeId: a.streetcodeId })),
-                    transactionLink: {
-                        id: arLink?.id ?? 0,
-                        streetcodeId: parseId,
-                        url: form.getFieldValue('arlink') ?? '',
                         qrCodeUrl: arLink?.urlTitle ?? '',
-                        modelState: 0,
-                    },
-                    imagesDetails: (Array.from(factsStore.factImageDetailsMap.values()) as ImageDetails[]).concat(createUpdateMediaStore.getImageDetailsUpdate()),
-                };
+                    };
+                    if (arUrl) {
+                        arLinkUpdated = {
+                            ...arLinkUpdated,
+                            url: arUrl,
+                            modelState: ModelState.Updated,
+                        };
+                    } else {
+                        arLinkUpdated = null;
+                    }
+
+                    if (text.id !== 0 && !text.title) {
+                        text.modelState = ModelState.Deleted;
+                    }
+
+                    const streetcodeUpdate: StreetcodeUpdate = {
+                        id: parseId,
+                        index: form.getFieldValue('streetcodeNumber'),
+                        firstName: null,
+                        lastName: null,
+                        title: form.getFieldValue('mainTitle'),
+                        alias: form.getFieldValue('alias'),
+                        status: tempStatus,
+                        transliterationUrl: form.getFieldValue('streetcodeUrlName'),
+                        streetcodeType: streetcodeType.current,
+                        eventStartOrPersonBirthDate: dayjs.utc(form.getFieldValue('streetcodeFirstDate')).toDate(),
+                        eventEndOrPersonDeathDate: form.getFieldValue('streetcodeSecondDate')
+                            ? dayjs.utc(form.getFieldValue('streetcodeSecondDate')).toDate() : null,
+                        teaser: form.getFieldValue('teaser'),
+                        dateString: form.getFieldValue('dateString'),
+                        videos: videosUpdate,
+                        relatedFigures: relatedFiguresUpdate,
+                        timelineItems: timelineItemStore.getTimelineItemArrayToUpdate,
+                        facts: reindex(factsStore.getFactArrayToUpdate.map((item) => ({  ...item,
+                                                                                         streetcodeId: parseId,
+                                                                                         id: item.id < 0 ? 0 : item.id }))),
+                        partners: partnersUpdate,
+                        subtitles: subtitleUpdate,
+                        text: text.modelState === ModelState.Deleted || text.title ? text : null,
+                        streetcodeCategoryContents: sourceCreateUpdateStreetcode.getCategoryContentsArrayToUpdate
+                            .map((content) => ({ ...content, streetcodeId: parseId })),
+                        arts: artStore.arts,
+                        streetcodeArtSlides: streetcodeArtSlideStore.getArtSlidesAsDTO(),
+                        tags: tags.map((tag) => ({ ...tag, id: tag.id < 0 ? 0 : tag.id })),
+                        statisticRecords: statisticRecordStore.getStatisticRecordArrayToUpdate
+                            .map((record) => ({ ...record, streetcodeId: parseId })),
+                        toponyms: newStreetcodeInfoStore.selectedToponyms,
+                        images: createUpdateMediaStore.imagesUpdate.map((img): ImageCreateUpdate => ({ id: img.id, modelState: img.modelState, streetcodeId: img.streetcodeId })),
+                        audioId: createUpdateMediaStore.audioId,
+                        audios: createUpdateMediaStore.audioUpdate.map((a): AudioUpdate => ({ id: a.id, modelState: a.modelState, streetcodeId: a.streetcodeId })),
+                        transactionLink: arLinkUpdated,
+                        imagesDetails: (Array.from(factsStore.factImageDetailsMap.values()) as ImageDetails[]).concat(createUpdateMediaStore.getImageDetailsUpdate()),
+                    };
 
                     if (streetcodeType.current === StreetcodeType.Person) {
                         streetcodeUpdate.firstName = form.getFieldValue('name');
@@ -600,11 +603,11 @@ const NewStreetcode = () => {
                         .then(() => {
                             alert('Cтріткод успішно оновлений');
                         })
-                        .catch((error2) => {
+                        .catch((error) => {
                             alert('Виникла помилка при оновленні стріткоду');
+                            console.error(error);
                         });
                 } else {
-                    console.log(streetcode);
                     StreetcodesApi.create(streetcode)
                         .then(() => {
                             streetcodeArtSlideStore.streetcodeArtSlides = [];
@@ -629,10 +632,11 @@ const NewStreetcode = () => {
                         })
                         .catch((error) => {
                             alert('Виникла помилка при створенні стріткоду');
+                            console.error(error);
                         });
                 }
             })
-            .catch(() => {
+            .catch((error) => {
                 const name = form
                     .getFieldsError()
                     .find((e) => e.errors.length > 0)?.name;
@@ -640,6 +644,7 @@ const NewStreetcode = () => {
                     scrollToErrors();
                 } else {
                     alert('Будь ласка, заповніть всі поля валідними даними');
+                    console.error(error);
                 }
             });
     };

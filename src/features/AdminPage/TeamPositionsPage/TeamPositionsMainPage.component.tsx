@@ -4,12 +4,14 @@ import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import useMobx, { useModalContext } from '@stores/root-store';
+import { useQuery } from '@tanstack/react-query';
 
-import { Button, Empty } from 'antd';
+import { Button, Empty, Pagination } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 
-import TeamPositionsAdminModal from './TeamPositionsModal/TeamPositionsAdminModal.component';
 import Position from '@/models/additional-content/teampositions.model';
+
+import TeamPositionsAdminModal from './TeamPositionsModal/TeamPositionsAdminModal.component';
 
 const TeamPositionsMainPage: React.FC = observer(() => {
     const { modalStore } = useModalContext();
@@ -17,13 +19,14 @@ const TeamPositionsMainPage: React.FC = observer(() => {
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
     const [positionToEdit, setPositionToEdit] = useState<Position>();
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+
+    const { isLoading } = useQuery({
+        queryKey: ['positions', teamPositionsStore.PaginationInfo.CurrentPage],
+        queryFn: () => { teamPositionsStore.fetchPositions() },
+    });
 
     const updatedPositions = () => {
-        setIsLoading(true);
         const data = teamPositionsStore.fetchPositions();
-        console.log(data);
-        setIsLoading(false);
     };
 
     useEffect(() => {
@@ -42,6 +45,9 @@ const TeamPositionsMainPage: React.FC = observer(() => {
                     </div>
                 );
             },
+            sorter: (a, b) => a.position.localeCompare(b.position),
+            sortDirections: ['ascend', 'descend', 'ascend'],
+            defaultSortOrder: 'ascend',
         },
         {
             title: 'Дії',
@@ -60,7 +66,7 @@ const TeamPositionsMainPage: React.FC = observer(() => {
                                     if (positions.id != undefined) {
                                         teamPositionsStore.deletePosition(positions.id)
                                             .catch((e) => {
-                                                console.log(e);
+                                                console.error(e);
                                             });
                                         modalStore.setConfirmationModal('confirmation');
                                     }
@@ -94,10 +100,10 @@ const TeamPositionsMainPage: React.FC = observer(() => {
                     </Button>
                 </div>
                 <Table
-                    pagination={{ pageSize: 10 }}
+                    pagination={false}
                     className="positions-table"
                     columns={columns}
-                    dataSource={isLoading ? [] : teamPositionsStore.getPositionsArray}
+                    dataSource={teamPositionsStore.getPositionsArray || []}
                     rowKey="id"
                     locale={{
                         emptyText: isLoading ? (
@@ -109,6 +115,22 @@ const TeamPositionsMainPage: React.FC = observer(() => {
                         ),
                     }}
                 />
+                <div className="underTableZone">
+                    <br />
+                    <div className="underTableElement">
+                        <Pagination
+                            className="paginationElement"
+                            showSizeChanger={false}
+                            defaultCurrent={1}
+                            current={teamPositionsStore.PaginationInfo.CurrentPage}
+                            total={teamPositionsStore.PaginationInfo.TotalItems}
+                            pageSize={teamPositionsStore.PaginationInfo.PageSize}
+                            onChange={(value: any) => {
+                                teamPositionsStore.setCurrentPage(value);
+                            }}
+                        />
+                    </div>
+                </div>
             </div>
             <TeamPositionsAdminModal isModalVisible={modalAddOpened} setIsModalOpen={setModalAddOpened} />
             <TeamPositionsAdminModal isModalVisible={modalEditOpened} setIsModalOpen={setModalEditOpened} initialData={positionToEdit} />
