@@ -26,7 +26,7 @@ const TagsMainPage: React.FC = observer(() => {
     });
 
     const updatedTags = () => {
-        tagsStore.fetchAllTags().then();
+        tagsStore.fetchAllTags();
     };
 
     useEffect(() => {

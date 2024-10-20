@@ -27,7 +27,7 @@ const ContextMainPage: React.FC = observer(() => {
 
     const updatedContexts = () => {
         setIsLoading(true);
-        contextStore.fetchContexts().then();
+        contextStore.fetchContexts();
         setIsLoading(false);
     };
 

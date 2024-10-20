@@ -26,7 +26,7 @@ const TeamPositionsMainPage: React.FC = observer(() => {
     });
 
     const updatedPositions = () => {
-        teamPositionsStore.fetchPositions().then();
+        teamPositionsStore.fetchPositions();
     };
 
     useEffect(() => {
