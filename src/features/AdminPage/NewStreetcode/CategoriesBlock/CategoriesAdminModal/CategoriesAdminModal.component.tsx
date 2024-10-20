@@ -67,7 +67,7 @@ const CategoriesModal = ({
 
     const getAvailableCategories = async (isNewCat: boolean): Promise<SourceCategoryName[] | undefined> => {
         try {
-            const categories = await SourcesApi.getAllCategories();
+            const categories = await SourcesApi.getAllCategories().then(resp => resp.categories);
             sourcesAdminStore.setInternalSourceCategories(categories);
 
             const selected = sourceCreateUpdateStreetcode.streetcodeCategoryContents

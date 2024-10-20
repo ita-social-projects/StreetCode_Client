@@ -3,9 +3,19 @@ import partnersApi from '@api/partners/partners.api';
 import Partner, { PartnerCreateUpdate, PartnerShort } from '@models/partners/partners.model';
 
 import ImagesApi from '../api/media/images.api';
+import { PaginationInfo } from '@/models/pagination/pagination.model';
 
 export default class PartnersStore {
     public PartnerMap = new Map<number, Partner>();
+
+    private defaultPageSize = 10;
+
+    private paginationInfo: PaginationInfo = {
+        PageSize: this.defaultPageSize,
+        TotalPages: 1,
+        TotalItems: 1,
+        CurrentPage: 1,
+    };
 
     public constructor() {
         makeAutoObservable(this);
@@ -19,9 +29,17 @@ export default class PartnersStore {
     public setItem = (partner: Partner) => {
         this.PartnerMap.set(partner.id, partner);
     };
+    
+    public setCurrentPage(currPage: number) {
+        this.paginationInfo.CurrentPage = currPage;
+    }
+    
+    public set PaginationInfo(paginationInfo: PaginationInfo) {
+        this.paginationInfo = paginationInfo;
+    }
 
-    get getPartnerArray() {
-        return Array.from(this.PartnerMap.values());
+    public get PaginationInfo(): PaginationInfo {
+        return this.paginationInfo;
     }
 
     public static getAllPartners = async () => {
@@ -38,15 +56,22 @@ export default class PartnersStore {
         return [];
     }
 
+    get getPartnerArray() {
+        return Array.from(this.PartnerMap.values());
+    }
+
+    public getAll = async (pageSize?: number) => {
+        await partnersApi.getAll(this.PaginationInfo.CurrentPage, pageSize ?? this.paginationInfo.PageSize)
+            .then((resp) => {
+                this.PaginationInfo.TotalItems = resp.totalAmount;
+                this.setInternalMap(resp.partners);
+            })
+            .catch((error) => console.error(error));
+    };
+
     public fetchPartnersByStreetcodeId = async (streetcodeId: number) => {
         try {
             this.setInternalMap(await partnersApi.getByStreetcodeId(streetcodeId));
-        } catch (error: unknown) {}
-    };
-
-    public fetchPartnersAll = async () => {
-        try {
-            this.setInternalMap(await partnersApi.getAll());
         } catch (error: unknown) {}
     };
 

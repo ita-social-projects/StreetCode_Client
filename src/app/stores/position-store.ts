@@ -1,7 +1,7 @@
 import { action, makeAutoObservable, observable } from 'mobx';
 
 import { Positions } from '../../models/team/team.model';
-import PositionsApi from '../api/team/positions.api';
+import PositionsApi from '../api/team/teampositions.api';
 
 export default class PositionsStore {
     public positions = new Array<Positions>();
@@ -15,7 +15,7 @@ export default class PositionsStore {
 
     public static async getAll(): Promise<Positions[]> {
         try {
-            return await PositionsApi.getAll();
+            return await PositionsApi.getAll().then((resp) => resp.positions);
         } catch (error: unknown) {
             console.error(error);
         }
@@ -25,7 +25,7 @@ export default class PositionsStore {
     public fetchStreetcodesAll = async () => {
         PositionsApi.getAll()
             .then((value) => {
-                this.positions = value.map((s) => ({ id: s.id, position: s.position }));
+                this.positions = value.positions.map((s) => ({ id: s.id, position: s.position }));
             }).catch((error) => {
                 console.error(error);
             });
