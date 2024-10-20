@@ -274,13 +274,13 @@ const NewsModal: React.FC<{
 
                         <Form.Item
                             name="url"
-                            label="Посилання: "
+                            label="Транслітерація для URL: "
                             rules={[
-                                { required: true, message: 'Введіть Посилання' },
+                                { required: true, message: 'Введіть транслітерацію' },
                                 {
                                     pattern: /^[0-9a-z-]+$/,
                                     message:
-                                        'Посилання має містити лише малі латинські літери, цифри та дефіс',
+                                        'Транслітерація має містити лише малі латинські літери, цифри та дефіс',
                                 },
                                 {
                                     validator: async (_, value) => {
