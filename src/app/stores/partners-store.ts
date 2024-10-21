@@ -44,7 +44,7 @@ export default class PartnersStore {
 
     public static getAllPartners = async () => {
         try {
-            return await partnersApi.getAll();
+            return await partnersApi.getAll().then((resp) => resp.partners);
         } catch (error: unknown) {}
         return [];
     };
