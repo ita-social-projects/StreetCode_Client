@@ -20,11 +20,10 @@ import {
     Form, Input, message, Modal, Popover, Select, UploadFile,
 } from 'antd';
 
-import TextArea from 'antd/es/input/TextArea';
-import { Option } from 'antd/es/mentions';
 
 import PositionsApi from '@/app/api/team/teampositions.api';
-import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
+import FileUploader from '@components/FileUploader/FileUploader.component';
+
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import validateSocialLink from '@/app/common/components/modals/validators/socialLinkValidator';
 import TeamLink from '@/features/AdminPage/TeamPage/TeamLink.component';
@@ -53,6 +52,7 @@ const TeamModal: React.FC<{
     const [actionSuccess, setActionSuccess] = useState(false);
     const [waitingForApiResponse, setWaitingForApiResponse] = useState(false);
     const imageId = useRef<number>(0);
+    const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
 
     message.config({
         top: 100,
@@ -147,6 +147,7 @@ const TeamModal: React.FC<{
     const closeModal = () => {
         if (!waitingForApiResponse) {
             setIsModalOpen(false);
+            setIsSaveButtonDisabled(true);
         }
     };
 
@@ -172,6 +173,7 @@ const TeamModal: React.FC<{
             await form.validateFields();
             setWaitingForApiResponse(true);
             await form.submit();
+            setIsSaveButtonDisabled(true);
         } catch (error) {
             message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
         }
@@ -224,14 +226,19 @@ const TeamModal: React.FC<{
 
     const handleCheckboxChange = (e: { target: { checked: boolean | ((prevState: boolean) => boolean); }; }) => {
         setIsMain(e.target.checked);
+        handleInputChange();
     };
 
+	  const handleInputChange = () => {
+	  	setIsSaveButtonDisabled(false);
+  	}
     const checkFile = (file: UploadFile) => checkImageFileType(file.type);
 
     const handleFileChange = (param: UploadChangeParam<UploadFile<unknown>>) => {
         if (checkFile(param.file)) {
             setFileList(param.fileList);
         }
+        handleInputChange();
     };
 
     return (
@@ -256,7 +263,7 @@ const TeamModal: React.FC<{
                         <h2>
                             {teamMember ? 'Редагувати' : 'Додати'}
                             {' '}
-нового члена команди
+                            нового члена команди
                         </h2>
                     </div>
                     <div className="checkbox-container">
@@ -272,28 +279,28 @@ const TeamModal: React.FC<{
                         label="Прізвище та ім'я: "
                         rules={[{ required: true, message: "Введіть прізвище та ім'я" }]}
                     >
-                        <Input maxLength={41} showCount />
+                        <Input maxLength={41} showCount onChange={handleInputChange} />
                     </Form.Item>
 
                     <Form.Item label="Позиції">
                         <div className="tags-block-positionitems">
-
                             <Select
+                                aria-label='Позиції'
                                 className="positions-select-input"
                                 onSelect={onPositionSelect}
                                 mode="tags"
                                 onDeselect={onPositionDeselect}
                                 value={selectedPositions.map((x) => x.position)}
-                            >
-                                {positions.map((t) => <Option key={`${t.id}`} value={t.position} />)}
-                            </Select>
+                                onChange={handleInputChange}
+                                options={positions.map((t) => ({ value: t.position, label: t.position }))}
+                            />
                         </div>
                     </Form.Item>
                     <Form.Item
                         name="description"
                         label="Опис: "
                     >
-                        <TextArea showCount maxLength={70} />
+                        <Input.TextArea showCount maxLength={70} onChange={handleInputChange} />
                     </Form.Item>
 
                     <Form.Item
@@ -350,8 +357,12 @@ const TeamModal: React.FC<{
                             <TeamLink link={link} />
                             <p>{link.targetUrl}</p>
                             <DeleteOutlined
-                                onClick={() => setTeamSourceLinks(teamSourceLinks
-                                    .filter((l) => l.id !== link.id))}
+                                onClick={() => {
+                                    setTeamSourceLinks(teamSourceLinks
+                                        .filter((l) => l.id !== link.id))
+                                    handleInputChange();
+                                }
+                                }
                             />
                         </div>
                     ))}
@@ -364,6 +375,7 @@ const TeamModal: React.FC<{
                         style={{ minWidth: '135px' }}
                     >
                         <Select
+                            aria-label='Соціальна мережа'
                             data-testid="logotype-select"
                             options={SOCIAL_OPTIONS}
                             onChange={() => teamLinksForm.validateFields(['url'])}
@@ -397,7 +409,7 @@ const TeamModal: React.FC<{
                     >
                         <Popover content="Додати" trigger="hover">
                             <Button htmlType="submit" className="plus-button" data-testid="add-button">
-                                <PlusOutlined />
+                                <PlusOutlined onClick={handleInputChange} />
                             </Button>
                         </Popover>
                     </Form.Item>
@@ -405,9 +417,9 @@ const TeamModal: React.FC<{
 
                 <div className="center">
                     <Button
+                        disabled={isSaveButtonDisabled || fileList.length === 0} 
                         className="streetcode-custom-button"
                         onClick={handleOk}
-                        disabled={fileList.length === 0}
                     >
                         Зберегти
                     </Button>
