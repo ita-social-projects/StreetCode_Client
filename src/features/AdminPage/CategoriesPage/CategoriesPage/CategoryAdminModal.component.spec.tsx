@@ -142,11 +142,11 @@ describe('CategoryAdminModal', () => {
         });
 
         await waitFor(() => {
+            expect(saveButton).toBeDisabled();
             expect(message.success).toHaveBeenCalled();
             expect(SourcesApi.create).toHaveBeenCalled();
             expect(isNewCategory).toHaveBeenCalledWith(true);
             expect(SourcesApi.update).not.toHaveBeenCalled();
-            expect(saveButton).toBeDisabled();
         });
     });
 
@@ -178,10 +178,10 @@ describe('CategoryAdminModal', () => {
         });
 
         await waitFor(() => {
-            expect(saveButton).toBeDisabled();
             expect(message.success).toHaveBeenCalled();
             expect(SourcesApi.update).toHaveBeenCalled();
             expect(SourcesApi.create).not.toHaveBeenCalled();
+            expect(saveButton).toBeDisabled();
         });
     });
 
