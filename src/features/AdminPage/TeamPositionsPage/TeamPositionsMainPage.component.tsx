@@ -4,13 +4,14 @@ import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import useMobx, { useModalContext } from '@stores/root-store';
+import { useQuery } from '@tanstack/react-query';
 
-import { Button, Pagination } from 'antd';
+import { Button, Empty, Pagination } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 
-import TeamPositionsAdminModal from './TeamPositionsModal/TeamPositionsAdminModal.component';
 import Position from '@/models/additional-content/teampositions.model';
-import { useQuery } from '@tanstack/react-query';
+
+import TeamPositionsAdminModal from './TeamPositionsModal/TeamPositionsAdminModal.component';
 
 const TeamPositionsMainPage: React.FC = observer(() => {
     const { modalStore } = useModalContext();
@@ -19,13 +20,13 @@ const TeamPositionsMainPage: React.FC = observer(() => {
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
     const [positionToEdit, setPositionToEdit] = useState<Position>();
 
-    useQuery({
+    const { isLoading } = useQuery({
         queryKey: ['positions', teamPositionsStore.PaginationInfo.CurrentPage],
         queryFn: () => { teamPositionsStore.fetchPositions() },
     });
 
     const updatedPositions = () => {
-        const data = teamPositionsStore.fetchPositions();
+        teamPositionsStore.fetchPositions();
     };
 
     useEffect(() => {
@@ -102,8 +103,17 @@ const TeamPositionsMainPage: React.FC = observer(() => {
                     pagination={false}
                     className="positions-table"
                     columns={columns}
-                    dataSource={teamPositionsStore.getPositionsArray}
+                    dataSource={teamPositionsStore.getPositionsArray || []}
                     rowKey="id"
+                    locale={{
+                        emptyText: isLoading ? (
+                            <div className="loadingWrapper">
+                                <div id="loadingGif" />
+                            </div>
+                        ) : (
+                            <Empty description="Дані відсутні" />
+                        ),
+                    }}
                 />
                 <div className="underTableZone">
                     <br />

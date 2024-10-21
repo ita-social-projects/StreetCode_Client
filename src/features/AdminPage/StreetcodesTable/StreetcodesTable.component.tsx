@@ -10,7 +10,7 @@ import { format } from 'date-fns';
 import { uk } from 'date-fns/locale';
 
 import {
-    Button, Dropdown, MenuProps, Pagination, Space,
+    Button, Dropdown, Empty, MenuProps, Pagination, Space
 } from 'antd';
 import Table from 'antd/es/table/Table';
 
@@ -42,6 +42,7 @@ const StreetcodesTable = () => {
     const [currentStreetcodeOption, setCurrentStreetcodeOption] = useState(0);
     const [isConfirmationModalVisible, setIsConfirmationModalVisible] = useState(false);
     const [deleteStreetcode, deleteFormDB] = useState<number>(0);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const amountRequest = 10;
 
     const requestDefault: GetAllStreetcodesRequest = {
@@ -269,6 +270,7 @@ const StreetcodesTable = () => {
     }
 
     const fetchPaginatedData = async () => {
+        setIsLoading(true);
         requestGetAll.Page = pageRequest;
         requestGetAll.Amount = amountRequest;
         const getAllStreetcodesResponse = await StreetcodesApi.getAll(requestGetAll);
@@ -300,6 +302,7 @@ const StreetcodesTable = () => {
 
         setMapedStreetCodes(mapedStreetCodesBuffer);
         setTotalItems(response[0].totalAmount);
+        setIsLoading(false);
     };
 
     useEffect(() => {
@@ -312,8 +315,17 @@ const StreetcodesTable = () => {
             <div>
                 <Table
                     columns={columnsNames}
-                    dataSource={mapedStreetCodes}
+                    dataSource={isLoading ? [] : mapedStreetCodes}
                     pagination={false}
+                    locale={{
+                        emptyText: isLoading ? (
+                            <div className="loadingWrapper">
+                                <div id="loadingGif" />
+                            </div>
+                        ) : (
+                            <Empty description="Дані відсутні" />
+                        ),
+                    }}
                 />
             </div>
             <div>
