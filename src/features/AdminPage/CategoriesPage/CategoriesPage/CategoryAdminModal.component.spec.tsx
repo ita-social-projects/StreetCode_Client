@@ -178,10 +178,10 @@ describe('CategoryAdminModal', () => {
         });
 
         await waitFor(() => {
-            expect(saveButton).toBeDisabled();
             expect(message.success).toHaveBeenCalled();
             expect(SourcesApi.update).toHaveBeenCalled();
             expect(SourcesApi.create).not.toHaveBeenCalled();
+            expect(saveButton).toBeDisabled();
         });
     });
 
