@@ -1,12 +1,13 @@
-import './CategoriesPage.style.scss'
+import './CategoriesPage.style.scss';
 
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import ImageStore from '@stores/image-store';
 import useMobx, { useModalContext } from '@stores/root-store';
+import { useQuery } from '@tanstack/react-query';
 
-import { Button, Pagination } from 'antd';
+import { Button, Empty, Pagination } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
@@ -14,7 +15,6 @@ import Image from '@/models/media/image.model';
 import { SourceCategoryAdmin } from '@/models/sources/sources.model';
 
 import CategoryAdminModal from './CategoriesPage/CategoryAdminModal.component';
-import { useQuery } from '@tanstack/react-query';
 
 const CategoriesMainPage: React.FC = observer(() => {
     const { modalStore } = useModalContext();
@@ -22,6 +22,7 @@ const CategoriesMainPage: React.FC = observer(() => {
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
     const [categoryToEdit, setSourcesToEdit] = useState<SourceCategoryAdmin>();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     useQuery({
         queryKey: ['categories', sourcesStore.PaginationInfo.CurrentPage],
@@ -29,6 +30,7 @@ const CategoriesMainPage: React.FC = observer(() => {
     });
 
     const updatedCategories = () => {
+        setIsLoading(true);
         Promise.all([
             sourcesStore.fetchSrcCategoriesAll(),
         ]).then(() => {
@@ -42,7 +44,10 @@ const CategoriesMainPage: React.FC = observer(() => {
                     });
                 }
             });
-        }).then(() => sourcesStore.setInternalCategoriesMap(sourcesStore.getSrcCategoriesArray));
+        }).then(() => {
+            sourcesStore.setInternalCategoriesMap(sourcesStore.getSrcCategoriesArray);
+            setIsLoading(false);
+        });
     };
 
     useEffect(() => {
@@ -135,8 +140,17 @@ const CategoriesMainPage: React.FC = observer(() => {
                     pagination={false}
                     className="categories-table"
                     columns={columns}
-                    dataSource={sourcesStore?.getSrcCategoriesArray}
+                    dataSource={isLoading ? [] : sourcesStore?.getSrcCategoriesArray}
                     rowKey="id"
+                    locale={{
+                        emptyText: isLoading ? (
+                            <div className="loadingWrapper">
+                                <div id="loadingGif" />
+                            </div>
+                        ) : (
+                            <Empty description="Дані відсутні" />
+                        ),
+                    }}
                 />
                 <div className="underTableZone">
                     <br />

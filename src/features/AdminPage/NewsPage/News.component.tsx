@@ -11,7 +11,7 @@ import useMobx, { useModalContext } from '@stores/root-store';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 
-import { Button, Pagination } from 'antd';
+import { Button, Empty, Pagination } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
@@ -26,7 +26,7 @@ const Newss: React.FC = observer(() => {
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
     const [newsToEdit, setNewsToEdit] = useState<News>();
 
-    useQuery({
+    const { isLoading } = useQuery({
         queryKey: ['news', newsStore.CurrentPage],
         queryFn: () => {newsStore.getAll()},
     });
@@ -130,8 +130,17 @@ const Newss: React.FC = observer(() => {
                     pagination={false}
                     className="partners-table"
                     columns={columns}
-                    dataSource={newsStore.NewsArray}
+                    dataSource={newsStore.NewsArray || []}
                     rowKey="id"
+                    locale={{
+                        emptyText: isLoading ? (
+                            <div className="loadingWrapper">
+                                <div id="loadingGif" />
+                            </div>
+                        ) : (
+                            <Empty description="Дані відсутні" />
+                        ),
+                    }}
                 />
                 <div className="underTableZone">
                     <br />

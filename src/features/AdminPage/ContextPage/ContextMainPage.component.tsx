@@ -1,16 +1,16 @@
+import './ContextMainPage.style.scss';
+
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import ContextAdminModalComponent from '@features/AdminPage/ContextPage/ContextModal/ContextAdminModal.component';
 import useMobx, { useModalContext } from '@stores/root-store';
+import { useQuery } from '@tanstack/react-query';
 
-import { Button, Pagination } from 'antd';
+import { Button, Empty, Pagination } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 
-import ContextAdminModalComponent from '@features/AdminPage/ContextPage/ContextModal/ContextAdminModal.component';
 import Context from '@/models/additional-content/context.model';
-
-import './ContextMainPage.style.scss';
-import { useQuery } from '@tanstack/react-query';
 
 const ContextMainPage: React.FC = observer(() => {
     const { modalStore } = useModalContext();
@@ -18,6 +18,7 @@ const ContextMainPage: React.FC = observer(() => {
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
     const [contextToEdit, setContextToEdit] = useState<Context>();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     useQuery({
         queryKey: ['contexts', contextStore.PaginationInfo.CurrentPage],
@@ -25,7 +26,9 @@ const ContextMainPage: React.FC = observer(() => {
     });
 
     const updatedContexts = () => {
+        setIsLoading(true);
         contextStore.fetchContexts();
+        setIsLoading(false);
     };
 
     useEffect(() => {
@@ -99,8 +102,17 @@ const ContextMainPage: React.FC = observer(() => {
                     pagination={false}
                     className="partners-table"
                     columns={columns}
-                    dataSource={contextStore.getContextArray}
+                    dataSource={isLoading ? [] : contextStore.getContextArray}
                     rowKey="id"
+                    locale={{
+                        emptyText: isLoading ? (
+                            <div className="loadingWrapper">
+                                <div id="loadingGif" />
+                            </div>
+                        ) : (
+                            <Empty description="Дані відсутні" />
+                        ),
+                    }}
                 />
                 <div className="underTableZone">
                     <br />

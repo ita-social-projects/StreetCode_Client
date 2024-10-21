@@ -9,9 +9,11 @@ import twitter from '@assets/images/partners/twitterNew.svg';
 import youtube from '@assets/images/partners/youtube.svg';
 import useMobx, { useModalContext } from '@stores/root-store';
 
-import { Button, Pagination } from 'antd';
+import { Button, Empty, Pagination } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 
+import ImageStore from '@stores/image-store';
+import { runInAction } from 'mobx';
 import PartnersApi from '@/app/api/partners/partners.api';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Image from '@/models/media/image.model';
@@ -26,11 +28,35 @@ const LogoType = [twitter, instagram, facebook, youtube];
 
 const Partners: React.FC = observer(() => {
     const { partnersStore } = useMobx();
-
     const { modalStore } = useModalContext();
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
     const [partnerToEdit, setPartnerToedit] = useState<Partner>();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+
+    const updatedPartners = () => {
+        setIsLoading(true);
+        Promise.all([
+            partnersStore?.getAll(),
+        ]).then(() => {
+            partnersStore?.PartnerMap.forEach((val, key) => {
+                ImageStore.getImageById(val.logoId).then((logo) => {
+                    runInAction(() => {
+                        partnersStore.PartnerMap.set(
+                            val.id,
+                            { ...val, logo },
+                        );
+                    });
+                });
+            });
+        }).then(() => {
+            partnersStore.setInternalMap(partnersStore.getPartnerArray);
+            setIsLoading(false);
+        });
+    };
+    useEffect(() => {
+        updatedPartners();
+    }, [modalAddOpened, modalEditOpened]);
 
     useQuery({
         queryKey: ['partners', partnersStore.PaginationInfo.CurrentPage],
@@ -161,10 +187,18 @@ const Partners: React.FC = observer(() => {
                         pagination={false}
                         className="partners-table"
                         columns={columns}
-                        dataSource={partnersStore?.getPartnerArray}
-                        rowKey="id"
-                    />
-                </div>
+                        dataSource={isLoading ? [] : partnersStore?.getPartnerArray}
+                    rowKey="id"
+                    locale={{
+                        emptyText: isLoading ? (
+                            <div className="loadingWrapper">
+                                <div id="loadingGif" />
+                            </div>
+                        ) : (
+                            <Empty description="Дані відсутні" />
+                        ),
+                    }}
+                /></div>
                 <div>
                     <div className="underTableZone">
                         <div className="underTableElement">

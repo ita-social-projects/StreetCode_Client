@@ -3,9 +3,9 @@ import './TeamPage.styles.scss';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import { DeleteOutlined, EditOutlined, StarOutlined } from '@ant-design/icons';
+import { useQuery } from '@tanstack/react-query';
 
-
-import { Button, Pagination, Table } from 'antd';
+import { Button, Empty, Pagination,Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 
 import Image from '@/models/media/image.model';
@@ -16,9 +16,8 @@ import useMobx, { useModalContext } from '../../../app/stores/root-store';
 import TeamMember, { TeamMemberLink } from '../../../models/team/team.model';
 import PageBar from '../PageBar/PageBar.component';
 
-import TeamModal from './TeamModal/TeamModal.component';
-import { useQuery } from '@tanstack/react-query';
 import LOGO_ICONS from './TeamModal/constants/logoIcons';
+import TeamModal from './TeamModal/TeamModal.component';
 
 const TeamPage = () => {
     const { teamStore } = useMobx();
@@ -27,7 +26,7 @@ const TeamPage = () => {
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
     const [teamToEdit, setTeamToedit] = useState<TeamMember>();
 
-    useQuery({
+    const { isLoading } = useQuery({
         queryKey: ['team', teamStore.PaginationInfo.CurrentPage],
         queryFn: () => { teamStore.getAll() },
     });
@@ -114,7 +113,7 @@ const TeamPage = () => {
             render: (links: TeamMemberLink[], team) => (
                 <div key={`${links.length}${team.id}${team.imageId}`} className="team-links">
                     {links.map((link) => {
-                        const LogoComponent = LOGO_ICONS.find( logo => logo.type === link.logoType)!.icon;
+                        const LogoComponent = LOGO_ICONS.find((logo) => logo.type === link.logoType)!.icon;
                         return (
                             <a
                                 key={`${link.id}${link.targetUrl}`}
@@ -184,8 +183,17 @@ const TeamPage = () => {
                     pagination={false}
                     className="team-table"
                     columns={columns}
-                    dataSource={teamStore?.getTeamArray}
+                    dataSource={teamStore?.getTeamArray || []}
                     rowKey="id"
+                    locale={{
+                        emptyText: isLoading ? (
+                            <div className="loadingWrapper">
+                                <div id="loadingGif" />
+                            </div>
+                        ) : (
+                            <Empty description="Дані відсутні" />
+                        ),
+                    }}
                 />
                 <div className="underTableZone">
                     <br />
