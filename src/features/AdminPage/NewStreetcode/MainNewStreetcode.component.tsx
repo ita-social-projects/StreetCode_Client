@@ -677,6 +677,7 @@ const NewStreetcode = () => {
                             <TextBlock
                                 parseId={parseId}
                                 inputInfo={inputInfo}
+                                form={form}
                                 setInputInfo={setInputInfo}
                                 video={video}
                                 setVideo={setVideo}
