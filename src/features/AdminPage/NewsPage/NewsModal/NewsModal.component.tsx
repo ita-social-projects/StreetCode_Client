@@ -64,7 +64,7 @@ const NewsModal: React.FC<{
     const [waitingForApiResponse, setWaitingForApiResponse] = useState(false);
     const [editorCharacterCount, setEditorCharacterCount] = useState<number>(0);
     const [removedImage, setRemovedImage] = useState<Image | undefined>(undefined);
-	const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
+    const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
 
     message.config({
         top: 100,
@@ -93,6 +93,15 @@ const NewsModal: React.FC<{
         }
         return newsList.every((news: News) => news.url !== url);
     };
+
+    const checkUniqueTitle = async (title: string): Promise<boolean> => {
+        const newsList = newsStore.NewsArray;
+        if(newsItem) {
+            const filteredNewsList = newsList.filter((news: News) => news.id !== newsItem?.id);
+            return filteredNewsList.every((news: News) => news.title !== title);
+        }
+        return newsList.every((news: News) => news.title !== title);
+    }
 
     useEffect(() => {
         editorRef.current?.editor?.setText('');
@@ -155,7 +164,7 @@ const NewsModal: React.FC<{
     const closeModal = () => {
         if (!waitingForApiResponse) {
             setIsModalOpen(false);
-			setIsSaveButtonDisabled(true);
+            setIsSaveButtonDisabled(true);
             if (removedImage) {
                 imageId.current = removedImage.id;
                 image.current = removedImage;
@@ -178,7 +187,7 @@ const NewsModal: React.FC<{
             checkQuillEditorTextLength(editorCharacterCount, sizeLimit);
             setWaitingForApiResponse(true);
             form.submit();
-			setIsSaveButtonDisabled(true);
+            setIsSaveButtonDisabled(true);
         } catch {
             message.error(fillInAllFieldsMessage);
         }
@@ -196,6 +205,7 @@ const NewsModal: React.FC<{
             image: undefined,
             creationDate: dayjs(formValues.creationDate),
         };
+        console.log(newsItem);
         newsStore.NewsArray.map((t) => t).forEach((t) => {
             if (formValues.title == t.title || imageId.current == t.imageId) newsItem = t;
         });
@@ -267,7 +277,18 @@ const NewsModal: React.FC<{
                         <Form.Item
                             name="title"
                             label="Заголовок: "
-                            rules={[{ required: true, message: 'Введіть заголовок' }]}
+                            rules={[
+                                { required: true, message: 'Введіть заголовок' },
+                                {
+                                    validator: async (_, value) => {
+                                        const isUnique = await checkUniqueTitle(value);
+                                        if (isUnique) {
+                                            return Promise.resolve();
+                                        }
+                                        return Promise.reject(new Error('Заголовок вже існує'));
+                                    }
+                                }                          
+                            ]}
                         >
                             <Input maxLength={100} showCount onChange={handleInputChange} />
                         </Form.Item>
@@ -289,7 +310,7 @@ const NewsModal: React.FC<{
                                         if (await isUnique) {
                                             return Promise.resolve();
                                         }
-                                        return Promise.reject(new Error('Посилання вже існує'));
+                                        return Promise.reject(new Error('Транслітерація вже існує'));
                                     },
 
                                 },
@@ -389,7 +410,7 @@ const NewsModal: React.FC<{
                                         ]
                                         : []
                                 }
-								                onChange={handleInputChange}
+                                                onChange={handleInputChange}
 
                             >
                                 <p>Виберіть чи перетягніть файл</p>
@@ -413,7 +434,7 @@ const NewsModal: React.FC<{
                             <Button
                                 className="streetcode-custom-button"
                                 onClick={() => handleOk()}
-								                disabled={isSaveButtonDisabled}
+                                                disabled={isSaveButtonDisabled}
                             >
                                 Зберегти
                             </Button>
