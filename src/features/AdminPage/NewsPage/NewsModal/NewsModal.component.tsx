@@ -39,6 +39,7 @@ import Audio from '@/models/media/audio.model';
 import Image from '@/models/media/image.model';
 import News from '@/models/news/news.model';
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
+import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
 
 const NewsModal: React.FC<{
     newsItem?: News;
@@ -94,14 +95,12 @@ const NewsModal: React.FC<{
         return newsList.every((news: News) => news.url !== url);
     };
 
-    const checkUniqueTitle = async (title: string): Promise<boolean> => {
-        const newsList = newsStore.NewsArray;
-        if(newsItem) {
-            const filteredNewsList = newsList.filter((news: News) => news.id !== newsItem?.id);
-            return filteredNewsList.every((news: News) => news.title !== title);
-        }
-        return newsList.every((news: News) => news.title !== title);
-    }
+    const validateTitle = uniquenessValidator(
+        () => newsStore.NewsArray.map((news: News) => news.title.trim()),
+        () => newsItem?.title?.trim(),
+        'Заголовок вже існує',
+    );
+    
 
     useEffect(() => {
         editorRef.current?.editor?.setText('');
@@ -205,7 +204,6 @@ const NewsModal: React.FC<{
             image: undefined,
             creationDate: dayjs(formValues.creationDate),
         };
-        console.log(newsItem);
         newsStore.NewsArray.map((t) => t).forEach((t) => {
             if (formValues.title == t.title || imageId.current == t.imageId) newsItem = t;
         });
@@ -280,14 +278,8 @@ const NewsModal: React.FC<{
                             rules={[
                                 { required: true, message: 'Введіть заголовок' },
                                 {
-                                    validator: async (_, value) => {
-                                        const isUnique = await checkUniqueTitle(value);
-                                        if (isUnique) {
-                                            return Promise.resolve();
-                                        }
-                                        return Promise.reject(new Error('Заголовок вже існує'));
-                                    }
-                                }                          
+                                    validator: validateTitle,
+                                }                       
                             ]}
                         >
                             <Input maxLength={100} showCount onChange={handleInputChange} />
