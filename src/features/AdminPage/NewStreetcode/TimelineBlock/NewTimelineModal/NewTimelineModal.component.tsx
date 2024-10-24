@@ -22,6 +22,7 @@ import TimelineItem, {
     HistoricalContext, HistoricalContextUpdate, selectDateOptionsforTimeline,
 } from '@/models/timeline/chronology.model';
 import POPOVER_CONTENT from '@/features/AdminPage/JobsPage/JobsModal/constants/popoverContent';
+import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
 
 interface NewTimelineModalProps {
     timelineItem?: TimelineItem;
@@ -116,12 +117,13 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
         }
     };
 
+    const validateTimelineItem = uniquenessValidator(
+        () => (timelineItemStore.getTimelineItemArray.map((item) => item.title)),
+        () => (timelineItem?.title),
+        'Хронологія з такою назвою вже існує',
+    );
+
     const onSuccesfulSubmit = (formValues: any) => {
-        timelineItemStore.getTimelineItemArray.map((t) => t).forEach((t) => {
-            if (formValues.title == t.title || formValues.description == t.description) {
-                timelineItem = t;
-            }
-        });
         if (timelineItem) {
             const item = timelineItemStore.timelineItemMap.get(timelineItem.id);
             if (item) {
@@ -144,6 +146,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
         }
 
         onChange('timeline', formValues);
+        clearModal();
     };
 
     const onContextSelect = useCallback((value: string) => {
@@ -204,7 +207,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
             await form.validateFields();
             form.submit();
             message.success('Хронологію успішно додано!', 2);
-						setIsSaveButtonDisabled(true);
+            setIsSaveButtonDisabled(true);
         } catch (error) {
             message.config({
                 top: 100,
@@ -216,9 +219,9 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
         }
     };
 
-		const handleInputChange = () => {
-		setIsSaveButtonDisabled(false);
-	}
+    const handleInputChange = () => {
+        setIsSaveButtonDisabled(false);
+    }
 
     return (
         <Modal
@@ -227,7 +230,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
             onCancel={() => {
                 setIsModalOpen(false);
                 setDateTimePickerType('date');
-								setIsSaveButtonDisabled(true);
+                setIsSaveButtonDisabled(true);
             }}
             footer={null}
             maskClosable
@@ -251,7 +254,10 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                     <Form.Item
                         name="title"
                         label="Назва: "
-                        rules={[{ required: true, message: 'Введіть назву', max: MAX_LENGTH.title }]}
+                        rules={[
+                            { required: true, message: 'Введіть назву', max: MAX_LENGTH.title },
+                            { validator: validateTimelineItem },
+                        ]}
                     >
                         <Input
                             maxLength={MAX_LENGTH.title}

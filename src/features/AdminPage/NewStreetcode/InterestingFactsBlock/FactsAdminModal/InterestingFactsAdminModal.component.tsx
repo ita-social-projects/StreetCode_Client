@@ -26,6 +26,7 @@ import { FactCreate, FactUpdate } from '@/models/streetcode/text-contents.model'
 import PreviewFileModal from '../../MainBlock/PreviewFileModal/PreviewFileModal.component';
 import { UploadChangeParam } from 'antd/es/upload';
 import POPOVER_CONTENT from '@/features/AdminPage/JobsPage/JobsModal/constants/popoverContent';
+import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
 
 interface Props {
     fact?: FactCreate,
@@ -61,6 +62,12 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
         setModalOpen(false);
         setFileList([]);
     };
+
+    const validateFact = uniquenessValidator(
+        () => (factsStore.getFactArray.map( (fact) => fact.title)),
+        () => (fact?.title),
+        'Факт з такою назвою вже існує',
+    );
 
     useEffect(() => {
         if (fact && open) {
@@ -110,17 +117,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
         return fact;
     };
 
-    const setFactUpdateIfItExist = (formValues: any) => {
-        factsStore.getFactArray.map((t) => t).forEach((t) => {
-            if (formValues.title === t.title
-                || formValues.factContent === t.factContent
-                || imageId.current === t.imageId) fact = t;
-        });
-    }
-
     const onSuccesfulSubmit = (formValues: any) => {
-        setFactUpdateIfItExist(formValues);
-
         if (fact) {
             let item = factsStore.factMap.get(fact.id) as FactUpdate;
 
@@ -143,6 +140,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
 
         setHasUploadedPhoto(false);
         onChange('fact', formValues);
+        clearModal();
     };
 
     const handleOk = async () => {
@@ -185,6 +183,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                             name="title"
                             label="Заголовок: "
                             rules={[{ required: true, message: 'Введіть заголовок, будь ласка' },
+                                { validator: validateFact}
                             ]}
                         >
                             <Input maxLength={68} showCount onChange={(e) => onChange('title', e.target.value)} />
