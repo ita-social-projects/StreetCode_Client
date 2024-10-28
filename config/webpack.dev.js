@@ -38,7 +38,8 @@ module.exports = {
     new Dotenv({
       path: `./.env`,
     }),
-    new GenerateSW({
+    // Caching with Service Worker interferes developing process and leads to unpredictable result 
+    /*new GenerateSW({
       skipWaiting: true,
       clientsClaim: true,
       maximumFileSizeToCacheInBytes: 10 * 1024 * 1024,
@@ -78,7 +79,7 @@ module.exports = {
           },
         },
         {
-          urlPattern: /^https?.*/,
+          urlPattern: /^https?.,
           handler: 'NetworkFirst',
           options: {
             cacheName: 'external-resources',
@@ -88,7 +89,7 @@ module.exports = {
           },
         },
       ],
-    }),
+    }),*/
   ],
   optimization: {
     splitChunks: {
