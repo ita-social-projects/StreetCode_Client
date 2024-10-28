@@ -62,7 +62,7 @@
 
 @media screen and (max-width: 1024px) {
   .timelineItem{
-    @include mut.sized(299px, 190px);
+    @include mut.sized(299px, 208px);
     border-radius: 15px;
     .timelineItemContent{
       padding: f.pxToRem(13px);
