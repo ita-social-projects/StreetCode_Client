@@ -1,17 +1,18 @@
+import './JobsTable.styles.scss';
+
+import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import { DeleteOutlined, DownOutlined, EditOutlined } from '@ant-design/icons';
+import { useQuery } from '@tanstack/react-query';
 
 import {
-    Button, Dropdown, MenuProps, Pagination, Space, Table,
+    Button, Dropdown, Empty, MenuProps, Pagination, Space, Table,
 } from 'antd';
 
 import JobApi from '@/app/api/job/Job.api';
 import useMobx, { useModalContext } from '@/app/stores/root-store';
 
 import JobsModalComponent from '../JobsModal/JobsModal.component';
-import './JobsTable.styles.scss'
-import { useQuery } from '@tanstack/react-query';
-import { observer } from 'mobx-react-lite';
 
 const JobsTable = observer(() => {
     const { jobsStore } = useMobx();
@@ -20,7 +21,7 @@ const JobsTable = observer(() => {
     const { modalStore } = useModalContext();
     const [open, setOpen] = useState(false);
 
-    useQuery({
+    const { isLoading } = useQuery({
         queryKey: ['jobs', jobsStore.PaginationInfo.CurrentPage],
         queryFn: () => { jobsStore.getAll() },
     });
@@ -164,9 +165,18 @@ const JobsTable = observer(() => {
             <Table
                 pagination={false}
                 columns={columnsNames}
-                dataSource={jobsStore.getJobsArray}
+                dataSource={jobsStore.getJobsArray || []}
                 className="job-table"
                 rowKey="id"
+                locale={{
+                    emptyText: isLoading ? (
+                        <div className="loadingWrapper">
+                            <div id="loadingGif" />
+                        </div>
+                    ) : (
+                        <Empty description="Дані відсутні" />
+                    ),
+                }}
             />
             <div className="underTableZone">
                 <br />
