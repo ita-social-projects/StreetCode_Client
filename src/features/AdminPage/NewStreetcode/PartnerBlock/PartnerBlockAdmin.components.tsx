@@ -4,6 +4,7 @@ import PartnersStore from '@stores/partners-store';
 
 import { Button, Select } from 'antd';
 
+import SelectWithCustomSuffix from '@/app/common/components/SelectWithCustomSuffix';
 import PartnerModal from '@/features/AdminPage/PartnersPage/PartnerModal/PartnerModal.component';
 import Partner, { PartnerCreateUpdateShort, PartnerShort } from '@/models/partners/partners.model';
 
@@ -37,6 +38,17 @@ const PartnerBlockAdmin = ({ partners, setPartners, onChange }: Props) => {
         if (!existingPartner) {
             setAllPartners([...allPartners, partner]);
         }
+    };
+
+    const filterOptions = (searchedValue: string, optionId: number | undefined) => {
+        if (optionId === undefined) {
+            return false;
+        }
+        const partner = partners.find((p) => p.id === optionId);
+        if (partner === undefined) {
+            return false;
+        }
+        return partner?.title.toLowerCase().indexOf(searchedValue.toLowerCase()) !== -1;
     };
 
     const onPartnerSelect = (value: number) => {
@@ -75,11 +87,12 @@ const PartnerBlockAdmin = ({ partners, setPartners, onChange }: Props) => {
         <div className="adminContainer-block">
             <h2>Партнери</h2>
             <div className="display-flex-row">
-                <Select
+                <SelectWithCustomSuffix
                     mode="multiple"
                     onSelect={onPartnerSelect}
                     value={partners.filter((x) => (x as PartnerCreateUpdateShort).modelState !== ModelState.Deleted)
                         .map((x) => x.id)}
+                    filterOption={(input, option) => option?.children?.toLowerCase().indexOf(input.toLowerCase()) !== -1}
                     onDeselect={onPartnerDeselect}
                 >
                     {sortedPartners.map((s) => (
@@ -91,7 +104,7 @@ const PartnerBlockAdmin = ({ partners, setPartners, onChange }: Props) => {
                             {s.title}
                         </Select.Option>
                     ))}
-                </Select>
+                </SelectWithCustomSuffix>
 
                 <Button
                     className="streetcode-custom-button button-margin-left"

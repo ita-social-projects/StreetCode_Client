@@ -23,6 +23,7 @@ import DragableTags from './DragableTags/DragableTags.component';
 import PopoverForTagContent from './PopoverForTagContent/PopoverForTagContent.component';
 import DatePickerPart from './DatePickerPart.component';
 import FileInputsPart from './FileInputsPart.component';
+import SelectWithCustomSuffix from '@/app/common/components/SelectWithCustomSuffix';
 
 interface TagPreviewProps {
     width: number;
@@ -330,7 +331,7 @@ const MainBlockAdmin = React.memo(({
                     >
                         <div className="tags-block-tagitems">
                             <DragableTags setTags={setSelectedTags} tags={selectedTags} />
-                            <Select
+                            <SelectWithCustomSuffix
                                 className="tags-select-input"
                                 mode="tags"
                                 onSelect={(selectedValue, option) => {
@@ -348,7 +349,7 @@ const MainBlockAdmin = React.memo(({
                                     .localeCompare((optionB?.value ?? '').toString().toLowerCase())}
                             >
                                 {tags.map((t) => <Select.Option key={`${t.id}`} value={t.title}>{t.title}</Select.Option>)}
-                            </Select>
+                            </SelectWithCustomSuffix>
                         </div>
                     </Form.Item>
                     {tagInput && (
