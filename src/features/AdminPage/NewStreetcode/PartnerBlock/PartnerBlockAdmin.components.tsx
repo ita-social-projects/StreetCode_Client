@@ -40,17 +40,6 @@ const PartnerBlockAdmin = ({ partners, setPartners, onChange }: Props) => {
         }
     };
 
-    const filterOptions = (searchedValue: string, optionId: number | undefined) => {
-        if (optionId === undefined) {
-            return false;
-        }
-        const partner = partners.find((p) => p.id === optionId);
-        if (partner === undefined) {
-            return false;
-        }
-        return partner?.title.toLowerCase().indexOf(searchedValue.toLowerCase()) !== -1;
-    };
-
     const onPartnerSelect = (value: number) => {
         const existingPartner = partners.find((p) => p.id === value);
         const updatedPartners = partners.filter((p) => p.id !== value);
@@ -89,6 +78,7 @@ const PartnerBlockAdmin = ({ partners, setPartners, onChange }: Props) => {
             <div className="display-flex-row">
                 <SelectWithCustomSuffix
                     mode="multiple"
+                    placeholder="Введіть назву партнера"
                     onSelect={onPartnerSelect}
                     value={partners.filter((x) => (x as PartnerCreateUpdateShort).modelState !== ModelState.Deleted)
                         .map((x) => x.id)}

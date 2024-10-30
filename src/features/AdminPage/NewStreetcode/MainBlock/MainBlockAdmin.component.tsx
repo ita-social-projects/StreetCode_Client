@@ -334,6 +334,7 @@ const MainBlockAdmin = React.memo(({
                             <SelectWithCustomSuffix
                                 className="tags-select-input"
                                 mode="tags"
+                                placeholder="Введіть тег"
                                 onSelect={(selectedValue, option) => {
                                     handleInputChange(option.key, selectedValue);
                                     onSelectTag(selectedValue);
