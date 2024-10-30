@@ -4,7 +4,6 @@ import '@features/AdminPage/AdminModal.styles.scss';
 
 import CancelBtn from '@images/utils/Cancel_btn.svg';
 
-import { runInAction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
@@ -18,11 +17,12 @@ import {
 } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
+import { UploadChangeParam } from 'antd/es/upload';
 
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
-import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
+import imageValidator, { checkImageFileType } from '@/app/common/components/modals/validators/imageValidator';
 import validateSocialLink from '@/app/common/components/modals/validators/socialLinkValidator';
-import ImageStore from '@/app/stores/image-store';
+import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import PartnerLink from '@/features/AdminPage/PartnersPage/PartnerLink.component';
 import Audio from '@/models/media/audio.model';
 import Image from '@/models/media/image.model';
@@ -34,8 +34,6 @@ import Partner, {
 import { StreetcodeShort } from '@/models/streetcode/streetcode-types.model';
 
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
-import { UploadChangeParam } from 'antd/es/upload';
-import imageValidator, { checkImageFileType } from '@/app/common/components/modals/validators/imageValidator';
 
 const PartnerModal: React.FC< {
     partnerItem?: Partner;
@@ -70,27 +68,7 @@ const PartnerModal: React.FC< {
         const imageId = useRef<number>(0);
         const [actionSuccess, setActionSuccess] = useState(false);
         const [waitingForApiResponse, setWaitingForApiResponse] = useState(false);
-		    const [isSaved, setIsSaved] = useState(true);
-
-        const updatedPartners = () => {
-            Promise.all([
-                partnersStore?.getAll(),
-            ]).then(() => {
-                partnersStore?.PartnerMap.forEach((val, key) => {
-                    ImageStore.getImageById(val.logoId).then((logo) => {
-                        runInAction(() => {
-                            partnersStore.PartnerMap.set(
-                                val.id,
-                                { ...val, logo },
-                            );
-                        });
-                    });
-                });
-            }).then(() => partnersStore.setInternalMap(partnersStore.getPartnerArray));
-        };
-        useEffect(() => {
-            updatedPartners();
-        }, []);
+        const [isSaved, setIsSaved] = useState(true);
 
         message.config({
             top: 100,
