@@ -8,7 +8,6 @@ const SelectWithCustomSuffix: React.FC<SelectProps<any>> = ({ children, ...props
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleDropdown = () => {
-        console.log('Clicked');
         setIsOpen((prevState) => !prevState);
     };
     return (
