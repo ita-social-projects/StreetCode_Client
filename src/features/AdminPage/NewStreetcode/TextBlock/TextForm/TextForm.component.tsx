@@ -1,6 +1,8 @@
 import './TextForm.styles.scss';
 
-import { Form, Input } from 'antd';
+import { useEffect } from 'react';
+
+import { Form, FormInstance, Input } from 'antd';
 
 import QUILL_TEXTS_LENGTH from
     '@/features/AdminPage/NewStreetcode/TextBlock/TextLengthConstants/textMaxLength.constant';
@@ -14,9 +16,10 @@ import TextPreview from './TextPreview/TextPreview.component';
 
 const isQuillEmpty = (text: string | undefined) => {
     return !text || text.replace(/<(.|\n)*?>/g, '').trim().length === 0;
-}
+};
 
 interface Props {
+    form: FormInstance<unknown>,
     inputInfo: Partial<Text> | undefined;
     setInputInfo: React.Dispatch<React.SetStateAction<Partial<Text> | undefined>>;
     video: Video | undefined;
@@ -24,7 +27,7 @@ interface Props {
     onChange: (fieldName: string, value: any) => void;
 }
 const TextForm = ({
-    inputInfo, setInputInfo, video, setVideo, onChange,
+    form, inputInfo, setInputInfo, video, setVideo, onChange,
 }: Props) => {
     const maxTitleLength = 50;
     const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,6 +38,13 @@ const TextForm = ({
         }));
         onChange('title', value);
     };
+
+    useEffect(() => {
+        form.setFieldsValue({
+            title: inputInfo?.title,
+        });
+    }, [inputInfo, form]);
+
     return (
         <Form.Item className="textForm">
             <Form.Item
@@ -50,7 +60,6 @@ const TextForm = ({
                     },
                 },
                 ]}
-                initialValue={inputInfo?.title}
             >
                 <Input
                     showCount

@@ -21,13 +21,13 @@ interface EditorProps {
 }
 
 const Editor: React.FC<EditorProps> = ({
-    qRef, value, onChange, maxChars, initialVal, selectionChange, onCharacterCountChange = () => {}, readOnly = false
+    qRef, value, onChange, maxChars, initialVal, selectionChange, onCharacterCountChange = () => { }, readOnly = false
 }) => {
     const [isReadOnly, setIsReadOnly] = useState(readOnly);
     const indentedValue = refactorIndentsHtml(value || '');
     const [val, setVal] = useState(indentedValue);
-    const [rawText, setRawText] = useState(removeHtmlTags(value) ?? '');
-    const [characterCount, setCharacterCount] = useState(rawText.length ?? 0);
+    const [rawText, setRawText] = useState('');
+    const [characterCount, setCharacterCount] = useState(0);
     const [validateDescription, setValidateDescription] = useState<boolean>(false);
     const quillRef = useRef<ReactQuill | null>(null);
     const availableButtons = new Set(['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight',
@@ -35,17 +35,16 @@ const Editor: React.FC<EditorProps> = ({
 
     const countCharacters = (content: string) => {
         const textWithoutTags = removeHtmlTags(content);
+        setRawText(textWithoutTags);
         const count = textWithoutTags.length;
         setCharacterCount(count);
     };
 
     useEffect(() => {
-        if (value?.includes('\n')) {
-            const preservedIndents = refactorIndentsHtml(value || '');
-            setVal(preservedIndents);
-        }
         const valueWithoutHtml = removeHtmlTags(value);
         setRawText(valueWithoutHtml);
+        const count = valueWithoutHtml.length;
+        setCharacterCount(count);
     }, [value]);
 
     useEffect(() => {
@@ -55,19 +54,24 @@ const Editor: React.FC<EditorProps> = ({
             setValidateDescription(false);
         }
     }, [characterCount, maxChars]);
+
     useEffect(() => {
-        setIsReadOnly(readOnly); 
+        setIsReadOnly(readOnly);
     }, [readOnly]);
+
     useEffect(() => {
         onCharacterCountChange(characterCount);
     }, [characterCount, onCharacterCountChange]);
+
     const handleOnChange = (html: string) => {
-        if (!isReadOnly) { 
+        if (!isReadOnly) {
             onChange(html);
             setVal(html);
-            countCharacters(html);
+            const valueWithoutHtml = removeHtmlTags(html);
+            setCharacterCount(valueWithoutHtml.length);
         }
     };
+
     const handleSelectionChange = (range: ReactQuill.Range | null, source: Sources, editor: UnprivilegedEditor) => {
         if (range && range.index != null && range.length != null) {
             const selectedText = editor.getText(range.index, range.length);
