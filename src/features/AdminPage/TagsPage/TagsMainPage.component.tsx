@@ -4,13 +4,14 @@ import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import useMobx, { useModalContext } from '@stores/root-store';
+import { useQuery } from '@tanstack/react-query';
 
-import { Button, Pagination } from 'antd';
+import { Button, Empty, Pagination } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 
-import TagAdminModal from './TagsPage/TagAdminModal';
 import Tag from '@/models/additional-content/tag.model';
-import { useQuery } from '@tanstack/react-query';
+
+import TagAdminModal from './TagsPage/TagAdminModal';
 
 const TagsMainPage: React.FC = observer(() => {
     const { modalStore } = useModalContext();
@@ -19,7 +20,7 @@ const TagsMainPage: React.FC = observer(() => {
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
     const [tagToEdit, setTagToEdit] = useState<Tag>();
 
-    useQuery({
+    const { isLoading } = useQuery({
         queryKey: ['tags', tagsStore.PaginationInfo.CurrentPage],
         queryFn: () => { tagsStore.fetchAllTags() },
     });
@@ -99,8 +100,17 @@ const TagsMainPage: React.FC = observer(() => {
                     pagination={false}
                     className="tags-table"
                     columns={columns}
-                    dataSource={tagsStore.getAllTagsArray}
+                    dataSource={tagsStore.getAllTagsArray || []}
                     rowKey="id"
+                    locale={{
+                        emptyText: isLoading ? (
+                            <div className="loadingWrapper">
+                                <div id="loadingGif" />
+                            </div>
+                        ) : (
+                            <Empty description="Дані відсутні" />
+                        ),
+                    }}
                 />
                 <div className="underTableZone">
                     <br />
