@@ -34,7 +34,6 @@ jest.mock('@app/api/sources/sources.api', () => ({
     default: {
         create: jest.fn(),
         update: jest.fn(),
-        getAllCategories: () => [],
     },
 }));
 
@@ -178,10 +177,10 @@ describe('CategoryAdminModal', () => {
         });
 
         await waitFor(() => {
+            expect(saveButton).toBeDisabled();
             expect(message.success).toHaveBeenCalled();
             expect(SourcesApi.update).toHaveBeenCalled();
             expect(SourcesApi.create).not.toHaveBeenCalled();
-            expect(saveButton).toBeDisabled();
         });
     });
 
