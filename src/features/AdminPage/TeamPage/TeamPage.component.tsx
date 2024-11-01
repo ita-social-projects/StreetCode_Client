@@ -28,7 +28,7 @@ const TeamPage = () => {
 
     const { isLoading } = useQuery({
         queryKey: ['team', teamStore.PaginationInfo.CurrentPage],
-        queryFn: () => { teamStore.getAll() },
+        queryFn: () => teamStore.getAll(),
     });
 
     const updatedTeam = () => {

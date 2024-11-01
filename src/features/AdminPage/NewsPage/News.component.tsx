@@ -28,7 +28,7 @@ const Newss: React.FC = observer(() => {
 
     const { isLoading } = useQuery({
         queryKey: ['news', newsStore.CurrentPage],
-        queryFn: () => {newsStore.getAll()},
+        queryFn: () => newsStore.getAll(),
     });
 
     const columns: ColumnsType<News> = [
