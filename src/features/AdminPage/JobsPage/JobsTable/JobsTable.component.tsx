@@ -23,7 +23,7 @@ const JobsTable = observer(() => {
 
     const { isLoading } = useQuery({
         queryKey: ['jobs', jobsStore.PaginationInfo.CurrentPage],
-        queryFn: () => { jobsStore.getAll() },
+        queryFn: () => jobsStore.getAll(),
     });
 
     const DeleteJob = (id: number) => {

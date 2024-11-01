@@ -22,7 +22,7 @@ const TagsMainPage: React.FC = observer(() => {
 
     const { isLoading } = useQuery({
         queryKey: ['tags', tagsStore.PaginationInfo.CurrentPage],
-        queryFn: () => { tagsStore.fetchAllTags() },
+        queryFn: () => tagsStore.fetchAllTags(),
     });
 
     const updatedTags = () => {
