@@ -96,7 +96,7 @@ describe('CategoryAdminModal', () => {
     it('calls setIsModalOpen with false when the cancel button is clicked', async () => {
         const setIsModalOpen = jest.fn();
         act(() => {
-            render(<CategoryAdminModal {...defaultProps} isModalVisible={true} setIsModalOpen={setIsModalOpen} />);
+            render(<CategoryAdminModal {...defaultProps} setIsModalOpen={setIsModalOpen} />);
         });
 
         act(() => {
@@ -127,7 +127,30 @@ describe('CategoryAdminModal', () => {
         const saveButton = screen.getByRole('button', { name: /Зберегти/i });
         const uploader = screen.getByTestId('fileuploader');
 
+        await waitFor(() => {
+            userEvent.type(screen.getByRole('textbox', { name: /Назва/i }), 'New category');
+            userEvent.upload(uploader, new File(['(⌐□_□)'], 'new-image.jpg', { type: 'image/jpg' }));
+        });
+
+        await waitFor(() => userEvent.click(saveButton));
+
+        await waitFor(() => {
+            expect(SourcesApi.create).toHaveBeenCalled();
+            expect(isNewCategory).toHaveBeenCalledWith(true);
+            expect(message.success).toHaveBeenCalled();
+        });
+    });
+
+    it('should disable save button after creating', async () => {
+        const isNewCategory = jest.fn();
         act(() => {
+            render(<CategoryAdminModal {...defaultProps} isNewCategory={isNewCategory} />);
+        });
+
+        const saveButton = screen.getByRole('button', { name: /Зберегти/i });
+        const uploader = screen.getByTestId('fileuploader');
+
+        await waitFor(() => {
             userEvent.type(screen.getByRole('textbox', { name: /Назва/i }), 'New category');
             userEvent.upload(uploader, new File(['(⌐□_□)'], 'new-image.jpg', { type: 'image/jpg' }));
         });
@@ -136,16 +159,10 @@ describe('CategoryAdminModal', () => {
             expect(saveButton).not.toBeDisabled();
         });
 
-        act(() => {
-            userEvent.click(saveButton);
-        });
+        await waitFor(() => userEvent.click(saveButton));
 
         await waitFor(() => {
             expect(saveButton).toBeDisabled();
-            expect(message.success).toHaveBeenCalled();
-            expect(SourcesApi.create).toHaveBeenCalled();
-            expect(isNewCategory).toHaveBeenCalledWith(true);
-            expect(SourcesApi.update).not.toHaveBeenCalled();
         });
     });
 
@@ -163,24 +180,49 @@ describe('CategoryAdminModal', () => {
         const saveButton = screen.getByRole('button', { name: /Зберегти/i });
         const fileuploader = screen.getByTestId('fileuploader');
 
-        act(() => {
+        await waitFor(() => {
             userEvent.clear(nameInput);
             userEvent.type(nameInput, 'New category');
             userEvent.upload(fileuploader, new File(['(⌐□_□)'], 'new-image.jpg', { type: 'image/jpg' }));
         });
+
+        await waitFor(() => userEvent.click(saveButton));
+
+        await waitFor(() => {
+            expect(SourcesApi.update).toHaveBeenCalled();
+            expect(SourcesApi.create).not.toHaveBeenCalled();
+            expect(message.success).toHaveBeenCalled();
+        });
+    });
+
+    it('should disable save button after updating', async () => {
+        const initialData = {
+            id: 1,
+            title: 'Category',
+            imageId: 1,
+        };
+        act(() => {
+            render(<CategoryAdminModal {...defaultProps} initialData={initialData} />);
+        });
+
+        const nameInput = screen.getByRole('textbox', { name: /Назва/i });
+        const saveButton = screen.getByRole('button', { name: /Зберегти/i });
+        const fileuploader = screen.getByTestId('fileuploader');
+
+        await waitFor(() => {
+            userEvent.clear(nameInput);
+            userEvent.type(nameInput, 'New category');
+            userEvent.upload(fileuploader, new File(['(⌐□_□)'], 'new-image.jpg', { type: 'image/jpg' }));
+        });
+
         await waitFor(() => {
             expect(saveButton).not.toBeDisabled();
         });
 
-        act(() => {
-            userEvent.click(saveButton);
-        });
+        await waitFor(() => userEvent.click(saveButton));
 
         await waitFor(() => {
             expect(saveButton).toBeDisabled();
-            expect(message.success).toHaveBeenCalled();
-            expect(SourcesApi.update).toHaveBeenCalled();
-            expect(SourcesApi.create).not.toHaveBeenCalled();
         });
     });
 
@@ -200,9 +242,7 @@ describe('CategoryAdminModal', () => {
             expect(saveButton).not.toBeDisabled();
         });
 
-        act(() => {
-            userEvent.click(saveButton);
-        });
+        await waitFor(() => userEvent.click(saveButton));
 
         await waitFor(() => {
             expect(message.error).toHaveBeenCalled();
