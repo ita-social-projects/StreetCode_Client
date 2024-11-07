@@ -1,7 +1,7 @@
 import './InterestingFactsAdminItem.style.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Fact } from '@models/streetcode/text-contents.model';
 import useMobx from '@stores/root-store';

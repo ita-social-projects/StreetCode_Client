@@ -3,21 +3,23 @@ import "./ArtGalleryBlock.styles.scss";
 
 import { runInAction } from "mobx";
 import { observer } from "mobx-react-lite";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useMediaQuery } from "react-responsive";
 import { useParams } from "react-router-dom";
 import { Settings as SliderSettings } from "react-slick";
 import SLIDER_PROPS from "@components/ArtGallery/constants/sliderProps";
 import convertSlidesToTemplates from "@components/ArtGallery/utils/convertSlidesToTemplates";
 import SlickSlider from "@features/SlickSlider/SlickSlider.component";
+import BlockHeading from "@features/StreetcodePage/HeadingBlock/BlockHeading.component";
 import { ArtCreateUpdate } from "@models/media/art.model";
 import StreetcodeArtSlide from "@models/media/streetcode-art-slide.model";
 import useMobx, { useStreetcodeDataContext } from "@stores/root-store";
-import BlockHeading from "@streetcode/HeadingBlock/BlockHeading.component";
-import ArtGalleryTemplatesModal from "../modals/ArtGalleryTemplates/ArtGalleryTemplatesModal.component";
-import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 
 import { Button } from "antd";
-import { useMediaQuery } from "react-responsive";
+
+import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
+
+import ArtGalleryTemplatesModal from "../modals/ArtGalleryTemplates/ArtGalleryTemplatesModal.component";
 
 const MAX_SLIDES_AMOUNT = 30;
 

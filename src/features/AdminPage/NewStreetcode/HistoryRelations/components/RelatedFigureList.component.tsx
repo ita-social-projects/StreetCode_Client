@@ -1,5 +1,6 @@
 import './components.styles.scss';
 
+import React from 'react';
 import { ModelState } from '@/models/enums/model-state';
 import { RelatedFigureCreateUpdate } from '@/models/streetcode/related-figure.model';
 

@@ -1,12 +1,14 @@
 /* eslint-disable max-len */
 import CancelBtn from '@images/utils/Cancel_btn.svg';
+
 import { observer } from 'mobx-react-lite';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import Position from '@models/additional-content/teampositions.model';
 import useMobx from '@stores/root-store';
-import { Button, Form, Input, message, Modal, Popover, UploadFile } from 'antd';
 import {parseJsonNumber} from "ajv/dist/runtime/parseJson";
+
+import { Button, Form, Input, message, Modal, Popover, UploadFile } from 'antd';
 import position = parseJsonNumber.position;
 
 interface TeamPositionsAdminProps {

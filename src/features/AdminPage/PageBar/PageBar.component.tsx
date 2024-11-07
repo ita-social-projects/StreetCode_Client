@@ -1,5 +1,6 @@
 import './PageBar.styles.scss';
 
+import React from 'react';
 import { NavLink } from 'react-router-dom';
 import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
 

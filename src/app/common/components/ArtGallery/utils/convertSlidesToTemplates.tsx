@@ -1,5 +1,6 @@
 /* eslint-disable complexity */
 /* eslint-disable max-len */
+import React from 'react';
 import OneAndTwoAndThreeAndFourAndFiveAndSixSlide from '@components/ArtGallery/components/OneAndTwoAndThreeAndFourAndFiveAndSixSlide/OneAndTwoAndThreeAndFourAndFiveAndSixSlide.component';
 import OneToFourAndFiveToSixSlide
     from '@components/ArtGallery/components/OneToFourAndFiveToSixSlide/OneToFourAndFiveToSixSlide.component';

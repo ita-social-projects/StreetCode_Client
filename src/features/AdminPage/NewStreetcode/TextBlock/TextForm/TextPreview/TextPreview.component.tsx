@@ -1,6 +1,6 @@
 import './TextPreview.styles.scss';
 
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Button } from 'antd';
 
@@ -33,6 +33,7 @@ const TextPreview = ({ inputInfo }: Props) => {
     return (
         <div>
             <Button
+                name="previousTextViewBtn"
                 disabled={inputInfo === undefined || inputInfo.textContent?.length === 0}
                 onClick={() => setDisabled(!disabled)}
                 className="streetcode-custom-button"

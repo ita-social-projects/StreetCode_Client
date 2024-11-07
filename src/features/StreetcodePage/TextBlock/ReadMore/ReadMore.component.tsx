@@ -3,7 +3,7 @@ import './ReadMore.styles.scss';
 
 import { useEffect, useRef, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
-import SearchTerms from '@streetcode/TextBlock/SearchTerms/SearchTerms.component';
+import SearchTerms from '@features/StreetcodePage/TextBlock/SearchTerms/SearchTerms.component';
 
 interface Props {
   text: string;

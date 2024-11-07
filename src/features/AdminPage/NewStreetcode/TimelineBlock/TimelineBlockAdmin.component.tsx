@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import useMobx from '@app/stores/root-store';
 import TimelineItem from '@models/timeline/chronology.model';
 
@@ -24,6 +24,7 @@ const TimelineBlockAdmin = ({ onChange }: Props) => {
             <h2>Хронологія</h2>
             <div className="textBlockButton-container">
                 <button
+                    name="TimelineBtn"
                     type="button"
                     className="buttonWithPlus"
                     onClick={showModal}

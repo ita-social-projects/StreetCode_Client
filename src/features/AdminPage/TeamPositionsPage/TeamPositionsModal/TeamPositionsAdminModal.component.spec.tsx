@@ -1,13 +1,15 @@
-import { cleanup, render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import '@testing-library/jest-dom';
+import React from 'react';
 import { act } from 'react-dom/test-utils';
-
-import { message } from 'antd';
+import TeampositionsApi from '@api/additional-content/teampositions.api';
 import overrideMatchMedia from '@features/AdminPage/TeamPositionsPage/TeamPositionsMainPage.component.spec';
 import TeamPositionsAdminModalComponent from '@features/AdminPage/TeamPositionsPage/TeamPositionsModal/TeamPositionsAdminModal.component';
-import TeampositionsApi from '@api/additional-content/teampositions.api';
 import Position from '@models/additional-content/teampositions.model';
+import { cleanup, render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+
+import { message } from 'antd';
+
+import '@testing-library/jest-dom';
 
 overrideMatchMedia();
 

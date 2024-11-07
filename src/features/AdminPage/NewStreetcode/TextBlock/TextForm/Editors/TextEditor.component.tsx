@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ReactQuill from "react-quill";
 import relatedTermApi from "@api/streetcode/text-content/related-terms.api";
 import useMobx, { useModalContext } from "@app/stores/root-store";
@@ -103,7 +103,10 @@ const TextEditor = ({
   useAsync(fetchTerms, []);
 
   return (
-    <FormItem label="Основний текст">
+    <FormItem
+        name="textContent"
+        label="Основний текст"
+    >
         <div className={isTitleEmpty ? "disabled" : ""}>
         <Editor
         qRef={editorRef}

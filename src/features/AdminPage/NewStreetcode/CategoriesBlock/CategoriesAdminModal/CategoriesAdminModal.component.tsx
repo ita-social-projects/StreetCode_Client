@@ -1,7 +1,7 @@
 import '@features/AdminPage/AdminModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ReactQuill from 'react-quill';
 import getNewMinNegativeId from '@app/common/utils/newIdForStore';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
@@ -20,12 +20,12 @@ import {
 } from '@/app/common/components/Editor/EditorUtilities/quillUtils.utility';
 import Editor from '@/app/common/components/Editor/QEditor.component';
 import SourceModal from '@/features/AdminPage/CategoriesPage/CategoriesPage/CategoryAdminModal.component';
+import POPOVER_CONTENT from '@/features/AdminPage/JobsPage/JobsModal/constants/popoverContent';
 import {
     SourceCategoryName,
     StreetcodeCategoryContent,
     StreetcodeCategoryContentUpdate,
 } from '@/models/sources/sources.model';
-import POPOVER_CONTENT from '@/features/AdminPage/JobsPage/JobsModal/constants/popoverContent';
 
 interface Props {
     character_limit?: number;

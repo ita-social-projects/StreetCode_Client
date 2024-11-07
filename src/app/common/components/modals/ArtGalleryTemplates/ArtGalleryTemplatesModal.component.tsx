@@ -79,7 +79,7 @@ const ArtGalleryTemplatesModal: React.FC<ArtGalleryTemplatesModalProps> = ({
 
   return (
     <Modal
-      visible={isOpen}
+      open={isOpen}
       className="ArtGalleryModal"
       maskClosable
       centered

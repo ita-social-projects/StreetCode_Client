@@ -38,7 +38,7 @@ const PartnerBlockAdmin = ({ partners, setPartners, onChange }: Props) => {
         if (!existingPartnerShort) {
             setAllPartnerShort([...allPartnersShort, { id: partner.id, title: partner.title }]);
         }
-    }
+    };
 
     const onPartnerSelect = (value: number) => {
         const existingPartner = partners.find((p) => p.id === value);
@@ -82,11 +82,13 @@ const PartnerBlockAdmin = ({ partners, setPartners, onChange }: Props) => {
                     value={partners.filter((x) => (x as PartnerCreateUpdateShort).modelState !== ModelState.Deleted)
                         .map((x) => x.id)}
                     onDeselect={onPartnerDeselect}
+                    data-testid="partnersCombobox"
                 >
                     {sortedPartners.map((s) => <Select.Option key={`${s.id}`} value={s.id}>{s.title}</Select.Option>)}
                 </Select>
 
                 <Button
+                    name="addPartnerBtn"
                     className="streetcode-custom-button button-margin-left"
                     onClick={() => setModalAddOpened(true)}
                 >

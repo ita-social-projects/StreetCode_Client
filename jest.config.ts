@@ -6,6 +6,7 @@ const jestConfig: JestConfigWithTsJest = {
   roots: ["<rootDir>"],
   moduleNameMapper: {
     "\\.(css|less|sass|scss)$": "identity-obj-proxy",
+    "\\.(webp|png|jpg|jpeg)$": "<rootDir>/__mocks__/fileMock.ts",
     "^antd/es/(.*)$": "<rootDir>/node_modules/antd/lib/$1",
     "^@assets/(.*)$": "<rootDir>/src/assets/$1",
     "^antd/es/date-picker/locale/uk_UA$": "<rootDir>/__mocks__/antd/es/date/localeprovider.tsx",
@@ -36,6 +37,8 @@ const jestConfig: JestConfigWithTsJest = {
   },
   transform: {
     "^.+\\.svg$": "jest-transformer-svg",
+    "^.+\\.(jpg|jpeg|png|gif|webp)$": "jest-transform-file",
+    "^.+\\.tsx?$": "babel-jest",
   },
   coverageThreshold: {
     global: {

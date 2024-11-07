@@ -1,6 +1,6 @@
 import './components.styles.scss';
 
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { AutoComplete, Button } from 'antd';
 

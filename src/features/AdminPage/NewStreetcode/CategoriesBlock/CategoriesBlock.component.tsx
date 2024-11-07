@@ -32,6 +32,7 @@ const CategoriesBlock: React.FC<Props> = ({ onChange, allPersistedSourcesAreSet 
             <div className="textBlockButton-container">
 
                 <button
+                    name="forFansBtn"
                     type="button"
                     className="buttonWithPlus"
                     onClick={() => setIsModalOpen(true)}

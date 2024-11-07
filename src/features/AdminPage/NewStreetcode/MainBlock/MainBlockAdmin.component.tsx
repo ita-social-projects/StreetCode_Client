@@ -149,6 +149,7 @@ const MainBlockAdmin = React.memo(({
         <div className="mainblock-add-form">
 
             <Form.Item
+                name="streetcodeNumber"
                 label="Номер стріткоду"
                 rules={[
                     {
@@ -177,15 +178,15 @@ const MainBlockAdmin = React.memo(({
                         },
                     },
                 ]}
-                name="streetcodeNumber"
             >
-                <InputNumber type='number'/>
+                <InputNumber type="number" />
             </Form.Item>
 
             <div className="display-flex-row p-margin">
                 <p className={switchState ? 'grey-text' : 'red-text'}>Постать</p>
                 <Form.Item name="streetcodeType">
                     <Switch
+                        rootClassName="personEventSwitch"
                         className="person-event-switch"
                         checked={streetcodeType.current === StreetcodeType.Event}
                         onChange={onSwitchChange}
@@ -214,8 +215,8 @@ const MainBlockAdmin = React.memo(({
                     className="display-flex-column"
                 >
                     <Form.Item
-                        label="Ім'я"
                         name="name"
+                        label="Ім'я"
                         className="people-title-input"
                         rules={[{ max: 50, message: "Ім'я не може містити більше 50 символів" }]}
                     >
@@ -245,7 +246,11 @@ const MainBlockAdmin = React.memo(({
                 </Space.Compact>
             )
                 : ('')}
-            <Form.Item name="alias" label="Короткий опис (для зв'язків історії)" className="maincard-item">
+            <Form.Item
+                name="alias"
+                label="Короткий опис (для зв'язків історії)"
+                className="maincard-item"
+            >
                 <Input
                     maxLength={33}
                     showCount
@@ -253,8 +258,8 @@ const MainBlockAdmin = React.memo(({
                 />
             </Form.Item>
             <Form.Item
-                label="URL"
                 name="streetcodeUrlName"
+                label="URL"
                 className="maincard-item"
                 rules={[
                     { required: true, message: 'Введіть Посилання', max: 100 },
@@ -304,7 +309,6 @@ const MainBlockAdmin = React.memo(({
                     <Form.Item
                         validateStatus={errorMessage ? 'error' : ''}
                         help={errorMessage}
-                        name="tags"
                         label={(
                             <div className="label-tags-block">
                                 <p>Теги</p>
@@ -331,6 +335,7 @@ const MainBlockAdmin = React.memo(({
                         <div className="tags-block-tagitems">
                             <DragableTags setTags={setSelectedTags} tags={selectedTags} />
                             <Select
+                                data-testid="tagsCombobox"
                                 className="tags-select-input"
                                 mode="tags"
                                 onSelect={(selectedValue, option) => {
@@ -361,7 +366,10 @@ const MainBlockAdmin = React.memo(({
                     )}
                 </div>
                 <div className="device-sizes-list">
-                    <Form.Item label="Розширення">
+                    <Form.Item
+                        name="resolution"
+                        label="Розширення"
+                    >
                         <Popover
                             content={(
                                 <PopoverForTagContent
@@ -388,8 +396,8 @@ const MainBlockAdmin = React.memo(({
             </div>
             <div className="teaser-form-item">
                 <Form.Item
-                    label="Тизер"
                     name="teaser"
+                    label="Тизер"
                     className="maincard-item teaser-form-item"
                     rules={[{ required: true, message: 'Введіть тизер', max: teaserMaxCharCount }]}
                 >

@@ -1,2 +1,1 @@
-const mockedSvg = 'test-file-stub';
-export default mockedSvg;
+module.exports = 'test-file-stub';

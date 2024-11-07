@@ -13,6 +13,7 @@ const SubtitleBlock = React.memo(({ subTitle, setSubTitle, onChange }: Props) =>
     <div className="adminContainer-block">
         <h2>Бігуча стрічка</h2>
         <Input
+            name="subtitle"
             maxLength={255}
             value={subTitle?.subtitleText}
             showCount

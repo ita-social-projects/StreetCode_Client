@@ -1,11 +1,11 @@
 import './SlickSlider.styles.scss';
 
-import { FC, memo, useCallback, useRef } from 'react';
+import React, { FC, memo, useCallback, useRef } from 'react';
 import Slider from 'react-slick';
+import classNames from 'classnames';
 
 import SliderProps, { defaultSliderProps } from './index';
 
-import classNames from 'classnames'
 const GenericSlider: FC<SliderProps> = ({
     children,
     onClick,

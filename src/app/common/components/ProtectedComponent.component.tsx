@@ -2,7 +2,7 @@
 /* eslint-disable no-restricted-imports */
 /* eslint-disable import/extensions */
 import { observer } from 'mobx-react-lite';
-import { FC, ReactNode } from 'react';
+import React, { FC, ReactNode } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 
 import FRONTEND_ROUTES from '../constants/frontend-routes.constants';

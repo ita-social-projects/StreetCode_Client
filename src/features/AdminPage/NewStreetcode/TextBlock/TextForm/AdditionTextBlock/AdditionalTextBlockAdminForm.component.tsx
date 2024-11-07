@@ -2,7 +2,7 @@
 /* eslint-disable react/jsx-props-no-multi-spaces */
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ReactQuill from 'react-quill';
 
 import FormItem from 'antd/es/form/FormItem';
@@ -41,7 +41,10 @@ const AdditionalTextBlockAdminForm = ({
     };
     
     return (
-        <FormItem label="Авторство">
+        <FormItem
+            name="additionalText"
+            label="Авторство"
+        >
             <div className={isTextContentEmpty || isTitleEmpty ? "disabled" : ""}>
             <Editor
                 qRef={editorRef}

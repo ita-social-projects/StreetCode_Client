@@ -3,7 +3,7 @@
 /* eslint-disable max-len */
 import './MainNewStreetcode.styles.scss';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
     unstable_usePrompt as usePrompt,
     useNavigate,
@@ -34,7 +34,6 @@ dayjs.extend(utc);
 dayjs.extend(tz);
 
 import { Button, ConfigProvider, Form, Modal } from 'antd';
-import { useForm } from 'antd/es/form/Form';
 import ukUA from 'antd/locale/uk_UA';
 
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
@@ -78,7 +77,7 @@ import CategoriesBlock from './CategoriesBlock/CategoriesBlock.component';
 import RelatedFiguresBlock from './HistoryRelations/HistoryRelations.component';
 import InterestingFactsBlock from './InterestingFactsBlock/InterestingFactsBlock.component';
 import MainBlockAdmin from './MainBlock/MainBlockAdmin.component';
-import PartnerBlockAdmin from './PartnerBlock/PartnerBlockAdmin.components';
+import PartnerBlockAdmin from './PartnerBlock/PartnerBlockAdmin.component';
 import SubtitleBlock from './SubtitileBlock/SubtitleBlock.component';
 import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
@@ -96,7 +95,7 @@ function reindex<T extends { index?: number }>(list: T[]): T[] {
 const NewStreetcode = () => {
     const publish = 'Опублікувати';
     const draft = 'Зберегти як чернетку';
-    const [form] = useForm();
+    const [form] = Form.useForm();
     const {
         factsStore,
         timelineItemStore,
@@ -656,6 +655,7 @@ const NewStreetcode = () => {
                     <div className="adminContainer-block">
                         <h2>Стріткод</h2>
                         <Form
+                            name="mainForm"
                             form={form}
                             layout="vertical"
                             onFinish={onFinish}
@@ -686,6 +686,7 @@ const NewStreetcode = () => {
                                 <ArtGallery
                                     isConfigurationGallery
                                     title="Шаблони"
+                                    data-testid="artGallery"
                                 />
                                 <ArtGallery
                                     isAdmin
@@ -697,6 +698,7 @@ const NewStreetcode = () => {
                                 figures={figures}
                                 setFigures={setFigures}
                                 onChange={handleFieldChange}
+                                data-testid="relatedFigures"
                             />
                             <CategoriesBlock
                                 onChange={handleFieldChange}
@@ -736,6 +738,7 @@ const NewStreetcode = () => {
                         className="streetcode-custom-button submit-button"
                         onClick={handleRemove}
                         name={publish}
+                        data-testid="publishBtn"
                     >
                         {publish}
                     </Button>

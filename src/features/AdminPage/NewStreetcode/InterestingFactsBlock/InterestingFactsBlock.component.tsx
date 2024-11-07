@@ -1,13 +1,13 @@
 import { observer } from "mobx-react-lite";
-import { useState, useMemo } from "react";
+import React, { useMemo,useState } from "react";
 import { DragDropContext, Draggable, DropResult } from "react-beautiful-dnd";
 import useMobx from "@stores/root-store";
 
+import StrictModeDroppable from "@/app/common/components/StrictModeDroppable";
 import { Fact } from "@/models/streetcode/text-contents.model";
 
 import InterestingFactsAdminModal from "./FactsAdminModal/InterestingFactsAdminModal.component";
 import InterestingFactAdminItem from "./InterestingFactsAdminItem/InterestingFactsAdminItem.component";
-import StrictModeDroppable from "@/app/common/components/StrictModeDroppable";
 
 interface Props {
   fact?: Fact;
@@ -55,11 +55,12 @@ const InterestingFactsBlock = ({ fact, onChange }: Props) => {
               className="textBlockButton-container"
             >
               <button
-                type="button"
-                className="buttonWithPlus"
-                onClick={() => {
-                  setModalOpen(true);
-                }}
+                  name="factBtn"
+                  type="button"
+                  className="buttonWithPlus"
+                  onClick={() => {
+                    setModalOpen(true);
+                  }}
               >
                 +
               </button>

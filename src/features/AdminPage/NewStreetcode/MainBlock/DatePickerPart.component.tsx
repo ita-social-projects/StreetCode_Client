@@ -171,6 +171,7 @@ const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form, onChange
                 <div className="date-picker-group">
                     <div className="date-picker-group-item">
                         <Select
+                            data-testid="firstDateType"
                             className="date-picker-type-input"
                             options={selectDateOptions}
                             defaultValue={firstDateTimePickerType}
@@ -179,10 +180,10 @@ const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form, onChange
                             }}
                         />
                         <FormItem
-                            rules={[{ required: true, message: 'Введіть дату' }]}
                             name="streetcodeFirstDate"
-                            className="streetcode-first-formitem-datepicker"
                             label=" "
+                            className="streetcode-first-formitem-datepicker"
+                            rules={[{ required: true, message: 'Введіть дату' }]}
                         >
                             <DatePicker
                                 className="streetcode-first-datepicker"
@@ -205,6 +206,7 @@ const DatePickerPart = React.memo(({ setFirstDate, setSecondDate, form, onChange
 
                     <div className="date-picker-group-item">
                         <Select
+                            data-testid="secondDateType"
                             className="date-picker-type-input"
                             options={selectDateOptions}
                             defaultValue={secondDateTimePickerType}

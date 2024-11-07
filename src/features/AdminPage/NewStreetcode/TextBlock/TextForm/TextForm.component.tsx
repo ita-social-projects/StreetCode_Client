@@ -1,5 +1,7 @@
 import './TextForm.styles.scss';
 
+import React from 'react';
+
 import { Form, Input } from 'antd';
 
 import QUILL_TEXTS_LENGTH from
@@ -38,8 +40,8 @@ const TextForm = ({
     return (
         <Form.Item className="textForm">
             <Form.Item
-                label="Заголовок"
                 name="title"
+                label="Заголовок"
                 rules={[{
                     message: 'Введіть заголовок до тексту',
                     validator(_, value) {

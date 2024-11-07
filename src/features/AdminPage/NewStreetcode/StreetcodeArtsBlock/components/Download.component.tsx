@@ -159,6 +159,7 @@ const DownloadBlock = () => {
     return (
         <div className="art-gallery-download">
             <FileUploader
+                name="downloadArt"
                 accept=".jpeg,.png,.jpg,.webp"
                 listType="picture-card"
                 fileList={fileList}

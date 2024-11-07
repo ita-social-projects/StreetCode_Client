@@ -26,6 +26,14 @@ export const useModalContext = () => ({
 });
 
 export const useMobx = () => ({
+    artGalleryTemplateStore: {
+        streetcodeArtSlides: [],
+        isEdited: false,
+        isRedact: false,
+        currentTemplateIndexRedact: -1,
+        setArtInSlide: jest.fn(),
+        removeArtInSlide: jest.fn(),
+    },
     newsStore: {
         updateNews: mockUpdateNews,
         createNews: mockCreateNews,

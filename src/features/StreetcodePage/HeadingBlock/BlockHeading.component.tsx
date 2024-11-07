@@ -3,9 +3,8 @@ import './BlockHeading.styles.scss';
 import Rhombus from '@images/utils/rhombus.svg';
 import RhombusMobile from '@images/utils/rhombus_mobile.svg';
 
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useMediaQuery } from 'react-responsive';
-import { WindowsFilled } from '@ant-design/icons';
 
 interface Props {
     headingText: string;
