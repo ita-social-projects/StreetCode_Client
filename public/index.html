@@ -5,7 +5,7 @@
       <script src="/env-config.js"></script>
       <meta charset="utf-8" />
       <link rel="icon" href="favicon.ico" />
-      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
       <meta name="theme-color" content="#000000" />
       <meta property='og:title' content="«Стріткод: історія на кожному кроці» — платформа про імена в назвах вулиць." />
       <meta property='og:description' content="" />
@@ -15,7 +15,7 @@
       <meta property="og:image:height" content="1472" />
       <!-- Google Tag Manager -->
       <script>(function (w, d, s, l, i) {
-            w[l] = w[l] || []; w[l].push({
+                  w[l] = w[l] || []; w[l].push({
                         'gtm.start':
                               new Date().getTime(), event: 'gtm.js'
                   }); var f = d.getElementsByTagName(s)[0],
@@ -30,18 +30,20 @@
             href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" />
       <link rel="stylesheet" type="text/css"
             href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css" />
-
+      <!-- Google map API -->
+      <script
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCr5712Z86_z29W9biaPj8DcaggjbUAy7M&libraries=places"></script>
       <!-- Google tag (gtag.js) -->
 
       <script>
             function loadScript(scriptPath, callback) {
-                  var script= document.createElement('script');
+                  var script = document.createElement('script');
                   script.setAttribute('src', scriptPath);
                   script.onload = callback();
                   document.head.appendChild(s);
             };
 
-            loadScript("https://www.googletagmanager.com/gtag/js?id=" + window._env_.REACT_APP_GOOGLE_ANALYTICS, function() {
+            loadScript("https://www.googletagmanager.com/gtag/js?id=" + window._env_.REACT_APP_GOOGLE_ANALYTICS, function () {
                   window.dataLayer = window.dataLayer || [];
                   function gtag() { dataLayer.push(arguments); }
                   gtag('js', new Date());
