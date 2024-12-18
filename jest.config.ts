@@ -10,7 +10,7 @@ const jestConfig: JestConfigWithTsJest = {
     "^@assets/(.*)$": "<rootDir>/src/assets/$1",
     "^antd/es/date-picker/locale/uk_UA$": "<rootDir>/__mocks__/antd/es/date/localeprovider.tsx",
     "^@stores/root-store$": "<rootDir>/__mocks__/@stores/root-store.tsx", 
-    
+    "^@components/FileUploader/FileUploader.component$": "<rootDir>/__mocks__/@components/FileUploader.component.tsx",
     "^@/(.*)$": "<rootDir>/src/$1",
     "^@app/(.*)$": "<rootDir>/src/app/$1",
     "^@sass/(.*)$": "<rootDir>/src/assets/sass/$1",
@@ -25,7 +25,6 @@ const jestConfig: JestConfigWithTsJest = {
     "^@utils/(.*)$": "<rootDir>/src/app/common/utils/$1",
   },
   verbose: true,
-  
   collectCoverageFrom: [
     "src/**/*.{ts,js,tsx,jsx}"
   ],
@@ -45,6 +44,7 @@ const jestConfig: JestConfigWithTsJest = {
       lines: 0.1,
     },
   },
+  testTimeout: 15_000,
 };
 
 export default jestConfig;

@@ -32,8 +32,7 @@ const InterestingFactsComponent = () => {
                     Promise.all(res.map((f, index) => ImagesApi.getById(f.imageId).then((img) => {
                         res[index].image = img;
                     }))).then(() => {
-                        setSliderArray(res.length === 3
-                            || res.length === 2
+                        setSliderArray(res.length === 2
                             ? res.concat(res)
                             : res);
                     });
@@ -70,11 +69,12 @@ const InterestingFactsComponent = () => {
 
     const setings = {
         initialSlide: initialSlideIndex,
-        dots: facts.current.length > 3,
+        dots: facts.current.length > 2,
         swipeOnClick: false,
         touchThreshold: 25,
         rtl: false,
         centerMode: true,
+        ...(sliderArray.length === 3 && { slidesToShow: sliderArray.length - 0.01 }),
         infinite: sliderArray.length > 1,
         swipe: false,
         centerPadding: '-5px',
@@ -111,48 +111,49 @@ const InterestingFactsComponent = () => {
     };
     return (
         <div>
-            {facts.current.length > 0
-                ? (
-                    <div
-                        id="wow-facts"
-                        className={`container "interestingFactsWrapper"`}
-                    >
-                        <BlockHeading headingText="Wow-факти" />
-                        <div className={`interestingFactsContainer
-                    ${facts.current.length === 1 ? 'oneFactContainer' : ''}`}
-                        >
-                            <div className="interestingFactsSliderContainer">
-                                <div style={{ height: '100%' }}>
-                                    {(facts.current.length === 1) ? (
-                                        <div className="oneFactItem"
-                                        onClick={handleModalOpen}
-                                        onKeyDown={handleModalOpen}>
+            {facts.current.length > 0 ? (
+                <div
+                    id="wow-facts"
+                    className={`container "interestingFactsWrapper"`}
+                >
+                    <BlockHeading headingText="Wow-факти" />
+                    <div className={`interestingFactsContainer ${facts.current.length === 1 ? "oneFactContainer" : ""}`} >
+                        <div className="interestingFactsSliderContainer">
+                            <div style={{ height: "100%" }}
+                                 className={`${facts.current.length === 3 ? 'slides-3' : ''}`}
+                            >
+                                {facts.current.length === 1 ? (
+                                    <div className="oneFactItem"
+                                         onClick={handleModalOpen}
+                                         onKeyDown={handleModalOpen}
+                                    >
+                                        <InterestingFactItem
+                                            fact={facts.current[0]}
+                                            middleFactIndex={middleFactIndex}
+                                        />
+                                    </div>
+                                ) : (
+                                    <BlockSlider
+                                        className="heightContainer"
+                                        {...setings}
+                                    >
+                                        {sliderArray.map((fact, index) => (
                                             <InterestingFactItem
-                                                fact={facts.current[0]}
+                                                key={fact.id}
+                                                fact={fact}
+                                                index={index}
                                                 middleFactIndex={middleFactIndex}
                                             />
-                                        </div>
-                                    ) : (
-                                        <BlockSlider
-                                            className="heightContainer"
-                                            {...setings}
-                                        >
-                                            {sliderArray.map((fact, index) => (
-                                                <InterestingFactItem
-                                                    key={fact.id}
-                                                    fact={fact}
-                                                    index={index}
-                                                    middleFactIndex={middleFactIndex}
-                                                />
-                                            ))}
-                                        </BlockSlider>
-                                    )}
-                                </div>
+                                        ))}
+                                    </BlockSlider>
+                                )}
                             </div>
                         </div>
                     </div>
-                )
-                : <></>}
+                </div>
+            ) : (
+                <></>
+            )}
         </div>
     );
 };

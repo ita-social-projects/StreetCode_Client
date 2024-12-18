@@ -48,7 +48,8 @@ const concatDates = (firstDate?: Date, secondDate?: Date): string => {
 
 const StreetcodeCard = ({ streetcode, setActiveTagId, setShowAllTags }: Props) => {
     const id = streetcode?.id;
-    const { modalStore: { setModal } } = useModalContext();
+    const { modalStore: { setModal, modalsState } } = useModalContext();
+    const audioState = modalsState.audio;
     const streecodePageLoaderContext = useStreecodePageLoaderContext();
     const { fetchAudioByStreetcodeId, audio } = useAudioContext();
     const [arlink, setArlink] = useState('');
@@ -171,7 +172,12 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setShowAllTags }: Props) =
                                     type="primary"
                                     className="audioBtn audioBtnActive"
                                     onClick={() => {
-                                        setModal('audio');
+                                        if (audioState.isOpen) {
+                                            setModal('audio', undefined, true);
+                                        } else {
+                                            setModal('audio');
+                                        }
+
                                         audioClickEvent(streetcode?.id ?? 0);
                                     }}
                                 >

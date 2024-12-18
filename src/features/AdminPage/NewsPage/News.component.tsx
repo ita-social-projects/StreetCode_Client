@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-restricted-imports */
+import './News.styles.scss';
+
 import { observer } from 'mobx-react-lite';
 import React, { useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
@@ -9,7 +11,7 @@ import useMobx, { useModalContext } from '@stores/root-store';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 
-import { Button, Pagination } from 'antd';
+import { Button, Empty, Pagination } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
@@ -24,9 +26,9 @@ const Newss: React.FC = observer(() => {
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
     const [newsToEdit, setNewsToEdit] = useState<News>();
 
-    useQuery({
+    const { isLoading } = useQuery({
         queryKey: ['news', newsStore.CurrentPage],
-        queryFn: () => newsStore.getAll(10),
+        queryFn: () => newsStore.getAll(),
     });
 
     const columns: ColumnsType<News> = [
@@ -91,7 +93,7 @@ const Newss: React.FC = observer(() => {
                                     newsStore.deleteNews(news.id).then(() => {
                                         imagesStore.deleteImage(news.imageId);
                                     }).catch((e) => {
-                                        console.log(e);
+                                        console.error(e);
                                     });
                                     modalStore.setConfirmationModal('confirmation');
                                 },
@@ -128,15 +130,24 @@ const Newss: React.FC = observer(() => {
                     pagination={false}
                     className="partners-table"
                     columns={columns}
-                    dataSource={newsStore.NewsArray}
+                    dataSource={newsStore.NewsArray || []}
                     rowKey="id"
+                    locale={{
+                        emptyText: isLoading ? (
+                            <div className="loadingWrapper">
+                                <div id="loadingGif" />
+                            </div>
+                        ) : (
+                            <Empty description="Дані відсутні" />
+                        ),
+                    }}
                 />
                 <div className="underTableZone">
                     <br />
                     <div className="underTableElement">
                         <Pagination
-                            className="pagenationElement"
-                            simple
+                            className="paginationElement"
+                            showSizeChanger={false}
                             defaultCurrent={1}
                             current={newsStore.PaginationInfo.CurrentPage}
                             total={newsStore.PaginationInfo.TotalItems}

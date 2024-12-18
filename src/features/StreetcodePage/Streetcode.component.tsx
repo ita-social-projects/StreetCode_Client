@@ -6,7 +6,7 @@ import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useMediaQuery } from 'react-responsive';
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import ScrollToTopBtn from '@components/ScrollToTopBtn/ScrollToTopBtn.component';
 import ProgressBar from '@features/ProgressBar/ProgressBar.component';
 import { useModalContext, useStreecodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
@@ -39,6 +39,7 @@ const StreetcodeContent = () => {
     const { setCurrentStreetcodeId } = streetcodeStore;
     const pageLoadercontext = useStreecodePageLoaderContext();
     const streetcodeUrl = useRef<string>(useRouteUrl());
+    const [streetcodeUrlState, setStreetcodeUrlState] = useState(streetcodeUrl.current);
 
     const [activeTagId, setActiveTagId] = useState(0);
     const [showAllTags, setShowAllTags] = useState<boolean>(false);
@@ -51,6 +52,8 @@ const StreetcodeContent = () => {
 
     const navigate = useNavigate();
     const location = useLocation();
+    const { id } = useParams();
+
     const [searchParams, setSearchParams] = useSearchParams();
     const isMobile = useMediaQuery({
         query: '(max-width: 4800px)',
@@ -121,7 +124,14 @@ const StreetcodeContent = () => {
         }
 
         return () => pageLoadercontext.resetLoadedBlocks();
-    }, []);
+    }, [streetcodeUrlState]);
+
+    useEffect(() => {
+        if (id) {
+            streetcodeUrl.current = id;
+            setStreetcodeUrlState(id);
+        }
+    }, [location.pathname, id]);
 
     return (
         <div className={`streetcodeContainer ${!pageLoadercontext.isPageLoaded ? 'no-scroll' : ''}`}>

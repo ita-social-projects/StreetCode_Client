@@ -1,6 +1,7 @@
 import './DonationBlock.styles.scss';
 
 import { ChangeEvent, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import donateButtonRequest from '@app/common/requests/donateButtonRequest';
 import { PositiveNumber } from '@constants/custom-types.constants';
 
@@ -116,7 +117,7 @@ const DonationBlock = () => {
                 >
                     Я даю згоду на обробку моїх
                     {' '}
-                    <a className="privacyPolicy" href="/privacy-policy">персональних даних</a>
+                    <Link className="privacyPolicy" to="/privacy-policy">персональних даних</Link>
                 </Checkbox>
             </div>
             <button

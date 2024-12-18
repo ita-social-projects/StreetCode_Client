@@ -15,7 +15,6 @@ pipeline {
     }
     options {
             skipDefaultCheckout true
-            disableConcurrentBuilds()
     }
     stages {
          stage('Checkout') {
@@ -84,6 +83,38 @@ pipeline {
                 '''
             }
          }
+         stage('Sonar scan') {
+            environment {
+                SONAR = credentials('sonar_token')
+                scannerHome = tool 'SonarQubeScanner'
+            }
+            steps {
+                echo "SonarQube Scanner installation directory: ${scannerHome}"
+
+                script {
+                    withEnv([
+                    "PR_KEY=${env.CHANGE_ID}",
+                    "PR_BRANCH=${env.CHANGE_BRANCH}",
+                    "PR_BASE=${env.CHANGE_TARGET}",
+                    ]) {
+                        if (env.PR_KEY != "null") { 
+                            sh '''
+                                ${scannerHome}/bin/sonar-scanner \
+                                -Dsonar.pullrequest.key=$PR_KEY \
+                                -Dsonar.pullrequest.branch=$PR_BRANCH \
+                                -Dsonar.pullrequest.base=$PR_BASE \
+                                -Dsonar.login=$SONAR
+                            '''
+                        } else {
+                            sh '''
+                                ${scannerHome}/bin/sonar-scanner \
+                                -Dsonar.login=$SONAR
+                            '''
+                        }
+                    }
+                }
+            }
+        }
         stage('Build image') {
             when {
                 branch pattern: "release/[0-9].[0-9].[0-9]", comparator: "REGEXP"
@@ -189,6 +220,7 @@ pipeline {
             }
       }
     }
+    /*
    stage('Deploy prod') {
          agent { 
            label 'production' 
@@ -229,6 +261,7 @@ pipeline {
             }
         }
     }
+*/
     stage('Sync after release') {
         when {
            expression { isSuccess == '1' }
@@ -255,6 +288,7 @@ pipeline {
             }
         }
     }
+    /*
     stage('Rollback Prod') {  
         agent { 
            label 'production' 
@@ -280,6 +314,7 @@ pipeline {
                 }
             }    
         }
+    */
     }   
     
 }

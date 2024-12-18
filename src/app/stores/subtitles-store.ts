@@ -41,7 +41,7 @@ export default class SubtitleStore {
     public getSubtitlesByStreetcodeId = async (streetcodeId: number) => {
         try {
             const subtitles = await subtitlesApi.getSubtitlesByStreetcodeId(streetcodeId);
-            this.setSubtitles(subtitles);
+            this.setSubtitles([subtitles]);
         } catch (err: unknown) {}
     };
 

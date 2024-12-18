@@ -1,6 +1,7 @@
 import './TeamComponent.styles.scss';
 
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ImagesApi from '@api/media/images.api';
 import NewsApi from '@api/news/news.api';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
@@ -21,6 +22,7 @@ import TeamItemSlider from './TeamItemSlider/TeamItemSlider.component';
 const TeamComponent = () => {
     const [team, setTeam] = useState<TeamMember[]>([]);
     const [images, setImages] = useState<Image[]>([]);
+    const navigate = useNavigate();
 
     const props = {
         touchAction: 'pan-y',
@@ -37,15 +39,14 @@ const TeamComponent = () => {
     };
 
     const windowsize = useWindowSize();
-    if (windowsize.width <= 1024)
-    {
+    if (windowsize.width <= 1024) {
         props.arrows = false;
         props.dots = true;
         if (windowsize.width >= 768) props.centerMode = true;
     }
 
     const handleButtonClick = () => {
-        window.location.href = '../about-us';
+        navigate('../about-us');
     };
 
     useAsync(async () => {
@@ -73,7 +74,7 @@ const TeamComponent = () => {
                         <div className="blockCenter">
                             <div className="mainContent">
                                 <SlickSlider
-                                    secondPreset={true}
+                                    secondPreset
                                     {...props}
                                 >
                                     {team.map((member, index) => (

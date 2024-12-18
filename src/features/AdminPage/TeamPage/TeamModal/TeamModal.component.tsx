@@ -20,30 +20,31 @@ import {
     Form, Input, message, Modal, Popover, Select, UploadFile,
 } from 'antd';
 
-import TextArea from 'antd/es/input/TextArea';
-import { Option } from 'antd/es/mentions';
 
-import PositionsApi from '@/app/api/team/positions.api';
-import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
+import PositionsApi from '@/app/api/team/teampositions.api';
+import FileUploader from '@components/FileUploader/FileUploader.component';
+
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
+import validateSocialLink from '@/app/common/components/modals/validators/socialLinkValidator';
 import TeamLink from '@/features/AdminPage/TeamPage/TeamLink.component';
-import Image from '@/models/media/image.model';
 import Audio from '@/models/media/audio.model';
+import Image from '@/models/media/image.model';
+
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
+import { UploadChangeParam } from 'antd/es/upload';
+import imageValidator, { checkImageFileType } from '@/app/common/components/modals/validators/imageValidator';
 
 const TeamModal: React.FC<{
     teamMember?: TeamMember, open: boolean,
     setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>, afterSubmit?: (team: TeamCreateUpdate) => void
 }> = observer(({ teamMember, open, setIsModalOpen, afterSubmit }) => {
+    const LOGO_TYPES = Object.keys(LogoType).filter((key) => Number.isNaN(Number(key)));
     const [form] = Form.useForm();
     const { teamStore } = useMobx();
     const [positions, setPositions] = useState<Positions[]>([]);
     const [teamLinksForm] = Form.useForm();
     const [previewOpen, setPreviewOpen] = useState(false);
     const [filePreview, setFilePreview] = useState<UploadFile | null>(null);
-    const [customWarningVisible, setCustomWarningVisible] = useState<boolean>(false);
-    const [existWarningVisible, setExistWarningVisible] = useState<boolean>(false);
-    const [invalidWarningVisible, setInvalidWarningVisible] = useState<boolean>(false);
     const [teamSourceLinks, setTeamSourceLinks] = useState<TeamMemberLinkCreateUpdate[]>([]);
     const [selectedPositions, setSelectedPositions] = useState<Positions[]>([]);
     const [isMain, setIsMain] = useState(false);
@@ -51,6 +52,7 @@ const TeamModal: React.FC<{
     const [actionSuccess, setActionSuccess] = useState(false);
     const [waitingForApiResponse, setWaitingForApiResponse] = useState(false);
     const imageId = useRef<number>(0);
+    const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
 
     message.config({
         top: 100,
@@ -69,7 +71,7 @@ const TeamModal: React.FC<{
 
     useEffect(() => {
         if (open) {
-            PositionsApi.getAll().then((pos) => setPositions(pos));
+            PositionsApi.getAll().then((resp) => setPositions(resp.positions));
         }
     }, [open]);
 
@@ -88,6 +90,7 @@ const TeamModal: React.FC<{
     useEffect(() => {
         if (teamMember && open) {
             imageId.current = teamMember.imageId;
+            setFileList(getImageAsFileInArray());
             form.setFieldsValue({
                 ...teamMember,
                 positions: teamMember.positions.map((s) => s.position),
@@ -138,55 +141,27 @@ const TeamModal: React.FC<{
             teamSourceLinks.splice(0);
             setIsModalOpen(false);
             setFileList([]);
-            setCustomWarningVisible(false);
-            setExistWarningVisible(false);
         }
     };
 
     const closeModal = () => {
         if (!waitingForApiResponse) {
             setIsModalOpen(false);
+            setIsSaveButtonDisabled(true);
         }
     };
 
     const onSuccesfulSubmitLinks = (formValues: any) => {
         const url = formValues.url as string;
         const socialName = teamLinksForm.getFieldValue('logotype');
-        const logotype = SOCIAL_OPTIONS.find( opt => opt.value === socialName)?.logo;
-        setExistWarningVisible(false);
-        setCustomWarningVisible(false);
-        setInvalidWarningVisible(false);
+        const logotype = SOCIAL_OPTIONS.find((opt) => opt.value === socialName)?.logo;
+        const newId = getNewId(teamSourceLinks);
 
-        if (!url) {
-            return;
-        }
-        if (logotype === undefined) {
-            return;
-        }
-
-        try {
-            const urlObject = new URL(url);
-        } catch {
-            setInvalidWarningVisible(true);
-            return;
-        }
-
-        if (!url.toLocaleLowerCase().includes(socialName)) {
-            setCustomWarningVisible(true);
-        } else {
-            const newId = getNewId(teamSourceLinks);
-            const isLogoTypePresent = teamSourceLinks.some(obj => obj.logoType === logotype);
-
-            if (isLogoTypePresent) {
-                setExistWarningVisible(true);
-            } else {
-                setTeamSourceLinks([...teamSourceLinks, {
-                    id: newId,
-                    logoType: logotype,
-                    targetUrl: url,
-                }]);
-            }
-        }
+        setTeamSourceLinks([...teamSourceLinks, {
+            id: newId,
+            logoType: Number(logotype),
+            targetUrl: url,
+        }]);
     };
 
     const removeImage = () => {
@@ -198,6 +173,7 @@ const TeamModal: React.FC<{
             await form.validateFields();
             setWaitingForApiResponse(true);
             await form.submit();
+            setIsSaveButtonDisabled(true);
         } catch (error) {
             message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
         }
@@ -250,6 +226,19 @@ const TeamModal: React.FC<{
 
     const handleCheckboxChange = (e: { target: { checked: boolean | ((prevState: boolean) => boolean); }; }) => {
         setIsMain(e.target.checked);
+        handleInputChange();
+    };
+
+	  const handleInputChange = () => {
+	  	setIsSaveButtonDisabled(false);
+  	}
+    const checkFile = (file: UploadFile) => checkImageFileType(file.type);
+
+    const handleFileChange = (param: UploadChangeParam<UploadFile<unknown>>) => {
+        if (checkFile(param.file)) {
+            setFileList(param.fileList);
+        }
+        handleInputChange();
     };
 
     return (
@@ -274,7 +263,7 @@ const TeamModal: React.FC<{
                         <h2>
                             {teamMember ? 'Редагувати' : 'Додати'}
                             {' '}
-нового члена команди
+                            нового члена команди
                         </h2>
                     </div>
                     <div className="checkbox-container">
@@ -290,63 +279,56 @@ const TeamModal: React.FC<{
                         label="Прізвище та ім'я: "
                         rules={[{ required: true, message: "Введіть прізвище та ім'я" }]}
                     >
-                        <Input maxLength={41} showCount />
+                        <Input maxLength={41} showCount onChange={handleInputChange} />
                     </Form.Item>
 
                     <Form.Item label="Позиції">
                         <div className="tags-block-positionitems">
-
                             <Select
+                                aria-label='Позиції'
                                 className="positions-select-input"
                                 onSelect={onPositionSelect}
                                 mode="tags"
                                 onDeselect={onPositionDeselect}
                                 value={selectedPositions.map((x) => x.position)}
-                            >
-                                {positions.map((t) => <Option key={`${t.id}`} value={t.position} />)}
-                            </Select>
+                                onChange={handleInputChange}
+                                options={positions.map((t) => ({ value: t.position, label: t.position }))}
+                            />
                         </div>
                     </Form.Item>
                     <Form.Item
                         name="description"
                         label="Опис: "
                     >
-                        <TextArea showCount maxLength={70} />
+                        <Input.TextArea showCount maxLength={70} onChange={handleInputChange} />
                     </Form.Item>
 
                     <Form.Item
                         name="image"
                         label="Фото"
-                        valuePropName="fileList"
-                        getValueFromEvent={(e: any) => {
-                            if (Array.isArray(e)) {
-                                return e;
-                            }
-                            return e?.fileList;
-                        }}
                         rules={[
                             {
                                 required: true,
                                 message: 'Будь ласка, завантажте фото',
                             },
+                            { validator: imageValidator },
                         ]}
                     >
                         <FileUploader
-                            onChange={(param) => {
-                                setFileList(param.fileList);
-                            }}
                             fileList={fileList}
                             multiple={false}
                             accept=".jpeg,.png,.jpg,.webp"
                             listType="picture-card"
                             maxCount={1}
+                            beforeUpload={checkFile}
+                            onChange={handleFileChange}
                             onPreview={(e) => {
                                 setFilePreview(e); setPreviewOpen(true);
                             }}
                             onRemove={removeImage}
                             uploadTo="image"
                             onSuccessUpload={(file: Image | Audio) => {
-                                let image: Image = file as Image;
+                                const image: Image = file as Image;
                                 imageId.current = image.id;
                             }}
                             defaultFileList={getImageAsFileInArray()}
@@ -375,8 +357,12 @@ const TeamModal: React.FC<{
                             <TeamLink link={link} />
                             <p>{link.targetUrl}</p>
                             <DeleteOutlined
-                                onClick={() => setTeamSourceLinks(teamSourceLinks
-                                    .filter((l) => l.id !== link.id))}
+                                onClick={() => {
+                                    setTeamSourceLinks(teamSourceLinks
+                                        .filter((l) => l.id !== link.id))
+                                    handleInputChange();
+                                }
+                                }
                             />
                         </div>
                     ))}
@@ -386,17 +372,34 @@ const TeamModal: React.FC<{
                         name="logotype"
                         label="Соціальна мережа"
                         rules={[{ required: true, message: 'Оберіть соц. мережу' }]}
+                        style={{ minWidth: '135px' }}
                     >
                         <Select
+                            aria-label='Соціальна мережа'
                             data-testid="logotype-select"
                             options={SOCIAL_OPTIONS}
+                            onChange={() => teamLinksForm.validateFields(['url'])}
                         />
                     </Form.Item>
                     <Form.Item
                         label="Посилання"
                         className="url-input"
                         name="url"
-                        rules={[{ required: true, message: 'Введіть посилання' }]}
+                        rules={[
+                            { required: true, message: 'Введіть посилання' },
+                            {
+                                validator: (_, value) => {
+                                    const socialName = teamLinksForm.getFieldValue('logotype');
+                                    return validateSocialLink<LogoType>(
+                                        value,
+                                        SOCIAL_OPTIONS,
+                                        LOGO_TYPES,
+                                        teamSourceLinks,
+                                        socialName,
+                                    );
+                                },
+                            },
+                        ]}
                     >
                         <Input min={1} max={255} showCount data-testid="link-input" />
                     </Form.Item>
@@ -406,22 +409,18 @@ const TeamModal: React.FC<{
                     >
                         <Popover content="Додати" trigger="hover">
                             <Button htmlType="submit" className="plus-button" data-testid="add-button">
-                                <PlusOutlined />
+                                <PlusOutlined onClick={handleInputChange} />
                             </Button>
                         </Popover>
                     </Form.Item>
-
-                    {customWarningVisible
-                        ? <p className="error-message">Посилання не співпадає з обраною соціальною мережею</p> : ''}
-                    {existWarningVisible
-                        ? <p className="error-message">Посилання на таку соціальну мережу вже додано</p> : ''}
-                    {invalidWarningVisible
-                        ? <p className="error-message">Недійсний формат посилання</p> : ''}
                 </div>
 
                 <div className="center">
-                    {/* disabled={fileList?.length === 0} */}
-                    <Button className="streetcode-custom-button" onClick={handleOk}>
+                    <Button
+                        disabled={isSaveButtonDisabled || fileList.length === 0} 
+                        className="streetcode-custom-button"
+                        onClick={handleOk}
+                    >
                         Зберегти
                     </Button>
                 </div>

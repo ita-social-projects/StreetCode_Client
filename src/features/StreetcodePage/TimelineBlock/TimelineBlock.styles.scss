@@ -33,7 +33,7 @@ $timelineSquareImg: "@assets/images/timeline/Square.webp";
     }
 
     .slick-list {
-      margin:f.pxToRem(0) !important;
+      margin: f.pxToRem(0) !important;
     }
 
   .slick-track {
@@ -53,13 +53,13 @@ $timelineSquareImg: "@assets/images/timeline/Square.webp";
 
     .slick-slide {
       border-radius: 40px;
-      border-width:f.pxToRem(15px) f.pxToRem(15px);
+      border-width: f.pxToRem(15px) f.pxToRem(15px);
       border-style: solid ;
       border-color: c.$timeline-reel-color;
       @include mut.bg-image($timelineSquareImg);
       
 
-      background-size:f.pxToRem(605px) f.pxToRem(365px);
+      background-size: f.pxToRem(605px) f.pxToRem(365px);
       background-position: center;   
 
       &:nth-child(2n + 1) {
@@ -72,7 +72,7 @@ $timelineSquareImg: "@assets/images/timeline/Square.webp";
     
     .slick-current {
       border-radius: 40px;
-      box-shadow: inset  0px 0px 0px 6px c.$pure-white-color;
+      box-shadow: inset  0 0 0 6px c.$pure-white-color;
     }
   }
 }
@@ -107,12 +107,12 @@ $timelineSquareImg: "@assets/images/timeline/Square.webp";
         }
         .slick-slide {
           border-radius: 20px;
-          border-width:f.pxToRem(7px) f.pxToRem(7px);
-          background-size:f.pxToRem(295px) f.pxToRem(185px);
+          border-width: f.pxToRem(7px) f.pxToRem(7px);
+          background-size: f.pxToRem(295px) f.pxToRem(211px);
           background-position: center;  
         }
         .slick-current {
-          box-shadow: inset  0px 0px 0px 3px c.$pure-white-color;
+          box-shadow: inset  0 0 0 3px c.$pure-white-color;
         }
       }
     }

@@ -114,7 +114,7 @@ const MapOSMAdmin = () => {
                         if (results && status === 'OK') {
                             setAddress(results[0].formatted_address);
                         } else {
-                            console.error(`Geocode was not successful for the following reason: ${status}`);
+                            console.error('Geocode was not successful for the following reason:', status);
                         }
                     },
                 );
@@ -161,7 +161,7 @@ const MapOSMAdmin = () => {
                     if (results && status === 'OK') {
                         setAddress(results[0].formatted_address);
                     } else {
-                        console.error(`Geocode was not successful for the following reason: ${status}`);
+                        console.error('Geocode was not successful for the following reason:', status);
                     }
                 },
             );

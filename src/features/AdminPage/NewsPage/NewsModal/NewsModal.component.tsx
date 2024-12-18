@@ -54,8 +54,6 @@ const NewsModal: React.FC<{
     const { newsStore } = useMobx();
     const [previewOpen, setPreviewOpen] = useState(false);
     const [filePreview, setFilePreview] = useState<UploadFile | null>(null);
-    const [textIsPresent, setTextIsPresent] = useState<boolean>(false);
-    const [textIsChanged, setTextIsChanged] = useState<boolean>(false);
     const imageId = useRef<number | undefined>(0);
     const image = useRef<Image | undefined>(undefined);
     const editorRef = useRef<ReactQuill | null>(null);
@@ -65,6 +63,8 @@ const NewsModal: React.FC<{
     const [actionSuccess, setActionSuccess] = useState(false);
     const [waitingForApiResponse, setWaitingForApiResponse] = useState(false);
     const [editorCharacterCount, setEditorCharacterCount] = useState<number>(0);
+    const [removedImage, setRemovedImage] = useState<Image | undefined>(undefined);
+	const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
 
     message.config({
         top: 100,
@@ -123,7 +123,19 @@ const NewsModal: React.FC<{
         }
     }, [newsItem, open, form]);
 
+    useEffect(() => {
+        if (open) {
+            const isEditorEmpty = editorRef.current?.editor?.getText().trim() === '';
+            if (isEditorEmpty) {
+                form.setFields([{ name: 'editor', errors: [] }]);
+            } else {
+                form.setFields([{ name: 'editor', errors: ['Введіть текст'] }]);
+            }
+        }
+    }, [open]);
+
     const removeImage = () => {
+        setRemovedImage(image.current);
         imageId.current = undefined;
         image.current = undefined;
         if (newsItem) {
@@ -135,8 +147,7 @@ const NewsModal: React.FC<{
         if (!waitingForApiResponse) {
             form.resetFields();
             setIsModalOpen(false);
-            setTextIsPresent(false);
-            setTextIsChanged(false);
+            setRemovedImage(undefined);
             editorRef.current?.editor?.setText('');
         }
     };
@@ -144,6 +155,15 @@ const NewsModal: React.FC<{
     const closeModal = () => {
         if (!waitingForApiResponse) {
             setIsModalOpen(false);
+			setIsSaveButtonDisabled(true);
+            if (removedImage) {
+                imageId.current = removedImage.id;
+                image.current = removedImage;
+                if (newsItem) {
+                    newsItem.image = removedImage;
+                }
+                setRemovedImage(undefined);
+            }
         }
     };
 
@@ -152,36 +172,20 @@ const NewsModal: React.FC<{
     ukUAlocaleDatePicker.lang.shortWeekDays = dayJsUa.weekdaysShort;
     ukUAlocaleDatePicker.lang.shortMonths = dayJsUa.monthsShort;
 
-    const handleTextChange = () => {
-        setTextIsChanged(true);
-        const emptyTextField = editorRef.current?.editor?.getText().trim() === '';
-
-        if (emptyTextField) {
-            setTextIsPresent(false);
-            return false;
-        }
-
-        setTextIsPresent(true);
-        return true;
-    };
-
     const handleOk = async () => {
         try {
             await form.validateFields();
             checkQuillEditorTextLength(editorCharacterCount, sizeLimit);
-            if (handleTextChange()) {
-                setWaitingForApiResponse(true);
-                await form.submit();
-            } else {
-                throw new Error();
-            }
+            setWaitingForApiResponse(true);
+            form.submit();
+			setIsSaveButtonDisabled(true);
         } catch {
             message.error(fillInAllFieldsMessage);
         }
     };
 
     const onSuccessfulSubmitNews = async (formValues: any) => {
-        message.loading('Зберігання...');
+        const hideLoadingMessage = message.loading('Зберігання...', 0);
 
         const news: News = {
             id: 0,
@@ -203,7 +207,6 @@ const NewsModal: React.FC<{
             if (newsItem) {
                 news.id = newsItem.id;
                 news.imageId = imageId.current as number;
-                news.image = image.current;
 
                 await newsStore.updateNews(news);
             } else {
@@ -214,14 +217,19 @@ const NewsModal: React.FC<{
                 afterSubmit(news);
             }
             setActionSuccess(true);
+            setRemovedImage(undefined);
         } catch (e: unknown) {
             message.error('Не вдалось оновити/створити новину. Спробуйте ще раз.');
             setWaitingForApiResponse(false);
+        } finally {
+            hideLoadingMessage();
         }
     };
+    const handleInputChange = () => setIsSaveButtonDisabled(false);
 
     const handleUpdate = (value: any) => {
         setData(value);
+        handleInputChange();
     };
 
     return (
@@ -261,18 +269,18 @@ const NewsModal: React.FC<{
                             label="Заголовок: "
                             rules={[{ required: true, message: 'Введіть заголовок' }]}
                         >
-                            <Input maxLength={100} showCount />
+                            <Input maxLength={100} showCount onChange={handleInputChange} />
                         </Form.Item>
 
                         <Form.Item
                             name="url"
-                            label="Посилання: "
+                            label="Транслітерація для URL: "
                             rules={[
-                                { required: true, message: 'Введіть Посилання' },
+                                { required: true, message: 'Введіть транслітерацію' },
                                 {
-                                    pattern: /^[a-z-]+$/,
+                                    pattern: /^[0-9a-z-]+$/,
                                     message:
-                                        'Посилання має містити лише малі латинські літери та дефіс',
+                                        'Транслітерація має містити лише малі латинські літери, цифри та дефіс',
                                 },
                                 {
                                     validator: async (_, value) => {
@@ -287,23 +295,33 @@ const NewsModal: React.FC<{
                                 },
                             ]}
                         >
-                            <Input maxLength={200} showCount />
+                            <Input maxLength={200} showCount onChange={handleInputChange} />
                         </Form.Item>
 
-                        <div className="required-text" title="Текст:">
-                            <span className="star">&#x204E;</span>
-                            <span>Текст:</span>
-                        </div>
-                        <Editor
-                            qRef={editorRef}
-                            value={data}
-                            onChange={handleUpdate}
-                            maxChars={sizeLimit}
-                            onCharacterCountChange={setEditorCharacterCount}
-                        />
-                        {!textIsPresent && textIsChanged && (
-                            <p className="form-text">Введіть текст</p>
-                        )}
+                        <Form.Item
+                            name="editor"
+                            label="Текст:"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Введіть текст',
+                                    validator: () => {
+                                        if (!data) {
+                                            return Promise.reject(new Error('Введіть текст'));
+                                        }
+                                        return Promise.resolve();
+                                    },
+                                },
+                            ]}
+                        >
+                            <Editor
+                                qRef={editorRef}
+                                value={data}
+                                onChange={handleUpdate}
+                                maxChars={sizeLimit}
+                                onCharacterCountChange={setEditorCharacterCount}
+                            />
+                        </Form.Item>
 
                         <Form.Item
                             name="image"
@@ -371,6 +389,7 @@ const NewsModal: React.FC<{
                                         ]
                                         : []
                                 }
+								                onChange={handleInputChange}
 
                             >
                                 <p>Виберіть чи перетягніть файл</p>
@@ -382,7 +401,7 @@ const NewsModal: React.FC<{
                             label="Дата створення: "
                             rules={[{ required: true, message: 'Введіть дату' }]}
                         >
-                            <DatePicker showTime allowClear={false} />
+                            <DatePicker showTime allowClear={false} onChange={handleInputChange} />
                         </Form.Item>
                         <PreviewFileModal
                             opened={previewOpen}
@@ -394,6 +413,7 @@ const NewsModal: React.FC<{
                             <Button
                                 className="streetcode-custom-button"
                                 onClick={() => handleOk()}
+								                disabled={isSaveButtonDisabled}
                             >
                                 Зберегти
                             </Button>

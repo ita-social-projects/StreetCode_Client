@@ -21,14 +21,14 @@ Object.defineProperty(window, 'matchMedia', {
     })),
 });
 
-jest.mock('@/app/api/team/positions.api', () => ({
-    getAll: jest.fn(() => Promise.resolve([])),
+jest.mock('@/app/api/team/teampositions.api', () => ({
+    getAll: jest.fn(() => Promise.resolve({ positions: [{ id: 1, position: 'Manager' }] })),
 }));
 
 describe('TeamModal', () => {
     it('should add link on add button click when input is valid', async () => {
         render(<TeamModal open setIsModalOpen={mockSetIsModalOpen} />);
-
+        
         const form = screen.getByTestId('link-form');
         const logotypeInput = screen.getByTestId('logotype-select').firstElementChild;
         const urlInput = screen.getByTestId('link-input');

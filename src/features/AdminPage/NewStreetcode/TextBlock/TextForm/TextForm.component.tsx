@@ -1,7 +1,8 @@
 import './TextForm.styles.scss';
 
-import { Form, Input } from 'antd';
-import FormItem from 'antd/es/form/FormItem';
+import { useEffect } from 'react';
+
+import { Form, FormInstance, Input } from 'antd';
 
 import QUILL_TEXTS_LENGTH from
     '@/features/AdminPage/NewStreetcode/TextBlock/TextLengthConstants/textMaxLength.constant';
@@ -13,7 +14,12 @@ import LinkEditor from './Editors/LinkEditor.component';
 import TextEditor from './Editors/TextEditor.component';
 import TextPreview from './TextPreview/TextPreview.component';
 
+const isQuillEmpty = (text: string | undefined) => {
+    return !text || text.replace(/<(.|\n)*?>/g, '').trim().length === 0;
+};
+
 interface Props {
+    form: FormInstance<unknown>,
     inputInfo: Partial<Text> | undefined;
     setInputInfo: React.Dispatch<React.SetStateAction<Partial<Text> | undefined>>;
     video: Video | undefined;
@@ -21,7 +27,7 @@ interface Props {
     onChange: (fieldName: string, value: any) => void;
 }
 const TextForm = ({
-    inputInfo, setInputInfo, video, setVideo, onChange,
+    form, inputInfo, setInputInfo, video, setVideo, onChange,
 }: Props) => {
     const maxTitleLength = 50;
     const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,15 +38,31 @@ const TextForm = ({
         }));
         onChange('title', value);
     };
+
+    useEffect(() => {
+        form.setFieldsValue({
+            title: inputInfo?.title,
+        });
+    }, [inputInfo, form]);
+
     return (
-        <FormItem className="textForm">
+        <Form.Item className="textForm">
             <Form.Item
                 label="Заголовок"
+                name="title"
+                rules={[{
+                    message: 'Введіть заголовок до тексту',
+                    validator(_, value) {
+                        if (!value && !isQuillEmpty(inputInfo?.textContent)) {
+                            return Promise.reject(new Error('Введіть заголовок до тексту'));
+                        }
+                        return Promise.resolve();
+                    },
+                },
+                ]}
             >
                 <Input
                     showCount
-                    value={inputInfo?.title}
-                    name="title"
                     type="text"
                     maxLength={maxTitleLength}
                     onChange={handleChangeTitle}
@@ -74,7 +96,7 @@ const TextForm = ({
                     onChange={onChange}
                 />
             </Form.Item>
-        </FormItem>
+        </Form.Item>
     );
 };
 

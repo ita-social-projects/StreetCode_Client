@@ -3,9 +3,9 @@ import './TeamPage.styles.scss';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import { DeleteOutlined, EditOutlined, StarOutlined } from '@ant-design/icons';
+import { useQuery } from '@tanstack/react-query';
 
-
-import { Button, Table } from 'antd';
+import { Button, Empty, Pagination,Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 
 import Image from '@/models/media/image.model';
@@ -16,8 +16,8 @@ import useMobx, { useModalContext } from '../../../app/stores/root-store';
 import TeamMember, { TeamMemberLink } from '../../../models/team/team.model';
 import PageBar from '../PageBar/PageBar.component';
 
-import TeamModal from './TeamModal/TeamModal.component';
 import LOGO_ICONS from './TeamModal/constants/logoIcons';
+import TeamModal from './TeamModal/TeamModal.component';
 
 const TeamPage = () => {
     const { teamStore } = useMobx();
@@ -26,8 +26,13 @@ const TeamPage = () => {
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
     const [teamToEdit, setTeamToedit] = useState<TeamMember>();
 
+    const { isLoading } = useQuery({
+        queryKey: ['team', teamStore.PaginationInfo.CurrentPage],
+        queryFn: () => teamStore.getAll(),
+    });
+
     const updatedTeam = () => {
-        Promise.all([teamStore?.fetchTeamAll()]).then(() => {
+        Promise.all([teamStore?.getAll()]).then(() => {
             teamStore?.TeamMap.forEach((val, key) => {
                 ImageStore.getImageById(val.imageId).then((image) => {
                     teamStore.TeamMap.set(val.id, { ...val, image });
@@ -108,7 +113,7 @@ const TeamPage = () => {
             render: (links: TeamMemberLink[], team) => (
                 <div key={`${links.length}${team.id}${team.imageId}`} className="team-links">
                     {links.map((link) => {
-                        const LogoComponent = LOGO_ICONS.find( logo => logo.type === link.logoType)!.icon;
+                        const LogoComponent = LOGO_ICONS.find((logo) => logo.type === link.logoType)!.icon;
                         return (
                             <a
                                 key={`${link.id}${link.targetUrl}`}
@@ -141,7 +146,7 @@ const TeamPage = () => {
                                     teamStore.deleteTeam(team.id).then(() => {
                                         teamStore.TeamMap.delete(team.id);
                                     }).catch((e) => {
-                                        console.log(e);
+                                        console.error(e);
                                     });
                                     modalStore.setConfirmationModal('confirmation');
                                 },
@@ -175,12 +180,37 @@ const TeamPage = () => {
                     </Button>
                 </div>
                 <Table
-                    pagination={{ pageSize: 10 }}
+                    pagination={false}
                     className="team-table"
                     columns={columns}
-                    dataSource={teamStore?.getTeamArray}
+                    dataSource={teamStore?.getTeamArray || []}
                     rowKey="id"
+                    locale={{
+                        emptyText: isLoading ? (
+                            <div className="loadingWrapper">
+                                <div id="loadingGif" />
+                            </div>
+                        ) : (
+                            <Empty description="Дані відсутні" />
+                        ),
+                    }}
                 />
+                <div className="underTableZone">
+                    <br />
+                    <div className="underTableElement">
+                        <Pagination
+                            className="paginationElement"
+                            showSizeChanger={false}
+                            defaultCurrent={1}
+                            current={teamStore.PaginationInfo.CurrentPage}
+                            total={teamStore.PaginationInfo.TotalItems}
+                            pageSize={teamStore.PaginationInfo.PageSize}
+                            onChange={(value: any) => {
+                                teamStore.setCurrentPage(value);
+                            }}
+                        />
+                    </div>
+                </div>
             </div>
             <TeamModal open={modalAddOpened} setIsModalOpen={setModalAddOpened} />
             <TeamModal

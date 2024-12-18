@@ -1,12 +1,13 @@
-import './CategoriesPage.style.scss'
+import './CategoriesPage.style.scss';
 
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import ImageStore from '@stores/image-store';
 import useMobx, { useModalContext } from '@stores/root-store';
+import { useQuery } from '@tanstack/react-query';
 
-import { Button } from 'antd';
+import { Button, Empty, Pagination } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
@@ -22,12 +23,17 @@ const CategoriesMainPage: React.FC = observer(() => {
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
     const [categoryToEdit, setSourcesToEdit] = useState<SourceCategoryAdmin>();
 
+    const { isLoading } = useQuery({
+        queryKey: ['categories', sourcesStore.PaginationInfo.CurrentPage],
+        queryFn: () => sourcesStore.fetchSrcCategoriesAll(),
+    });
+
     const updatedCategories = () => {
         Promise.all([
             sourcesStore.fetchSrcCategoriesAll(),
         ]).then(() => {
             sourcesStore?.srcCategoriesMap.forEach((val, key) => {
-                if (val.imageId !== null && val.imageId !== undefined) {
+                if (!!val.imageId && !val.image) {
                     ImageStore.getImageById(val.imageId!).then((image) => {
                         sourcesStore.srcCategoriesMap.set(
                             key,
@@ -36,7 +42,9 @@ const CategoriesMainPage: React.FC = observer(() => {
                     });
                 }
             });
-        }).then(() => sourcesStore.setInternalCategoriesMap(sourcesStore.getSrcCategoriesArray));
+        }).then(() => {
+            sourcesStore.setInternalCategoriesMap(sourcesStore.getSrcCategoriesArray);
+        });
     };
 
     useEffect(() => {
@@ -92,12 +100,12 @@ const CategoriesMainPage: React.FC = observer(() => {
                                                 sourcesStore.srcCategoriesMap.delete(srcCategory.id);
                                             }
                                         }).catch((e) => {
-                                            console.log(e);
+                                            console.error(e);
                                         });
                                         modalStore.setConfirmationModal('confirmation');
                                     }
                                 },
-                                'Ви впевнені, що хочете видалити цю новину?',
+                                'Ви впевнені, що хочете видалити цю категорію?',
                             );
                         }}
                     />
@@ -126,12 +134,37 @@ const CategoriesMainPage: React.FC = observer(() => {
                     </Button>
                 </div>
                 <Table
-                    pagination={{ pageSize: 10 }}
+                    pagination={false}
                     className="categories-table"
                     columns={columns}
-                    dataSource={sourcesStore?.getSrcCategoriesArray}
+                    dataSource={sourcesStore.getSrcCategoriesArray || []}
                     rowKey="id"
+                    locale={{
+                        emptyText: isLoading ? (
+                            <div className="loadingWrapper">
+                                <div id="loadingGif" />
+                            </div>
+                        ) : (
+                            <Empty description="Дані відсутні" />
+                        ),
+                    }}
                 />
+                <div className="underTableZone">
+                    <br />
+                    <div className="underTableElement">
+                        <Pagination
+                            className="paginationElement"
+                            showSizeChanger={false}
+                            defaultCurrent={1}
+                            current={sourcesStore.PaginationInfo.CurrentPage}
+                            total={sourcesStore.PaginationInfo.TotalItems}
+                            pageSize={sourcesStore.PaginationInfo.PageSize}
+                            onChange={(value: any) => {
+                                sourcesStore.setCurrentPage(value);
+                            }}
+                        />
+                    </div>
+                </div>
             </div>
             <CategoryAdminModal isModalVisible={modalAddOpened} setIsModalOpen={setModalAddOpened} />
             <CategoryAdminModal isModalVisible={modalEditOpened} setIsModalOpen={setModalEditOpened} initialData={categoryToEdit} />

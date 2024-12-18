@@ -41,7 +41,6 @@ const MainBlock = ({ setActiveTagId, streetcode, setShowAllTags } : Props) => {
                     </div>
                 </div>
             </div>
-            <ListenTextModal />
         </div>
     );
 };

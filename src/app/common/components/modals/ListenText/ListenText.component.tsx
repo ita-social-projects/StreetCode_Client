@@ -15,6 +15,7 @@ const ListenTextModal = () => {
     let timeoutId: NodeJS.Timeout;
 
     const handleClose = () => {
+        if (closing) return;
         setClosing(true);
         timeoutId = setTimeout(() => {
             setModal('audio');

@@ -26,7 +26,13 @@
         &:focus {
             outline: none;
             box-shadow: none;
-          }
+        }
         @include vnd.vendored(transition, 'scale .3s ease');
+
+        &.active {
+            color: c.$text-red-color;
+            text-decoration: underline;
+            text-underline-offset: f.pxToRem(5px);
+        }
     }
 }

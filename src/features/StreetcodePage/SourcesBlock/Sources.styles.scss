@@ -32,6 +32,13 @@
         position: relative;
         @include mut.sized($width: 1065px);
         margin: 0 auto;
+        .sliderClass {
+            .slick-list {
+                @include mut.rem-padded($bottom: 23px);
+                margin-left: -80px;
+                margin-right: -60px;
+            }
+        }
         .slick-next:before {
             @include ss.slick-arrow-pseudo(Right, -23px)
         }
@@ -45,13 +52,15 @@
             display: none;
             visibility: hidden;
         }
+        .sliderClass {
+            .slick-list {
+                @include mut.rem-padded($bottom: 23px);
+                margin-left: -80px;
+                margin-right: -100px;
+            }
+        }
     }
     .sliderClass {
-        .slick-list {
-            @include mut.rem-padded($bottom: 23px);
-            margin-left: -80px;
-            margin-right: -60px;
-        }
         .slick-track {
             @include mut.flex-centered($gap: 30px);
             width: unset !important;
@@ -111,25 +120,60 @@
         }
     }
     @media screen and (max-width: 1024px) {
-        @include mut.sized($width: 755px);
+        @include mut.sized($width: 850px);
+        .slick-list {
+            @include mut.rem-padded($bottom: 23px);
+            margin-left: -80px !important;
+            margin-right: -100px !important;
+        }
     }
     @media screen and (max-width: 940px) {
-        @include mut.sized($width: 655px);
+        @include mut.sized($width: 770px);
+        .slick-list {
+            @include mut.rem-padded($bottom: 23px);
+            margin-left: -80px !important;
+            margin-right: -100px !important;
+        }
     }
     @media screen and (max-width: 829px) {
-        @include mut.sized($width: 530px);
+        @include mut.sized($width: 660px);
+        .slick-list {
+            @include mut.rem-padded($bottom: 23px);
+            margin-left: -80px !important;
+            margin-right: -100px !important;
+        }
     }
     @media screen and (max-width: 715px) {
-        @include mut.sized($width: 450px);
+        @include mut.sized($width: 550px);
+        .slick-list {
+            @include mut.rem-padded($bottom: 23px);
+            margin-left: -80px !important;
+            margin-right: -100px !important;
+        }
     }
     @media screen and (max-width: 630px) {
-        @include mut.sized($width: 380px);
+        @include mut.sized($width: 465px);
+        .slick-list {
+            @include mut.rem-padded($bottom: 23px);
+            margin-left: -80px !important;
+            margin-right: -100px !important;
+        }
     }
     @media screen and (max-width: 560px) {
-        @include mut.sized($width: 265px);
+        @include mut.sized($width: 395px);
+        .slick-list {
+            @include mut.rem-padded($bottom: 23px);
+            margin-left: -80px !important;
+            margin-right: -100px !important;
+        }
     }
     @media screen and (max-width: 455px) {
-        @include mut.sized($width: 205px);
+        @include mut.sized($width: 280px);
+        .slick-list {
+            @include mut.rem-padded($bottom: 23px);
+            margin-left: -80px !important;
+            margin-right: -100px !important;
+        }
     }
 }
 
@@ -151,42 +195,40 @@
     }
     margin-left: 10px;
     @media screen and (max-width: 1270px) {
-        @include mut.sizedImportant(1100px, 100%);
-        margin-left: 105px;
+        @include mut.sizedImportant(1060px, 100%);
     }
     @media screen and (max-width: 1175px) {
-        @include mut.sizedImportant(1050px, 100%);
-        margin-left: 105px;
+        @include mut.sizedImportant(1000px, 100%);
     }
     @media screen and (max-width: 1120px) {
         @include mut.sizedImportant(950px, 100%);
     }
     @media screen and (max-width: 1050px) {
-        @include mut.sizedImportant(850px, 100%);
+        @include mut.sizedImportant(890px, 100%);
     }
     @media screen and (max-width: 925px) {
-        @include mut.sizedImportant(740px, 100%);
+        @include mut.sizedImportant(750px, 100%);
     }
     @media screen and (max-width: 810px) {
-        @include mut.sizedImportant(650px, 100%);
+        @include mut.sizedImportant(630px, 100%);
     }
     @media screen and (max-width: 735px) {
-        @include mut.sizedImportant(600px, 100%);
+        @include mut.sizedImportant(575px, 100%);
     }
     @media screen and (max-width: 680px) {
-        @include mut.sizedImportant(550px, 100%);
-    }
-    @media screen and (max-width: 620px) {
         @include mut.sizedImportant(510px, 100%);
     }
+    @media screen and (max-width: 620px) {
+        @include mut.sizedImportant(450px, 100%);
+    }
     @media screen and (max-width: 580px) {
-        @include mut.sizedImportant(480px, 100%);
+        @include mut.sizedImportant(410px, 100%);
     }
     @media screen and (max-width: 550px) {
-        @include mut.sizedImportant(390px, 100%);
+        @include mut.sizedImportant(360px, 100%);
     }
     @media screen and (max-width: 460px) {
-        @include mut.sizedImportant(290px, 100%);
+        @include mut.sizedImportant(300px, 100%);
     }
 }
 
@@ -196,8 +238,5 @@
     }
     .sourcesWrapper .sliderClass .slick-track {
         gap: f.pxToRem(10px);
-    }
-    .sourcesWrapper .slick-dots {
-        left: f.pxToRem(1px);
     }
 }
