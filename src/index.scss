@@ -6,8 +6,11 @@
 *:before,
 *:after {
   margin: 0;
-  text-decoration: none;
   box-sizing: border-box;
+}
+
+*:not(.additionalText *):not(.readMoreComponent *) {
+  text-decoration: none;
 }
 
 .ant-message {

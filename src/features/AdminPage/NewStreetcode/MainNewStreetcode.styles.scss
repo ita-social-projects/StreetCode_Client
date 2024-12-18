@@ -9,7 +9,7 @@ $articlesImg: "@assets/images/sources/Articles.webp";
 
     .adminContainer
     {
-         @include mut.sized(80%);
+        @include mut.sized(80%);
         margin: auto;
 
         &-block{
@@ -18,22 +18,18 @@ $articlesImg: "@assets/images/sources/Articles.webp";
             flex-direction: column;
         }
 
-        h2{
+        h2:not(.quillEditor h2):not(.textPreview h2) {
             margin-bottom: f.pxToRem(15px);
             font-size: 1.5em;
             font-weight: 500;
         }
 
-        h3{
+        h3:not(.quillEditor h3):not(.textPreview h3) {
             font-weight: 300;
             margin-bottom: f.pxToRem(7px);
         }
 
-        h4{
-            font-weight: 300;
-        }
-
-        .adminContainer-red-h4{
+        h4:not(.quillEditor h4):not(.textPreview h4) {
             font-weight: 300;
             color: c.$accented-red-color;
         }

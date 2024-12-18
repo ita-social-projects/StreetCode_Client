@@ -10,7 +10,6 @@
     @include mut.rem-margined($top: 12px, $bottom: 42px);
     font-size: f.pxToRem(20px);
     line-height: f.pxToRem(26px);
-    font-style: italic;
     word-break: break-all;
 
     p {
