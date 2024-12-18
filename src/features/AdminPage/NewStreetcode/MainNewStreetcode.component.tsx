@@ -82,6 +82,7 @@ import PartnerBlockAdmin from './PartnerBlock/PartnerBlockAdmin.components';
 import SubtitleBlock from './SubtitileBlock/SubtitleBlock.component';
 import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
+import MapBlockAdmin from './MapBlock/MapBlockAdmin.component';
 
 function reindex<T extends { index?: number }>(list: T[]): T[] {
     const result = Array.from(list);
@@ -587,7 +588,7 @@ const NewStreetcode = () => {
                         images: createUpdateMediaStore.imagesUpdate.map((img): ImageCreateUpdate => ({ id: img.id, modelState: img.modelState, streetcodeId: img.streetcodeId })),
                         audioId: createUpdateMediaStore.audioId,
                         audios: createUpdateMediaStore.audioUpdate.map((a): AudioUpdate => ({ id: a.id, modelState: a.modelState, streetcodeId: a.streetcodeId })),
-                        transactionLink: arLinkUpdated,
+                        transactionLink: arLinkUpdated!,
                         imagesDetails: (Array.from(factsStore.factImageDetailsMap.values()) as ImageDetails[]).concat(createUpdateMediaStore.getImageDetailsUpdate()),
                     };
 
@@ -687,6 +688,7 @@ const NewStreetcode = () => {
                                 onChange={handleFieldChange}
                             />
                             <TimelineBlockAdmin onChange={handleFieldChange} />
+                            <MapBlockAdmin />
                             <ArtGalleryDndContext>
                                 <StreetcodeArtsBlock />
                                 <ArtGallery
