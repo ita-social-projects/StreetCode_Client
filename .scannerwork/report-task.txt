@@ -1,0 +1,7 @@
+organization=ita-social-projects
+projectKey=ita-social-projects_StreetCode_Client
+serverUrl=https://sonarcloud.io
+serverVersion=8.0.0.58561
+dashboardUrl=https://sonarcloud.io/dashboard?id=ita-social-projects_StreetCode_Client
+ceTaskId=AZPBPsMt3p9bxjbUTTVH
+ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AZPBPsMt3p9bxjbUTTVH
