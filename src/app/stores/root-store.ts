@@ -36,6 +36,7 @@ import StreetcodesByTagStore from './streetcodes-bytag-store';
 import TeamStore from './team-store';
 import ToponymStore from './toponym-store';
 import JobsStore from './jobs-store';
+import TextVideoStore from './streetcode-text-video-store';
 
 interface Store {
     factsStore: FactsStore,
@@ -67,6 +68,7 @@ interface Store {
     relatedByTag: StreetcodesByTagStore,
     createUpdateMediaStore: CreateUpdateMediaStore,
     contextStore: ContextStore,
+    textVideoStore: TextVideoStore,
     artGalleryTemplateStore: ArtGalleryTemplateStore,
     teamPositionsStore: TeamPositionsStore,
     jobsStore: JobsStore
@@ -110,6 +112,7 @@ export const store: Store = {
     artGalleryTemplateStore: new ArtGalleryTemplateStore(),
     streetcodeArtSlideStore: new StreetcodeArtSlideStore(),
     artStore: new ArtStore(),
+    textVideoStore: new TextVideoStore(),
     teamPositionsStore: new TeamPositionsStore(),
     jobsStore: new JobsStore(),
 };
