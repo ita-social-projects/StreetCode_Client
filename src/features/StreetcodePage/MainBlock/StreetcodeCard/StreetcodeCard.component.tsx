@@ -1,7 +1,9 @@
 import './StreetcodeCard.styles.scss';
 
+import {pdf} from '@react-pdf/renderer';
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { PlayCircleFilled } from '@ant-design/icons';
 import TagList from '@components/TagList/TagList.component';
 import BlockSlider from '@features/SlickSlider/SlickSlider.component';
@@ -9,14 +11,17 @@ import { useAsync } from '@hooks/stateful/useAsync.hook';
 import { StreetcodeTag } from '@models/additional-content/tag.model';
 import Streetcode from '@models/streetcode/streetcode-types.model';
 import { useAudioContext, useModalContext, useStreecodePageLoaderContext } from '@stores/root-store';
+import blobStream from 'blob-stream';
 
 import { Button } from 'antd';
-
+import { PDFViewer } from '@react-pdf/renderer';
 import ImagesApi from '@/app/api/media/images.api';
 import TransactionLinksApi from '@/app/api/transactions/transactLinks.api';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import { audioClickEvent } from '@/app/common/utils/googleAnalytics.unility';
 import Image, { ImageAssigment } from '@/models/media/image.model';
+
+import StreetcodeDocument from '../../PdfDocument/StreetcodeDocument';
 
 const fullMonthNumericYearDateFmtr = new Intl.DateTimeFormat('uk-UA', {
     day: 'numeric',
@@ -80,6 +85,19 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setShowAllTags }: Props) =
             TransactionLinksApi.getByStreetcodeId(id).then((x) => setArlink(x.url));
         }
     }, [streetcode]);
+
+    const downloadPDF = async () => {
+        if (streetcode != null) {
+            const buffer = await pdf(<StreetcodeDocument streetcode={streetcode} image={imagesForSlider[0]}/>).toBuffer();
+            const stream = buffer.pipe(blobStream());
+
+            stream.on('finish', () => {
+                const blob = stream.toBlob('application/pdf');
+                const url = stream.toBlobURL('application/pdf');
+                window.open(url);
+            });
+        }
+    };
 
     return (
         streecodePageLoaderContext.isPageLoaded ? (
@@ -170,7 +188,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setShowAllTags }: Props) =
                             ? (
                                 <Button
                                     type="primary"
-                                    className="audioBtn audioBtnActive"
+                                    className="cardFooterButton audioBtnActive"
                                     onClick={() => {
                                         if (audioState.isOpen) {
                                             setModal('audio', undefined, true);
@@ -189,11 +207,17 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setShowAllTags }: Props) =
                                 <Button
                                     disabled
                                     type="primary"
-                                    className="audioBtn"
+                                    className="cardFooterButton audioBtn"
                                 >
                                     <span>Аудіо на підході</span>
                                 </Button>
                             )}
+                        <Button
+                            className="cardFooterButton pdfButton"
+                            onClick={downloadPDF}
+                        >
+                            <span>Завантажити реферат</span>
+                        </Button>
                     </div>
                 </div>
             </div>
