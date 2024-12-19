@@ -6,6 +6,8 @@ import useMobx from '@stores/root-store';
 import { Button } from 'antd';
 
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
+import { useEffect, useState } from 'react';
+import Tag from '@/models/additional-content/tag.model';
 
 interface Props {
     streetCodeid: number,
@@ -20,43 +22,43 @@ const TagsSliderModal = ({ streetCodeid, activeTagId, setActiveTagId, showAllTag
 
     useAsync(
         () => {
-            fetchTagByStreetcodeId(streetCodeid);
-            fetchAllTags();
+            if(streetCodeid) fetchTagByStreetcodeId(streetCodeid);
+            if(showAllTags) fetchAllTags();
         },
-        [streetCodeid],
+        [streetCodeid, showAllTags],
     );
 
-    const tags = getTagArray?.map((tag) => (
+    const renderTags = (tagsArray: Tag[]) => tagsArray.map((tag) => (
         <div key={tag.id}>
             <Button
                 className="tagModalItem"
-                onClick={() => {
-                    setActiveTagId(tag.id);
-                }}
-                key={tag.id}
+                onClick={() => setActiveTagId(tag.id)}
             >
                 {tag.title}
             </Button>
         </div>
-    ));
+      ));
+    
+    const tags = renderTags(getTagArray);
+    const allTags = renderTags(getTagArray);
 
-    const allTags = getAllTagsArray?.map((tag) => (
-        <div key={tag.id}>
-            <Button
-                className="tagModalItem"
-                onClick={() => {
-                    setActiveTagId(tag.id);
-                }}
-                key={tag.id}
-            >
-                {tag.title}
-            </Button>
-        </div>
-    ));
+    const [initialSlide, setInitialSlide] = useState<number | undefined>(undefined);
+    const [hasSetInitialSlide, setHasSetInitialSlide] = useState(false);
 
-    const initialSlide = showAllTags
-        ? getAllTagsArray.findIndex((tag) => tag.id === activeTagId)
-        : getTagArray.findIndex((tag) => tag.id === activeTagId);
+    useEffect(() => {
+        if (hasSetInitialSlide) return;
+    
+        const tagsArray = showAllTags ? getAllTagsArray : getTagArray;
+    
+        if (tagsArray.length > 0) {
+            const slideIndex = tagsArray.findIndex((tag) => tag.id === activeTagId);
+            
+            if (slideIndex !== undefined && slideIndex !== -1) {
+                setInitialSlide(slideIndex); 
+                setHasSetInitialSlide(true); 
+            }
+        }
+    }, [tags]);
 
     const sliderProps = {
         className: 'tagSliderClass',
@@ -70,14 +72,17 @@ const TagsSliderModal = ({ streetCodeid, activeTagId, setActiveTagId, showAllTag
         slidesToScroll: 1,
         initialSlide,
         focusOnSelect: true,
-        beforeChange: (currentSlide: number, nextSlide: number) => setActiveTagId(getAllTagsArray[nextSlide].id),
+        beforeChange: (currentSlide: number, nextSlide: number) => {
+            const newTagId = getAllTagsArray[nextSlide]?.id;
+            if (newTagId) setActiveTagId(newTagId);
+        },
     };
 
     return (
         <div className="tagModalContainer">
             {showAllTags && (allTags.length > 1
                 ? (
-                    <BlockSlider
+                    <BlockSlider key={initialSlide}
                         {...sliderProps}
                     >
                         {allTags}
@@ -89,7 +94,7 @@ const TagsSliderModal = ({ streetCodeid, activeTagId, setActiveTagId, showAllTag
                 ))}
             {!showAllTags && (tags.length > 1
                 ? (
-                    <BlockSlider
+                    <BlockSlider key={initialSlide}
                         {...sliderProps}
                     >
                         {tags}
