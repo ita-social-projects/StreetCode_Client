@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import BlockSlider from '@features/SlickSlider/InterestingFactSliderSlickSlider.component';
+import Image from '@models/media/image.model';
 import useMobx, { useModalContext, useStreetcodeDataContext } from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import InterestingFactItem from '@streetcode/InterestingFactsBlock/InterestingFactItem/InterestingFactItem.component';
@@ -23,26 +24,44 @@ const InterestingFactsComponent = () => {
     const { modalStore: { setModal } } = useModalContext();
 
     const facts = useRef<Fact[]>([]);
-    useAsync(
-        () => {
-            if (getStreetCodeId !== errorStreetCodeId && getStreetCodeId > 0) {
-                factsStore.fetchFactsByStreetcodeId(getStreetCodeId).then(() => {
-                    const res = factsStore.getFactArray;
-                    facts.current = res;
-                    Promise.all(res.map((f, index) => ImagesApi.getById(f.imageId).then((img) => {
-                        res[index].image = img;
-                    }))).then(() => {
-                        setSliderArray(res.length === 2
-                            ? res.concat(res)
-                            : res);
-                    });
-                });
-            }
-        },
-        [getStreetCodeId],
-    );
 
-    const [searchParams, setSearchParams] = useSearchParams();
+    useAsync(async () => {
+        if (getStreetCodeId !== errorStreetCodeId && getStreetCodeId > 0) {
+            await factsStore.fetchFactsByStreetcodeId(getStreetCodeId);
+            const res = factsStore.getFactArray;
+            facts.current = res;
+
+            const uniqueImages = new Map<number, Promise<Image>>();
+            const fetchedImages = new Set();
+
+            const promises = res.map(async (f) => {
+                if (!uniqueImages.has(f.imageId) && !fetchedImages.has(f.imageId)) {
+                    fetchedImages.add(f.imageId);
+                    const imagePromise = ImagesApi.getById(f.imageId);
+                    uniqueImages.set(f.imageId, imagePromise);
+                }
+            });
+            await Promise.all(promises);
+
+            const imageResults = await Promise.all(
+                Array.from(uniqueImages.entries())
+                    .map(([id, promise]) => promise.then((img) => ({ id, img }))),
+            );
+
+            imageResults.forEach(({ id, img }) => {
+                res.forEach((fact) => {
+                    if (fact.imageId === id) {
+                        // eslint-disable-next-line no-param-reassign
+                        fact.image = img;
+                    }
+                });
+            });
+
+            setSliderArray(res.length === 2 ? res.concat(res) : res);
+        }
+    }, [getStreetCodeId]);
+
+    const [searchParams] = useSearchParams();
     const factID = Number(searchParams.get('factId'));
     let initialSlideIndex = sliderArray.findIndex((fact) => fact.id === factID);
     if (initialSlideIndex === -1) initialSlideIndex = 0;
@@ -60,14 +79,14 @@ const InterestingFactsComponent = () => {
                 }
             }, 1000);
         }
-    });
+    }, [isScrolled]);
 
     const handleModalOpen = () =>
     {
         setModal('facts', facts.current[0].id, true);
-    }
+    };
 
-    const setings = {
+    const settings = {
         initialSlide: initialSlideIndex,
         dots: facts.current.length > 2,
         swipeOnClick: false,
@@ -114,18 +133,20 @@ const InterestingFactsComponent = () => {
             {facts.current.length > 0 ? (
                 <div
                     id="wow-facts"
-                    className={`container "interestingFactsWrapper"`}
+                    className={'container "interestingFactsWrapper"'}
                 >
                     <BlockHeading headingText="Wow-факти" />
-                    <div className={`interestingFactsContainer ${facts.current.length === 1 ? "oneFactContainer" : ""}`} >
+                    <div className={`interestingFactsContainer ${facts.current.length === 1 ? 'oneFactContainer' : ''}`}>
                         <div className="interestingFactsSliderContainer">
-                            <div style={{ height: "100%" }}
-                                 className={`${facts.current.length === 3 ? 'slides-3' : ''}`}
+                            <div
+                                style={{ height: '100%' }}
+                                className={`${facts.current.length === 3 ? 'slides-3' : ''}`}
                             >
                                 {facts.current.length === 1 ? (
-                                    <div className="oneFactItem"
-                                         onClick={handleModalOpen}
-                                         onKeyDown={handleModalOpen}
+                                    <div
+                                        className="oneFactItem"
+                                        onClick={handleModalOpen}
+                                        onKeyDown={handleModalOpen}
                                     >
                                         <InterestingFactItem
                                             fact={facts.current[0]}
@@ -135,7 +156,7 @@ const InterestingFactsComponent = () => {
                                 ) : (
                                     <BlockSlider
                                         className="heightContainer"
-                                        {...setings}
+                                        {...settings}
                                     >
                                         {sliderArray.map((fact, index) => (
                                             <InterestingFactItem
