@@ -43,7 +43,7 @@ const StreetcodeContent = () => {
 
     const [activeTagId, setActiveTagId] = useState(0);
     const [showAllTags, setShowAllTags] = useState<boolean>(false);
-    const [streetcode, setStreecode] = useState<Streetcode>();
+    const [streetcode, setStreetcode] = useState<Streetcode>();
 
     const [ref, inView] = useInView({ threshold: 1 });
     const showModalOnScroll = useRef(true);
@@ -58,19 +58,6 @@ const StreetcodeContent = () => {
     const isMobile = useMediaQuery({
         query: '(max-width: 4800px)',
     });
-    const checkExist = async (qrId: number) => {
-        const exist = await StatisticRecordApi.existByQrId(qrId);
-        return exist;
-    };
-
-    const checkStreetcodeExist = async (url: string) => {
-        const exist = await StreetcodesApi.existWithUrl(url);
-        return exist;
-    };
-
-    const addCount = async (qrId: number) => {
-        await StatisticRecordApi.update(qrId);
-    };
 
     const handleSurveyModalOpen = () => {
         if (inView && !haveBeenDisplayed) {
@@ -81,36 +68,29 @@ const StreetcodeContent = () => {
     };
     setTimeout(handleSurveyModalOpen, 500);
 
-    useAsync(() => {
-        Promise.all([checkStreetcodeExist(streetcodeUrl.current)])
-            .then((response) => {
-                if (!response[0]) {
-                    navigate(`${FRONTEND_ROUTES.OTHER_PAGES.ERROR404}`, { replace: true });
-                }
-            });
-
+    useAsync(async () => {
         const idParam = searchParams.get('qrid');
         if (idParam !== null) {
             const tempId = +idParam;
-            Promise.all([checkExist(tempId), addCount(tempId)]).then(
-                (resp) => {
-                    if (resp.at(0) && resp.at(1) !== null) {
-                        searchParams.delete('qrid');
-                        setSearchParams(searchParams);
-                    }
-                },
-            ).catch(
-                () => {
-                    navigate(`/${streetcodeUrl.current}`, { replace: true });
-                },
-            );
+            try {
+                const [exists] = await Promise.all([
+                    StatisticRecordApi.existByQrId(tempId),
+                    StatisticRecordApi.update(tempId),
+                ]);
+                if (exists) {
+                    searchParams.delete('qrid');
+                    setSearchParams(searchParams);
+                }
+            } catch {
+                navigate(`/${streetcodeUrl.current}`, { replace: true });
+            }
         }
-    });
+    }, [streetcodeUrl, searchParams]);
 
     useEffect(() => {
         setCurrentStreetcodeId(streetcodeUrl.current).then((val) => {
             if ((val?.status === 0 && AuthService.isAdmin()) || val?.status !== 0) {
-                setStreecode(val);
+                setStreetcode(val);
             } else {
                 navigate(`${FRONTEND_ROUTES.OTHER_PAGES.ERROR404}`, { replace: true });
             }
