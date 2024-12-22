@@ -1,21 +1,51 @@
-import Subtitle, { SubtitleCreate } from '@models/additional-content/subtitles.model';
-import Tag, { StreetcodeTag, StreetcodeTagUpdate } from '@models/additional-content/tag.model';
-import Art, { ArtCreateUpdate } from '@models/media/art.model';
-import Audio, { AudioUpdate } from '@models/media/audio.model';
-import Image, { ImageCreateUpdate, ImageDetails } from '@models/media/image.model';
-import { StreetcodeArtSlideCreateUpdate } from '@models/media/streetcode-art-slide.model';
-import Video, { VideoCreate } from '@models/media/video.model';
-import StreetcodePartner, { PartnerShort, PartnerUpdate } from '@models/partners/partners.model';
-import { SourceLink, StreetcodeCategoryContent, StreetcodeCategoryContentUpdate } from '@models/sources/sources.model';
-import RelatedFigure, { RelatedFigureCreateUpdate, RelatedFigureUpdate } from '@models/streetcode/related-figure.model';
-import TimelineItem, { TimelineItemUpdate } from '@models/timeline/chronology.model';
-import Toponym, { ToponymCreateUpdate } from '@models/toponyms/toponym.model';
-import  { TransactionLink, TransactionLinkUpdate } from '@models/transactions/transaction-link.model';
+import Subtitle, {
+    SubtitleCreate,
+} from "@models/additional-content/subtitles.model";
+import Tag, {
+    StreetcodeTag,
+    StreetcodeTagUpdate,
+} from "@models/additional-content/tag.model";
+import Art, { ArtCreateUpdate } from "@models/media/art.model";
+import Audio, { AudioUpdate } from "@models/media/audio.model";
+import Image, {
+    ImageCreateUpdate,
+    ImageDetails,
+} from "@models/media/image.model";
+import { StreetcodeArtSlideCreateUpdate } from "@models/media/streetcode-art-slide.model";
+import Video, { VideoCreate } from "@models/media/video.model";
+import StreetcodePartner, {
+    PartnerShort,
+    PartnerUpdate,
+} from "@models/partners/partners.model";
+import {
+    SourceLink,
+    StreetcodeCategoryContent,
+    StreetcodeCategoryContentUpdate,
+} from "@models/sources/sources.model";
+import RelatedFigure, {
+    RelatedFigureCreateUpdate,
+    RelatedFigureUpdate,
+} from "@models/streetcode/related-figure.model";
+import TimelineItem, {
+    TimelineItemUpdate,
+} from "@models/timeline/chronology.model";
+import Toponym, { ToponymCreateUpdate } from "@models/toponyms/toponym.model";
+import {
+    TransactionLink,
+    TransactionLinkUpdate,
+} from "@models/transactions/transaction-link.model";
 
-import StreetcodeCoordinate from '../additional-content/coordinate.model';
-import StatisticRecord, { StatisticRecordUpdate } from '../analytics/statisticrecord.model';
+import StreetcodeCoordinate from "../additional-content/coordinate.model";
+import StatisticRecord, {
+    StatisticRecordUpdate,
+} from "../analytics/statisticrecord.model";
 
-import { Fact, FactCreate, FactUpdate, TextCreateUpdate } from './text-contents.model';
+import {
+    Fact,
+    FactCreate,
+    FactUpdate,
+    TextCreateUpdate,
+} from "./text-contents.model";
 
 export default interface Streetcode extends EventStreetcode, PersonStreetcode {
     id: number;
@@ -79,89 +109,89 @@ export interface StreetcodeShort {
 }
 
 export interface StreetcodeMainPage {
-    id: number,
-    title: string,
-    teaser: string,
-    alias?: string,
-    text: string,
-    imageId: number,
-    transliterationUrl: string,
+    id: number;
+    title: string;
+    teaser: string;
+    alias?: string;
+    text: string;
+    imageId: number;
+    transliterationUrl: string;
 }
 
 export interface StreetcodeCatalogRecord {
-    id: number,
-    title: string,
-    url: string,
-    alias: string | undefined,
-    imageId: number,
+    id: number;
+    title: string;
+    url: string;
+    alias: string | undefined;
+    imageId: number;
     tags: Tag[];
 }
 
 export interface StreetcodeCreate {
-    id: number | null,
-    index: number,
-    firstName: string | null,
-    lastName: string | null,
-    title: string,
-    teaser: string,
-    alias?: string,
+    id: number | null;
+    index: number;
+    firstName: string | null;
+    lastName: string | null;
+    title: string;
+    teaser: string;
+    alias?: string;
     status: Status;
-    transliterationUrl: string,
-    arBlockURL?: string,
-    viewCount: number,
-    eventStartOrPersonBirthDate: Date,
-    eventEndOrPersonDeathDate: Date | null,
-    dateString: string,
-    tags: StreetcodeTag[],
-    imagesIds: Array<number>,
-    audioId: number | null,
-    streetcodeType: StreetcodeType,
-    text: TextCreateUpdate | null,
-    videos: VideoCreate[],
-    facts: FactCreate[],
-    timelineItems: TimelineItem[],
-    partners: PartnerShort[],
-    subtitles: SubtitleCreate[],
-    relatedFigures: RelatedFigureCreateUpdate[],
-    arts: ArtCreateUpdate[] | null,
+    transliterationUrl: string;
+    arBlockURL?: string;
+    viewCount: number;
+    eventStartOrPersonBirthDate: Date;
+    eventEndOrPersonDeathDate: Date | null;
+    dateString: string;
+    tags: StreetcodeTag[];
+    imagesIds: Array<number>;
+    audioId: number | null;
+    streetcodeType: StreetcodeType;
+    text: TextCreateUpdate | null;
+    videos: VideoCreate[];
+    facts: FactCreate[];
+    timelineItems: TimelineItem[];
+    partners: Array<number>;
+    subtitles: SubtitleCreate[];
+    relatedFigures: RelatedFigureCreateUpdate[];
+    arts: ArtCreateUpdate[] | null;
     streetcodeArtSlides: StreetcodeArtSlideCreateUpdate[];
-    toponyms: ToponymCreateUpdate[],
-    streetcodeCategoryContents: StreetcodeCategoryContent[],
-    coordinates: StreetcodeCoordinate[],
-    statisticRecords: StatisticRecord[],
-    imagesDetails: ImageDetails[],
+    toponyms: ToponymCreateUpdate[];
+    streetcodeCategoryContents: StreetcodeCategoryContent[];
+    coordinates: StreetcodeCoordinate[];
+    statisticRecords: StatisticRecord[];
+    imagesDetails: ImageDetails[];
 }
 
 export interface StreetcodeUpdate {
-    id: number,
-    index: number,
-    firstName: string | null,
-    lastName: string | null,
-    title: string,
-    teaser: string,
-    alias?: string,
+    id: number;
+    index: number;
+    firstName: string | null;
+    lastName: string | null;
+    title: string;
+    teaser: string;
+    alias?: string;
     status: Status;
-    transliterationUrl: string,
-    eventStartOrPersonBirthDate: Date | null,
-    eventEndOrPersonDeathDate: Date | null,
-    dateString: string,
-    streetcodeType: StreetcodeType,
-    videos: Video[],
-    facts: FactUpdate[],
-    relatedFigures: RelatedFigureUpdate[],
-    timelineItems: TimelineItemUpdate[],
-    partners: PartnerUpdate[],
+    transliterationUrl: string;
+    eventStartOrPersonBirthDate: Date | null;
+    eventEndOrPersonDeathDate: Date | null;
+    dateString: string;
+    streetcodeType: StreetcodeType;
+    videos: Video[];
+    facts: FactUpdate[];
+    relatedFigures: RelatedFigureUpdate[];
+    timelineItems: TimelineItemUpdate[];
+    partners: PartnerUpdate[];
     arts: ArtCreateUpdate[];
     streetcodeArtSlides: StreetcodeArtSlideCreateUpdate[];
-    subtitles: Subtitle[],
-    text: TextCreateUpdate | null,
-    streetcodeCategoryContents: StreetcodeCategoryContentUpdate[],
-    tags: StreetcodeTagUpdate[],
-    statisticRecords: StatisticRecordUpdate[],
-    toponyms: ToponymCreateUpdate[],
-    images: ImageCreateUpdate[],
-    audioId: number | null,
-    audios: AudioUpdate[],
-    imagesDetails: ImageDetails[],
+    subtitles: Subtitle[];
+    text: TextCreateUpdate | null;
+    streetcodeCategoryContents: StreetcodeCategoryContentUpdate[];
+    tags: StreetcodeTagUpdate[];
+    statisticRecords: StatisticRecordUpdate[];
+    toponyms: ToponymCreateUpdate[];
+    images: ImageCreateUpdate[];
+    audioId: number | null;
+    audios: AudioUpdate[];
+    imagesDetails: ImageDetails[];
     transactionLink: TransactionLinkUpdate;
 }
