@@ -1,31 +1,33 @@
-import './App.styles.scss';
-import './ant-styles.overrides.scss';
-import './slick-slider.overrides.scss';
+import "./App.styles.scss";
+import "./ant-styles.overrides.scss";
+import "./slick-slider.overrides.scss";
 
-import { observer } from 'mobx-react-lite';
-import ReactGA from 'react-ga4';
-import { Outlet, useLocation } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
-import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
-import MainPage from '@features/MainPage/MainPage.component';
-import HeaderBlock from '@layout/header/HeaderBlock.component';
-import ModalWrapper from '@layout/ModalWrapper.component';
-import { useModalContext } from '@stores/root-store';
+import { observer } from "mobx-react-lite";
+import ReactGA from "react-ga4";
+import { Outlet, useLocation } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import FRONTEND_ROUTES from "@constants/frontend-routes.constants";
+import MainPage from "@features/MainPage/MainPage.component";
+import HeaderBlock from "@layout/header/HeaderBlock.component";
+import ModalWrapper from "@layout/ModalWrapper.component";
+import { useModalContext } from "@stores/root-store";
 
-import CopyWithCopyright from '@/app/common/components/CopyWithCopyright.component';
-import ListenTextModal from '@/app/common/components/modals/ListenText/ListenText.component';
+import CopyWithCopyright from "@/app/common/components/CopyWithCopyright.component";
+import ListenTextModal from "@/app/common/components/modals/ListenText/ListenText.component";
 
-import Footer from '../footer/Footer.component';
+import Footer from "../footer/Footer.component";
 
-ReactGA.initialize('G-2RHY04JKG0');
+ReactGA.initialize("G-2RHY04JKG0");
 
-const CopyrightText = `Джерело: «Стріткод: історія на кожному кроці» ${window.location.origin}`;
+const CopyrightText = `Джерело: «Historycode: історія на кожному кроці» ${window.location.origin}`;
 
 const App = () => {
     const { pathname } = useLocation();
-    const { modalStore: { isPageDimmed } } = useModalContext();
+    const {
+        modalStore: { isPageDimmed },
+    } = useModalContext();
     return (
-        <div className="mainBlockWrapper" style={{ position: 'relative' }}>
+        <div className="mainBlockWrapper" style={{ position: "relative" }}>
             <ListenTextModal />
             <ToastContainer position="bottom-right" limit={3} />
             <CopyWithCopyright copyrightText={CopyrightText}>
@@ -33,12 +35,13 @@ const App = () => {
             </CopyWithCopyright>
             <HeaderBlock />
             <div className="mainWrapper">
-                <div className={`${isPageDimmed ? 'dimmed' : ''}`} />
-                <CopyWithCopyright copyrightText={CopyrightText} className='mainBlockWrapper'>
-                    {(pathname !== FRONTEND_ROUTES.BASE) && (
-                        <Outlet />
-                    )}
-                    {(pathname === FRONTEND_ROUTES.BASE) && (
+                <div className={`${isPageDimmed ? "dimmed" : ""}`} />
+                <CopyWithCopyright
+                    copyrightText={CopyrightText}
+                    className="mainBlockWrapper"
+                >
+                    {pathname !== FRONTEND_ROUTES.BASE && <Outlet />}
+                    {pathname === FRONTEND_ROUTES.BASE && (
                         <>
                             <Outlet />
                             <MainPage />

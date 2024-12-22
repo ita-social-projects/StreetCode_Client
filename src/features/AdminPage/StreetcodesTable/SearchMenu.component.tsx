@@ -1,24 +1,24 @@
-import './StreetcodesTable.styles.scss';
+import "./StreetcodesTable.styles.scss";
 
-import MagnifyingGlass from '@images/header/Magnifying_glass.svg';
+import MagnifyingGlass from "@images/header/Magnifying_glass.svg";
 
-import { ChangeEvent, Dispatch } from 'react';
+import { ChangeEvent, Dispatch } from "react";
 
-import { Button, Input, Select, SelectProps } from 'antd';
+import { Button, Input, Select, SelectProps } from "antd";
 
-import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
+import FRONTEND_ROUTES from "@/app/common/constants/frontend-routes.constants";
 
 interface IProps {
-    setStatus: Dispatch<React.SetStateAction<string[]>>
-    setTitle: Dispatch<React.SetStateAction<string | null>>
-    setRequest: () => void
+    setStatus: Dispatch<React.SetStateAction<string[]>>;
+    setTitle: Dispatch<React.SetStateAction<string | null>>;
+    setRequest: () => void;
 }
 
 const SearchMenu = ({ setStatus, setTitle, setRequest }: IProps) => {
-    const options: SelectProps['options'] = [
-        { value: 'Published', label: 'опублікований' },
-        { value: 'Draft', label: 'чернетка' },
-        { value: 'Deleted', label: 'видалений' },
+    const options: SelectProps["options"] = [
+        { value: "Published", label: "опублікований" },
+        { value: "Draft", label: "чернетка" },
+        { value: "Deleted", label: "видалений" },
     ];
 
     const handleChangeStatus = (value: string[]) => {
@@ -32,7 +32,9 @@ const SearchMenu = ({ setStatus, setTitle, setRequest }: IProps) => {
     return (
         <div className="searchMenu">
             <div className="searchMenuElement">
-                <Button className="Button" onClick={() => setRequest()}>Пошук стріткодів</Button>
+                <Button className="Button" onClick={() => setRequest()}>
+                    Пошук history-кодів
+                </Button>
             </div>
             <div className="searchMenuElement">
                 <Input
@@ -47,7 +49,7 @@ const SearchMenu = ({ setStatus, setTitle, setRequest }: IProps) => {
                     mode="multiple"
                     allowClear
                     className="searchMenuStatusSelected"
-                    placeholder="Статус стріткодів"
+                    placeholder="Статус history-кодів"
                     onChange={handleChangeStatus}
                     options={options}
                 />
@@ -55,9 +57,14 @@ const SearchMenu = ({ setStatus, setTitle, setRequest }: IProps) => {
             <div className="searchMenuElement">
                 <Button
                     className="Button"
-                    onClick={() => window.open(`${FRONTEND_ROUTES.ADMIN.NEW_STREETCODE}`, '_blank')}
+                    onClick={() =>
+                        window.open(
+                            `${FRONTEND_ROUTES.ADMIN.NEW_STREETCODE}`,
+                            "_blank"
+                        )
+                    }
                 >
-                    Новий стріткод
+                    Новий history-код
                 </Button>
             </div>
         </div>

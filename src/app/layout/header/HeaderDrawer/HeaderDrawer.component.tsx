@@ -1,21 +1,21 @@
-import './HeaderDrawer.styles.scss';
+import "./HeaderDrawer.styles.scss";
 
-import CancelBtn from '@images/utils/Cancel_btn_drawer_mobile.svg';
+import CancelBtn from "@images/utils/Cancel_btn_drawer_mobile.svg";
 
-import { useEffect, useState } from 'react';
-import { useMediaQuery } from 'react-responsive';
-import { ScrollRestoration, useLocation } from 'react-router-dom';
-import ReactSlider from 'react-slider';
-import BurgerMenu from '@components/BurgerMenu/BurgerMenu.component';
-import useToggle from '@hooks/stateful/useToggle.hook';
+import { useEffect, useState } from "react";
+import { useMediaQuery } from "react-responsive";
+import { ScrollRestoration, useLocation } from "react-router-dom";
+import ReactSlider from "react-slider";
+import BurgerMenu from "@components/BurgerMenu/BurgerMenu.component";
+import useToggle from "@hooks/stateful/useToggle.hook";
 
-import { Drawer } from 'antd';
+import { Drawer } from "antd";
 
-import { ContactUsModal } from '@/app/common/components/modals/ContactUsModal/ContactUsModal.component';
-import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
-import HeaderDrawerItem from '@/app/layout/header/HeaderDrawer/HeaderDrawerItem/HeaderDrawerItem.component';
+import { ContactUsModal } from "@/app/common/components/modals/ContactUsModal/ContactUsModal.component";
+import FRONTEND_ROUTES from "@/app/common/constants/frontend-routes.constants";
+import HeaderDrawerItem from "@/app/layout/header/HeaderDrawer/HeaderDrawerItem/HeaderDrawerItem.component";
 
-import SocialMediaLinks from './SocialMediaLinks/SocialMediaLinks.component';
+import SocialMediaLinks from "./SocialMediaLinks/SocialMediaLinks.component";
 
 const mobileOptions = 8;
 const desktopOptions = 6;
@@ -54,21 +54,26 @@ const MENU_ID = {
 };
 
 const HeaderDrawer = () => {
-    const { toggleState: drawerState, handlers: { toggle } } = useToggle();
+    const {
+        toggleState: drawerState,
+        handlers: { toggle },
+    } = useToggle();
     const [active, setActive] = useState(1);
     const [options, setOptions] = useState(desktopOptions);
     const [scalingCooficient, setScalingCooficient] = useState(scaleDesktop);
     const location = useLocation();
 
     const isSmall = useMediaQuery({
-        query: '(max-width: 1024px)',
+        query: "(max-width: 1024px)",
     });
 
     const getMenuOptionIdByCurrentPath = (currentPath: string) => {
         const optionId = menuOptions.indexOf(currentPath);
 
         // on the desktop there is no Privacy Policy menu item
-        const isDesktopAndPrivacyPath = !isSmall && currentPath === FRONTEND_ROUTES.OTHER_PAGES.PRIVACY_POLICY;
+        const isDesktopAndPrivacyPath =
+            !isSmall &&
+            currentPath === FRONTEND_ROUTES.OTHER_PAGES.PRIVACY_POLICY;
 
         if (optionId >= 0 && !isDesktopAndPrivacyPath) {
             return optionId;
@@ -76,8 +81,7 @@ const HeaderDrawer = () => {
 
         // if the current path does not match any menu item
         // and is not streetcode page, stay at the beginning
-        if (currentPath.startsWith('/news')
-            || isDesktopAndPrivacyPath) {
+        if (currentPath.startsWith("/news") || isDesktopAndPrivacyPath) {
             return 0;
         }
 
@@ -134,7 +138,7 @@ const HeaderDrawer = () => {
                             <HeaderDrawerItem
                                 id={MENU_ID.CATALOG}
                                 parentActive={active}
-                                text="Стріткоди"
+                                text="History-коди"
                                 link={FRONTEND_ROUTES.OTHER_PAGES.CATALOG}
                                 toggleState={toggle}
                             />
@@ -167,26 +171,28 @@ const HeaderDrawer = () => {
                                 toggleState={toggle}
                             />
                         </div>
-                        {isSmall
-                            && (
-                                <>
-                                    <br />
-                                    <div className="headerDrawerContainer">
-                                        <HeaderDrawerItem
-                                            id={MENU_ID.PRIVACY_POLICY}
-                                            parentActive={active}
-                                            toggleState={toggle}
-                                            text="Політика конфіденційності"
-                                            link={FRONTEND_ROUTES.OTHER_PAGES.PRIVACY_POLICY}
-                                        />
-                                        <ContactUsModal
-                                            toggleState={toggle}
-                                            text="Зворотний зв'язок"
-                                        />
-                                    </div>
-                                    <SocialMediaLinks />
-                                </>
-                            )}
+                        {isSmall && (
+                            <>
+                                <br />
+                                <div className="headerDrawerContainer">
+                                    <HeaderDrawerItem
+                                        id={MENU_ID.PRIVACY_POLICY}
+                                        parentActive={active}
+                                        toggleState={toggle}
+                                        text="Політика конфіденційності"
+                                        link={
+                                            FRONTEND_ROUTES.OTHER_PAGES
+                                                .PRIVACY_POLICY
+                                        }
+                                    />
+                                    <ContactUsModal
+                                        toggleState={toggle}
+                                        text="Зворотний зв'язок"
+                                    />
+                                </div>
+                                <SocialMediaLinks />
+                            </>
+                        )}
                     </div>
                 </div>
             </Drawer>

@@ -1,47 +1,47 @@
-import './Analytics.styles.scss';
+import "./Analytics.styles.scss";
 
-import { observer } from 'mobx-react-lite';
-import { useEffect, useState } from 'react';
+import { observer } from "mobx-react-lite";
+import { useEffect, useState } from "react";
 
-import { Table } from 'antd';
+import { Table } from "antd";
 
-import StatisticRecordApi from '@/app/api/analytics/statistic-record.api';
-import ImagesApi from '@/app/api/media/images.api';
-import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
-import { useRouteUrl } from '@/app/common/hooks/stateful/useRouter.hook';
-import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
-import PageBar from '@/features/AdminPage/PageBar/PageBar.component';
-import StatisticRecord from '@/models/analytics/statisticrecord.model';
-import Image, { ImageAssigment } from '@/models/media/image.model';
-import Streetcode from '@/models/streetcode/streetcode-types.model';
+import StatisticRecordApi from "@/app/api/analytics/statistic-record.api";
+import ImagesApi from "@/app/api/media/images.api";
+import StreetcodesApi from "@/app/api/streetcode/streetcodes.api";
+import { useRouteUrl } from "@/app/common/hooks/stateful/useRouter.hook";
+import base64ToUrl from "@/app/common/utils/base64ToUrl.utility";
+import PageBar from "@/features/AdminPage/PageBar/PageBar.component";
+import StatisticRecord from "@/models/analytics/statisticrecord.model";
+import Image, { ImageAssigment } from "@/models/media/image.model";
+import Streetcode from "@/models/streetcode/streetcode-types.model";
 
 interface TableData {
-    qrId: number,
-    coordinates: string,
-    address: string,
-    count: number,
+    qrId: number;
+    coordinates: string;
+    address: string;
+    count: number;
 }
 
 const columns = [
     {
-        title: 'Адреса',
-        dataIndex: 'address',
-        key: 'address',
+        title: "Адреса",
+        dataIndex: "address",
+        key: "address",
     },
     {
-        title: 'К-сть переходів по QR коду',
-        dataIndex: 'count',
-        key: 'count',
+        title: "К-сть переходів по QR коду",
+        dataIndex: "count",
+        key: "count",
     },
     {
-        title: 'Номер QR',
-        dataIndex: 'qrId',
-        key: 'qrId',
+        title: "Номер QR",
+        dataIndex: "qrId",
+        key: "qrId",
     },
     {
-        title: 'Координати',
-        dataIndex: 'coordinates',
-        key: 'coordinates',
+        title: "Координати",
+        dataIndex: "coordinates",
+        key: "coordinates",
     },
 ];
 
@@ -65,10 +65,12 @@ const Analytics = () => {
     const [img, setImage] = useState<Image>();
 
     const setTableState = async (streetcodeId: number) => {
-        await StatisticRecordApi.getAllByStreetcodeId(streetcodeId).then((responce) => {
-            const tempData = handleTransformData(responce);
-            setData(tempData);
-        });
+        await StatisticRecordApi.getAllByStreetcodeId(streetcodeId).then(
+            (responce) => {
+                const tempData = handleTransformData(responce);
+                setData(tempData);
+            }
+        );
     };
 
     const setStreetcodeMain = async (streetcodeId: number) => {
@@ -78,16 +80,28 @@ const Analytics = () => {
     };
 
     const setImages = async (streetcodeId: number) => {
-        await ImagesApi.getByStreetcodeId(streetcodeId ?? 1).then((imgs) => {
-            setImage(imgs.find((image) => image.imageDetails?.alt === ImageAssigment.blackandwhite.toString()));
-        }).catch((e) => {
-            console.error(e);
-        });
+        await ImagesApi.getByStreetcodeId(streetcodeId ?? 1)
+            .then((imgs) => {
+                setImage(
+                    imgs.find(
+                        (image) =>
+                            image.imageDetails?.alt ===
+                            ImageAssigment.blackandwhite.toString()
+                    )
+                );
+            })
+            .catch((e) => {
+                console.error(e);
+            });
     };
 
     useEffect(() => {
         if (id) {
-            Promise.all([setStreetcodeMain(id), setTableState(id), setImages(id)]);
+            Promise.all([
+                setStreetcodeMain(id),
+                setTableState(id),
+                setImages(id),
+            ]);
         }
     }, [id]);
 
@@ -98,7 +112,7 @@ const Analytics = () => {
                 <div className="analyticsGridView">
                     <div className="streetcodeImgWrapper">
                         <h2 className="streetcodeName">
-                            Стріткод
+                            History-код
                             <br />
                             {streetcode?.title}
                         </h2>
@@ -110,9 +124,7 @@ const Analytics = () => {
                         />
                     </div>
                     <div className="statisticTableWrapper">
-                        <h2 className="streetcodeName">
-                            Статистика
-                        </h2>
+                        <h2 className="streetcodeName">Статистика</h2>
                         <Table columns={columns} dataSource={data} />
                     </div>
                 </div>

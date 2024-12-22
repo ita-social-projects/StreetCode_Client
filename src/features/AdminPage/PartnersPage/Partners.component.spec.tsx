@@ -1,16 +1,16 @@
-import { MemoryRouter } from 'react-router-dom'; // Import MemoryRouter
-import Partners from '@features/AdminPage/PartnersPage/Partners.component';
-import { render, screen, waitFor } from '@testing-library/react';
+import { MemoryRouter } from "react-router-dom"; // Import MemoryRouter
+import Partners from "@features/AdminPage/PartnersPage/Partners.component";
+import { render, screen, waitFor } from "@testing-library/react";
 
-import '@testing-library/jest-dom';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import "@testing-library/jest-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const mockImageStore = {
     getImageById: jest.fn(() => Promise.resolve({})),
 };
 
 // needed to render component without errors
-Object.defineProperty(window, 'matchMedia', {
+Object.defineProperty(window, "matchMedia", {
     writable: true,
     value: (query: any) => ({
         matches: false,
@@ -24,7 +24,7 @@ Object.defineProperty(window, 'matchMedia', {
     }),
 });
 
-jest.mock('@stores/root-store', () => ({
+jest.mock("@stores/root-store", () => ({
     __esModule: true, // This is required for mocking default exports
     default: () => ({
         partnersStore: {
@@ -43,8 +43,8 @@ jest.mock('@stores/root-store', () => ({
         streetcodeShortStore: {
             fetchStreetcodesAll: jest.fn().mockResolvedValue([]), // Mock the fetch function
             streetcodes: [
-                { id: '1', title: 'Streetcode 1' },
-                { id: '2', title: 'Streetcode 2' },
+                { id: "1", title: "Streetcode 1" },
+                { id: "2", title: "Streetcode 2" },
             ],
         },
     }),
@@ -55,8 +55,8 @@ jest.mock('@stores/root-store', () => ({
     })),
 }));
 
-const renderContent = (partner : any, column : any) => {
-    if (column.dataIndex === 'targetUrl') {
+const renderContent = (partner: any, column: any) => {
+    if (column.dataIndex === "targetUrl") {
         return (
             <a
                 href={partner[column.dataIndex].href}
@@ -67,14 +67,16 @@ const renderContent = (partner : any, column : any) => {
         );
     }
 
-    if (column.dataIndex === 'logo') {
+    if (column.dataIndex === "logo") {
         return partner[column.dataIndex].base64 ? (
             <img
-                src={`data:${partner[column.dataIndex].mimeType};base64,${partner[column.dataIndex].base64}`}
+                src={`data:${partner[column.dataIndex].mimeType};base64,${
+                    partner[column.dataIndex].base64
+                }`}
                 alt="Logo"
             />
         ) : (
-            'No Logo'
+            "No Logo"
         );
     }
 
@@ -82,17 +84,21 @@ const renderContent = (partner : any, column : any) => {
 };
 
 // Mock antd components as needed
-jest.mock('antd/es/table', () => ({ dataSource, columns }: any) => {
+jest.mock("antd/es/table", () => ({ dataSource, columns }: any) => {
     const mockPartnersData = [
         {
-            id: '1',
-            title: 'Mock Partner 1',
+            id: "1",
+            title: "Mock Partner 1",
             targetUrl: {
-                href: 'https://mockpartner1.com',
-                title: 'Mock Partner 1 Website',
+                href: "https://mockpartner1.com",
+                title: "Mock Partner 1 Website",
             },
             partnerSourceLinks: [],
-            logo: { base64: 'mockBase64String', mimeType: 'image/png', alt: 'testAlt' },
+            logo: {
+                base64: "mockBase64String",
+                mimeType: "image/png",
+                alt: "testAlt",
+            },
         },
     ];
     return (
@@ -105,9 +111,9 @@ jest.mock('antd/es/table', () => ({ dataSource, columns }: any) => {
                 </tr>
             </thead>
             <tbody>
-                {mockPartnersData.map((partner : any) => (
+                {mockPartnersData.map((partner: any) => (
                     <tr key={partner.id}>
-                        {columns.map((column : any) => (
+                        {columns.map((column: any) => (
                             <td key={`${partner.id}-${column.key}`}>
                                 {renderContent(partner, column)}
                             </td>
@@ -119,25 +125,31 @@ jest.mock('antd/es/table', () => ({ dataSource, columns }: any) => {
     );
 });
 
-jest.mock('antd/es/upload', () => () => <div>Upload</div>);
+jest.mock("antd/es/upload", () => () => <div>Upload</div>);
 
-describe('Partners.component', () => {    
+describe("Partners.component", () => {
     const queryClient = new QueryClient();
-    
-    test('should render without crashing', async () => {
+
+    test("should render without crashing", async () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
                     <Partners />
                 </MemoryRouter>
-            </QueryClientProvider>,
+            </QueryClientProvider>
         );
 
         await waitFor(() => {
-            expect(screen.getByText('Mock Partner 1')).toBeInTheDocument();
-            expect(screen.getByRole('link', { name: /mock partner 1 website/i })).toBeInTheDocument();
-            expect(screen.getByRole('img', { name: /logo/i })).toBeInTheDocument();
-            expect(screen.getByRole('link', { name: /стріткоди/i })).toBeInTheDocument();
+            expect(screen.getByText("Mock Partner 1")).toBeInTheDocument();
+            expect(
+                screen.getByRole("link", { name: /mock partner 1 website/i })
+            ).toBeInTheDocument();
+            expect(
+                screen.getByRole("img", { name: /logo/i })
+            ).toBeInTheDocument();
+            expect(
+                screen.getByRole("link", { name: /history-коди/i })
+            ).toBeInTheDocument();
         });
     });
 });
