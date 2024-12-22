@@ -1,27 +1,27 @@
-import './MapAdmin.styles.scss';
-import '../StatisticsStreetcodeAdmin/StatisticsAdmin.styles.scss';
+import "./MapAdmin.styles.scss";
+import "../StatisticsStreetcodeAdmin/StatisticsAdmin.styles.scss";
 
-import StreetcodeMarker from '@images/footer/streetcode-marker.webp';
+import StreetcodeMarker from "@images/footer/streetcode-marker.webp";
 
-import { Autocomplete, GoogleMap, Marker } from '@react-google-maps/api';
-import { observer } from 'mobx-react-lite';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { DeleteOutlined, EnvironmentOutlined } from '@ant-design/icons';
-import StatisticRecordApi from '@app/api/analytics/statistic-record.api';
-import getNewMinNegativeId from '@app/common/utils/newIdForStore';
-import useMobx from '@app/stores/root-store';
-import { ModelState } from '@models/enums/model-state';
+import { Autocomplete, GoogleMap, Marker } from "@react-google-maps/api";
+import { observer } from "mobx-react-lite";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { DeleteOutlined, EnvironmentOutlined } from "@ant-design/icons";
+import StatisticRecordApi from "@app/api/analytics/statistic-record.api";
+import getNewMinNegativeId from "@app/common/utils/newIdForStore";
+import useMobx from "@app/stores/root-store";
+import { ModelState } from "@models/enums/model-state";
 
-import {
-    Button, Input, message, Modal, Table,
-} from 'antd';
+import { Button, Input, message, Modal, Table } from "antd";
 
-import StreetcodeCoordinate from '@/models/additional-content/coordinate.model';
-import StatisticRecord, { StatisticRecordUpdate } from '@/models/analytics/statisticrecord.model';
+import StreetcodeCoordinate from "@/models/additional-content/coordinate.model";
+import StatisticRecord, {
+    StatisticRecordUpdate,
+} from "@/models/analytics/statisticrecord.model";
 
 const containerStyle = {
-    width: '100%',
-    height: '100vh',
+    width: "100%",
+    height: "100vh",
 };
 
 const initialCenter: google.maps.LatLngLiteral = {
@@ -30,44 +30,61 @@ const initialCenter: google.maps.LatLngLiteral = {
 };
 
 const MapOSMAdmin = () => {
-    const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | undefined>(undefined);
+    const [autocomplete, setAutocomplete] = useState<
+        google.maps.places.Autocomplete | undefined
+    >(undefined);
     const [center, setCenter] = useState(initialCenter);
-    const [streetcodeCoordinates, setStreetcodeCoordinates] = useState<StreetcodeCoordinate[]>([]);
+    const [streetcodeCoordinates, setStreetcodeCoordinates] = useState<
+        StreetcodeCoordinate[]
+    >([]);
     const mapRef = useRef<GoogleMap | null>(null);
     const { streetcodeCoordinatesStore, statisticRecordStore } = useMobx();
     const statisticRecordIdToDelete = useRef<number>(0);
-    const [address, setAddress] = useState('');
-    const [newNumber, setNewNumber] = useState('');
+    const [address, setAddress] = useState("");
+    const [newNumber, setNewNumber] = useState("");
     const newNumberAsNumber = parseInt(newNumber, 10);
     const [isExist, setIsExist] = useState(false);
     const [isInvalidInput, setIsInvalidInput] = useState(false);
     const [usedNumbers, setUsedNumbers] = useState<Set<number>>(new Set());
-    const [deletedNumbers, setDeletedNumbers] = useState<Set<number>>(new Set());
+    const [deletedNumbers, setDeletedNumbers] = useState<Set<number>>(
+        new Set()
+    );
     const [showButton, setShowButton] = useState(false);
 
     const handleSaveButtonClick = () => {
-        if (!newNumber || newNumber === '' || isExist) {
+        if (!newNumber || newNumber === "" || isExist) {
             message.error({
-                content: 'Будь ласка введіть значення номеру фізичного стіткоду для збереження',
-                style: { marginTop: '400vh' },
+                content:
+                    "Будь ласка введіть значення номеру фізичного стіткоду для збереження",
+                style: { marginTop: "400vh" },
             });
         } else if (streetcodeCoordinates.length > 0) {
             const newCoordinate: StreetcodeCoordinate = {
-                id: getNewMinNegativeId(streetcodeCoordinatesStore.getStreetcodeCoordinateArray.map((f) => f.id)),
+                id: getNewMinNegativeId(
+                    streetcodeCoordinatesStore.getStreetcodeCoordinateArray.map(
+                        (f) => f.id
+                    )
+                ),
                 latitude: streetcodeCoordinates[0].latitude,
                 longtitude: streetcodeCoordinates[0].longtitude,
                 streetcodeId: 0,
             };
             const newStatisticRecord: StatisticRecord = {
-                id: getNewMinNegativeId(statisticRecordStore.getStatisticRecordArray.map((f) => f.id)),
+                id: getNewMinNegativeId(
+                    statisticRecordStore.getStatisticRecordArray.map(
+                        (f) => f.id
+                    )
+                ),
                 streetcodeCoordinate: newCoordinate,
                 qrId: newNumberAsNumber,
                 count: 0,
                 address,
             };
-            setUsedNumbers((prevUsedNumbers) => new Set(prevUsedNumbers).add(newNumberAsNumber));
+            setUsedNumbers((prevUsedNumbers) =>
+                new Set(prevUsedNumbers).add(newNumberAsNumber)
+            );
             setShowButton(false);
-            setNewNumber('');
+            setNewNumber("");
             statisticRecordStore.addStatisticRecord(newStatisticRecord);
             streetcodeCoordinatesStore.addStreetcodeCoordinate(newCoordinate);
         }
@@ -78,7 +95,9 @@ const MapOSMAdmin = () => {
         streetcodeCoordinatesStore.deleteStreetcodeCoordinateFromMap(id);
         statisticRecordStore.deleteStatisticRecordFromMap(id);
         removeFromUsedNumbers(qrId);
-        setDeletedNumbers((prevDeletedNumbers) => new Set(prevDeletedNumbers).add(qrId));
+        setDeletedNumbers((prevDeletedNumbers) =>
+            new Set(prevDeletedNumbers).add(qrId)
+        );
     };
 
     const removeFromUsedNumbers = (qrId: number) => {
@@ -110,13 +129,19 @@ const MapOSMAdmin = () => {
                 const geocoder = new google.maps.Geocoder();
                 geocoder.geocode(
                     { location: { lat, lng } },
-                    (results: google.maps.GeocoderResult[] | null, status: google.maps.GeocoderStatus) => {
-                        if (results && status === 'OK') {
+                    (
+                        results: google.maps.GeocoderResult[] | null,
+                        status: google.maps.GeocoderStatus
+                    ) => {
+                        if (results && status === "OK") {
                             setAddress(results[0].formatted_address);
                         } else {
-                            console.error('Geocode was not successful for the following reason:', status);
+                            console.error(
+                                "Geocode was not successful for the following reason:",
+                                status
+                            );
                         }
-                    },
+                    }
                 );
             }
         }
@@ -124,20 +149,18 @@ const MapOSMAdmin = () => {
 
     const handleMarkerCurrentPosition = () => {
         if (mapRef.current) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const { latitude, longitude } = position.coords;
-                    setStreetcodeCoordinates([
-                        {
-                            latitude,
-                            longtitude: longitude,
-                            streetcodeId: 0,
-                            id: 0,
-                        },
-                    ]);
-                    setCenter({ lat: latitude, lng: longitude });
-                },
-            );
+            navigator.geolocation.getCurrentPosition((position) => {
+                const { latitude, longitude } = position.coords;
+                setStreetcodeCoordinates([
+                    {
+                        latitude,
+                        longtitude: longitude,
+                        streetcodeId: 0,
+                        id: 0,
+                    },
+                ]);
+                setCenter({ lat: latitude, lng: longitude });
+            });
         }
     };
 
@@ -157,41 +180,47 @@ const MapOSMAdmin = () => {
             const geocoder = new google.maps.Geocoder();
             geocoder.geocode(
                 { location: { lat, lng } },
-                (results: google.maps.GeocoderResult[] | null, status: google.maps.GeocoderStatus) => {
-                    if (results && status === 'OK') {
+                (
+                    results: google.maps.GeocoderResult[] | null,
+                    status: google.maps.GeocoderStatus
+                ) => {
+                    if (results && status === "OK") {
                         setAddress(results[0].formatted_address);
                     } else {
-                        console.error('Geocode was not successful for the following reason:', status);
+                        console.error(
+                            "Geocode was not successful for the following reason:",
+                            status
+                        );
                     }
-                },
+                }
             );
         }
     };
 
     const columns = [
         {
-            title: 'Номер таблички',
-            dataIndex: 'qrId',
-            key: 'qrId',
+            title: "Номер таблички",
+            dataIndex: "qrId",
+            key: "qrId",
         },
         {
-            title: 'Широта',
-            dataIndex: 'latitude',
-            key: 'latitude',
+            title: "Широта",
+            dataIndex: "latitude",
+            key: "latitude",
         },
         {
-            title: 'Довгота',
-            dataIndex: 'longtitude',
-            key: 'longtitude',
+            title: "Довгота",
+            dataIndex: "longtitude",
+            key: "longtitude",
         },
         {
-            title: 'Адреса',
-            dataIndex: 'address',
-            key: 'address',
+            title: "Адреса",
+            dataIndex: "address",
+            key: "address",
         },
         {
-            title: 'Дії',
-            key: 'actions',
+            title: "Дії",
+            key: "actions",
             render: (text: any, record: any) => (
                 <span>
                     <DeleteOutlined onClick={() => handleDelete(record)} />
@@ -201,7 +230,10 @@ const MapOSMAdmin = () => {
     ];
 
     const data = statisticRecordStore.getStatisticRecordArray
-        .filter((x) => (x as StatisticRecordUpdate).modelState !== ModelState.Deleted)
+        .filter(
+            (x) =>
+                (x as StatisticRecordUpdate).modelState !== ModelState.Deleted
+        )
         .map((item) => ({
             key: item.id,
             id: item.id,
@@ -226,14 +258,16 @@ const MapOSMAdmin = () => {
                     }
                 })
                 .catch(() => {
-                    message.error('Сервер не відповідає');
+                    message.error("Сервер не відповідає");
                 });
         } else {
             setIsExist(false);
         }
     };
 
-    const handleNewNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleNewNumberChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
         const inputNumber = event.target.value;
         if (!Number.isNaN(inputNumber) && Number(inputNumber) >= 0) {
             setNewNumber(inputNumber);
@@ -253,24 +287,30 @@ const MapOSMAdmin = () => {
                 onClick={handleMapClick}
             >
                 <div className="statisticsContainerAdmin">
-                    <h1>Додати стріткод на мапу:</h1>
-                    <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
+                    <h1>Додати history-код на мапу:</h1>
+                    <Autocomplete
+                        onLoad={onLoad}
+                        onPlaceChanged={onPlaceChanged}
+                    >
                         <Input
                             className="input-streets"
                             placeholder="введіть вулицю"
-                            prefix={<EnvironmentOutlined className="site-form-item-icon" />}
+                            prefix={
+                                <EnvironmentOutlined className="site-form-item-icon" />
+                            }
                         />
                     </Autocomplete>
 
                     <Input
                         type="number"
-                        className={`input-stnumber ${isExist ? 'red' : 'green'}`}
-                        placeholder="введіть номер таблички стріткоду"
+                        className={`input-stnumber ${
+                            isExist ? "red" : "green"
+                        }`}
+                        placeholder="введіть номер таблички history-коду"
                         onChange={(e) => {
                             handleNewNumberChange(e);
                             onCheckIndexClick(e.target.value);
                         }}
-
                         value={newNumber}
                     />
                     {isExist && (
@@ -278,7 +318,7 @@ const MapOSMAdmin = () => {
                             Даний номер таблички вже використовується
                         </span>
                     )}
-                    { isInvalidInput && (
+                    {isInvalidInput && (
                         <span className="notification red">
                             Введіть додатнє число
                         </span>
@@ -291,12 +331,17 @@ const MapOSMAdmin = () => {
                         <a>Обрати місце на мапі</a>
                     </Button>  */}
 
-                    {(streetcodeCoordinates.length > 0) && (!isExist) && (!isInvalidInput) && (showButton) && (
-                        <Button className="onMapbtn" onClick={handleSaveButtonClick}>
-                            <a>Зберегти стріткод</a>
-                        </Button>
-                    )}
-
+                    {streetcodeCoordinates.length > 0 &&
+                        !isExist &&
+                        !isInvalidInput &&
+                        showButton && (
+                            <Button
+                                className="onMapbtn"
+                                onClick={handleSaveButtonClick}
+                            >
+                                <a>Зберегти history-код</a>
+                            </Button>
+                        )}
                 </div>
                 {streetcodeCoordinates.map((marker, index) => (
                     <Marker
@@ -306,7 +351,10 @@ const MapOSMAdmin = () => {
                             scaledSize: new window.google.maps.Size(57, 45),
                             origin: new window.google.maps.Point(0, 0),
                         }}
-                        position={{ lat: marker.latitude, lng: marker.longtitude }}
+                        position={{
+                            lat: marker.latitude,
+                            lng: marker.longtitude,
+                        }}
                         title={`Marker ${marker.latitude}, ${marker.longtitude}`}
                     />
                 ))}
@@ -325,7 +373,6 @@ const MapOSMAdmin = () => {
             </GoogleMap>
             <Table columns={columns} dataSource={data} />
         </>
-
     );
 };
 

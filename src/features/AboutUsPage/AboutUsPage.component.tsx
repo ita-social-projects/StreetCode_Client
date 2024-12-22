@@ -1,13 +1,13 @@
-import './AboutUsPage.styles.scss';
+import "./AboutUsPage.styles.scss";
 
-import { useEffect, useState } from 'react';
-import { Helmet } from 'react-helmet';
-import { useLocation } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
+import { useLocation } from "react-router-dom";
 
-import AboutUsHeaderText from './AboutUsHeaderText/AboutUsHeaderText.component';
-import Founders from './Founders/Founders.component';
-import TeamMembers from './TeamMembers/TeamMembers.component';
-import Vacancies from './Vacancies/Vacancies.component';
+import AboutUsHeaderText from "./AboutUsHeaderText/AboutUsHeaderText.component";
+import Founders from "./Founders/Founders.component";
+import TeamMembers from "./TeamMembers/TeamMembers.component";
+import Vacancies from "./Vacancies/Vacancies.component";
 
 const AboutUsPage = () => {
     const [hasVacancies, setHasVacancies] = useState(false);
@@ -18,12 +18,12 @@ const AboutUsPage = () => {
         const scrollToSection = (sectionName: string) => {
             const sectionElement = document.getElementById(sectionName);
             if (sectionElement) {
-                sectionElement.scrollIntoView({ behavior: 'smooth' });
+                sectionElement.scrollIntoView({ behavior: "smooth" });
             }
         };
 
-        if (section === 'vacancies') {
-            scrollToSection('vacancies-section');
+        if (section === "vacancies") {
+            scrollToSection("vacancies-section");
         } else {
             window.scrollTo(0, 0);
         }
@@ -32,8 +32,11 @@ const AboutUsPage = () => {
     return (
         <div className="aboutUsPageContainer">
             <Helmet>
-                <title>Про нас | Streetcode</title>
-                <meta name="description" content="Дізнайтеся більше про «Стріткод», нашу місію, цінності та команду." />
+                <title>Про нас | Historycode</title>
+                <meta
+                    name="description"
+                    content="Дізнайтеся більше про «Historycode», нашу місію, цінності та команду."
+                />
             </Helmet>
             <div className="contentContainer">
                 <AboutUsHeaderText />

@@ -1,87 +1,90 @@
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable max-len */
-import './MainNewStreetcode.styles.scss';
+import "./MainNewStreetcode.styles.scss";
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
     unstable_usePrompt as usePrompt,
     useNavigate,
     useParams,
-} from 'react-router-dom';
-import SubtitlesApi from '@app/api/additional-content/subtitles.api';
-import VideosApi from '@app/api/media/videos.api';
-import PartnersApi from '@app/api/partners/partners.api';
-import SourcesApi from '@app/api/sources/sources.api';
-import RelatedFigureApi from '@app/api/streetcode/related-figure.api';
-import TextsApi from '@app/api/streetcode/text-content/texts.api';
-import useMobx from '@app/stores/root-store';
-import ArtGallery from '@components/ArtGallery/ArtGalleryBlock.component';
-import ArtGalleryDndContext from '@components/ArtGallery/context/ArtGalleryDndContext';
-import StreetcodeArtsBlock from '@features/AdminPage/NewStreetcode/StreetcodeArtsBlock/StreetcodeArtsBlock.component';
-import PageBar from '@features/AdminPage/PageBar/PageBar.component';
-import StreetcodeCoordinate from '@models/additional-content/coordinate.model';
-import { ModelState } from '@models/enums/model-state';
+} from "react-router-dom";
+import SubtitlesApi from "@app/api/additional-content/subtitles.api";
+import VideosApi from "@app/api/media/videos.api";
+import PartnersApi from "@app/api/partners/partners.api";
+import SourcesApi from "@app/api/sources/sources.api";
+import RelatedFigureApi from "@app/api/streetcode/related-figure.api";
+import TextsApi from "@app/api/streetcode/text-content/texts.api";
+import useMobx from "@app/stores/root-store";
+import ArtGallery from "@components/ArtGallery/ArtGalleryBlock.component";
+import ArtGalleryDndContext from "@components/ArtGallery/context/ArtGalleryDndContext";
+import StreetcodeArtsBlock from "@features/AdminPage/NewStreetcode/StreetcodeArtsBlock/StreetcodeArtsBlock.component";
+import PageBar from "@features/AdminPage/PageBar/PageBar.component";
+import StreetcodeCoordinate from "@models/additional-content/coordinate.model";
+import { ModelState } from "@models/enums/model-state";
 import {
     RelatedFigureCreateUpdate,
     RelatedFigureUpdate,
-} from '@models/streetcode/related-figure.model';
+} from "@models/streetcode/related-figure.model";
 
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import tz from 'dayjs/plugin/timezone';
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import tz from "dayjs/plugin/timezone";
 dayjs.extend(utc);
 dayjs.extend(tz);
 
-import { Button, ConfigProvider, Form, Modal } from 'antd';
-import { useForm } from 'antd/es/form/Form';
-import ukUA from 'antd/locale/uk_UA';
+import { Button, ConfigProvider, Form, Modal } from "antd";
+import { useForm } from "antd/es/form/Form";
+import ukUA from "antd/locale/uk_UA";
 
-import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
-import TransactionLinksApi from '@/app/api/transactions/transactLinks.api';
-import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
-import { removeHtmlTags } from '@/app/common/utils/removeHtmlTags.utility';
-import QUILL_TEXTS_LENGTH from '@/features/AdminPage/NewStreetcode/TextBlock/TextLengthConstants/textMaxLength.constant';
+import StreetcodesApi from "@/app/api/streetcode/streetcodes.api";
+import TransactionLinksApi from "@/app/api/transactions/transactLinks.api";
+import FRONTEND_ROUTES from "@/app/common/constants/frontend-routes.constants";
+import { removeHtmlTags } from "@/app/common/utils/removeHtmlTags.utility";
+import QUILL_TEXTS_LENGTH from "@/features/AdminPage/NewStreetcode/TextBlock/TextLengthConstants/textMaxLength.constant";
 import Subtitle, {
     SubtitleCreate,
-} from '@/models/additional-content/subtitles.model';
+} from "@/models/additional-content/subtitles.model";
 import {
     StreetcodeTag,
     StreetcodeTagUpdate,
-} from '@/models/additional-content/tag.model';
-import StatisticRecord from '@/models/analytics/statisticrecord.model';
-import { AudioUpdate } from '@/models/media/audio.model';
-import { ImageCreateUpdate, ImageDetails } from '@/models/media/image.model';
-import Video, { VideoCreate } from '@/models/media/video.model';
+} from "@/models/additional-content/tag.model";
+import StatisticRecord from "@/models/analytics/statisticrecord.model";
+import { AudioUpdate } from "@/models/media/audio.model";
+import { ImageCreateUpdate, ImageDetails } from "@/models/media/image.model";
+import Video, { VideoCreate } from "@/models/media/video.model";
 import {
     PartnerCreateUpdateShort,
     PartnerUpdate,
-} from '@/models/partners/partners.model';
+} from "@/models/partners/partners.model";
 import {
     StreetcodeCategoryContent,
     StreetcodeCategoryContentUpdate,
-} from '@/models/sources/sources.model';
+} from "@/models/sources/sources.model";
 import {
     StreetcodeCreate,
     StreetcodeType,
     StreetcodeUpdate,
-} from '@/models/streetcode/streetcode-types.model';
+} from "@/models/streetcode/streetcode-types.model";
 import {
     Fact,
     Text,
     TextCreateUpdate,
-} from '@/models/streetcode/text-contents.model';
-import { TransactionLink, TransactionLinkUpdate } from '@/models/transactions/transaction-link.model';
+} from "@/models/streetcode/text-contents.model";
+import {
+    TransactionLink,
+    TransactionLinkUpdate,
+} from "@/models/transactions/transaction-link.model";
 
-import ARBlock from './ARBlock/ARBlock.component';
-import CategoriesBlock from './CategoriesBlock/CategoriesBlock.component';
-import RelatedFiguresBlock from './HistoryRelations/HistoryRelations.component';
-import InterestingFactsBlock from './InterestingFactsBlock/InterestingFactsBlock.component';
-import MainBlockAdmin from './MainBlock/MainBlockAdmin.component';
-import PartnerBlockAdmin from './PartnerBlock/PartnerBlockAdmin.components';
-import SubtitleBlock from './SubtitileBlock/SubtitleBlock.component';
-import TextBlock from './TextBlock/TextBlock.component';
-import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
+import ARBlock from "./ARBlock/ARBlock.component";
+import CategoriesBlock from "./CategoriesBlock/CategoriesBlock.component";
+import RelatedFiguresBlock from "./HistoryRelations/HistoryRelations.component";
+import InterestingFactsBlock from "./InterestingFactsBlock/InterestingFactsBlock.component";
+import MainBlockAdmin from "./MainBlock/MainBlockAdmin.component";
+import PartnerBlockAdmin from "./PartnerBlock/PartnerBlockAdmin.components";
+import SubtitleBlock from "./SubtitileBlock/SubtitleBlock.component";
+import TextBlock from "./TextBlock/TextBlock.component";
+import TimelineBlockAdmin from "./TimelineBlock/TimelineBlockAdmin.component";
 
 function reindex<T extends { index?: number }>(list: T[]): T[] {
     const result = Array.from(list);
@@ -94,8 +97,8 @@ function reindex<T extends { index?: number }>(list: T[]): T[] {
 }
 
 const NewStreetcode = () => {
-    const publish = 'Опублікувати';
-    const draft = 'Зберегти як чернетку';
+    const publish = "Опублікувати";
+    const draft = "Зберегти як чернетку";
     const [form] = useForm();
     const {
         factsStore,
@@ -117,11 +120,11 @@ const NewStreetcode = () => {
     const [subTitle, setSubTitle] = useState<Partial<Subtitle>>();
     const [figures, setFigures] = useState<RelatedFigureCreateUpdate[]>([]);
     const [arLink, setArLink] = useState<TransactionLink>();
-    const [funcName, setFuncName] = useState<string>('create');
+    const [funcName, setFuncName] = useState<string>("create");
     const [visibleModal, setVisibleModal] = useState(false);
     const [savedChanges, setSavedChanges] = useState(true);
     const navigationString =
-        'Покинути сторінку? Внесені зміни, можливо, не буде збережено.';
+        "Покинути сторінку? Внесені зміни, можливо, не буде збережено.";
     const [fieldChanges, setFieldChanges] = useState({});
     const streetcodeType = useRef<StreetcodeType>(StreetcodeType.Person);
     const [allPersistedSourcesAreSet, setAllPersistedSourcesAreSet] =
@@ -138,7 +141,7 @@ const NewStreetcode = () => {
     useEffect(() => {
         if (isPageLoaded) {
             const isAnyFieldChanged = Object.values(fieldChanges).some(
-                (value) => value !== undefined && value !== ''
+                (value) => value !== undefined && value !== ""
             );
             setSavedChanges(!isAnyFieldChanged);
         } else {
@@ -148,7 +151,7 @@ const NewStreetcode = () => {
 
     usePrompt(
         savedChanges
-            ? { when: false, message: '' }
+            ? { when: false, message: "" }
             : { when: true, message: navigationString }
     );
 
@@ -161,10 +164,10 @@ const NewStreetcode = () => {
         mainText: string | undefined,
         additionalText: string | undefined
     ) => {
-        const mainTextWithoutHtml = mainText ? removeHtmlTags(mainText) : '';
+        const mainTextWithoutHtml = mainText ? removeHtmlTags(mainText) : "";
         const additionalTextWithoutHtml = additionalText
             ? removeHtmlTags(additionalText)
-            : '';
+            : "";
 
         const tooLongMainText =
             mainText &&
@@ -176,16 +179,16 @@ const NewStreetcode = () => {
 
         if (tooLongMainText || tooLongAdditionalText) {
             throw new Error(
-                'The value is too long either in the main text or in the additional text'
+                "The value is too long either in the main text or in the additional text"
             );
         }
     };
 
     useEffect(() => {
         if (!savedChanges) {
-            window.addEventListener('beforeunload', alertUser);
+            window.addEventListener("beforeunload", alertUser);
             return () => {
-                window.removeEventListener('beforeunload', alertUser);
+                window.removeEventListener("beforeunload", alertUser);
             };
         }
     });
@@ -204,7 +207,7 @@ const NewStreetcode = () => {
 
     useEffect(() => {
         if (ukUA.DatePicker) {
-            ukUA.DatePicker.lang.locale = 'uk';
+            ukUA.DatePicker.lang.locale = "uk";
         }
 
         if (parseId) {
@@ -239,14 +242,14 @@ const NewStreetcode = () => {
                     );
 
                     setSelectedTags(tagsToUpdate as StreetcodeTag[]);
-                    setFuncName('update');
+                    setFuncName("update");
                 });
 
                 VideosApi.getByStreetcodeId(parseId).then((result) => {
                     setVideo(result);
                     setInputInfo((prevState) => ({
                         ...prevState,
-                        ['link']: result.url,
+                        ["link"]: result.url,
                     }));
                 });
                 RelatedFigureApi.getByStreetcodeId(parseId).then((result) => {
@@ -271,7 +274,7 @@ const NewStreetcode = () => {
                             }));
 
                         setPartners(persistedPartners);
-                    },
+                    }
                 );
                 SubtitlesApi.getSubtitlesByStreetcodeId(parseId)
                     .then((resultSubtitle) => {
@@ -332,7 +335,7 @@ const NewStreetcode = () => {
                 TransactionLinksApi.getByStreetcodeId(parseId).then((res) => {
                     if (res) {
                         setArLink(res);
-                        form.setFieldValue('arlink', res.url);
+                        form.setFieldValue("arlink", res.url);
                     }
                 });
             });
@@ -351,20 +354,20 @@ const NewStreetcode = () => {
         if (firstErrorIndex !== -1) {
             const firstErrorName = String(errors[firstErrorIndex].name);
             if (
-                firstErrorName === 'animations' ||
-                firstErrorName === 'pictureBlackWhite'
+                firstErrorName === "animations" ||
+                firstErrorName === "pictureBlackWhite"
             ) {
                 const containerElement = document.querySelector(
-                    '.scrollable-container'
+                    ".scrollable-container"
                 );
                 if (containerElement) {
                     containerElement.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'center',
+                        behavior: "smooth",
+                        block: "center",
                     });
                 }
             } else {
-                form.scrollToField(firstErrorName, { block: 'center' });
+                form.scrollToField(firstErrorName, { block: "center" });
             }
         }
     };
@@ -385,9 +388,7 @@ const NewStreetcode = () => {
 
                 let subtitles: SubtitleCreate[] = [];
                 if (subTitle != null && subTitle.subtitleText) {
-                    subtitles = [
-                        { subtitleText: subTitle!.subtitleText },
-                    ];
+                    subtitles = [{ subtitleText: subTitle!.subtitleText }];
                 }
                 let videos: VideoCreate[] = [];
                 if (inputInfo != null && inputInfo.link) {
@@ -397,35 +398,35 @@ const NewStreetcode = () => {
                 const text: TextCreateUpdate = {
                     id: inputInfo?.id ?? 0,
                     title: inputInfo?.title,
-                    textContent: inputInfo?.textContent ?? ' ',
+                    textContent: inputInfo?.textContent ?? " ",
                     additionalText:
-                        inputInfo?.textContent !== '<p><br></p>'
+                        inputInfo?.textContent !== "<p><br></p>"
                             ? inputInfo?.additionalText ===
-                              '<p>Текст підготовлений спільно з</p>'
-                                ? ''
+                              "<p>Текст підготовлений спільно з</p>"
+                                ? ""
                                 : inputInfo?.additionalText
-                            : '',
+                            : "",
                     streetcodeId: parseId,
                 };
                 validateQuillTexts(text.textContent, text.additionalText);
 
                 const streetcode: StreetcodeCreate = {
                     id: parseId,
-                    index: form.getFieldValue('streetcodeNumber'),
-                    title: form.getFieldValue('mainTitle'),
-                    alias: form.getFieldValue('alias'),
-                    transliterationUrl: form.getFieldValue('streetcodeUrlName'),
-                    arBlockURL: form.getFieldValue('arlink'),
+                    index: form.getFieldValue("streetcodeNumber"),
+                    title: form.getFieldValue("mainTitle"),
+                    alias: form.getFieldValue("alias"),
+                    transliterationUrl: form.getFieldValue("streetcodeUrlName"),
+                    arBlockURL: form.getFieldValue("arlink"),
                     streetcodeType: streetcodeType.current,
                     eventStartOrPersonBirthDate: dayjs
-                        .utc(form.getFieldValue('streetcodeFirstDate'))
+                        .utc(form.getFieldValue("streetcodeFirstDate"))
                         .toDate(),
                     eventEndOrPersonDeathDate: form.getFieldValue(
-                        'streetcodeSecondDate'
+                        "streetcodeSecondDate"
                     )
                         ? dayjs
-                            .utc(form.getFieldValue('streetcodeSecondDate'))
-                            .toDate()
+                              .utc(form.getFieldValue("streetcodeSecondDate"))
+                              .toDate()
                         : null,
                     imagesIds: createUpdateMediaStore.getImageIds(),
                     audioId: createUpdateMediaStore.audioId,
@@ -451,9 +452,9 @@ const NewStreetcode = () => {
                         id: 0,
                     })),
                     partners,
-                    teaser: form.getFieldValue('teaser'),
+                    teaser: form.getFieldValue("teaser"),
                     viewCount: 0,
-                    dateString: form.getFieldValue('dateString'),
+                    dateString: form.getFieldValue("dateString"),
                     arts: artStore.arts,
                     streetcodeArtSlides:
                         streetcodeArtSlideStore.getArtSlidesAsDTO(),
@@ -492,8 +493,8 @@ const NewStreetcode = () => {
                 };
 
                 if (streetcodeType.current === StreetcodeType.Person) {
-                    streetcode.firstName = form.getFieldValue('name');
-                    streetcode.lastName = form.getFieldValue('surname');
+                    streetcode.firstName = form.getFieldValue("name");
+                    streetcode.lastName = form.getFieldValue("surname");
                 }
                 if (parseId) {
                     const relatedFiguresUpdate: RelatedFigureUpdate[] =
@@ -513,11 +514,18 @@ const NewStreetcode = () => {
 
                     let videosUpdate: Video[] = [];
                     if (inputInfo != null && inputInfo.link) {
-                        videosUpdate = [{ ...video, url: inputInfo.link } as Video];
+                        videosUpdate = [
+                            { ...video, url: inputInfo.link } as Video,
+                        ];
                     }
                     let subtitleUpdate: Subtitle[] = [];
                     if (subTitle != null && subTitle.subtitleText) {
-                        subtitleUpdate = [{ ...subTitle, subtitleText: subTitle!.subtitleText } as Subtitle];
+                        subtitleUpdate = [
+                            {
+                                ...subTitle,
+                                subtitleText: subTitle!.subtitleText,
+                            } as Subtitle,
+                        ];
                     }
 
                     const tags = [
@@ -530,13 +538,13 @@ const NewStreetcode = () => {
                         ...tagsStore.getTagToDeleteArray,
                     ];
 
-                    const arUrl = form.getFieldValue('arlink');
+                    const arUrl = form.getFieldValue("arlink");
                     let arLinkUpdated: TransactionLinkUpdate | null = {
                         id: arLink?.id ?? 0,
                         streetcodeId: parseId,
-                        url: arLink?.url ?? '',
-                        urlTitle: arLink?.urlTitle ?? '',
-                        qrCodeUrl: arLink?.urlTitle ?? '',
+                        url: arLink?.url ?? "",
+                        urlTitle: arLink?.urlTitle ?? "",
+                        qrCodeUrl: arLink?.urlTitle ?? "",
                     };
                     if (arUrl) {
                         arLinkUpdated = {
@@ -554,57 +562,107 @@ const NewStreetcode = () => {
 
                     const streetcodeUpdate: StreetcodeUpdate = {
                         id: parseId,
-                        index: form.getFieldValue('streetcodeNumber'),
+                        index: form.getFieldValue("streetcodeNumber"),
                         firstName: null,
                         lastName: null,
-                        title: form.getFieldValue('mainTitle'),
-                        alias: form.getFieldValue('alias'),
+                        title: form.getFieldValue("mainTitle"),
+                        alias: form.getFieldValue("alias"),
                         status: tempStatus,
-                        transliterationUrl: form.getFieldValue('streetcodeUrlName'),
+                        transliterationUrl:
+                            form.getFieldValue("streetcodeUrlName"),
                         streetcodeType: streetcodeType.current,
-                        eventStartOrPersonBirthDate: dayjs.utc(form.getFieldValue('streetcodeFirstDate')).toDate(),
-                        eventEndOrPersonDeathDate: form.getFieldValue('streetcodeSecondDate')
-                            ? dayjs.utc(form.getFieldValue('streetcodeSecondDate')).toDate() : null,
-                        teaser: form.getFieldValue('teaser'),
-                        dateString: form.getFieldValue('dateString'),
+                        eventStartOrPersonBirthDate: dayjs
+                            .utc(form.getFieldValue("streetcodeFirstDate"))
+                            .toDate(),
+                        eventEndOrPersonDeathDate: form.getFieldValue(
+                            "streetcodeSecondDate"
+                        )
+                            ? dayjs
+                                  .utc(
+                                      form.getFieldValue("streetcodeSecondDate")
+                                  )
+                                  .toDate()
+                            : null,
+                        teaser: form.getFieldValue("teaser"),
+                        dateString: form.getFieldValue("dateString"),
                         videos: videosUpdate,
                         relatedFigures: relatedFiguresUpdate,
-                        timelineItems: timelineItemStore.getTimelineItemArrayToUpdate,
-                        facts: reindex(factsStore.getFactArrayToUpdate.map((item) => ({  ...item,
-                                                                                         streetcodeId: parseId,
-                                                                                         id: item.id < 0 ? 0 : item.id }))),
+                        timelineItems:
+                            timelineItemStore.getTimelineItemArrayToUpdate,
+                        facts: reindex(
+                            factsStore.getFactArrayToUpdate.map((item) => ({
+                                ...item,
+                                streetcodeId: parseId,
+                                id: item.id < 0 ? 0 : item.id,
+                            }))
+                        ),
                         partners: partnersUpdate,
                         subtitles: subtitleUpdate,
-                        text: text.modelState === ModelState.Deleted || text.title ? text : null,
-                        streetcodeCategoryContents: sourceCreateUpdateStreetcode.getCategoryContentsArrayToUpdate
-                            .map((content) => ({ ...content, streetcodeId: parseId })),
+                        text:
+                            text.modelState === ModelState.Deleted || text.title
+                                ? text
+                                : null,
+                        streetcodeCategoryContents:
+                            sourceCreateUpdateStreetcode.getCategoryContentsArrayToUpdate.map(
+                                (content) => ({
+                                    ...content,
+                                    streetcodeId: parseId,
+                                })
+                            ),
                         arts: artStore.arts,
-                        streetcodeArtSlides: streetcodeArtSlideStore.getArtSlidesAsDTO(),
-                        tags: tags.map((tag) => ({ ...tag, id: tag.id < 0 ? 0 : tag.id })),
-                        statisticRecords: statisticRecordStore.getStatisticRecordArrayToUpdate
-                            .map((record) => ({ ...record, streetcodeId: parseId })),
+                        streetcodeArtSlides:
+                            streetcodeArtSlideStore.getArtSlidesAsDTO(),
+                        tags: tags.map((tag) => ({
+                            ...tag,
+                            id: tag.id < 0 ? 0 : tag.id,
+                        })),
+                        statisticRecords:
+                            statisticRecordStore.getStatisticRecordArrayToUpdate.map(
+                                (record) => ({
+                                    ...record,
+                                    streetcodeId: parseId,
+                                })
+                            ),
                         toponyms: newStreetcodeInfoStore.selectedToponyms,
-                        images: createUpdateMediaStore.imagesUpdate.map((img): ImageCreateUpdate => ({ id: img.id, modelState: img.modelState, streetcodeId: img.streetcodeId })),
+                        images: createUpdateMediaStore.imagesUpdate.map(
+                            (img): ImageCreateUpdate => ({
+                                id: img.id,
+                                modelState: img.modelState,
+                                streetcodeId: img.streetcodeId,
+                            })
+                        ),
                         audioId: createUpdateMediaStore.audioId,
-                        audios: createUpdateMediaStore.audioUpdate.map((a): AudioUpdate => ({ id: a.id, modelState: a.modelState, streetcodeId: a.streetcodeId })),
+                        audios: createUpdateMediaStore.audioUpdate.map(
+                            (a): AudioUpdate => ({
+                                id: a.id,
+                                modelState: a.modelState,
+                                streetcodeId: a.streetcodeId,
+                            })
+                        ),
                         transactionLink: arLinkUpdated,
-                        imagesDetails: (Array.from(factsStore.factImageDetailsMap.values()) as ImageDetails[]).concat(createUpdateMediaStore.getImageDetailsUpdate()),
+                        imagesDetails: (
+                            Array.from(
+                                factsStore.factImageDetailsMap.values()
+                            ) as ImageDetails[]
+                        ).concat(
+                            createUpdateMediaStore.getImageDetailsUpdate()
+                        ),
                     };
 
                     if (streetcodeType.current === StreetcodeType.Person) {
-                        streetcodeUpdate.firstName = form.getFieldValue('name');
+                        streetcodeUpdate.firstName = form.getFieldValue("name");
                         streetcodeUpdate.lastName =
-                            form.getFieldValue('surname');
+                            form.getFieldValue("surname");
                     }
                     StreetcodesApi.update(streetcodeUpdate)
                         .then(() => {
                             window.location.reload();
                         })
                         .then(() => {
-                            alert('Cтріткод успішно оновлений');
+                            alert("Cтріткод успішно оновлений");
                         })
                         .catch((error) => {
-                            alert('Виникла помилка при оновленні стріткоду');
+                            alert("Виникла помилка при оновленні history-коду");
                             console.error(error);
                         });
                 } else {
@@ -614,7 +672,7 @@ const NewStreetcode = () => {
                             if (tempStatus === 1) {
                                 navigate(
                                     `../${form.getFieldValue(
-                                        'streetcodeUrlName'
+                                        "streetcodeUrlName"
                                     )}`,
                                     {
                                         replace: true,
@@ -625,13 +683,13 @@ const NewStreetcode = () => {
                                     `${
                                         FRONTEND_ROUTES.ADMIN.BASE
                                     }/${form.getFieldValue(
-                                        'streetcodeUrlName'
+                                        "streetcodeUrlName"
                                     )}`
                                 );
                             }
                         })
                         .catch((error) => {
-                            alert('Виникла помилка при створенні стріткоду');
+                            alert("Виникла помилка при створенні history-коду");
                             console.error(error);
                         });
                 }
@@ -643,7 +701,7 @@ const NewStreetcode = () => {
                 if (name) {
                     scrollToErrors();
                 } else {
-                    alert('Будь ласка, заповніть всі поля валідними даними');
+                    alert("Будь ласка, заповніть всі поля валідними даними");
                     console.error(error);
                 }
             });
@@ -659,7 +717,7 @@ const NewStreetcode = () => {
             <ConfigProvider locale={ukUA}>
                 <div className="adminContainer">
                     <div className="adminContainer-block">
-                        <h2>Стріткод</h2>
+                        <h2>History-код</h2>
                         <Form
                             form={form}
                             layout="vertical"
@@ -732,7 +790,7 @@ const NewStreetcode = () => {
                         {draft}
                     </Button>
                     <Modal
-                        title="Ви впевнені, що хочете опублікувати цей стріткод?"
+                        title="Ви впевнені, що хочете опублікувати цей history-код?"
                         open={visibleModal}
                         onOk={handleModalOk}
                         onCancel={handleCancelModalRemove}
