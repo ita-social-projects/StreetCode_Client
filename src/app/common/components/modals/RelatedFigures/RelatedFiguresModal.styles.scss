@@ -57,76 +57,70 @@ $articlesImg: "@assets/images/sources/Articles.webp";
   @include mut.rem-margined(0, 21px, 0, 53px);
   @include mut.rem-padded(30px, 0, 30px, 3px);
 
-   .relatedFigureSlide:hover {
-      @include mut.sized($width: 278px, $height: 380px);
-      border: 3px solid c.$pure-white-color;
-      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-      background-size: 100%;
-      background-repeat: no-repeat;
+  .relatedFigureSlide:hover {
+    position: relative;
+    overflow: visible;
+    cursor: pointer;
 
-      @include mut.positioned-as();
-      @include mut.flexed($justify-content: center, $align-items: flex-end);
-      @include vnd.vendored(transition, 'all .5s ease');
-      cursor: pointer;
+    .figureSlideText {
       overflow: visible !important;
+    }
 
-      .figureSlideText{
-        @include mut.sized($width: 278px, $height: 97px);
-        @include mut.flexed($align-items: flex-start, $wrap: wrap);
+    .relatedTagList {
+      animation: fadeIn 1s;
+      box-shadow: 0px 4px 4px rgb(0 0 0 / 25%);
+      z-index: 10 !important;
+      position: fixed;
+      width: auto !important;
+      min-width: 140px;
+      top: var(--cursor-y, 0);
+      left: var(--cursor-x, 0);
+      justify-content: center;
+      flex-direction: column;
+      overflow: visible;
+      max-height: none;
+      @include mut.rem-padded($left: 8px, $top: 10.5px, $right: 4px, $bottom: 10.5px);
+      background-color: c.$pure-white-color;
+      border-radius: 20px;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+      visibility: visible;
+
+      .tag {
+        @include mut.sized($height: 28px);
+        @include mut.flex-centered();
+        gap: 0 !important;
+        border: 2px solid c.$dark-red-color;
+        @include mut.full-rounded($rad: 7.86px);
+        @include mut.rem-margined($left: 1.5px, $top: 1.5px, $right: 1.5px, $bottom: 2px);
+
+        p {
+          @include mut.sized($height: 14px);
+          text-align: center;
+          line-height: 135.69%;
+          @include mut.with-font($font-size: 10px, $font-weight: 500);
+          line-height: pxToRem(13.6px);
+          color: c.$dark-red-color;
+        }
       }
-      .relatedTagList {
-        animation: fadeIn 1s;
-        box-shadow: 0px 4px 4px rgb(0 0 0 / 25%);   
-        z-index: 10 !important;
+      // Triangle
+      &::after {
+        content: "";
         position: absolute;
-        width: 53% !important;
-        left: 145px;
-        top: 58px;
-        justify-content: center;
-        // Can be usefull in future editing -> @include mut.rem-padded($left: 8px, $top: 10.5px, $right: 4px, $bottom: 10.5px);
-        @include mut.rem-padded($left: 15px, $top: 10px, $right: 15px, $bottom: 10px);
-
-        background-color: c.$pure-white-color;
-        border-radius: 20px;
-
-        visibility: visible;
-
-        .tag {
-          @include mut.sized($height: 28px);
-          @include mut.flex-centered();
-          gap: 0 !important;
-          border: 2px solid c.$dark-red-color;
-          @include mut.full-rounded($rad: 7.86px);
-          @include mut.rem-margined($left: 1.5px, $top: 1.5px, $right: 1.5px, $bottom: 2px);
-
-          p {
-            @include mut.sized($height: 14px);
-            text-align: center;
-            line-height: 135.69%;
-            @include mut.with-font($font-size: 10px,$font-weight: 500);
-            line-height: pxToRem(13.6px);
-            color: c.$dark-red-color;
-          }
-         }
-        // Triangle
-        &::after {    
-          content: "";
-          position: absolute;
-          width: 0;
-          height: 0;
-          margin-left: -3em;
-          bottom: -25px;
-          left: 50%;
-          box-sizing: border-box;
-          z-index: -1 !important;
-          border: 1em solid black;
-          border-color: transparent transparent #FFFFFF #FFFFFF;       
-          transform-origin: 0 0;
-          transform: rotate(-45deg);
-          box-shadow: -3px 3px 3px 0 rgba(0, 0, 0, 0.25);
-        }  
-      } 
-   }
+        width: 0;
+        height: 0;
+        margin-left: -3em;
+        bottom: -25px;
+        left: 50%;
+        box-sizing: border-box;
+        z-index: -1 !important;
+        border: 1em solid black;
+        border-color: transparent transparent #FFFFFF #FFFFFF;
+        transform-origin: 0 0;
+        transform: rotate(-45deg);
+        box-shadow: -3px 3px 3px 0 rgba(0, 0, 0, 0.25);
+      }
+    }
+  }
 
   &::-webkit-scrollbar {
     width: .765rem;

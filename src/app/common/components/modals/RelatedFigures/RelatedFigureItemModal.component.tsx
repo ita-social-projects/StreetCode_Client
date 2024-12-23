@@ -13,9 +13,7 @@ const RelatedFiguresItemModal = () => {
     const { relatedFiguresStore: { relatedFiguresMap } } = useMobx();
     const { modalStore } = useModalContext();
     const { setModal, modalsState: { relatedFigureItem } } = modalStore;
-
-    const relationId = relatedFigureItem.fromCardId!;
-    const relation = relatedFiguresMap.get(relationId);
+    const relation = relatedFiguresMap.get(relatedFigureItem.fromCardId!);
 
     const handleClick = () => {
         relatedFigureItem.isOpen = false;
@@ -42,17 +40,13 @@ const RelatedFiguresItemModal = () => {
                 <div className="figureSlideText">
                     <div className="heading">
                         <p>{relation?.title}</p>
-                        {
-                            relation?.alias !== null
-                                ? (
-                                    <p className="aliasText">
+                        {relation?.alias && (
+                            <p className="aliasText">
                                 (
-                                        {relation?.alias}
-)
-                                    </p>
+                                {relation.alias}
                                 )
-                                : undefined
-                        }
+                            </p>
+                        )}
                     </div>
                 </div>
             </div>
