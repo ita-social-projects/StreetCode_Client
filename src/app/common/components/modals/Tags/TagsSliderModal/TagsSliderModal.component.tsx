@@ -40,7 +40,7 @@ const TagsSliderModal = ({ streetCodeid, activeTagId, setActiveTagId, showAllTag
       ));
     
     const tags = renderTags(getTagArray);
-    const allTags = renderTags(getTagArray);
+    const allTags = renderTags(getAllTagsArray);
 
     const [initialSlide, setInitialSlide] = useState<number | undefined>(undefined);
     const [hasSetInitialSlide, setHasSetInitialSlide] = useState(false);
