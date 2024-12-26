@@ -21,7 +21,7 @@ import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import { audioClickEvent } from '@/app/common/utils/googleAnalytics.unility';
 import Image, { ImageAssigment } from '@/models/media/image.model';
 
-import StreetcodeDocument from '../../PdfDocument/StreetcodeDocument';
+import StreetcodeDocument from '../../PdfDocument/StreetcodeDocument.component';
 
 const fullMonthNumericYearDateFmtr = new Intl.DateTimeFormat('uk-UA', {
     day: 'numeric',
