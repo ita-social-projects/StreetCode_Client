@@ -203,6 +203,7 @@ export const API_ROUTES = {
     },
     AUTH: {
         LOGIN: 'auth/login',
+        LOGIN_GOOGLE: 'auth/googleLogin',
         REFRESH_TOKEN: 'auth/refreshToken',
         REGISTER: 'auth/register',
     },

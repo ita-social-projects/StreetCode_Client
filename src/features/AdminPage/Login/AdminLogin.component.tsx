@@ -3,6 +3,7 @@
 /* eslint-disable no-underscore-dangle */
 import './AdminLogin.style.scss';
 
+import { GoogleLogin } from '@react-oauth/google';
 import React, { useRef, useState } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { Navigate, useNavigate } from 'react-router-dom';
@@ -41,8 +42,8 @@ const AdminLogin: React.FC = () => {
                     .then(() => navigate(FRONTEND_ROUTES.ADMIN.BASE))
                     .catch((ex) => {
                         for (const key in ex.response.data.errors) {
-                            message.error(`${ex.response.data.errors[key]}`)
-                        }                        
+                            message.error(`${ex.response.data.errors[key]}`);
+                        }
                     });
                 recaptchaRef.current?.reset();
             } catch (error) {
@@ -58,30 +59,49 @@ const AdminLogin: React.FC = () => {
     }
 
     return (
-        <Form form={form} className="admin-login-form" onFinish={handleLogin}>
-            <Form.Item name="login" label="Логін" rules={[{ required: true, message: 'Введіть логін' }]}>
-                <Input maxLength={20} />
-            </Form.Item>
+        <>
+            <Form form={form} className="admin-login-form" onFinish={handleLogin}>
+                <Form.Item name="login" label="Логін" rules={[{ required: true, message: 'Введіть логін' }]}>
+                    <Input maxLength={20} />
+                </Form.Item>
 
-            <Form.Item name="password" label="Пароль" rules={[{ required: true, message: 'Введіть пароль' }]}>
-                <Input.Password maxLength={30} />
-            </Form.Item>
-            <div className="captchaBlock center">
-                <ReCAPTCHA
-                    className="required-captcha"
-                    sitekey={siteKey}
-                    onChange={handleVerify}
-                    onExpired={handleExpiration}
-                    ref={recaptchaRef}
-                    hl="uk"
+                <Form.Item name="password" label="Пароль" rules={[{ required: true, message: 'Введіть пароль' }]}>
+                    <Input.Password maxLength={30} />
+                </Form.Item>
+                <div className="captchaBlock center">
+                    <ReCAPTCHA
+                        className="required-captcha"
+                        sitekey={siteKey}
+                        onChange={handleVerify}
+                        onExpired={handleExpiration}
+                        ref={recaptchaRef}
+                        hl="uk"
+                    />
+                </div>
+                <Form.Item className="center">
+                    <Button htmlType="submit" className="streetcode-custom-button">
+                        Увійти
+                    </Button>
+                </Form.Item>
+                <GoogleLogin
+                    onSuccess={async (credentialResponse) => {
+                        try {
+                            console.log(credentialResponse);
+                            const idToken = credentialResponse.credential;
+                            await AuthService.googleLoginAsync(idToken);
+                            message.success('Успішна авторизація через Google!');
+                            navigate(FRONTEND_ROUTES.ADMIN.BASE);
+                        } catch (error) {
+                            message.error('Помилка входу через Google');
+                        }
+                    }}
+                    onError={() => {
+                        message.error('Не вдалося увійти через Google');
+                    }}
+                    useOneTap
                 />
-            </div>
-            <Form.Item className="center">
-                <Button htmlType="submit" className="streetcode-custom-button">
-                    Увійти
-                </Button>
-            </Form.Item>
-        </Form>
+            </Form>
+        </>
     );
 };
 export default AdminLogin;

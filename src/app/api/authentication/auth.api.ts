@@ -7,6 +7,8 @@ import {
     RefreshTokenResponce,
     UserLoginRequest,
     UserLoginResponse,
+    UserRegisterRequest,
+    UserRegisterResponse,
 } from '@/models/user/user.model';
 
 const defaultBaseUrl = process.env.NODE_ENV === 'development'
@@ -17,9 +19,20 @@ const instance = axios.create({
 });
 
 const AuthApi = {
+    register: (registerParams: UserRegisterRequest) => (
+        instance.post<UserRegisterResponse>(API_ROUTES.AUTH.REGISTER, registerParams)
+            .then((response) => response.data)
+    ),
     login: (loginParams: UserLoginRequest) => (
         instance.post<UserLoginResponse>(API_ROUTES.AUTH.LOGIN, loginParams)
             .then((response) => response.data)
+    ),
+    loginGoogle: (idToken: string | undefined) => (
+        instance.post<UserLoginResponse>(
+            API_ROUTES.AUTH.LOGIN_GOOGLE,
+            JSON.stringify(idToken),
+            { headers: { 'Content-Type': 'application/json' } },
+        ).then((response) => response.data)
     ),
     refreshToken: (tokenTokenPapams: RefreshTokenRequest) => (
         instance.post<RefreshTokenResponce>(API_ROUTES.AUTH.REFRESH_TOKEN, tokenTokenPapams)

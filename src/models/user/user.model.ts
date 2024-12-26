@@ -17,6 +17,20 @@ export interface UserLoginResponse {
     refreshToken: string;
 }
 
+export interface UserRegisterRequest {
+    name:string;
+    surname:string;
+    email:string;
+    username:string;
+    phoneNumber:string;
+    password:string;
+    passwordConfirmation:string;
+}
+
+export interface UserRegisterResponse {
+
+}
+
 export interface RefreshTokenRequest {
     accessToken:string;
     refreshToken:string;
