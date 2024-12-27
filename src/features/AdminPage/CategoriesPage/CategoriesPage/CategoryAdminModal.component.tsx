@@ -78,6 +78,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
             ImagesApi.getById(initialData.imageId)
                 .then((img) => {
                     initialData.image = img;
+                    setImage(img);
                     form.setFieldsValue({
                         image: createFileListData(img),
                     });
