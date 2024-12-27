@@ -42,7 +42,7 @@
         .newsTextArea {
             @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 20px);
             overflow-wrap: break-word;
-            white-space: pre-line;
+            white-space: pre-wrap;
 
             ul, ol {
                 white-space: normal;
@@ -216,7 +216,7 @@
             flex-wrap: wrap;
 
             .newsTextArea {
-                white-space: pre-line;
+                white-space: pre-wrap;
                 @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 300, $font-size: 18px);
                 
                 p {
