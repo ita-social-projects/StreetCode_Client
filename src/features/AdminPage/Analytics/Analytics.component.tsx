@@ -98,7 +98,7 @@ const Analytics = () => {
                 <div className="analyticsGridView">
                     <div className="streetcodeImgWrapper">
                         <h2 className="streetcodeName">
-                            Стріткод
+                            Historycode
                             <br />
                             {streetcode?.title}
                         </h2>

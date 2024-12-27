@@ -6,7 +6,7 @@ import { RelatedFigureCreateUpdate, RelatedFigureShort } from '@models/streetcod
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import Streetcode, { StreetcodeShort } from '@/models/streetcode/streetcode-types.model';
 
-import InputPanel from './components/InputPanel.component';
+import InputPanel from './components/nent';
 import RelationsList from './components/RelatedFigureList.component';
 
 interface Props {
@@ -57,7 +57,7 @@ const RelatedFiguresBlock = React.memo(({ currentStreetcodeId, figures, setFigur
 
     return (
         <div className="adminContainer-block">
-            <h2>Зв&apos;язки історії(Стріткоди)</h2>
+            <h2>Зв&apos;язки історії(History-коди)</h2>
             <InputPanel figures={figures} options={options} handleAdd={handleAdd} onChange={onChange} />
             <RelationsList figures={figures} handleDelete={handleDelete} />
         </div>

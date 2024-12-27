@@ -99,7 +99,7 @@ const NewsPage = () => {
         <>
             <Helmet>
                 <title>Новини | Streetcode</title>
-                <meta name="description" content="Будьте в курсі останніх новин від «Стріткод»." />
+                <meta name="description" content="Будьте в курсі останніх новин від «Historycode»." />
             </Helmet>
 
             newsValue

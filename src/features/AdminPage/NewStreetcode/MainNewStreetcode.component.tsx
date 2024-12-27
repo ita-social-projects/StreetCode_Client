@@ -604,7 +604,7 @@ const NewStreetcode = () => {
                             alert('Cтріткод успішно оновлений');
                         })
                         .catch((error) => {
-                            alert('Виникла помилка при оновленні стріткоду');
+                            alert('Виникла помилка при оновленні history-коду');
                             console.error(error);
                         });
                 } else {
@@ -631,7 +631,7 @@ const NewStreetcode = () => {
                             }
                         })
                         .catch((error) => {
-                            alert('Виникла помилка при створенні стріткоду');
+                            alert('Виникла помилка при створенні history-коду');
                             console.error(error);
                         });
                 }
@@ -659,7 +659,7 @@ const NewStreetcode = () => {
             <ConfigProvider locale={ukUA}>
                 <div className="adminContainer">
                     <div className="adminContainer-block">
-                        <h2>Стріткод</h2>
+                        <h2>History-код</h2>
                         <Form
                             form={form}
                             layout="vertical"
@@ -732,7 +732,7 @@ const NewStreetcode = () => {
                         {draft}
                     </Button>
                     <Modal
-                        title="Ви впевнені, що хочете опублікувати цей стріткод?"
+                        title="Ви впевнені, що хочете опублікувати цей history-код?"
                         open={visibleModal}
                         onOk={handleModalOk}
                         onCancel={handleCancelModalRemove}

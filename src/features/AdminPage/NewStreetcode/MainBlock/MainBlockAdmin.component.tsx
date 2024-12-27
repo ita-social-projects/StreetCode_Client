@@ -149,14 +149,14 @@ const MainBlockAdmin = React.memo(({
         <div className="mainblock-add-form">
 
             <Form.Item
-                label="Номер стріткоду"
+                label="Номер history-коду"
                 rules={[
                     {
                         required: true,
                         type: 'number',
                         min: 1,
                         max: 9999,
-                        message: 'Введіть номер стріткоду від 1 до 9999, будь ласка',
+                        message: 'Введіть номер history-коду від 1 до 9999, будь ласка',
                     },
                     {
                         validator: async (_, value) => {
@@ -197,10 +197,10 @@ const MainBlockAdmin = React.memo(({
 
             <Form.Item
                 name="mainTitle"
-                label="Назва стріткоду"
+                label="Назва history-коду"
                 className="maincard-item"
-                rules={[{ required: true, message: 'Введіть назву стріткоду, будь ласка' },
-                    { max: 100, message: 'Назва стріткоду не може містити більше 100 символів' }]}
+                rules={[{ required: true, message: 'Введіть назву history-коду, будь ласка' },
+                    { max: 100, message: 'Назва history-коду не може містити більше 100 символів' }]}
             >
                 <Input
                     maxLength={100}
@@ -315,10 +315,10 @@ const MainBlockAdmin = React.memo(({
                                         <p className="label-tags-block-info-container-content">
                                             При обиранні теги є невидимими для користувача (фон тегу сірий),
                                             тобто він не відображається
-                                            на головній картці стріткоду.
+                                            на головній картці history-коду.
                                             Якщо натиснути на тег, його стан зміниться на видимий (фон - білий).
                                             Нижче є розширення наводячи на які, можна побачити, які теги
-                                            будуть вміщатись на головній картці стріткоду.
+                                            будуть вміщатись на головній картці history-коду.
                                             {' '}
                                         </p>
                                     )}

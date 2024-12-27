@@ -34,12 +34,12 @@ const StatisticsModal = () => {
     const handleModalClose = () => {
         statistics.isOpen = false;
     };
-    const [headingText, setHeadingText] = useState('цього стріткоду');
+    const [headingText, setHeadingText] = useState('цього history-коду');
     useEffect(() => {
         const updateHeadingText = () => {
             const headingElement = document.querySelector('h2.streetcodeTitle');
             if (headingElement) {
-                setHeadingText(headingElement.textContent || 'цього стріткоду');
+                setHeadingText(headingElement.textContent || 'цього history-коду');
             }
         };
 

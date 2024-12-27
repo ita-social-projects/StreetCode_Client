@@ -13,7 +13,7 @@ interface Props {
 const BreadCrumb = ({ separator = '->', streetcode }: Props) => (
     <Breadcrumb className="breadcrumbContainer" separator={separator}>
         <Breadcrumb.Item className="activeLink" href={FRONTEND_ROUTES.OTHER_PAGES.CATALOG}>
-            стріткоди
+            history-коди
         </Breadcrumb.Item>
         <Breadcrumb.Item>
             {streetcode?.title}
