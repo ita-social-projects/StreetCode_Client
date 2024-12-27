@@ -142,9 +142,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
         try {
             await form.validateFields();
 
-
             const title = form.getFieldValue('title');
-
 
             if (!title.trim()) {
                 message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
@@ -240,7 +238,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                     </Form.Item>
                     <div className="center">
                         <Button
-                            disabled={fileList?.length === 0 || isSaveButtonDisabled || !image}
+                            disabled={fileList?.length === 0 || isSaveButtonDisabled}
                             className="streetcode-custom-button"
                             onClick={() => handleOk()}
                         >
