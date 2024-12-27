@@ -1,6 +1,6 @@
 import './SlickSlider.styles.scss';
 
-import { FC, memo, useCallback, useRef } from 'react';
+import { FC, memo, useCallback, useEffect, useRef } from 'react';
 import Slider from 'react-slick';
 
 import SliderProps, { defaultSliderProps } from './index';
@@ -11,10 +11,16 @@ const GenericSlider: FC<SliderProps> = ({
     onClick,
     swipeOnClick,
     secondPreset=false,
+    initialSlide,
     ...sliderProps
 }) => {
     const sliderRef = useRef<Slider>(null);
-    sliderRef.current?.slickGoTo(0); //Does anybody see issue with this?
+
+    useEffect(() => {
+        console.log("slick go to " + initialSlide);
+        sliderRef.current?.slickGoTo(initialSlide ?? 0);
+    }, [initialSlide]);
+
     const handleClick = useCallback((index: number, direction: 'right' | 'left') => {
         if (sliderRef && sliderRef.current && swipeOnClick) {
             if (direction === 'right') {
@@ -35,8 +41,9 @@ const GenericSlider: FC<SliderProps> = ({
 
     return (
         <div className="sliderClass">
-            <Slider
+            <Slider 
                 ref={sliderRef}
+                key={initialSlide} 
                 {...sliderProps}
                 className={classProps}
             >
