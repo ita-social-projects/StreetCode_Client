@@ -59,6 +59,7 @@ const MainBlockAdmin = React.memo(({
     const [tagInput, setTagInput] = useState('');
     const maxTagLength = 50;
     const getErrorMessage = (maxLength: number = maxTagLength) => `Довжина не повинна перевищувати ${maxLength} символів`;
+    const getErrorMessageForEmptyTag = () => 'Тег не може бути порожнім або складатися лише з пробілів.';
     const { onContextKeyDown, handleSearch } = createTagValidator(
         maxTagLength,
         getErrorMessage,
@@ -110,6 +111,12 @@ const MainBlockAdmin = React.memo(({
             deletedTag.modelState = ModelState.Updated;
             setSelectedTags([...selectedTags, deletedTag]);
         } else {
+            const trimmedValue = selectedValue.trim();
+            if (!trimmedValue) {
+                setErrorMessage(getErrorMessageForEmptyTag());
+                setTagInput('');
+                return;
+            }
             const selectedIndex = tags.findIndex((t) => t.title === selectedValue);
             if (selectedValue.length > maxTagLength) {
                 form.setFieldValue('tags', selectedValue);
