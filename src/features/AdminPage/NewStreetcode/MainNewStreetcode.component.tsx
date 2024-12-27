@@ -558,7 +558,7 @@ const NewStreetcode = () => {
                         images: createUpdateMediaStore.imagesUpdate.map((img): ImageCreateUpdate => ({ id: img.id, modelState: img.modelState, streetcodeId: img.streetcodeId })),
                         audioId: createUpdateMediaStore.audioId,
                         audios: createUpdateMediaStore.audioUpdate.map((a): AudioUpdate => ({ id: a.id, modelState: a.modelState, streetcodeId: a.streetcodeId })),
-                        url,
+                        arBlockURL: form.getFieldValue('url'),
                         imagesDetails: (Array.from(factsStore.factImageDetailsMap.values()) as ImageDetails[]).concat(createUpdateMediaStore.getImageDetailsUpdate()),
                     };
 

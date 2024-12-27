@@ -163,5 +163,5 @@ export interface StreetcodeUpdate {
     audioId: number | null,
     audios: AudioUpdate[],
     imagesDetails: ImageDetails[],
-    url: string | null;
+    arBlockURL?: string,
 }
