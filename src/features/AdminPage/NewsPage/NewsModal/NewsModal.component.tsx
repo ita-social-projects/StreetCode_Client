@@ -274,7 +274,7 @@ const NewsModal: React.FC<{
                         </div>
                         <Form.Item
                             name="title"
-                            label="Заголовок: "
+                            label="Заголовок:"
                             rules={[
                                 { required: true, message: 'Введіть заголовок' },
                                 {

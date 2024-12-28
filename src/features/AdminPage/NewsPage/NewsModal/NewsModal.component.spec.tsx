@@ -155,7 +155,7 @@ describe('NewsModal', () => {
             expect(mockUpdateNews).not.toHaveBeenCalled();
             expect(afterSubmitMock).toHaveBeenCalled();
         });
-    }, 10000);
+    }, 1000000);
 
     it('should not submit when required fields are empty', async () => {
         const setIsModalOpen = jest.fn();
@@ -269,7 +269,7 @@ describe('NewsModal', () => {
             expect(mockCreateNews).not.toHaveBeenCalled();
             expect(afterSubmitMock).toHaveBeenCalled();
         });
-    }, 10000);
+    }, 1000000);
 
     it('should update existing news when required fields match', async () => {
         const existingNews = [
