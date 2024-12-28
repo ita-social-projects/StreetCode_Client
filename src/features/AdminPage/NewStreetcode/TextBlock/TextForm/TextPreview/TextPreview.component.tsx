@@ -31,7 +31,7 @@ const TextPreview = ({ inputInfo }: Props) => {
     }, [disabled]);
 
     return (
-        <div>
+        <div className='textPreview'>
             <Button
                 disabled={inputInfo === undefined || inputInfo.textContent?.length === 0}
                 onClick={() => setDisabled(!disabled)}
