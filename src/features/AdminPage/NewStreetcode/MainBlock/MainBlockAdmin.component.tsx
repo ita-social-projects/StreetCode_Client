@@ -23,6 +23,7 @@ import DragableTags from './DragableTags/DragableTags.component';
 import PopoverForTagContent from './PopoverForTagContent/PopoverForTagContent.component';
 import DatePickerPart from './DatePickerPart.component';
 import FileInputsPart from './FileInputsPart.component';
+import SelectWithCustomSuffix from '@/app/common/components/SelectWithCustomSuffix';
 
 interface TagPreviewProps {
     width: number;
@@ -59,6 +60,7 @@ const MainBlockAdmin = React.memo(({
     const [tagInput, setTagInput] = useState('');
     const maxTagLength = 50;
     const getErrorMessage = (maxLength: number = maxTagLength) => `Довжина не повинна перевищувати ${maxLength} символів`;
+    const getErrorMessageForEmptyTag = () => 'Тег не може бути порожнім або складатися лише з пробілів.';
     const { onContextKeyDown, handleSearch } = createTagValidator(
         maxTagLength,
         getErrorMessage,
@@ -110,6 +112,12 @@ const MainBlockAdmin = React.memo(({
             deletedTag.modelState = ModelState.Updated;
             setSelectedTags([...selectedTags, deletedTag]);
         } else {
+            const trimmedValue = selectedValue.trim();
+            if (!trimmedValue) {
+                setErrorMessage(getErrorMessageForEmptyTag());
+                setTagInput('');
+                return;
+            }
             const selectedIndex = tags.findIndex((t) => t.title === selectedValue);
             if (selectedValue.length > maxTagLength) {
                 form.setFieldValue('tags', selectedValue);
@@ -330,9 +338,10 @@ const MainBlockAdmin = React.memo(({
                     >
                         <div className="tags-block-tagitems">
                             <DragableTags setTags={setSelectedTags} tags={selectedTags} />
-                            <Select
+                            <SelectWithCustomSuffix
                                 className="tags-select-input"
                                 mode="tags"
+                                placeholder="Введіть тег"
                                 onSelect={(selectedValue, option) => {
                                     handleInputChange(option.key, selectedValue);
                                     onSelectTag(selectedValue);
@@ -348,7 +357,7 @@ const MainBlockAdmin = React.memo(({
                                     .localeCompare((optionB?.value ?? '').toString().toLowerCase())}
                             >
                                 {tags.map((t) => <Select.Option key={`${t.id}`} value={t.title}>{t.title}</Select.Option>)}
-                            </Select>
+                            </SelectWithCustomSuffix>
                         </div>
                     </Form.Item>
                     {tagInput && (

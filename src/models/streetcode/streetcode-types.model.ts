@@ -118,7 +118,7 @@ export interface StreetcodeCreate {
     videos: VideoCreate[],
     facts: FactCreate[],
     timelineItems: TimelineItem[],
-    partners: PartnerShort[],
+    partners: Array<number>,
     subtitles: SubtitleCreate[],
     relatedFigures: RelatedFigureCreateUpdate[],
     arts: ArtCreateUpdate[] | null,
