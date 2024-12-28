@@ -13,7 +13,7 @@ const ToponymsApi = {
 
     getByStreetcodeId: (streetcodeId: number) => Agent.get<Toponym[]>(
         `${API_ROUTES.TOPONYMS.GET_BY_STREETCODE_ID}/${streetcodeId}`,
-    ),
+    ).catch(() => { return [] }),
 
     create: (toponym: Toponym) => Agent.post<Toponym>(`${API_ROUTES.TOPONYMS.CREATE}`, toponym),
 
