@@ -18,17 +18,14 @@ const ContextMainPage: React.FC = observer(() => {
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
     const [contextToEdit, setContextToEdit] = useState<Context>();
-    const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    useQuery({
+    const { isLoading } = useQuery({
         queryKey: ['contexts', contextStore.PaginationInfo.CurrentPage],
-        queryFn: () => {contextStore.fetchContexts()},
+        queryFn: () => contextStore.fetchContexts(),
     });
 
     const updatedContexts = () => {
-        setIsLoading(true);
         contextStore.fetchContexts();
-        setIsLoading(false);
     };
 
     useEffect(() => {
@@ -102,7 +99,7 @@ const ContextMainPage: React.FC = observer(() => {
                     pagination={false}
                     className="partners-table"
                     columns={columns}
-                    dataSource={isLoading ? [] : contextStore.getContextArray}
+                    dataSource={contextStore.getContextArray || []}
                     rowKey="id"
                     locale={{
                         emptyText: isLoading ? (

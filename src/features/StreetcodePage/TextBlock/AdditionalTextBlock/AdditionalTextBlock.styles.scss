@@ -5,7 +5,7 @@
 .additionalText {
 
     width: 50%;
-    white-space: pre-line;
+    white-space: pre-wrap;
     text-align: right;
     @include mut.rem-margined($top: 12px, $bottom: 42px);
     font-size: f.pxToRem(20px);

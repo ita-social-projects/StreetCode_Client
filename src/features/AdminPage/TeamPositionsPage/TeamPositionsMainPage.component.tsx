@@ -22,7 +22,7 @@ const TeamPositionsMainPage: React.FC = observer(() => {
 
     const { isLoading } = useQuery({
         queryKey: ['positions', teamPositionsStore.PaginationInfo.CurrentPage],
-        queryFn: () => { teamPositionsStore.fetchPositions() },
+        queryFn: () => teamPositionsStore.fetchPositions(),
     });
 
     const updatedPositions = () => {
@@ -45,9 +45,6 @@ const TeamPositionsMainPage: React.FC = observer(() => {
                     </div>
                 );
             },
-            sorter: (a, b) => a.position.localeCompare(b.position),
-            sortDirections: ['ascend', 'descend', 'ascend'],
-            defaultSortOrder: 'ascend',
         },
         {
             title: 'Дії',
