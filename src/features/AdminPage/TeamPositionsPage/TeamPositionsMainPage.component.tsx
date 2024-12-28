@@ -22,7 +22,7 @@ const TeamPositionsMainPage: React.FC = observer(() => {
 
     const { isLoading } = useQuery({
         queryKey: ['positions', teamPositionsStore.PaginationInfo.CurrentPage],
-        queryFn: () => { teamPositionsStore.fetchPositions() },
+        queryFn: () => teamPositionsStore.fetchPositions(),
     });
 
     const updatedPositions = () => {

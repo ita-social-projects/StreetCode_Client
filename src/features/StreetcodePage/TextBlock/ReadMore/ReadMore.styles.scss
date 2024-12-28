@@ -3,7 +3,7 @@
 @use "@sass/_utils.functions.scss" as f;
 
 .text {
-    white-space: pre-line;
+    white-space: pre-wrap;
     word-break: break-all;
     width: 100%;
 

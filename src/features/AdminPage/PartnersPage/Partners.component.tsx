@@ -32,10 +32,13 @@ const Partners: React.FC = observer(() => {
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
     const [partnerToEdit, setPartnerToedit] = useState<Partner>();
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+
+    const { isLoading } = useQuery({
+        queryKey: ['partners', partnersStore.PaginationInfo.CurrentPage],
+        queryFn: () => partnersStore.getAll(),
+    });
 
     const updatedPartners = () => {
-        setIsLoading(true);
         Promise.all([
             partnersStore?.getAll(),
         ]).then(() => {
@@ -51,17 +54,11 @@ const Partners: React.FC = observer(() => {
             });
         }).then(() => {
             partnersStore.setInternalMap(partnersStore.getPartnerArray);
-            setIsLoading(false);
         });
     };
     useEffect(() => {
         updatedPartners();
     }, [modalAddOpened, modalEditOpened]);
-
-    useQuery({
-        queryKey: ['partners', partnersStore.PaginationInfo.CurrentPage],
-        queryFn: () => {partnersStore.getAll()},
-    });
 
     const columns: ColumnsType<Partner> = [
         {
@@ -187,45 +184,46 @@ const Partners: React.FC = observer(() => {
                         pagination={false}
                         className="partners-table"
                         columns={columns}
-                        dataSource={isLoading ? [] : partnersStore?.getPartnerArray}
-                    rowKey="id"
-                    locale={{
-                        emptyText: isLoading ? (
-                            <div className="loadingWrapper">
-                                <div id="loadingGif" />
+                        dataSource={partnersStore.getPartnerArray || []}
+                        rowKey="id"
+                        locale={{
+                            emptyText: isLoading ? (
+                                <div className="loadingWrapper">
+                                    <div id="loadingGif" />
+                                </div>
+                            ) : (
+                                <Empty description="Дані відсутні" />
+                            ),
+                        }}
+                    />
+                    <div>
+                        <div className="underTableZone">
+                            <div className="underTableElement">
+                                <Pagination
+                                    className="paginationElement"
+                                    showSizeChanger={false}
+                                    defaultCurrent={1}
+                                    current={partnersStore.PaginationInfo.CurrentPage}
+                                    total={partnersStore.PaginationInfo.TotalItems}
+                                    pageSize={partnersStore.PaginationInfo.PageSize}
+                                    onChange={(value: any) => {
+                                        partnersStore.setCurrentPage(value);
+                                    }}
+                                />
                             </div>
-                        ) : (
-                            <Empty description="Дані відсутні" />
-                        ),
-                    }}
-                /></div>
-                <div>
-                    <div className="underTableZone">
-                        <div className="underTableElement">
-                        <Pagination
-                            className="paginationElement"
-                            showSizeChanger={false}
-                            defaultCurrent={1}
-                            current={partnersStore.PaginationInfo.CurrentPage}
-                            total={partnersStore.PaginationInfo.TotalItems}
-                            pageSize={partnersStore.PaginationInfo.PageSize}
-                            onChange={(value: any) => {
-                                partnersStore.setCurrentPage(value);
-                            }}
-                        />
                         </div>
                     </div>
                 </div>
+                <PartnerModal open={modalAddOpened} setIsModalOpen={setModalAddOpened} isStreetcodeVisible />
+                <PartnerModal
+                    open={modalEditOpened}
+                    setIsModalOpen={setModalEditOpened}
+                    partnerItem={partnerToEdit}
+                    isStreetcodeVisible
+                />
             </div>
-            <PartnerModal open={modalAddOpened} setIsModalOpen={setModalAddOpened} isStreetcodeVisible />
-            <PartnerModal
-                open={modalEditOpened}
-                setIsModalOpen={setModalEditOpened}
-                partnerItem={partnerToEdit}
-                isStreetcodeVisible
-            />
         </div>
-
     );
 });
+
 export default Partners;

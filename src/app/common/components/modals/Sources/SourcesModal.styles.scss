@@ -64,6 +64,7 @@ $CancelBtn: "/src/assets/images/utils/Cancel_btn.svg";
     overflow-y: auto;
     font-weight: 300;
     font-size: 15px;
+    white-space: pre-wrap;
 
     ul {
       @include mut.list-styles($type: disc);
