@@ -74,7 +74,7 @@ const RelatedFiguresBlock = React.memo(
 
                 <SelectWithCustomSuffix
                     mode='multiple'
-                    placeholder='Знайти стріткод...'
+                    placeholder='Знайти history-код...'
                     onSelect={handleAdd}
                     value={figures
                         .filter(
