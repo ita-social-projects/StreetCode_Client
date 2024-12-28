@@ -302,5 +302,5 @@ describe('TeamModal', () => {
             expect(afterSubmit).toHaveBeenCalled();
             expect(store.updateTeam).not.toHaveBeenCalled();
         });
-    }, 1000000);
+    }, 30000);
 });

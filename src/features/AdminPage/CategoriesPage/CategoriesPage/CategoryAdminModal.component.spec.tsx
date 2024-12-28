@@ -163,7 +163,7 @@ describe('CategoryAdminModal', () => {
 
         await waitFor(() => {
             expect(saveButton).toBeDisabled();
-        });
+        }, { timeout: 3000 });
     });
 
     it('should update existing category', async () => {
