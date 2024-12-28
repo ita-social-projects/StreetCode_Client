@@ -13,6 +13,8 @@ import Streetcode, {
 
 import InputPanel from './components/InputPanel.component';
 import RelationsList from './components/RelatedFigureList.component';
+import SelectWithCustomSuffix from '@/app/common/components/SelectWithCustomSuffix';
+import { Select } from 'antd';
 
 interface Props {
     currentStreetcodeId: number | null;
@@ -27,17 +29,27 @@ const RelatedFiguresBlock = React.memo(
     ({ currentStreetcodeId, figures, setFigures, onChange }: Props) => {
         const [options, setOptions] = useState<StreetcodeShort[]>([]);
 
-        const handleAdd = (relationToAdd: RelatedFigureCreateUpdate) => {
-            const figurePersisted = figures.find(
-                (rel) => rel.id === relationToAdd.id
-            );
+        const getOptions = async () => {
+            Promise.all([
+                StreetcodesApi.getAllPublished().then((ops) => {
+                    setOptions(ops.filter((x) => x.id !== currentStreetcodeId));
+                }),
+            ]);
+        };
+
+        useEffect(() => {
+            getOptions();
+        }, []);
+
+        const handleAdd = (figureId: number) => {
+            const figurePersisted = figures.find((rel) => rel.id === figureId);
             if (figurePersisted) {
                 // for case when delete persisted item and add it again
                 figurePersisted.modelState = ModelState.Updated;
                 setFigures([...figures]);
             } else {
                 const figure = options.find(
-                    (rel) => rel.id === relationToAdd.id
+                    (rel) => rel.id === figureId
                 ) as RelatedFigureCreateUpdate;
                 figure.modelState = ModelState.Created;
                 setFigures((prevState) => [...prevState, figure]);
@@ -56,28 +68,34 @@ const RelatedFiguresBlock = React.memo(
             onChange('figures', figures);
         };
 
-        const getOptions = async () => {
-            Promise.all([
-                StreetcodesApi.getAllPublished().then((ops) => {
-                    setOptions(ops.filter((x) => x.id !== currentStreetcodeId));
-                }),
-            ]);
-        };
-
-        useEffect(() => {
-            getOptions();
-        }, []);
-
         return (
             <div className='adminContainer-block'>
                 <h2>Зв&apos;язки історії(History-коди)</h2>
-                <InputPanel
-                    figures={figures}
-                    options={options}
-                    handleAdd={handleAdd}
-                    onChange={onChange}
-                />
-                <RelationsList figures={figures} handleDelete={handleDelete} />
+
+                <SelectWithCustomSuffix
+                    mode='multiple'
+                    placeholder='Знайти стріткод...'
+                    onSelect={handleAdd}
+                    value={figures
+                        .filter(
+                            (x) =>
+                                (x as RelatedFigureCreateUpdate).modelState !==
+                                ModelState.Deleted
+                        )
+                        .map((x) => x.id)}
+                    filterOption={(input, option) =>
+                        option?.children
+                            ?.toLowerCase()
+                            .indexOf(input.toLowerCase()) !== -1
+                    }
+                    onDeselect={handleDelete}
+                >
+                    {options.map((s) => (
+                        <Select.Option key={`${s.id}`} value={s.id}>
+                            {s.title}
+                        </Select.Option>
+                    ))}
+                </SelectWithCustomSuffix>
             </div>
         );
     }
