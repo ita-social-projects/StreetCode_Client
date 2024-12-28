@@ -135,7 +135,7 @@ const StreetcodesTable = () => {
             modalStore.setConfirmationModal(
                 'confirmation',
                 () => handleChangeStatusConfirmation(currentStatus, selectedKey),
-                'Ви впевнені, що хочете змінити статус цього стріткоду?',
+                'Ви впевнені, що хочете змінити статус цього history-коду?',
                 isConfirmationModalVisible,
                 handleCancelConfirmation,
             );
@@ -156,7 +156,7 @@ const StreetcodesTable = () => {
 
     const columnsNames = [
         {
-            title: 'Назва стріткоду',
+            title: 'Назва history-коду',
             dataIndex: 'name',
             width: '40%',
             key: 'name',
@@ -165,7 +165,7 @@ const StreetcodesTable = () => {
             }),
         },
         {
-            title: 'Номер стріткоду',
+            title: 'Номер history-коду',
             dataIndex: 'index',
             width: '10%',
             key: 'index',
@@ -237,7 +237,7 @@ const StreetcodesTable = () => {
                                                 });
                                             modalStore.setConfirmationModal('confirmation');
                                         },
-                                        'Ви впевнені, що хочете видалити цей стріткод?',
+                                        'Ви впевнені, що хочете видалити цей history-код?',
                                     );
 
                                     deleteFormDB(record.key);

@@ -55,7 +55,7 @@ const InputPanel = ({ figures, options, handleAdd, onChange }: Props) => {
     return (
         <div className="input-container">
             <AutoComplete
-                placeholder="Знайти стріткод..."
+                placeholder="Знайти history-код..."
                 style={{ width: '100%' }}
                 options={filteredOptions.map((option) => ({ value: option.title, label: option.title }))}
                 onSearch={handleSearch}

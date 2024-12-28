@@ -134,7 +134,7 @@ const HeaderDrawer = () => {
                             <HeaderDrawerItem
                                 id={MENU_ID.CATALOG}
                                 parentActive={active}
-                                text="Стріткоди"
+                                text="History-коди"
                                 link={FRONTEND_ROUTES.OTHER_PAGES.CATALOG}
                                 toggleState={toggle}
                             />
