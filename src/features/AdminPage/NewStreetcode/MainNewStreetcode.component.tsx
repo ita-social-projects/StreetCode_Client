@@ -450,7 +450,7 @@ const NewStreetcode = () => {
                         ...coordinate,
                         id: 0,
                     })),
-                    partners,
+                    partners: partners.map((partner) => partner.id),
                     teaser: form.getFieldValue('teaser'),
                     viewCount: 0,
                     dateString: form.getFieldValue('dateString'),
