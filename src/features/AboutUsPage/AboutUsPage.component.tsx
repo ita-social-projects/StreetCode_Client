@@ -32,8 +32,8 @@ const AboutUsPage = () => {
     return (
         <div className="aboutUsPageContainer">
             <Helmet>
-                <title>Про нас | Streetcode</title>
-                <meta name="description" content="Дізнайтеся більше про «Стріткод», нашу місію, цінності та команду." />
+                <title>Про нас | Historycode</title>
+                <meta name="description" content="Дізнайтеся більше про «Historycode», нашу місію, цінності та команду." />
             </Helmet>
             <div className="contentContainer">
                 <AboutUsHeaderText />

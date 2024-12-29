@@ -59,11 +59,11 @@ const RelatedFiguresBlock = React.memo(({ currentStreetcodeId, figures, setFigur
 
     return (
         <div className="adminContainer-block">
-            <h2>Зв&apos;язки історії(Стріткоди)</h2>
+            <h2>Зв&apos;язки історії(History-коди)</h2>
 
             <SelectWithCustomSuffix
                 mode="multiple"
-                placeholder="Знайти стріткод..."
+                placeholder="Знайти history-код..."
                 onSelect={handleAdd}
                 value={figures.filter((x) => (x as RelatedFigureCreateUpdate).modelState !== ModelState.Deleted)
                     .map((x) => x.id)}
