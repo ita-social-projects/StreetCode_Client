@@ -26,12 +26,9 @@ import {
     RelatedFigureCreateUpdate,
     RelatedFigureUpdate,
 } from '@models/streetcode/related-figure.model';
-
 import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
 import tz from 'dayjs/plugin/timezone';
-dayjs.extend(utc);
-dayjs.extend(tz);
+import utc from 'dayjs/plugin/utc';
 
 import { Button, ConfigProvider, Form, Modal } from 'antd';
 import { useForm } from 'antd/es/form/Form';
@@ -42,9 +39,7 @@ import TransactionLinksApi from '@/app/api/transactions/transactLinks.api';
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import { removeHtmlTags } from '@/app/common/utils/removeHtmlTags.utility';
 import QUILL_TEXTS_LENGTH from '@/features/AdminPage/NewStreetcode/TextBlock/TextLengthConstants/textMaxLength.constant';
-import Subtitle, {
-    SubtitleCreate,
-} from '@/models/additional-content/subtitles.model';
+import Subtitle, { SubtitleCreate } from '@/models/additional-content/subtitles.model';
 import {
     StreetcodeTag,
     StreetcodeTagUpdate,
@@ -82,6 +77,10 @@ import PartnerBlockAdmin from './PartnerBlock/PartnerBlockAdmin.components';
 import SubtitleBlock from './SubtitileBlock/SubtitleBlock.component';
 import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
+import MapBlockAdmin from './MapBlock/MapBlockAdmin.component';
+
+dayjs.extend(utc);
+dayjs.extend(tz);
 
 function reindex<T extends { index?: number }>(list: T[]): T[] {
     const result = Array.from(list);
@@ -116,16 +115,14 @@ const NewStreetcode = () => {
     const [video, setVideo] = useState<Video>();
     const [subTitle, setSubTitle] = useState<Partial<Subtitle>>();
     const [figures, setFigures] = useState<RelatedFigureCreateUpdate[]>([]);
-    const [arLink, setArLink] = useState<TransactionLink>();
+    const [url, setUrl] = useState<string>('');
     const [funcName, setFuncName] = useState<string>('create');
     const [visibleModal, setVisibleModal] = useState(false);
     const [savedChanges, setSavedChanges] = useState(true);
-    const navigationString =
-        'Покинути сторінку? Внесені зміни, можливо, не буде збережено.';
+    const navigationString = 'Покинути сторінку? Внесені зміни, можливо, не буде збережено.';
     const [fieldChanges, setFieldChanges] = useState({});
     const streetcodeType = useRef<StreetcodeType>(StreetcodeType.Person);
-    const [allPersistedSourcesAreSet, setAllPersistedSourcesAreSet] =
-        useState(false);
+    const [allPersistedSourcesAreSet, setAllPersistedSourcesAreSet] = useState(false);
 
     const handleFieldChange = (fieldName: any, value: any) => {
         setFieldChanges((prevChanges) => ({
@@ -138,7 +135,7 @@ const NewStreetcode = () => {
     useEffect(() => {
         if (isPageLoaded) {
             const isAnyFieldChanged = Object.values(fieldChanges).some(
-                (value) => value !== undefined && value !== ''
+                (value) => value !== undefined && value !== '',
             );
             setSavedChanges(!isAnyFieldChanged);
         } else {
@@ -149,7 +146,7 @@ const NewStreetcode = () => {
     usePrompt(
         savedChanges
             ? { when: false, message: '' }
-            : { when: true, message: navigationString }
+            : { when: true, message: navigationString },
     );
 
     const alertUser = (event: BeforeUnloadEvent) => {
@@ -159,24 +156,22 @@ const NewStreetcode = () => {
 
     const validateQuillTexts = (
         mainText: string | undefined,
-        additionalText: string | undefined
+        additionalText: string | undefined,
     ) => {
         const mainTextWithoutHtml = mainText ? removeHtmlTags(mainText) : '';
         const additionalTextWithoutHtml = additionalText
             ? removeHtmlTags(additionalText)
             : '';
 
-        const tooLongMainText =
-            mainText &&
-            mainTextWithoutHtml.length > QUILL_TEXTS_LENGTH.mainTextMaxLength;
-        const tooLongAdditionalText =
-            additionalText &&
-            additionalTextWithoutHtml.length >
-                QUILL_TEXTS_LENGTH.additionalTextMaxLength;
+        const tooLongMainText = mainText
+            && mainTextWithoutHtml.length > QUILL_TEXTS_LENGTH.mainTextMaxLength;
+        const tooLongAdditionalText = additionalText
+            && additionalTextWithoutHtml.length
+                > QUILL_TEXTS_LENGTH.additionalTextMaxLength;
 
         if (tooLongMainText || tooLongAdditionalText) {
             throw new Error(
-                'The value is too long either in the main text or in the additional text'
+                'The value is too long either in the main text or in the additional text',
             );
         }
     };
@@ -235,7 +230,7 @@ const NewStreetcode = () => {
                             isPersisted: true,
                             modelState: ModelState.Updated,
                             streetcodeId: parseId,
-                        })
+                        }),
                     );
 
                     setSelectedTags(tagsToUpdate as StreetcodeTag[]);
@@ -246,29 +241,27 @@ const NewStreetcode = () => {
                     setVideo(result);
                     setInputInfo((prevState) => ({
                         ...prevState,
-                        ['link']: result.url,
+                        link: result.url,
                     }));
                 });
                 RelatedFigureApi.getByStreetcodeId(parseId).then((result) => {
-                    const persistedFigures: RelatedFigureCreateUpdate[] =
-                        result.map((item) => ({
-                            id: item.id,
-                            title: item.title,
-                            isPersisted: true,
-                            modelState: ModelState.Updated,
-                        }));
+                    const persistedFigures: RelatedFigureCreateUpdate[] = result.map((item) => ({
+                        id: item.id,
+                        title: item.title,
+                        isPersisted: true,
+                        modelState: ModelState.Updated,
+                    }));
 
                     setFigures(persistedFigures);
                 });
                 PartnersApi.getPartnersToUpdateByStreetcodeId(parseId).then(
                     (result) => {
-                        const persistedPartners: PartnerCreateUpdateShort[] =
-                            result.map((item) => ({
-                                id: item.id,
-                                title: item.title,
-                                isPersisted: true,
-                                modelState: ModelState.Updated,
-                            }));
+                        const persistedPartners: PartnerCreateUpdateShort[] = result.map((item) => ({
+                            id: item.id,
+                            title: item.title,
+                            isPersisted: true,
+                            modelState: ModelState.Updated,
+                        }));
 
                         setPartners(persistedPartners);
                     },
@@ -284,42 +277,34 @@ const NewStreetcode = () => {
                     });
                 SourcesApi.getCategoriesByStreetcodeId(parseId).then(
                     (result) => {
-                        const id = result.map((x) => x.id);
-                        const getAllStreetcodeCategoriesContentRequest =
-                            result.map((x) =>
-                                SourcesApi.getCategoryContentByStreetcodeId(
-                                    parseId,
-                                    x.id
-                                )
-                            );
+                        const getAllStreetcodeCategoriesContentRequest = result.map((x) => SourcesApi.getCategoryContentByStreetcodeId(
+                            parseId,
+                            x.id,
+                        ));
                         Promise.all(getAllStreetcodeCategoriesContentRequest)
                             .then((x) => {
-                                const newSources: StreetcodeCategoryContent[] =
-                                    x.map((e) => ({
-                                        sourceLinkCategoryId:
+                                const newSources: StreetcodeCategoryContent[] = x.map((e) => ({
+                                    sourceLinkCategoryId:
                                             e.sourceLinkCategoryId,
-                                        streetcodeId: e.streetcodeId,
-                                        id: e.id,
-                                        text: e.text,
-                                    }));
+                                    streetcodeId: e.streetcodeId,
+                                    id: e.id,
+                                    text: e.text,
+                                }));
                                 newSources.map((newSource) => {
-                                    const existingSource =
-                                        sourceCreateUpdateStreetcode.streetcodeCategoryContents.find(
-                                            (s) =>
-                                                s.sourceLinkCategoryId ===
-                                                newSource.sourceLinkCategoryId
-                                        );
+                                    const existingSource = sourceCreateUpdateStreetcode.streetcodeCategoryContents.find(
+                                        (s) => s.sourceLinkCategoryId
+                                                === newSource.sourceLinkCategoryId,
+                                    );
 
                                     if (!existingSource) {
-                                        const persistedItem: StreetcodeCategoryContentUpdate =
-                                            {
-                                                ...newSource,
-                                                isPersisted: true,
-                                                modelState: ModelState.Updated,
-                                            };
+                                        const persistedItem: StreetcodeCategoryContentUpdate = {
+                                            ...newSource,
+                                            isPersisted: true,
+                                            modelState: ModelState.Updated,
+                                        };
 
                                         sourceCreateUpdateStreetcode.setItem(
-                                            persistedItem
+                                            persistedItem,
                                         );
                                     }
                                 });
@@ -327,12 +312,12 @@ const NewStreetcode = () => {
                             .then(() => {
                                 setAllPersistedSourcesAreSet(true);
                             });
-                    }
+                    },
                 );
                 TransactionLinksApi.getByStreetcodeId(parseId).then((res) => {
                     if (res) {
-                        setArLink(res);
-                        form.setFieldValue('arlink', res.url);
+                        setUrl(res.url);
+                        form.setFieldValue('url', res.url);
                     }
                 });
             });
@@ -351,11 +336,11 @@ const NewStreetcode = () => {
         if (firstErrorIndex !== -1) {
             const firstErrorName = String(errors[firstErrorIndex].name);
             if (
-                firstErrorName === 'animations' ||
-                firstErrorName === 'pictureBlackWhite'
+                firstErrorName === 'animations'
+                || firstErrorName === 'pictureBlackWhite'
             ) {
                 const containerElement = document.querySelector(
-                    '.scrollable-container'
+                    '.scrollable-container',
                 );
                 if (containerElement) {
                     containerElement.scrollIntoView({
@@ -400,8 +385,8 @@ const NewStreetcode = () => {
                     textContent: inputInfo?.textContent ?? ' ',
                     additionalText:
                         inputInfo?.textContent !== '<p><br></p>'
-                            ? inputInfo?.additionalText ===
-                              '<p>Текст підготовлений спільно з</p>'
+                            ? inputInfo?.additionalText
+                              === '<p>Текст підготовлений спільно з</p>'
                                 ? ''
                                 : inputInfo?.additionalText
                             : '',
@@ -415,13 +400,13 @@ const NewStreetcode = () => {
                     title: form.getFieldValue('mainTitle'),
                     alias: form.getFieldValue('alias'),
                     transliterationUrl: form.getFieldValue('streetcodeUrlName'),
-                    arBlockURL: form.getFieldValue('arlink'),
+                    arBlockURL: form.getFieldValue('url'),
                     streetcodeType: streetcodeType.current,
                     eventStartOrPersonBirthDate: dayjs
                         .utc(form.getFieldValue('streetcodeFirstDate'))
                         .toDate(),
                     eventEndOrPersonDeathDate: form.getFieldValue(
-                        'streetcodeSecondDate'
+                        'streetcodeSecondDate',
                     )
                         ? dayjs
                             .utc(form.getFieldValue('streetcodeSecondDate'))
@@ -439,13 +424,13 @@ const NewStreetcode = () => {
                         timelineItemStore.getTimelineItemArrayToCreate,
                     facts: reindex(
                         JSON.parse(JSON.stringify(factsStore.getFactArray)).map(
-                            (fact: Fact) => ({ ...fact, id: 0 })
-                        )
+                            (fact: Fact) => ({ ...fact, id: 0 }),
+                        ),
                     ),
                     coordinates: JSON.parse(
                         JSON.stringify(
-                            streetcodeCoordinatesStore.getStreetcodeCoordinateArray
-                        )
+                            streetcodeCoordinatesStore.getStreetcodeCoordinateArray,
+                        ),
                     ).map((coordinate: StreetcodeCoordinate) => ({
                         ...coordinate,
                         id: 0,
@@ -465,20 +450,20 @@ const NewStreetcode = () => {
                     toponyms: newStreetcodeInfoStore.selectedToponyms,
                     streetcodeCategoryContents: JSON.parse(
                         JSON.stringify(
-                            sourceCreateUpdateStreetcode.streetcodeCategoryContents
-                        )
+                            sourceCreateUpdateStreetcode.streetcodeCategoryContents,
+                        ),
                     ).map(
                         (
-                            streetcodeCategoryContent: StreetcodeCategoryContent
+                            streetcodeCategoryContent: StreetcodeCategoryContent,
                         ) => ({
                             ...streetcodeCategoryContent,
                             id: 0,
-                        })
+                        }),
                     ),
                     statisticRecords: JSON.parse(
                         JSON.stringify(
-                            statisticRecordStore.getStatisticRecordArray
-                        )
+                            statisticRecordStore.getStatisticRecordArray,
+                        ),
                     ).map((statisticRecord: StatisticRecord) => ({
                         ...statisticRecord,
                         id: 0,
@@ -496,19 +481,18 @@ const NewStreetcode = () => {
                     streetcode.lastName = form.getFieldValue('surname');
                 }
                 if (parseId) {
-                    const relatedFiguresUpdate: RelatedFigureUpdate[] =
-                        figures.map((figure) => ({
-                            observerId: parseId,
-                            targetId: figure.id,
-                            modelState: figure.modelState,
-                        }));
+                    const relatedFiguresUpdate: RelatedFigureUpdate[] = figures.map((figure) => ({
+                        observerId: parseId,
+                        targetId: figure.id,
+                        modelState: figure.modelState,
+                    }));
 
                     const partnersUpdate: PartnerUpdate[] = partners.map(
                         (partner) => ({
                             streetcodeId: parseId,
                             partnerId: partner.id,
                             modelState: partner.modelState,
-                        })
+                        }),
                     );
 
                     let videosUpdate: Video[] = [];
@@ -525,27 +509,15 @@ const NewStreetcode = () => {
                             (tag) => ({
                                 ...tag,
                                 streetcodeId: parseId,
-                            })
+                            }),
                         ),
                         ...tagsStore.getTagToDeleteArray,
                     ];
 
-                    const arUrl = form.getFieldValue('arlink');
-                    let arLinkUpdated: TransactionLinkUpdate | null = {
-                        id: arLink?.id ?? 0,
-                        streetcodeId: parseId,
-                        url: arLink?.url ?? '',
-                        urlTitle: arLink?.urlTitle ?? '',
-                        qrCodeUrl: arLink?.urlTitle ?? '',
-                    };
-                    if (arUrl) {
-                        arLinkUpdated = {
-                            ...arLinkUpdated,
-                            url: arUrl,
-                            modelState: ModelState.Updated,
-                        };
-                    } else {
-                        arLinkUpdated = null;
+                    const arUrl = form.getFieldValue('url');
+                    let urlUpdated: string | null = url;
+                    if (!arUrl) {
+                        urlUpdated = null;
                     }
 
                     if (text.id !== 0 && !text.title) {
@@ -570,9 +542,9 @@ const NewStreetcode = () => {
                         videos: videosUpdate,
                         relatedFigures: relatedFiguresUpdate,
                         timelineItems: timelineItemStore.getTimelineItemArrayToUpdate,
-                        facts: reindex(factsStore.getFactArrayToUpdate.map((item) => ({  ...item,
-                                                                                         streetcodeId: parseId,
-                                                                                         id: item.id < 0 ? 0 : item.id }))),
+                        facts: reindex(factsStore.getFactArrayToUpdate.map((item) => ({ ...item,
+                                                                                        streetcodeId: parseId,
+                                                                                        id: item.id < 0 ? 0 : item.id }))),
                         partners: partnersUpdate,
                         subtitles: subtitleUpdate,
                         text: text.modelState === ModelState.Deleted || text.title ? text : null,
@@ -587,24 +559,23 @@ const NewStreetcode = () => {
                         images: createUpdateMediaStore.imagesUpdate.map((img): ImageCreateUpdate => ({ id: img.id, modelState: img.modelState, streetcodeId: img.streetcodeId })),
                         audioId: createUpdateMediaStore.audioId,
                         audios: createUpdateMediaStore.audioUpdate.map((a): AudioUpdate => ({ id: a.id, modelState: a.modelState, streetcodeId: a.streetcodeId })),
-                        transactionLink: arLinkUpdated,
+                        arBlockURL: form.getFieldValue('url'),
                         imagesDetails: (Array.from(factsStore.factImageDetailsMap.values()) as ImageDetails[]).concat(createUpdateMediaStore.getImageDetailsUpdate()),
                     };
 
                     if (streetcodeType.current === StreetcodeType.Person) {
                         streetcodeUpdate.firstName = form.getFieldValue('name');
-                        streetcodeUpdate.lastName =
-                            form.getFieldValue('surname');
+                        streetcodeUpdate.lastName = form.getFieldValue('surname');
                     }
                     StreetcodesApi.update(streetcodeUpdate)
                         .then(() => {
                             window.location.reload();
                         })
                         .then(() => {
-                            alert('Cтріткод успішно оновлений');
+                            alert('History-код успішно оновлений');
                         })
                         .catch((error) => {
-                            alert('Виникла помилка при оновленні стріткоду');
+                            alert('Виникла помилка при оновленні history-коду');
                             console.error(error);
                         });
                 } else {
@@ -614,24 +585,24 @@ const NewStreetcode = () => {
                             if (tempStatus === 1) {
                                 navigate(
                                     `../${form.getFieldValue(
-                                        'streetcodeUrlName'
+                                        'streetcodeUrlName',
                                     )}`,
                                     {
                                         replace: true,
-                                    }
+                                    },
                                 );
                             } else {
                                 navigate(
                                     `${
                                         FRONTEND_ROUTES.ADMIN.BASE
                                     }/${form.getFieldValue(
-                                        'streetcodeUrlName'
-                                    )}`
+                                        'streetcodeUrlName',
+                                    )}`,
                                 );
                             }
                         })
                         .catch((error) => {
-                            alert('Виникла помилка при створенні стріткоду');
+                            alert('Виникла помилка при створенні history-коду');
                             console.error(error);
                         });
                 }
@@ -659,7 +630,7 @@ const NewStreetcode = () => {
             <ConfigProvider locale={ukUA}>
                 <div className="adminContainer">
                     <div className="adminContainer-block">
-                        <h2>Стріткод</h2>
+                        <h2>History-код</h2>
                         <Form
                             form={form}
                             layout="vertical"
@@ -687,6 +658,7 @@ const NewStreetcode = () => {
                                 onChange={handleFieldChange}
                             />
                             <TimelineBlockAdmin onChange={handleFieldChange} />
+                            <MapBlockAdmin />
                             <ArtGalleryDndContext>
                                 <StreetcodeArtsBlock />
                                 <ArtGallery
@@ -732,7 +704,7 @@ const NewStreetcode = () => {
                         {draft}
                     </Button>
                     <Modal
-                        title="Ви впевнені, що хочете опублікувати цей стріткод?"
+                        title="Ви впевнені, що хочете опублікувати цей history-код?"
                         open={visibleModal}
                         onOk={handleModalOk}
                         onCancel={handleCancelModalRemove}

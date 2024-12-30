@@ -33,6 +33,7 @@ import InterestingFactsComponent from './InterestingFactsBlock/InterestingFacts.
 import PartnersComponent from './PartnersBlock/Partners.component';
 import RelatedFiguresComponent from './RelatedFiguresBlock/RelatedFigures.component';
 import TimelineBlockComponent from './TimelineBlock/TimelineBlock.component';
+import MapBlockComponent from './MapBlock/MapBlock.component';
 
 const StreetcodeContent = () => {
     const { streetcodeStore } = useStreetcodeDataContext();
@@ -135,6 +136,7 @@ const StreetcodeContent = () => {
                 <TextBlockComponent />
                 <InterestingFactsComponent />
                 <TimelineBlockComponent />
+                <MapBlockComponent/>
                 {pageLoadercontext.isPageLoaded ? (
                     <ArtGallery isFillArtsStore />
                 ) : (

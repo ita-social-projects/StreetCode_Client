@@ -27,7 +27,7 @@ const CheckBoxComponent = ({ streetcodeCoordinates, toponyms }: Props) => {
                         {' '}
                         <h1 className="checkbox-text"> Вулиці </h1>
                     </Checkbox>
-                    <Checkbox className="checkbox-line" onChange={() => setCheckBox('streetcodes')} checked={streetcodes.isActive}><h1 className="checkbox-text"> Стріткоди </h1></Checkbox>
+                    <Checkbox className="checkbox-line" onChange={() => setCheckBox('streetcodes')} checked={streetcodes.isActive}><h1 className="checkbox-text"> History-коди </h1></Checkbox>
                     {/* <Checkbox defaultChecked={false} disabled className={"checkbox-text"} onChange={() => setCheckBox('routes')} checked={routes.isActive}>Маршрути</Checkbox > */}
                     <InfoComponent streetcodeCoordinates={streetcodeCoordinates} toponyms={toponyms} />
                 </Space>

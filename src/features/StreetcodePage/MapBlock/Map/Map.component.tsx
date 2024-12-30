@@ -65,7 +65,7 @@ const MapOSM = ({ statisticRecord, toponyms }: Props) => {
                 key={defaultZoom}
             >
                 <VectorTileLayer
-                    styleUrl="https://api.maptiler.com/maps/3f3c1ffa-9171-437c-bcce-06eae220b63f/style.json?key=UhzbQOCzR2G1uwFnnJk9"
+                    styleUrl="https://api.maptiler.com/maps/50b0b22d-fc35-41d1-9a73-b4314d0eee92/style.json?key=NO3yf5cMdVzuGIkZRCtw"
                 />
 
                 {streetcodes?.isActive && (
