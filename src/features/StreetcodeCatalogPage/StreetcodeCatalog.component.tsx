@@ -41,13 +41,13 @@ const StreetcodeCatalog = () => {
     return (
         <div className="catalogPage">
             <Helmet>
-                <title>Каталог стріткодів | Streetcode</title>
-                <meta name="description" content="Ознайомтеся з нашим повним каталогом стріткодів." />
+                <title>Каталог history-кодів | Historycode</title>
+                <meta name="description" content="Ознайомтеся з нашим повним каталогом history-кодів." />
             </Helmet>
             <div className="streetcodeCatalogWrapper">
                 <div className="streetcodeHeadingContainer">
-                    <div className="headingFlexItem"><h1 className="streetcodeCatalogHeading">Стріткоди</h1></div>
-                    <div className="headingFlexItem"><p className="streetcodeCatalogCaption">СТРІТКОДИ</p></div>
+                    <div className="headingFlexItem"><h1 className="streetcodeCatalogHeading">History-коди</h1></div>
+                    <div className="headingFlexItem"><p className="streetcodeCatalogCaption">HISTORY-КОДИ</p></div>
                 </div>
                 <div className="steetcodeCatalogContainer">
                     {
