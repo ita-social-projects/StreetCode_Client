@@ -19,7 +19,7 @@ import Footer from '../footer/Footer.component';
 
 ReactGA.initialize('G-2RHY04JKG0');
 
-const CopyrightText = `Джерело: «Стріткод: історія на кожному кроці» ${window.location.origin}`;
+const CopyrightText = `Джерело: «Historycode: історія на кожному кроці» ${window.location.origin}`;
 
 const App = () => {
     const { pathname } = useLocation();

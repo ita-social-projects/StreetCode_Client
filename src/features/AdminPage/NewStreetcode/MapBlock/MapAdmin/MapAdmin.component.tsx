@@ -253,7 +253,7 @@ const MapOSMAdmin = () => {
                 onClick={handleMapClick}
             >
                 <div className="statisticsContainerAdmin">
-                    <h1>Додати стріткод на мапу:</h1>
+                    <h1>Додати history-код на мапу:</h1>
                     <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
                         <Input
                             className="input-streets"
@@ -265,7 +265,7 @@ const MapOSMAdmin = () => {
                     <Input
                         type="number"
                         className={`input-stnumber ${isExist ? 'red' : 'green'}`}
-                        placeholder="введіть номер таблички стріткоду"
+                        placeholder="введіть номер таблички history-коду"
                         onChange={(e) => {
                             handleNewNumberChange(e);
                             onCheckIndexClick(e.target.value);
@@ -293,7 +293,7 @@ const MapOSMAdmin = () => {
 
                     {(streetcodeCoordinates.length > 0) && (!isExist) && (!isInvalidInput) && (showButton) && (
                         <Button className="onMapbtn" onClick={handleSaveButtonClick}>
-                            <a>Зберегти стріткод</a>
+                            <a>Зберегти history-код</a>
                         </Button>
                     )}
 

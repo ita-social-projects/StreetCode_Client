@@ -10,9 +10,9 @@ export default function donateButtonRequest(donateAmount: PositiveNumber) {
     };
 
     const windowReference = window.open() as Window;
-    DonationApi.create(donation).then(({ redirectUrl }) => {
+    DonationApi.create(donation).then(({ pageUrl }) => {
         donateEvent('support_us_page_donation_block');
-        windowReference.location = redirectUrl;
+        windowReference.location = pageUrl;
     }).catch(() => {
         windowReference.close();
     });

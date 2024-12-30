@@ -226,7 +226,7 @@ describe("PartnerModal", () => {
       name: /Назва посилання:/,
     });
     const htmlLinkNameInput = linkNameInput as HTMLInputElement;
-    const streetcodeSelect = screen.getByRole("combobox", { name: /Стріткоди:/ });
+    const streetcodeSelect = screen.getByRole("combobox", { name: /History-коди:/ });
 
     const fileInput = screen.getByTestId("fileuploader");
     const inputElement = fileInput as HTMLInputElement;

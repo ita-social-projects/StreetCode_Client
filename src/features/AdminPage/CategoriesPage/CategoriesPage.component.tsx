@@ -22,15 +22,13 @@ const CategoriesMainPage: React.FC = observer(() => {
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
     const [categoryToEdit, setSourcesToEdit] = useState<SourceCategoryAdmin>();
-    const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    useQuery({
+    const { isLoading } = useQuery({
         queryKey: ['categories', sourcesStore.PaginationInfo.CurrentPage],
-        queryFn: () => { sourcesStore.fetchSrcCategoriesAll() },
+        queryFn: () => sourcesStore.fetchSrcCategoriesAll(),
     });
 
     const updatedCategories = () => {
-        setIsLoading(true);
         Promise.all([
             sourcesStore.fetchSrcCategoriesAll(),
         ]).then(() => {
@@ -46,7 +44,6 @@ const CategoriesMainPage: React.FC = observer(() => {
             });
         }).then(() => {
             sourcesStore.setInternalCategoriesMap(sourcesStore.getSrcCategoriesArray);
-            setIsLoading(false);
         });
     };
 
@@ -140,7 +137,7 @@ const CategoriesMainPage: React.FC = observer(() => {
                     pagination={false}
                     className="categories-table"
                     columns={columns}
-                    dataSource={isLoading ? [] : sourcesStore?.getSrcCategoriesArray}
+                    dataSource={sourcesStore.getSrcCategoriesArray || []}
                     rowKey="id"
                     locale={{
                         emptyText: isLoading ? (

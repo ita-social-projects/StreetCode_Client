@@ -61,7 +61,7 @@ const ReadMore = ({ text }: Props) => {
     }
 
     return (
-        <>
+        <div className='readMoreComponent'>
             <div className="text">
                 <SearchTerms mainText={
                     isTextLong && !isExpanded
@@ -87,7 +87,7 @@ const ReadMore = ({ text }: Props) => {
                     </div>
                 )}
             </div>
-        </>
+        </div>
     );
 };
 

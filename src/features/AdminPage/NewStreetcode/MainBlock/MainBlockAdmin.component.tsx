@@ -23,6 +23,7 @@ import DragableTags from './DragableTags/DragableTags.component';
 import PopoverForTagContent from './PopoverForTagContent/PopoverForTagContent.component';
 import DatePickerPart from './DatePickerPart.component';
 import FileInputsPart from './FileInputsPart.component';
+import SelectWithCustomSuffix from '@/app/common/components/SelectWithCustomSuffix';
 
 interface TagPreviewProps {
     width: number;
@@ -59,6 +60,7 @@ const MainBlockAdmin = React.memo(({
     const [tagInput, setTagInput] = useState('');
     const maxTagLength = 50;
     const getErrorMessage = (maxLength: number = maxTagLength) => `Довжина не повинна перевищувати ${maxLength} символів`;
+    const getErrorMessageForEmptyTag = () => 'Тег не може бути порожнім або складатися лише з пробілів.';
     const { onContextKeyDown, handleSearch } = createTagValidator(
         maxTagLength,
         getErrorMessage,
@@ -110,6 +112,12 @@ const MainBlockAdmin = React.memo(({
             deletedTag.modelState = ModelState.Updated;
             setSelectedTags([...selectedTags, deletedTag]);
         } else {
+            const trimmedValue = selectedValue.trim();
+            if (!trimmedValue) {
+                setErrorMessage(getErrorMessageForEmptyTag());
+                setTagInput('');
+                return;
+            }
             const selectedIndex = tags.findIndex((t) => t.title === selectedValue);
             if (selectedValue.length > maxTagLength) {
                 form.setFieldValue('tags', selectedValue);
@@ -149,14 +157,14 @@ const MainBlockAdmin = React.memo(({
         <div className="mainblock-add-form">
 
             <Form.Item
-                label="Номер стріткоду"
+                label="Номер history-коду"
                 rules={[
                     {
                         required: true,
                         type: 'number',
                         min: 1,
                         max: 9999,
-                        message: 'Введіть номер стріткоду від 1 до 9999, будь ласка',
+                        message: 'Введіть номер history-коду від 1 до 9999, будь ласка',
                     },
                     {
                         validator: async (_, value) => {
@@ -197,10 +205,10 @@ const MainBlockAdmin = React.memo(({
 
             <Form.Item
                 name="mainTitle"
-                label="Назва стріткоду"
+                label="Назва history-коду"
                 className="maincard-item"
-                rules={[{ required: true, message: 'Введіть назву стріткоду, будь ласка' },
-                    { max: 100, message: 'Назва стріткоду не може містити більше 100 символів' }]}
+                rules={[{ required: true, message: 'Введіть назву history-коду, будь ласка' },
+                    { max: 100, message: 'Назва history-коду не може містити більше 100 символів' }]}
             >
                 <Input
                     maxLength={100}
@@ -315,10 +323,10 @@ const MainBlockAdmin = React.memo(({
                                         <p className="label-tags-block-info-container-content">
                                             При обиранні теги є невидимими для користувача (фон тегу сірий),
                                             тобто він не відображається
-                                            на головній картці стріткоду.
+                                            на головній картці history-коду.
                                             Якщо натиснути на тег, його стан зміниться на видимий (фон - білий).
                                             Нижче є розширення наводячи на які, можна побачити, які теги
-                                            будуть вміщатись на головній картці стріткоду.
+                                            будуть вміщатись на головній картці history-коду.
                                             {' '}
                                         </p>
                                     )}
@@ -330,9 +338,10 @@ const MainBlockAdmin = React.memo(({
                     >
                         <div className="tags-block-tagitems">
                             <DragableTags setTags={setSelectedTags} tags={selectedTags} />
-                            <Select
+                            <SelectWithCustomSuffix
                                 className="tags-select-input"
                                 mode="tags"
+                                placeholder="Введіть тег"
                                 onSelect={(selectedValue, option) => {
                                     handleInputChange(option.key, selectedValue);
                                     onSelectTag(selectedValue);
@@ -348,7 +357,7 @@ const MainBlockAdmin = React.memo(({
                                     .localeCompare((optionB?.value ?? '').toString().toLowerCase())}
                             >
                                 {tags.map((t) => <Select.Option key={`${t.id}`} value={t.title}>{t.title}</Select.Option>)}
-                            </Select>
+                            </SelectWithCustomSuffix>
                         </div>
                     </Form.Item>
                     {tagInput && (
