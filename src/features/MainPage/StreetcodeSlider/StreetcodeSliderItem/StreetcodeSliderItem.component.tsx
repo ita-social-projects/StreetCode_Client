@@ -24,7 +24,7 @@ const StreetcodeSliderItem = ({ streetcode, image }: Props) => {
     const handleClickRedirect = (e: React.MouseEvent<HTMLDivElement>) => {
         const streetcodeUrl = streetcode.transliterationUrl;
 
-        // if we click "До стріткоду" link, we don't want to redirect to streetcode page again
+        // if we click "До history-коду" link, we don't want to redirect to streetcode page again
         if (!(e.target as HTMLLinkElement)?.href?.includes(streetcodeUrl)) {
             navigate(streetcodeUrl, { state: historyState });
         }
@@ -51,7 +51,7 @@ const StreetcodeSliderItem = ({ streetcode, image }: Props) => {
                         title={streetcode.title}
                         text={streetcode.teaser}
                         subTitle={streetcode.alias}
-                        moreBtnText="До стріткоду"
+                        moreBtnText="До history-коду"
                         moreBtnAsLink={{ link: streetcode.transliterationUrl, state: historyState }}
                         isStreetcodeSlider
                     />

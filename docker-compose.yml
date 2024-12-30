@@ -1,99 +1,99 @@
-services:
-  certbot:
-    restart: always
-    image: certbot/certbot:latest
-    volumes:
-      - /etc/certbot/www/:/var/www/certbot/:rw
-      - /etc/certbot/conf/:/etc/letsencrypt/:rw
+# services:
+#   certbot:
+#     restart: always
+#     image: certbot/certbot:latest
+#     volumes:
+#       - /etc/certbot/www/:/var/www/certbot/:rw
+#       - /etc/certbot/conf/:/etc/letsencrypt/:rw
 
-  nginx:
-    restart: always
-    image: nginx:latest
-    ports:
-      - "80:80"
-      - "443:443"
-    environment:
-      FRONTEND_SERVER_NAME: ${FRONTEND_SERVER_NAME}
-      BACKEND_SERVER_NAME:  ${BACKEND_SERVER_NAME}
-    volumes:
-      - ./templates:/etc/nginx/templates
-      - /etc/certbot/www:/var/www/certbot/:ro
-      - /etc/certbot/conf:/etc/nginx/ssl/:ro
+#   nginx:
+#     restart: always
+#     image: nginx:latest
+#     ports:
+#       - "80:80"
+#       - "443:443"
+#     environment:
+#       FRONTEND_SERVER_NAME: ${FRONTEND_SERVER_NAME}
+#       BACKEND_SERVER_NAME:  ${BACKEND_SERVER_NAME}
+#     volumes:
+#       - ./templates:/etc/nginx/templates
+#       - /etc/certbot/www:/var/www/certbot/:ro
+#       - /etc/certbot/conf:/etc/nginx/ssl/:ro
 
 
-  loki:
-    restart: always
-    container_name: loki
-    image: grafana/loki:latest
-    ports:
-      - "3100:3100"
-    command: -config.file=/etc/loki/local-config.yaml
-    volumes:
-      - ./loki/config:/etc/loki
+#   loki:
+#     restart: always
+#     container_name: loki
+#     image: grafana/loki:latest
+#     ports:
+#       - "3100:3100"
+#     command: -config.file=/etc/loki/local-config.yaml
+#     volumes:
+#       - ./loki/config:/etc/loki
 
-  frontend:
-    restart: always
-    image: streetcodeua/streetcode_client:${DOCKER_TAG_FRONTEND}
-    pull_policy: always
-    expose:
-      - "80"
-    healthcheck:
-      test: curl --fail http://localhost || exit 1
-      interval: 30s
-      timeout: 10s
-      retries: 5
-    environment:
-      API_URL: ${ENV_API_BACKEND}
-      REACT_APP_GOOGLE_ANALYTICS: ${ENV_GOOGLE_ANALYTICS}
-      RECAPTCHA_SITE_KEY: ${RECAPTCHA_SITE_KEY}
-    logging:
-      driver: loki
-      options:
-        loki-url: "http://localhost:3100/loki/api/v1/push"
+#   frontend:
+#     restart: always
+#     image: streetcodeua/streetcode_client:${DOCKER_TAG_FRONTEND}
+#     pull_policy: always
+#     expose:
+#       - "80"
+#     healthcheck:
+#       test: curl --fail http://localhost || exit 1
+#       interval: 30s
+#       timeout: 10s
+#       retries: 5
+#     environment:
+#       API_URL: ${ENV_API_BACKEND}
+#       REACT_APP_GOOGLE_ANALYTICS: ${ENV_GOOGLE_ANALYTICS}
+#       RECAPTCHA_SITE_KEY: ${RECAPTCHA_SITE_KEY}
+#     logging:
+#       driver: loki
+#       options:
+#         loki-url: "http://localhost:3100/loki/api/v1/push"
     
-  backend:
-    restart: always
-    image: streetcodeua/streetcode:${DOCKER_TAG_BACKEND}
-    pull_policy: always
-    expose:
-      - "80"
-    environment:
-      STREETCODE_ConnectionStrings__DefaultConnection: ${DB_CONNECTION_STRING}
-      STREETCODE_Blob__BlobStoreKey: ${BLOB_STORAGE_KEY}
-      STREETCODE_Blob__BlobStorePath: /mnt/data/
-      STREETCODE_Instagram__InstagramID: ${INSTAGRAM_ID}
-      STREETCODE_Instagram__InstagramToken: ${INSTAGRAM_TOKEN}
-      STREETCODE_Payment__Token: ${PAYMENT_TOKEN}
-      STREETCODE_EMAILCONFIGURATION__PASSWORD: ${EMAIL_PASSWORD}
-      STREETCODE_RECAPTCHA__SECRETKEY: ${RECAPTCHA_SECRET_KEY}
-      STREETCODE_CORS__AllowedOrigins: ${CORS_ALLOWED_ORIGINS}
-      STREETCODE_CORS__AllowedHeaders: ${CORS_ALLOWED_HEADERS}
-      STREETCODE_CORS__AllowedMethods: ${CORS_ALLOWED_METHODS}
-      STREETCODE_CORS__ExposedHeaders: ${CORS_EXPOSED_HEADERS}
-      STREETCODE_CORS__PreflightMaxAge: "600"
-      STREETCODE_IPRATELIMITING__GENERALRULES__0__LIMIT: 500
-      ASPNETCORE_ENVIRONMENT: ${SWAGGER_APP_ENVIRONMENT}
-    volumes:
-      - type: bind
-        source: /imagestorage
-        target: /mnt/data
-    healthcheck:
-      test: curl --fail http://localhost/api/partners/getAll || exit 1
-      interval: 30s
-      timeout: 10s
-      retries: 5
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    logging:
-      driver: loki
-      options:
-        loki-url: "http://localhost:3100/loki/api/v1/push"
-volumes:
-  backend:
-networks:
-  backend:
-    external:
-      name: backend
-  frontend:
-    external:
-      name: frontend
+#   backend:
+#     restart: always
+#     image: streetcodeua/streetcode:${DOCKER_TAG_BACKEND}
+#     pull_policy: always
+#     expose:
+#       - "80"
+#     environment:
+#       STREETCODE_ConnectionStrings__DefaultConnection: ${DB_CONNECTION_STRING}
+#       STREETCODE_Blob__BlobStoreKey: ${BLOB_STORAGE_KEY}
+#       STREETCODE_Blob__BlobStorePath: /mnt/data/
+#       STREETCODE_Instagram__InstagramID: ${INSTAGRAM_ID}
+#       STREETCODE_Instagram__InstagramToken: ${INSTAGRAM_TOKEN}
+#       STREETCODE_Payment__Token: ${PAYMENT_TOKEN}
+#       STREETCODE_EMAILCONFIGURATION__PASSWORD: ${EMAIL_PASSWORD}
+#       STREETCODE_RECAPTCHA__SECRETKEY: ${RECAPTCHA_SECRET_KEY}
+#       STREETCODE_CORS__AllowedOrigins: ${CORS_ALLOWED_ORIGINS}
+#       STREETCODE_CORS__AllowedHeaders: ${CORS_ALLOWED_HEADERS}
+#       STREETCODE_CORS__AllowedMethods: ${CORS_ALLOWED_METHODS}
+#       STREETCODE_CORS__ExposedHeaders: ${CORS_EXPOSED_HEADERS}
+#       STREETCODE_CORS__PreflightMaxAge: "600"
+#       STREETCODE_IPRATELIMITING__GENERALRULES__0__LIMIT: 500
+#       ASPNETCORE_ENVIRONMENT: ${SWAGGER_APP_ENVIRONMENT}
+#     volumes:
+#       - type: bind
+#         source: /imagestorage
+#         target: /mnt/data
+#     healthcheck:
+#       test: curl --fail http://localhost/api/partners/getAll || exit 1
+#       interval: 30s
+#       timeout: 10s
+#       retries: 5
+#     extra_hosts:
+#       - "host.docker.internal:host-gateway"
+#     logging:
+#       driver: loki
+#       options:
+#         loki-url: "http://localhost:3100/loki/api/v1/push"
+# volumes:
+#   backend:
+# networks:
+#   backend:
+#     external:
+#       name: backend
+#   frontend:
+#     external:
+#       name: frontend

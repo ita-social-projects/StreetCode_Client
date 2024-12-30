@@ -25,11 +25,13 @@
         @media (min-width: 768px) and (max-width: 1024px) {
             @include mut.sized(266px, 402px);
             margin-bottom: f.pxToRem(20px);
+            line-height: f.pxToRem(17px);
         }
 
         @media screen and (max-width: 767.5px) {
             @include mut.sized(310px, 462px);
             margin-left: f.pxToRem(0px);
+            line-height: f.pxToRem(17px);
         }
     }
 
@@ -52,17 +54,21 @@
 
     .leftSliderContent {
         background-color: c.$accented-gray-color;
-        border: 22px solid c.$pure-white-color;
+        border-width: 22px 22px 22px 22px !important;
+        border-style: solid;
+        border-color: c.$pure-white-color;
         @include mut.full-rounded(50px);
         @include mut.parent-sized();
         @include mut.flex-centered();
 
         @media (min-width: 768px) and (max-width: 1024px) {
             @include mut.sized(100%, 355px);
+            border-width: 10px 22px 22px 22px !important;
         }
 
         @media screen and (max-width: 767.5px) {
             @include mut.sized(100%, 414px);
+            border-width: 16px 11px 22px 11px !important;
         }
     }
 

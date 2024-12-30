@@ -26,7 +26,8 @@
     @include mut.rounded($bottom-left: 30px, $bottom-right: 30px);
 
     background-color: c.$dark-red-color;
-
+    position: absolute;
+    overflow: visible;
     @include vnd.vendored(transition, 'all .5s ease');
 
     .heading {
@@ -98,7 +99,7 @@
 }
 
 .relatedFigureSlide.hoverable.single_row:hover {
-    @include mut.sized($width: 278px, $height: 425px); 
+    @include mut.sized($width: 278px, $height: 425px);
 
     .figureSlideText{
         @include mut.sized($width: 278px, $height: 142px);

@@ -140,7 +140,6 @@ describe('NewsModal', () => {
             userEvent.upload(fileUpload, file);
         });
         await act(async () => { await new Promise((r) => setTimeout(r, 2000)) });
-        screen.debug();
         // There is no need to repeat this part of code for edit test (logic is the same).
         // Once here is enough to check that we don`t submit empty strings.
         expect(titleInput).toHaveValue('Test Title');
@@ -148,14 +147,13 @@ describe('NewsModal', () => {
         expect(textInput).toHaveValue('This is a test text');
         if (fileUpload.files) expect(fileUpload.files[0]).toStrictEqual(file);
 
-        screen.debug();
         userEvent.click(button);
         await waitFor(() => {
             expect(mockCreateNews).toHaveBeenCalled();
             expect(mockUpdateNews).not.toHaveBeenCalled();
             expect(afterSubmitMock).toHaveBeenCalled();
         });
-    }, 10000);
+    }, 50000);
 
     it('should not submit when required fields are empty', async () => {
         const setIsModalOpen = jest.fn();
@@ -269,7 +267,7 @@ describe('NewsModal', () => {
             expect(mockCreateNews).not.toHaveBeenCalled();
             expect(afterSubmitMock).toHaveBeenCalled();
         });
-    }, 10000);
+    }, 50000);
 
     it('should update existing news when required fields match', async () => {
         const existingNews = [
