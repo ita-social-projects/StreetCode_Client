@@ -3,7 +3,6 @@ import './RelatedFiguresModal.styles.scss';
 import { observer } from 'mobx-react-lite';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import ModalBg from '@assets/images/utils/ModalBg.webp';
-import { useAsync } from '@hooks/stateful/useAsync.hook';
 import useMobx, { useModalContext } from '@stores/root-store';
 import RelatedFigureItem from '@streetcode/RelatedFiguresBlock/RelatedFigureItem/RelatedFigureItem.component';
 
@@ -13,18 +12,12 @@ const RelatedFiguresModal = () => {
     const { relatedFiguresStore } = useMobx();
     const { modalStore } = useModalContext();
     const { setModal, modalsState: { relatedFigures } } = modalStore;
-    const { fetchRelatedFiguresByStreetcodeId, getRelatedFiguresArray } = relatedFiguresStore;
-
+    const { getRelatedFiguresArray } = relatedFiguresStore;
     const streetcodeId = relatedFigures.fromCardId!;
 
-    useAsync(
-        () => {
-            if (streetcodeId) {
-                fetchRelatedFiguresByStreetcodeId(streetcodeId);
-            }
-        },
-        [streetcodeId],
-    );
+    const handleMoreInfoClick = () => {
+        setModal('relatedFigures', streetcodeId, false);
+    };
 
     return (
         <Modal
@@ -33,7 +26,7 @@ const RelatedFiguresModal = () => {
             maskClosable
             centered
             footer={null}
-            onCancel={() => setModal('relatedFigures', streetcodeId, false)}
+            onCancel={() => setModal('relatedFigures', streetcodeId)}
             closeIcon={<CancelBtn />}
         >
             <div
@@ -44,12 +37,10 @@ const RelatedFiguresModal = () => {
             </div>
             <div className="relatedFiguresReadMoreContentContainer">
                 {getRelatedFiguresArray?.map((figure) => (
-                    <div key={figure.id} onClick={() => setModal('relatedFigures', streetcodeId, false)}>
+                    <div key={figure.id} onClick={handleMoreInfoClick}>
                         <RelatedFigureItem
                             key={figure.id}
                             relatedFigure={figure}
-                            filterTags={false}
-                            setActiveTagId={() => {}}
                         />
                     </div>
                 ))}
