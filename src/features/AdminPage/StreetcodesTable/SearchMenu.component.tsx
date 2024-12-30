@@ -32,7 +32,7 @@ const SearchMenu = ({ setStatus, setTitle, setRequest }: IProps) => {
     return (
         <div className="searchMenu">
             <div className="searchMenuElement">
-                <Button className="Button" onClick={() => setRequest()}>Пошук стріткодів</Button>
+                <Button className="Button" onClick={() => setRequest()}>Пошук history-кодів</Button>
             </div>
             <div className="searchMenuElement">
                 <Input
@@ -47,7 +47,7 @@ const SearchMenu = ({ setStatus, setTitle, setRequest }: IProps) => {
                     mode="multiple"
                     allowClear
                     className="searchMenuStatusSelected"
-                    placeholder="Статус стріткодів"
+                    placeholder="Статус history-кодів"
                     onChange={handleChangeStatus}
                     options={options}
                 />
@@ -57,7 +57,7 @@ const SearchMenu = ({ setStatus, setTitle, setRequest }: IProps) => {
                     className="Button"
                     onClick={() => window.open(`${FRONTEND_ROUTES.ADMIN.NEW_STREETCODE}`, '_blank')}
                 >
-                    Новий стріткод
+                    Новий history-код
                 </Button>
             </div>
         </div>

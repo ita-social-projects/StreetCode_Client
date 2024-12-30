@@ -39,6 +39,7 @@ import Audio from '@/models/media/audio.model';
 import Image from '@/models/media/image.model';
 import News from '@/models/news/news.model';
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
+import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
 
 const NewsModal: React.FC<{
     newsItem?: News;
@@ -64,7 +65,7 @@ const NewsModal: React.FC<{
     const [waitingForApiResponse, setWaitingForApiResponse] = useState(false);
     const [editorCharacterCount, setEditorCharacterCount] = useState<number>(0);
     const [removedImage, setRemovedImage] = useState<Image | undefined>(undefined);
-	const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
+    const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
 
     message.config({
         top: 100,
@@ -93,6 +94,13 @@ const NewsModal: React.FC<{
         }
         return newsList.every((news: News) => news.url !== url);
     };
+
+    const validateTitle = uniquenessValidator(
+        () => newsStore.NewsArray.map((news: News) => news.title.trim()),
+        () => newsItem?.title?.trim(),
+        'Заголовок вже існує',
+    );
+    
 
     useEffect(() => {
         editorRef.current?.editor?.setText('');
@@ -155,7 +163,7 @@ const NewsModal: React.FC<{
     const closeModal = () => {
         if (!waitingForApiResponse) {
             setIsModalOpen(false);
-			setIsSaveButtonDisabled(true);
+            setIsSaveButtonDisabled(true);
             if (removedImage) {
                 imageId.current = removedImage.id;
                 image.current = removedImage;
@@ -178,7 +186,7 @@ const NewsModal: React.FC<{
             checkQuillEditorTextLength(editorCharacterCount, sizeLimit);
             setWaitingForApiResponse(true);
             form.submit();
-			setIsSaveButtonDisabled(true);
+            setIsSaveButtonDisabled(true);
         } catch {
             message.error(fillInAllFieldsMessage);
         }
@@ -266,8 +274,13 @@ const NewsModal: React.FC<{
                         </div>
                         <Form.Item
                             name="title"
-                            label="Заголовок: "
-                            rules={[{ required: true, message: 'Введіть заголовок' }]}
+                            label="Заголовок:"
+                            rules={[
+                                { required: true, message: 'Введіть заголовок' },
+                                {
+                                    validator: validateTitle,
+                                }                       
+                            ]}
                         >
                             <Input maxLength={100} showCount onChange={handleInputChange} />
                         </Form.Item>
@@ -289,7 +302,7 @@ const NewsModal: React.FC<{
                                         if (await isUnique) {
                                             return Promise.resolve();
                                         }
-                                        return Promise.reject(new Error('Посилання вже існує'));
+                                        return Promise.reject(new Error('Транслітерація вже існує'));
                                     },
 
                                 },
@@ -389,7 +402,7 @@ const NewsModal: React.FC<{
                                         ]
                                         : []
                                 }
-								                onChange={handleInputChange}
+                                                onChange={handleInputChange}
 
                             >
                                 <p>Виберіть чи перетягніть файл</p>
@@ -413,7 +426,7 @@ const NewsModal: React.FC<{
                             <Button
                                 className="streetcode-custom-button"
                                 onClick={() => handleOk()}
-								                disabled={isSaveButtonDisabled}
+                                                disabled={isSaveButtonDisabled}
                             >
                                 Зберегти
                             </Button>

@@ -140,7 +140,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setShowAllTags }: Props) =
                 </div>
                 <div className="rightSider">
                     <div className="streetcodeIndex">
-                            Стріткод #
+                            History-код #
                         {streetcode?.index ?? 0 <= 9999 ? `000${streetcode?.index}`.slice(-4)
                             : streetcode?.index}
                     </div>

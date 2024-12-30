@@ -16,7 +16,7 @@ const SearchResultItem = ({ searchResultItem, onClick } : Props) => {
     }${searchResultItem.timelineItemId !== 0 ? (`?timelineItemId=${searchResultItem.timelineItemId}`) : ('')
     }${searchResultItem.blockName ? (`#${searchResultItem.blockName}`) : ('')}`;
 
-    const sourceName = `Стріткод #${searchResultItem.streetcodeIndex.toString().padStart(4, '0')
+    const sourceName = `History-код #${searchResultItem.streetcodeIndex.toString().padStart(4, '0')
     }${searchResultItem.sourceName ? `/${searchResultItem.sourceName}` : ''}`;
 
     const contentToDisplay = searchResultItem.content ? htmlToText(searchResultItem.content) : '';

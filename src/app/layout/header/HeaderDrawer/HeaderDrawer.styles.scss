@@ -4,7 +4,7 @@
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
-.ant-drawer .ant-drawer-body{
+.ant-drawer .ant-drawer-body {
   padding-top: 0;
   padding-bottom: f.pxToRem(33px);
 }
@@ -15,7 +15,7 @@
 
 .grid-container {
   display: grid;
-  grid-template-columns: 2% 98%;
+  grid-template-columns: 0% 100%;
   position: absolute;
   left: 20%;
   height: 100vh;
@@ -40,7 +40,7 @@ $track-width: f.pxToRem(1.5px);
 .thumb {
   cursor: default;
   position: absolute;
-  transform: translateX(calc(-50% + $track-width / 2)); 
+  transform: translateX(calc(-50% + $track-width / 2));
   z-index: 100;
   background: c.$dark-red-color;
   border: f.pxToRem(6px) solid c.$dark-red-color;
@@ -49,16 +49,18 @@ $track-width: f.pxToRem(1.5px);
   transition-duration: 0.5s;
 }
 
-.drawerContainer{
+.drawerContainer {
   height: fit-content;
 }
 
-.ant-drawer .ant-drawer-header{
+.ant-drawer .ant-drawer-header {
   padding: f.pxToRem(20px) f.pxToRem(15px);
   border: 0;
-  .ant-drawer-header-title{
+
+  .ant-drawer-header-title {
     padding: 0;
   }
+
   .ant-drawer-close {
     padding: 0;
   }
@@ -70,11 +72,13 @@ $track-width: f.pxToRem(1.5px);
 }
 
 .headerDrawerContainer {
-  #active{
+  #active {
     color: c.$dark-red-color;
   }
+
   @include mut.flexed(column, $align-items: flex-start, $gap: 39px);
   margin-left: f.pxToRem(40px);
+
   * {
     @include mut.with-font(ft.$closer-text-font);
     line-height: f.pxToEm(26px);
@@ -85,11 +89,13 @@ $track-width: f.pxToRem(1.5px);
   .headerDrawerContainer {
     @include mut.flexed(column, $align-items: flex-start, $gap: 20px);
     margin-left: f.pxToRem(40px);
+
     * {
       @include mut.with-font(ft.$closer-text-font, $font-size: 16px);
       line-height: f.pxToEm(22px);
     }
   }
+
   .grid-container {
     display: grid;
     grid-template-columns: 1% 99%;
@@ -97,30 +103,36 @@ $track-width: f.pxToRem(1.5px);
     left: 15%;
     max-height: 100vh;
   }
+
   .socialIconHeaderContainer {
     position: absolute;
     top: 24rem;
     padding-left: f.pxToRem(7px);
     @include mut.with-font($font-weight: 300, $font-size: 16px);
-    > * {
+
+    >* {
       display: inline;
       margin-top: pxToRem(40px);
       margin-right: pxToRem(14.62px);
       padding-right: 0.7rem;
     }
   }
+
   .customSlider {
     top: f.pxToRem(5px);
     max-height: f.pxToRem(322px);
   }
-  .ant-drawer-content-wrapper{
+
+  .ant-drawer-content-wrapper {
     border-radius: 0 0 0 f.pxToRem(50px);
     height: f.pxToRem(525px);
   }
+
   .ant-drawer-content {
     border-radius: 0 0 0 f.pxToRem(50px);
     height: f.pxToRem(525px);
   }
+
   .thumb {
     background: c.$dark-red-color;
     border: f.pxToRem(5px) solid c.$dark-red-color;
