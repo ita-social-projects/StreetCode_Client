@@ -77,6 +77,7 @@ import PartnerBlockAdmin from './PartnerBlock/PartnerBlockAdmin.components';
 import SubtitleBlock from './SubtitileBlock/SubtitleBlock.component';
 import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
+import MapBlockAdmin from './MapBlock/MapBlockAdmin.component';
 
 dayjs.extend(utc);
 dayjs.extend(tz);
@@ -657,6 +658,7 @@ const NewStreetcode = () => {
                                 onChange={handleFieldChange}
                             />
                             <TimelineBlockAdmin onChange={handleFieldChange} />
+                            <MapBlockAdmin />
                             <ArtGalleryDndContext>
                                 <StreetcodeArtsBlock />
                                 <ArtGallery
