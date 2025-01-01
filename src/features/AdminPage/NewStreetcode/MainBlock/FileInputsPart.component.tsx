@@ -222,6 +222,7 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                         beforeUpload={checkFile}
                         onPreview={handlePreview}
                         uploadTo="image"
+                        imageType={ImageAssigment.animation}
                         onSuccessUpload={(file: Image | Audio) => {
                             handleFileUpload(file.id, 'animationId', 'imagesUpdate');
                             setAnimation([convertFileToUploadFile(file as Image)]);
@@ -255,6 +256,7 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                         beforeUpload={checkFile}
                         onPreview={handlePreview}
                         uploadTo="image"
+                        imageType={ImageAssigment.blackandwhite}
                         onSuccessUpload={(file: Image | Audio) => {
                             handleFileUpload(file.id, 'blackAndWhiteId', 'imagesUpdate');
                             setBlackAndWhite([convertFileToUploadFile(file as Image)]);
@@ -281,6 +283,7 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                         fileList={relatedFigure}
                         onPreview={handlePreview}
                         uploadTo="image"
+                        imageType={ImageAssigment.relatedfigure}
                         beforeUpload={checkFile}
                         onSuccessUpload={(file: Image | Audio) => {
                             handleFileUpload(file.id, 'relatedFigureId', 'imagesUpdate');
