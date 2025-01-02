@@ -13,6 +13,7 @@ import { FormInstance, Modal, UploadFile } from 'antd';
 import { UploadChangeParam } from 'antd/es/upload';
 import FormItem from 'antd/es/form/FormItem';
 
+import { RuleObject } from 'antd/es/form';
 import AudiosApi from '@/app/api/media/audios.api';
 import ImagesApi from '@/app/api/media/images.api';
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
@@ -21,7 +22,6 @@ import Audio, { AudioUpdate } from '@/models/media/audio.model';
 
 import PreviewFileModal from './PreviewFileModal/PreviewFileModal.component';
 import imageValidator, { checkImageFileType } from '@/app/common/components/modals/validators/imageValidator';
-import { RuleObject } from 'antd/es/form';
 
 const convertFileToUploadFile = (file: Image | Audio) => {
     const newFileList: UploadFile = {

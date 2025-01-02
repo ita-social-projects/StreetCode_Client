@@ -99,7 +99,7 @@ const FileUploader:React.FC<Props> = ({
         reader.onloadend = async (obj) => {
             let baseString: any;
             baseString = obj.target?.result;
-            if (enableGrayscale || imageType === ImageAssigment.blackandwhite) {
+            if (enableGrayscale) {
                 await applyGrayscale(baseString).then((greyScaleUrl) => {
                     baseString = greyScaleUrl;
                 });
