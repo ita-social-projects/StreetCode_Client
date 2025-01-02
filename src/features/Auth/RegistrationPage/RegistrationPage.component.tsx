@@ -27,6 +27,22 @@ const RegistrationPage: React.FC = () => {
         }
     };
 
+    const validatePhoneNumber = (_: any, value: string) => {
+        const ukrainianPhoneRegex = /^\+380\d{9}$/;
+        if (!value || ukrainianPhoneRegex.test(value)) {
+            return Promise.resolve();
+        }
+        return Promise.reject(new Error('Введіть коректний український номер телефону (наприклад, +380XXXXXXXXX)'));
+    };
+
+    const validateEmail = (_: any, value: string) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!value || emailRegex.test(value)) {
+            return Promise.resolve();
+        }
+        return Promise.reject(new Error('Введіть коректну електронну пошту'));
+    };
+
     return (
         <Form form={form} className="register-form" onFinish={handleRegister}>
             <Form.Item
@@ -46,7 +62,10 @@ const RegistrationPage: React.FC = () => {
             <Form.Item
                 name="email"
                 label="Електронна пошта"
-                rules={[{ required: true, message: 'Введіть електронну пошту' }]}
+                rules={[
+                    { required: true, message: 'Введіть електронну пошту' },
+                    { validator: validateEmail },
+                ]}
             >
                 <Input maxLength={50} showCount />
             </Form.Item>
@@ -60,8 +79,11 @@ const RegistrationPage: React.FC = () => {
             <Form.Item
                 name="phoneNumber"
                 label="Телефон"
+                rules={[
+                    { validator: validatePhoneNumber },
+                ]}
             >
-                <Input maxLength={30} showCount />
+                <Input maxLength={30} showCount placeholder="+380XXXXXXXXX" />
             </Form.Item>
             <Form.Item
                 name="password"

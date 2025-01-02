@@ -22,29 +22,6 @@ declare global {
         };
     }
 }
-// declare global {
-//     interface Window {
-//         _env_: {
-//             API_URL: string;
-//             SERVER_API_URL: string;
-//             REACT_APP_GOOGLE_ANALYTICS: string;
-//             RECAPTCHA_SITE_KEY: string;
-//             VERSION: string;
-//             REACT_APP_GOOGLE_CLIENT_ID: string;
-//         },
-//         google: {
-//             accounts: {
-//                 id: {
-//                     initialize: (options: {
-//                         client_id: string | undefined;
-//                         callback: (response: any) => void;
-//                     }) => void;
-//                     prompt: () => void;
-//                 };
-//             };
-//         };
-//     }
-// }
 
 ReactGA.initialize('G-2RHY04JKG0');
 

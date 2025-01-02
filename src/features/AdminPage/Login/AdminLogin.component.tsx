@@ -86,7 +86,6 @@ const AdminLogin: React.FC = () => {
                 <GoogleLogin
                     onSuccess={async (credentialResponse) => {
                         try {
-                            console.log(credentialResponse);
                             const idToken = credentialResponse.credential;
                             await AuthService.googleLoginAsync(idToken);
                             message.success('Успішна авторизація через Google!');
