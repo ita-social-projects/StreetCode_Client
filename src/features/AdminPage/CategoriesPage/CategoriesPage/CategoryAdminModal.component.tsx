@@ -212,7 +212,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                         ]}
                     >
                         <FileUploader
-                            greyFilterForImage
+                            enableGrayscale
                             multiple={false}
                             accept=".jpeg,.png,.jpg,.webp"
                             listType="picture-card"

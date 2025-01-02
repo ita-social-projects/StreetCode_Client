@@ -1,26 +1,10 @@
 import './TimelineItem.styles.scss';
+
 import { useState } from 'react';
 
-import { format } from 'date-fns';
-import { uk } from 'date-fns/locale';
-import dayjs from 'dayjs';
-
-import TimelineItem, { DateViewPattern, getSeason } from '@/models/timeline/chronology.model';
-
-const monthsMap = new Map([
-    ['січня', 'січень'],
-    ['лютого', 'лютий'],
-    ['березня', 'березень'],
-    ['квітня', 'квітень'],
-    ['травня', 'травень'],
-    ['червня', 'червень'],
-    ['липня', 'липень'],
-    ['серпня', 'серпень'],
-    ['вересня', 'вересень'],
-    ['жовтня', 'жовтень'],
-    ['листопада', 'листопад'],
-    ['грудня', 'грудень'],
-]);
+import monthsMap from '@/app/common/constants/month-map';
+import FromDateToString from '@/app/common/utils/FromDateToString';
+import TimelineItem from '@/models/timeline/chronology.model';
 
 const truncateCharString = (str?: string, symbolCount = 400): string | undefined => str && (
     str.length <= symbolCount ? str : `${str.substring(0, symbolCount - 3)}...`
@@ -29,15 +13,7 @@ const truncateCharString = (str?: string, symbolCount = 400): string | undefined
 interface Props {
     timelineItem: TimelineItem;
 }
-function FromDateToString(date: Date, dataViewType: DateViewPattern) {
-    switch (dataViewType) {
-        case DateViewPattern.Year: return format(new Date(date), 'yyyy');
-        case DateViewPattern.MonthYear: return format(date, 'yyyy, MMMM', { locale: uk });
-        case DateViewPattern.SeasonYear: return `${format(date, 'yyyy,')} ${getSeason(dayjs(date))}`;
-        case DateViewPattern.DateMonthYear: return format(new Date(date), 'yyyy, d MMMM', { locale: uk });
-        default: return '';
-    }
-}
+
 const TimelineSlideCard = ({
     timelineItem: {
         date, description,

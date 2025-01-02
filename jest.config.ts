@@ -6,10 +6,12 @@ const jestConfig: JestConfigWithTsJest = {
   roots: ["<rootDir>"],
   moduleNameMapper: {
     "\\.(css|less|sass|scss)$": "identity-obj-proxy",
+    '\\.(woff|woff2)$': '<rootDir>/__mocks__/fontFileMock.ts',
     "^antd/es/(.*)$": "<rootDir>/node_modules/antd/lib/$1",
     "^@assets/(.*)$": "<rootDir>/src/assets/$1",
     "^antd/es/date-picker/locale/uk_UA$": "<rootDir>/__mocks__/antd/es/date/localeprovider.tsx",
     "^@stores/root-store$": "<rootDir>/__mocks__/@stores/root-store.tsx", 
+    "^@react-pdf/renderer$": "<rootDir>/__mocks__/@react-pdf/renderer.tsx",
     "^@components/FileUploader/FileUploader.component$": "<rootDir>/__mocks__/@components/FileUploader.component.tsx",
     "^@/(.*)$": "<rootDir>/src/$1",
     "^@app/(.*)$": "<rootDir>/src/app/$1",

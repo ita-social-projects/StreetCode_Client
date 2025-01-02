@@ -105,11 +105,18 @@
     box-shadow: 0 4px 4px rgba(219, 52, 36, 0.18);
   }
 }
-.audioBtn {
+.cardFooterButton {
     @include mut.sized(271px, 73px);
     @include mut.flex-centered();
     @include mut.full-rounded(14px);
     @include mut.with-font($font-weight: 500);
+}
+.pdfButton{
+  color: c.$accented-red-color;
+  border: 3px solid c.$accented-red-color;
+  &:hover {
+    box-shadow: 0 4px 4px rgba(219, 52, 36, 0.18);
+  }
 }
 .audioBtn:disabled {
     cursor: default;
@@ -170,6 +177,17 @@
 @media screen and (max-width: 1060px) {
   .blockCentering {
   @include mut.rem-padded($top: 0px, $right: 0px, $bottom: 0px, $left: 0px);
+  }
+}
+
+@media screen and (max-width: 1120px) {
+  .cardFooter{
+    flex-direction: column;
+  }
+}
+@media screen and (max-width: 560px) {
+  .cardFooter{
+    flex-direction: column;
   }
 }
 

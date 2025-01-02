@@ -50,7 +50,6 @@ export default interface Streetcode extends EventStreetcode, PersonStreetcode {
 
 export interface EventStreetcode {
     title: string;
-    streetcode: Streetcode;
 }
 
 export interface PersonStreetcode {
@@ -58,7 +57,6 @@ export interface PersonStreetcode {
     firstName: string;
     lastName: string;
     rank: string;
-    streetcode: Streetcode;
 }
 
 export enum Status {
