@@ -137,7 +137,7 @@ describe('Partners.component', () => {
             expect(screen.getByText('Mock Partner 1')).toBeInTheDocument();
             expect(screen.getByRole('link', { name: /mock partner 1 website/i })).toBeInTheDocument();
             expect(screen.getByRole('img', { name: /logo/i })).toBeInTheDocument();
-            expect(screen.getByRole('link', { name: /стріткоди/i })).toBeInTheDocument();
+            expect(screen.getByRole('link', { name: /history-коди/i })).toBeInTheDocument();
         });
     });
 });

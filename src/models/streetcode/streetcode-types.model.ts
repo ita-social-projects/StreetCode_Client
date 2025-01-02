@@ -161,5 +161,5 @@ export interface StreetcodeUpdate {
     audioId: number | null,
     audios: AudioUpdate[],
     imagesDetails: ImageDetails[],
-    transactionLink: TransactionLinkUpdate;
+    arBlockURL?: string,
 }

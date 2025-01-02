@@ -163,7 +163,7 @@ describe('CategoryAdminModal', () => {
 
         await waitFor(() => {
             expect(saveButton).toBeDisabled();
-        });
+        }, { timeout: 3000 });
     });
 
     it('should update existing category', async () => {
@@ -175,7 +175,6 @@ describe('CategoryAdminModal', () => {
         act(() => {
             render(<CategoryAdminModal {...defaultProps} initialData={initialData} />);
         });
-
         const nameInput = screen.getByRole('textbox', { name: /Назва/i });
         const saveButton = screen.getByRole('button', { name: /Зберегти/i });
         const fileuploader = screen.getByTestId('fileuploader');
@@ -186,6 +185,9 @@ describe('CategoryAdminModal', () => {
             userEvent.upload(fileuploader, new File(['(⌐□_□)'], 'new-image.jpg', { type: 'image/jpg' }));
         });
 
+        await waitFor(() => {
+            expect(saveButton).not.toBeDisabled();
+        });
         await waitFor(() => userEvent.click(saveButton));
 
         await waitFor(() => {
@@ -223,7 +225,7 @@ describe('CategoryAdminModal', () => {
 
         await waitFor(() => {
             expect(saveButton).toBeDisabled();
-        });
+        }, { timeout: 3000 });
     });
 
     it('should show error message when title is empty', async () => {

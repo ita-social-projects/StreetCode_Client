@@ -12,7 +12,7 @@ const PartnersPage = () => (
 
     <>
         <Helmet>
-            <title>Наші партнери | Streetcode</title>
+            <title>Наші партнери | Historycode</title>
             <meta name="description" content="Дізнайтеся про наших цінних партнерів, що вклали внесок у нашу місію." />
         </Helmet>
         <div className="partnersContainer">

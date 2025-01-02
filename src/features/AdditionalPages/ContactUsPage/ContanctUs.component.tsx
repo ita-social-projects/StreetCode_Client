@@ -11,7 +11,7 @@ const SURVEY_LINK = 'https://forms.gle/eWwX5RP84X7dymLR6';
 const ContactUs = () => (
     <div className="contactUsContainer">
         <Helmet>
-            <title>Контакти | Streetcode</title>
+            <title>Контакти | Historycode</title>
             <meta name="description" content="Зв’яжіться з нами для будь-яких запитань, відгуків або підтримки." />
         </Helmet>
         <div className="contactUsCover">
@@ -19,7 +19,7 @@ const ContactUs = () => (
                 <Title />
                 <MainBlock />
                 <div className="contactUsContent">
-                    <h1>Привіт, стріткодере/ко!</h1>
+                    <h1>Привіт, history-кодере/ко!</h1>
                     <br />
                     <h3>Цей сайт для тебе. Створений і наповнений з любов'ю, з історією та про історію. Наразі він працює в тестовому режимі. So, we need your help 😊</h3>
                     <br />

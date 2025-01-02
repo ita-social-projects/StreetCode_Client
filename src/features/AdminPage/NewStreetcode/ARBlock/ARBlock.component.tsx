@@ -14,7 +14,7 @@ const ARBlock: React.FC<Props> = ({ onChange }) => {
     };
     return (
         <Form.Item
-            name="arlink"
+            name="url"
             label="AR-посилання"
             className="ar-link-form-item"
         >

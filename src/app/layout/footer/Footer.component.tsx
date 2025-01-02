@@ -42,7 +42,7 @@ const Footer = () => {
                     <div className="usefulLinksColumnContainer">
                         <ul className="usefulLinksColumn">
                             <li><Link to={FRONTEND_ROUTES.BASE}>Головна</Link></li>
-                            <li><Link to={FRONTEND_ROUTES.OTHER_PAGES.CATALOG}>Стріткоди</Link></li>
+                            <li><Link to={FRONTEND_ROUTES.OTHER_PAGES.CATALOG}>History-коди</Link></li>
                             <li><Link to={FRONTEND_ROUTES.OTHER_PAGES.ABOUT_US}>Про нас</Link></li>
                             <li><Link to={FRONTEND_ROUTES.OTHER_PAGES.CONTACT_US}>Контакти</Link></li>
                         </ul>
