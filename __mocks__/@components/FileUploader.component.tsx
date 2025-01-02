@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Component, useState} from 'react';
 import Upload,{ UploadChangeParam, UploadFile, UploadProps } from 'antd/es/upload';
-import ImageNew,  { ImageCreate } from '@/models/media/image.model';
+import ImageNew, {ImageAssigment, ImageCreate} from '@/models/media/image.model';
 import Audio, { AudioCreate } from '@/models/media/audio.model';
 
 interface Props{
@@ -9,11 +9,12 @@ interface Props{
     edgeSwipe?: boolean;
     onChange: (uploadParams: UploadChangeParam<UploadFile<any>>) => void;
     uploadTo:'image' | 'audio';
-    greyFilterForImage?: boolean;
+    enableGrayscale?: boolean;
+    imageType?: ImageAssigment;
     onSuccessUpload?:(value: ImageNew | Audio, file?: UploadFile)=>void;
 }
  
-const FileUploaderMock: React.FC<Props> = ({ onSuccessUpload, uploadTo, greyFilterForImage = false, children, onChange }) => {
+const FileUploaderMock: React.FC<Props> = ({ onSuccessUpload, uploadTo, enableGrayscale = false, imageType, children, onChange }) => {
 
   const handleFileChange = (e: UploadChangeParam<UploadFile>) => {
       let file = e.file;
