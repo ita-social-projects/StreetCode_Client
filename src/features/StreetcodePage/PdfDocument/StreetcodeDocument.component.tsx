@@ -1,4 +1,6 @@
-import { Document, Font, Image, Page, Rect, StyleSheet, Svg, Text, View } from '@react-pdf/renderer';
+import {
+    Document, Font, Image, Page, Rect, StyleSheet, Svg, Text, View,
+} from '@react-pdf/renderer';
 import { Style } from '@react-pdf/types';
 import React from 'react';
 import CloserTextBold from '@assets/fonts/CloserText-Bold.woff';
@@ -150,141 +152,179 @@ const StreetcodeDocument = ({ streetcode, image }: Props) => {
                         </Text>
                     </View>
                 </View>
-                <View style={styles.blockTitle}>
-                    <Svg style={{ width: 5, height: 5 }} viewBox="0 0 5 5">
-                        <Rect width="5" height="5" fill="#E04031" />
-                    </Svg>
-                    <Text>
-                        Хронологія
-                    </Text>
-                    <Svg style={{ width: 5, height: 5 }} viewBox="0 0 5 5">
-                        <Rect width="5" height="5" fill="#E04031" />
-                    </Svg>
-                </View>
-                <View style={{ flexDirection: 'column' }}>
-                    {
-                        getTimelineItemArray.map((item) => (
-                            <View style={{ flexDirection: 'row' }}>
-                                <View
-                                    style={{ width: 80,
-                                             position: 'relative',
-                                             paddingRight: 18,
-                                             overflow: 'hidden' }}
-                                    wrap={false}
-                                >
-                                    <Text style={{ position: 'absolute',
-                                                   top: '50%',
-                                                   transform: 'translateY(-12px)' }}
-                                    >
-                                        { new Date(item.date).getFullYear() }
-                                    </Text>
-                                    <Svg style={{ width: 5, height: 190, position: 'absolute', top: 0, left: 60 }}>
-                                        <Rect width="5" height="190" fill="#891F16" />
+                {
+                    getTimelineItemArray.length > 0 && (
+                        <>
+                            <View style={styles.blockTitle}>
+                                <Svg style={{ width: 5, height: 5 }} viewBox="0 0 5 5">
+                                    <Rect width="5" height="5" fill="#E04031" />
+                                </Svg>
+                                <Text>
+                                Хронологія
+                                </Text>
+                                <Svg style={{ width: 5, height: 5 }} viewBox="0 0 5 5">
+                                    <Rect width="5" height="5" fill="#E04031" />
+                                </Svg>
+                            </View>
+                            <View style={{ flexDirection: 'column' }}>
+                                {getTimelineItemArray.map((item) => (
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <View
+                                            style={{
+                                                width: 80,
+                                                position: 'relative',
+                                                paddingRight: 18,
+                                                overflow: 'hidden',
+                                            }}
+                                            wrap={false}
+                                        >
+                                            <Text style={{
+                                                position: 'absolute',
+                                                top: '50%',
+                                                transform: 'translateY(-12px)',
+                                            }}
+                                            >
+                                                {new Date(item.date).getFullYear()}
+                                            </Text>
+                                            <Svg style={{ width: 5,
+                                                          height: 190,
+                                                          position: 'absolute',
+                                                          top: 0,
+                                                          left: 60 }} >
+                                                <Rect width="5" height="190" fill="#891F16" />
+                                            </Svg>
+                                            <Svg style={{
+                                                width: 15,
+                                                height: 15,
+                                                position: 'absolute',
+                                                top: '50%',
+                                                left: 55,
+                                                transform: 'translateY(-7.5px)',
+                                            }}
+                                            >
+                                                <Rect width="15" height="15" fill="#D9D9D9" />
+                                            </Svg>
+                                        </View>
+                                        <View
+                                            style={{
+                                                flexDirection: 'column',
+                                                gap: 9,
+                                                width: 450,
+                                                paddingBottom: 20,
+                                            }}
+                                            wrap={false}
+                                        >
+                                            <Text style={{ color: '#5D5D5D', fontSize: 14 }}>
+                                                {getDateStrint(item)}
+                                            </Text>
+                                            <Text style={{ fontSize: 16, color: '#891F16' }}>{item.title}</Text>
+                                            <Text style={{ fontFamily: 'Roboto', fontSize: 14, color: '#4D4D4D' }}>
+                                                {item.description}
+                                            </Text>
+                                        </View>
+                                    </View>
+                                ))}
+                            </View>
+                        </>
+                    )
+                }
+                {
+                    textVideoStore.Text && (
+                        <View>
+                            <View wrap={false} style={styles.blockTitle}>
+                                <Svg style={{ width: 5, height: 5 }} viewBox="0 0 5 5">
+                                    <Rect width="5" height="5" fill="#E04031" />
+                                </Svg>
+                                <Text>
+                                    { textVideoStore.Text?.title }
+                                </Text>
+                                <Svg style={{ width: 5, height: 5 }} viewBox="0 0 5 5">
+                                    <Rect width="5" height="5" fill="#E04031" />
+                                </Svg>
+                            </View>
+                            <View style={{ flexDirection: 'column', gap: 5 }}>
+                                { getFormatedText() }
+                            </View>
+                        </View>
+                    )
+                }
+                {
+                    factsStore.getFactArray.length > 0 && (
+                        <>
+                            <View wrap={false} style={{ marginBottom: 20 }}>
+                                <View style={styles.blockTitle}>
+                                    <Svg style={{ width: 5, height: 5 }} viewBox="0 0 5 5">
+                                        <Rect width="5" height="5" fill="#E04031" />
                                     </Svg>
-                                    <Svg style={{ width: 15,
-                                                  height: 15,
-                                                  position: 'absolute',
-                                                  top: '50%',
-                                                  left: 55,
-                                                  transform: 'translateY(-7.5px)' }}
-                                    >
-                                        <Rect width="15" height="15" fill="#D9D9D9" />
+                                    <Text>
+                                    Wow-факти
+                                    </Text>
+                                    <Svg style={{ width: 5, height: 5 }} viewBox="0 0 5 5">
+                                        <Rect width="5" height="5" fill="#E04031" />
                                     </Svg>
                                 </View>
-                                <View
-                                    style={{ flexDirection: 'column',
-                                             gap: 9,
-                                             width: 450,
-                                             paddingBottom: 20 }}
-                                    wrap={false}
-                                >
-                                    <Text style={{ color: '#5D5D5D', fontSize: 14 }}>{getDateStrint(item)}</Text>
-                                    <Text style={{ fontSize: 16, color: '#891F16' }}>{item.title}</Text>
-                                    <Text style={{ fontFamily: 'Roboto', fontSize: 14, color: '#4D4D4D' }}>
-                                        {item.description}
-                                    </Text>
+                                <View wrap={false} style={{ ...styles.factCard, flexDirection: 'row' }}>
+                                    <View style={{
+                                        flexDirection: 'column',
+                                        alignItems: 'center',
+                                        maxWidth: '50%',
+                                        gap: 10,
+                                    }}
+                                    >
+                                        <Image
+                                            source={base64ToUrl(firstFact.image?.base64, firstFact.image?.mimeType)}
+                                        />
+                                        <Text style={{
+                                            textAlign: 'center',
+                                            color: '#DB3424',
+                                            flexGrow: 1,
+                                        }}
+                                        >
+                                            {firstFact.title}
+                                        </Text>
+                                    </View>
+                                    <View style={{ maxWidth: '50%' }}>
+                                        <Text style={{ fontSize: 12 }}>{firstFact.factContent}</Text>
+                                    </View>
                                 </View>
                             </View>
-                        ))
-                    }
-                </View>
-                <View>
-                    <View wrap={false} style={styles.blockTitle}>
-                        <Svg style={{ width: 5, height: 5 }} viewBox="0 0 5 5">
-                            <Rect width="5" height="5" fill="#E04031" />
-                        </Svg>
-                        <Text>
-                            { textVideoStore.Text?.title }
-                        </Text>
-                        <Svg style={{ width: 5, height: 5 }} viewBox="0 0 5 5">
-                            <Rect width="5" height="5" fill="#E04031" />
-                        </Svg>
-                    </View>
-                    <View style={{ flexDirection: 'column', gap: 5 }}>
-                        { getFormatedText() }
-                    </View>
-                </View>
-                <View wrap={false} style={{ marginBottom: 20 }}>
-                    <View style={styles.blockTitle}>
-                        <Svg style={{ width: 5, height: 5 }} viewBox="0 0 5 5">
-                            <Rect width="5" height="5" fill="#E04031" />
-                        </Svg>
-                        <Text>
-                            Wow-факти
-                        </Text>
-                        <Svg style={{ width: 5, height: 5 }} viewBox="0 0 5 5">
-                            <Rect width="5" height="5" fill="#E04031" />
-                        </Svg>
-                    </View>
-
-                    <View wrap={false} style={{ ...styles.factCard, flexDirection: 'row' }}>
-                        <View style={{ flexDirection: 'column', alignItems: 'center', maxWidth: '50%', gap: 10 }}>
-                            <Image
-                                source={base64ToUrl(firstFact.image?.base64, firstFact.image?.mimeType)}
-                            />
-                            <Text style={{ textAlign: 'center',
-                                           color: '#DB3424',
-                                           flexGrow: 1 }}
-                            >
-                                { firstFact.title }
-                            </Text>
-                        </View>
-                        <View style={{ maxWidth: '50%' }}>
-                            <Text style={{ fontSize: 12 }}>{ firstFact.factContent}</Text>
-                        </View>
-                    </View>
-                </View>
-
-                <View style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-                    {
-                        factsStore.getFactArray.slice(1).map((fact, index) => (
-                            <View
-                                wrap={false}
-                                style={{ ...styles.factCard,
-                                         flexDirection: index % 2 === 0 ? 'row-reverse' : 'row' }}
-                            >
-                                <View style={{ flexDirection: 'column',
-                                               alignItems: 'center',
-                                               maxWidth: '50%',
-                                               gap: 10 }}
-                                >
-                                    <Image
-                                        source={base64ToUrl(fact.image?.base64, fact.image?.mimeType)}
-                                    />
-                                    <Text style={{ textAlign: 'center',
-                                                   color: '#DB3424',
-                                                   flexGrow: 1 }}
+                            <View style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+                                {factsStore.getFactArray.slice(1).map((fact, index) => (
+                                    <View
+                                        wrap={false}
+                                        style={{
+                                            ...styles.factCard,
+                                            flexDirection: index % 2 === 0 ? 'row-reverse' : 'row',
+                                        }}
                                     >
-                                        { fact.title }
-                                    </Text>
-                                </View>
-                                <View style={{ maxWidth: '50%' }}>
-                                    <Text style={{ fontSize: 12 }}>{ fact.factContent}</Text>
-                                </View>
+                                        <View style={{
+                                            flexDirection: 'column',
+                                            alignItems: 'center',
+                                            maxWidth: '50%',
+                                            gap: 10,
+                                        }}
+                                        >
+                                            <Image
+                                                source={base64ToUrl(fact.image?.base64, fact.image?.mimeType)}
+                                            />
+                                            <Text style={{
+                                                textAlign: 'center',
+                                                color: '#DB3424',
+                                                flexGrow: 1,
+                                            }}
+                                            >
+                                                {fact.title}
+                                            </Text>
+                                        </View>
+                                        <View style={{ maxWidth: '50%' }}>
+                                            <Text style={{ fontSize: 12 }}>{fact.factContent}</Text>
+                                        </View>
+                                    </View>
+                                ))}
                             </View>
-                        ))
-                    }
-                </View>
+                        </>
+                    )
+                }
             </Page>
         </Document>
     );
