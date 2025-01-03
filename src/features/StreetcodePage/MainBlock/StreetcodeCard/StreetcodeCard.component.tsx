@@ -88,7 +88,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setShowAllTags }: Props) =
 
     const downloadPDF = async () => {
         if (streetcode != null) {
-            const buffer = await pdf(<StreetcodeDocument streetcode={streetcode} image={imagesForSlider[0]}/>).toBuffer();
+            const buffer = await pdf(<StreetcodeDocument streetcode={streetcode} image={imagesForSlider[0] ?? imagesForSlider[1]}/>).toBuffer();
             const stream = buffer.pipe(blobStream());
 
             stream.on('finish', () => {
