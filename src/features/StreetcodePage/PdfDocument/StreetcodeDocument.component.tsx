@@ -142,7 +142,7 @@ const StreetcodeDocument = ({ streetcode, image }: Props) => {
                     <Image source={source} style={{ width: 180 }} />
                     <View style={styles.textBlock}>
                         <Text style={styles.name}>
-                            {`${streetcode.firstName} ${streetcode.lastName}`}
+                            {streetcode.title}
                         </Text>
                         <Text style={styles.datestring}>
                             {streetcode.dateString}
