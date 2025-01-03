@@ -24,6 +24,9 @@ const FRONTEND_ROUTES = {
         NEWS: '/news',
         ABOUT_US: '/about-us',
     },
+    AUTH: {
+        REGISTER: '/register',
+    },
 };
 
 export default FRONTEND_ROUTES;

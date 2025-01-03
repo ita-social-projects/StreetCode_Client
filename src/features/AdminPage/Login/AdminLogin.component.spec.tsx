@@ -14,6 +14,7 @@ import { Input } from '../../../../__mocks__/antd/antd';
 import Form from '../../../../__mocks__/antd/es/form/Form';
 
 import AdminLogin from './AdminLogin.component';
+import {GoogleOAuthProvider} from "@react-oauth/google";
 
 // Mock AuthService.
 jest.mock('@/app/common/services/auth-service/AuthService', () => ({
@@ -51,9 +52,12 @@ describe('AdminLogin', () => {
     it('should render component and its elements', () => {
         window._env_.RECAPTCHA_SITE_KEY = 'fake_site_key';
         render(
-            <MemoryRouter>
-                <AdminLogin />
-            </MemoryRouter>,
+            <GoogleOAuthProvider clientId="561914124880-vulghkfedl8p1svciq5qrpajs4092pr3.apps.googleusercontent.com">
+                <MemoryRouter>
+                    <AdminLogin />
+                </MemoryRouter>
+            </GoogleOAuthProvider>,
+
         );
 
         const inputForLogin = screen.getByText('login');
@@ -68,9 +72,11 @@ describe('AdminLogin', () => {
     it('loginAsync is called if form is submitted', () => {
         window._env_.RECAPTCHA_SITE_KEY = 'fake_site_key';
         render(
-            <MemoryRouter>
-                <AdminLogin />
-            </MemoryRouter>,
+            <GoogleOAuthProvider clientId="561914124880-vulghkfedl8p1svciq5qrpajs4092pr3.apps.googleusercontent.com">
+                <MemoryRouter>
+                    <AdminLogin />
+                </MemoryRouter>
+            </GoogleOAuthProvider>
         );
 
         const inputForLogin = screen.getByText('login');

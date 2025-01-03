@@ -2,7 +2,7 @@
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 
 import AuthApi from '@/app/api/authentication/auth.api';
-import { RefreshTokenRequest } from '@/models/user/user.model';
+import { RefreshTokenRequest, UserRegisterRequest } from '@/models/user/user.model';
 
 interface CustomJwtPayload extends JwtPayload {
     role: string;
@@ -13,13 +13,13 @@ export default class AuthService {
 
     private static refreshTokenStorageName = 'RefreshToken';
 
-    public static getAccessToken() {
+    public static getAccessToken(): string | null {
         return localStorage.getItem(this.accessTokenStorageName);
     }
 
     public static isLoggedIn(): boolean {
         const token = this.getAccessToken();
-        if (!this.isAccessTokenHasValidSignature(token) || this.isAccessTokenExpired(token!)) {
+        if (!token || !this.isAccessTokenHasValidSignature(token) || this.isAccessTokenExpired(token)) {
             return false;
         }
 
@@ -46,32 +46,42 @@ export default class AuthService {
             });
     }
 
-    public static refreshTokenAsync = () => {
-        const oldAccesstoken = this.getAccessToken();
-        if (!AuthService.isAccessTokenHasValidSignature(oldAccesstoken)) {
-            const error = new Error('Invalid signature of access token');
+    public static async registerAsync(
+        request: UserRegisterRequest,
+    ) {
+        try {
+            await AuthApi.register(request);
+        } catch (error) {
+            console.error(error);
             return Promise.reject(error);
         }
+    }
 
-        const refreshToken = this.getRefreshToken();
-        if (!refreshToken) {
-            const error = new Error('Refresh token doesn`t exists');
-            return Promise.reject(error);
-        }
-
-        const refreshTokenRequest: RefreshTokenRequest = {
-            accessToken: oldAccesstoken || '',
-            refreshToken,
-        };
-
-        return AuthApi.refreshToken(refreshTokenRequest)
-            .then((response) => {
-                localStorage.setItem(this.accessTokenStorageName, response.accessToken);
-            })
-            .catch((error) => {
-                console.error(error);
+    public static refreshTokenAsync = async () => {
+        try {
+            const oldAccesstoken = this.getAccessToken();
+            if (!AuthService.isAccessTokenHasValidSignature(oldAccesstoken)) {
+                const error = new Error('Invalid signature of access token');
                 return Promise.reject(error);
-            });
+            }
+
+            const refreshToken = this.getRefreshToken();
+            if (!refreshToken) {
+                const error = new Error('Refresh token doesn`t exists');
+                return Promise.reject(error);
+            }
+
+            const refreshTokenRequest: RefreshTokenRequest = {
+                accessToken: oldAccesstoken || '',
+                refreshToken,
+            };
+
+            const response = await AuthApi.refreshToken(refreshTokenRequest);
+            localStorage.setItem(this.accessTokenStorageName, response.accessToken);
+        } catch (error) {
+            console.error(error);
+            return Promise.reject(error);
+        }
     };
 
     public static isAccessTokenExpired(token: string): boolean {
@@ -114,5 +124,20 @@ export default class AuthService {
         if (!decodedToken || !decodedToken.role) return false;
 
         return decodedToken.role === 'Admin';
+    }
+
+    static async googleLoginAsync(idToken: string | undefined): Promise<void> {
+        try {
+            const response = await AuthApi.loginGoogle(idToken);
+            const { accessToken, refreshToken } = response;
+
+            localStorage.setItem(this.accessTokenStorageName, accessToken);
+            localStorage.setItem(this.refreshTokenStorageName, refreshToken);
+
+            console.log('Успішна авторизація через Google!');
+        } catch (error) {
+            console.error('Помилка авторизації через Google:', error);
+            throw new Error('Не вдалося увійти через Google');
+        }
     }
 }

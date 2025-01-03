@@ -9,6 +9,7 @@ import router from '@app/router/Routes';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import WithClearCache from './app/common/components/withClearCache';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 declare global {
     interface Window {
@@ -39,13 +40,22 @@ const root = ReactDOM.createRoot(
 
 const queryClient = new QueryClient();
 
+const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+
+if (!clientId) {
+    console.error('REACT_APP_GOOGLE_CLIENT_ID is not defined');
+    throw new Error('Google Client ID is required');
+}
+
 root.render(
-    <WithClearCache>
-        <React.StrictMode>
-            <QueryClientProvider client={queryClient}>
-                <RouterProvider router={router} />
-                <ReactQueryDevtools initialIsOpen />
-            </QueryClientProvider>
-        </React.StrictMode>
-    </WithClearCache>,
+    <GoogleOAuthProvider clientId={clientId}>
+        <WithClearCache>
+            <React.StrictMode>
+                <QueryClientProvider client={queryClient}>
+                    <RouterProvider router={router} />
+                    <ReactQueryDevtools initialIsOpen />
+                </QueryClientProvider>
+            </React.StrictMode>
+        </WithClearCache>
+    </GoogleOAuthProvider>,
 );
