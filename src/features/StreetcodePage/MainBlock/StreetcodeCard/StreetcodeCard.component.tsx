@@ -1,9 +1,7 @@
 import './StreetcodeCard.styles.scss';
 
-import {pdf} from '@react-pdf/renderer';
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
-import React from 'react';
 import { PlayCircleFilled } from '@ant-design/icons';
 import TagList from '@components/TagList/TagList.component';
 import BlockSlider from '@features/SlickSlider/SlickSlider.component';
@@ -11,45 +9,20 @@ import { useAsync } from '@hooks/stateful/useAsync.hook';
 import { StreetcodeTag } from '@models/additional-content/tag.model';
 import Streetcode from '@models/streetcode/streetcode-types.model';
 import { useAudioContext, useModalContext, useStreecodePageLoaderContext } from '@stores/root-store';
-import blobStream from 'blob-stream';
 
 import { Button } from 'antd';
-import { PDFViewer } from '@react-pdf/renderer';
+
 import ImagesApi from '@/app/api/media/images.api';
 import TransactionLinksApi from '@/app/api/transactions/transactLinks.api';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import { audioClickEvent } from '@/app/common/utils/googleAnalytics.unility';
 import Image, { ImageAssigment } from '@/models/media/image.model';
 
-import StreetcodeDocument from '../../PdfDocument/StreetcodeDocument.component';
-
-const fullMonthNumericYearDateFmtr = new Intl.DateTimeFormat('uk-UA', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-});
-
 interface Props {
     streetcode?: Streetcode;
     setActiveTagId: React.Dispatch<React.SetStateAction<number>>,
     setShowAllTags: React.Dispatch<React.SetStateAction<boolean>>,
 }
-
-const formatDate = (date?: Date): string => fullMonthNumericYearDateFmtr.format(date).replace('р.', 'року');
-
-const concatDates = (firstDate?: Date, secondDate?: Date): string => {
-    let dates = '';
-
-    if (firstDate) {
-        dates += formatDate(new Date(firstDate));
-    }
-
-    if (secondDate) {
-        dates += ` — ${formatDate(new Date(secondDate))}`;
-    }
-
-    return dates;
-};
 
 const StreetcodeCard = ({ streetcode, setActiveTagId, setShowAllTags }: Props) => {
     const id = streetcode?.id;
@@ -85,19 +58,6 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setShowAllTags }: Props) =
             TransactionLinksApi.getByStreetcodeId(id).then((x) => setArlink(x.url));
         }
     }, [streetcode]);
-
-    const downloadPDF = async () => {
-        if (streetcode != null) {
-            const buffer = await pdf(<StreetcodeDocument streetcode={streetcode} image={imagesForSlider[0] ?? imagesForSlider[1]}/>).toBuffer();
-            const stream = buffer.pipe(blobStream());
-
-            stream.on('finish', () => {
-                const blob = stream.toBlob('application/pdf');
-                const url = stream.toBlobURL('application/pdf');
-                window.open(url);
-            });
-        }
-    };
 
     return (
         streecodePageLoaderContext.isPageLoaded ? (
@@ -214,9 +174,8 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setShowAllTags }: Props) =
                             )}
                         <Button
                             className="cardFooterButton pdfButton"
-                            onClick={downloadPDF}
                         >
-                            <span>Завантажити реферат</span>
+                            <span>Переглянути PDF</span>
                         </Button>
                     </div>
                 </div>
