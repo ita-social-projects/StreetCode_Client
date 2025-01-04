@@ -1,11 +1,11 @@
 import { render, screen } from '@testing-library/react';
 
 // eslint-disable-next-line import/extensions
-import FromDateToString from '@/app/common/utils/FromDateToString';
-import StreetcodeImage from '@/models/media/image.model';
-import Streetcode, { Status, StreetcodeType } from '@/models/streetcode/streetcode-types.model';
-import { Fact } from '@/models/streetcode/text-contents.model';
-import TimelineItem from '@/models/timeline/chronology.model';
+import FromDateToString from '@utils/FromDateToString';
+import StreetcodeImage from '@models/media/image.model';
+import Streetcode, { Status, StreetcodeType } from '@models/streetcode/streetcode-types.model';
+import { Fact } from '@models/streetcode/text-contents.model';
+import TimelineItem from '@models/timeline/chronology.model';
 
 import '@testing-library/jest-dom';
 
