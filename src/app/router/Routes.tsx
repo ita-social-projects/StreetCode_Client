@@ -23,6 +23,7 @@ import TermDictionary from '@/features/AdminPage/TermDictionary/TermDictionary.c
 import StreetcodeCatalog from '@/features/StreetcodeCatalogPage/StreetcodeCatalog.component';
 import ContextMainPage from '@features/AdminPage/ContextPage/ContextMainPage.component';
 import EditorPage from '@/features/AdminPage/EditorPage/EditorPage.component';
+import RegistrationPage from '@features/Auth/RegistrationPage/RegistrationPage.component';
 
 const router = createBrowserRouter(createRoutesFromElements(
     <Route path="/" element={<App />}>
@@ -96,6 +97,7 @@ const router = createBrowserRouter(createRoutesFromElements(
             path={`${FRONTEND_ROUTES.OTHER_PAGES.ABOUT_US}/:section`}
             element={<AboutUsPage />}
         />
+        <Route path={FRONTEND_ROUTES.AUTH.REGISTER} element={<RegistrationPage />} />
     </Route>,
 ));
 
