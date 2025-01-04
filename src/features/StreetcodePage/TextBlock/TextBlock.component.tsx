@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import videosApi from '@api/media/videos.api';
 import textsApi from '@api/streetcode/text-content/texts.api';
 import VideoPlayer from '@components/Video/Video.component';
-import { useStreecodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
+import useMobx, { useStreecodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import htmpReactParser from 'html-react-parser';
 
@@ -18,24 +18,24 @@ import ReadMore from './ReadMore/ReadMore.component';
 
 const TextComponent = () => {
     const { streetcodeStore: { getStreetCodeId } } = useStreetcodeDataContext();
+    const { textVideoStore } = useMobx();
     const streecodePageLoaderContext = useStreecodePageLoaderContext();
-    const { getByStreetcodeId: getVideo } = videosApi;
-    const { getByStreetcodeId: getText } = textsApi;
     const [text, setText] = useState<Text>();
     const [video, setVideo] = useState<Video>();
     const [isScrolled, setIsScrolled] = useState<boolean>(false);
 
     useEffect(() => {
         if (getStreetCodeId > 0) {
-            Promise.all([getText(getStreetCodeId), getVideo(getStreetCodeId)])
-                .then(([textResult, videoResult]) => {
-                    setText(textResult);
-                    setVideo(videoResult);
-                    streecodePageLoaderContext.addBlockFetched();
-                })
-                .catch((error) => {
-                    console.error(error);
-                }).then();
+            Promise.all([
+                textVideoStore.fetchStreetcodeText(getStreetCodeId),
+                textVideoStore.fetchStreetcodeVideo(getStreetCodeId),
+            ]).then(([textResult, videoResult]) => {
+                setText(textResult);
+                setVideo(videoResult);
+                streecodePageLoaderContext.addBlockFetched();
+            }).catch((error) => {
+                console.error(error);
+            }).then();
         }
     }, [getStreetCodeId]);
 

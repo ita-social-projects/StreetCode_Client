@@ -50,7 +50,6 @@ export default interface Streetcode extends EventStreetcode, PersonStreetcode {
 
 export interface EventStreetcode {
     title: string;
-    streetcode: Streetcode;
 }
 
 export interface PersonStreetcode {
@@ -58,7 +57,6 @@ export interface PersonStreetcode {
     firstName: string;
     lastName: string;
     rank: string;
-    streetcode: Streetcode;
 }
 
 export enum Status {
@@ -120,7 +118,7 @@ export interface StreetcodeCreate {
     videos: VideoCreate[],
     facts: FactCreate[],
     timelineItems: TimelineItem[],
-    partners: PartnerShort[],
+    partners: Array<number>,
     subtitles: SubtitleCreate[],
     relatedFigures: RelatedFigureCreateUpdate[],
     arts: ArtCreateUpdate[] | null,
@@ -163,5 +161,5 @@ export interface StreetcodeUpdate {
     audioId: number | null,
     audios: AudioUpdate[],
     imagesDetails: ImageDetails[],
-    transactionLink: TransactionLinkUpdate;
+    arBlockURL?: string,
 }

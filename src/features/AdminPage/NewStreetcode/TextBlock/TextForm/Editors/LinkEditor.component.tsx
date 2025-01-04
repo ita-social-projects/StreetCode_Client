@@ -106,7 +106,7 @@ const LinkEditor = ({
                 </Button>
                 {inputInfo?.link && showPreview && (
                     <div>
-                        <h4 className='adminContainer-red-h4'>Попередній перегляд</h4>
+                        <h4>Попередній перегляд</h4>
                         <Youtube opts={opts} videoId={youtubeId} />
                     </div>
                 )}

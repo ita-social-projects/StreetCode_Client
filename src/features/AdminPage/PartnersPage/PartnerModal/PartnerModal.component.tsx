@@ -426,7 +426,7 @@ const PartnerModal: React.FC< {
                         />
 
                         {isStreetcodeVisible ? (
-                            <Form.Item name="partnersStreetcodes" label="Стріткоди: ">
+                            <Form.Item name="partnersStreetcodes" label="History-коди: ">
                                 <Select
                                     mode="multiple"
 									                  onChange={handleInputChange}
