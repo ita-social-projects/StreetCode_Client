@@ -70,6 +70,7 @@ describe('StreetcodeDocument', () => {
         const streetcode: Streetcode = {
             firstName: 'Name',
             lastName: 'Surname',
+            title: 'Name Surname',
             dateString: '9 березня 1814 - 10 березня 1861',
             teaser: 'teaser',
             id: 0,
@@ -94,7 +95,6 @@ describe('StreetcodeDocument', () => {
             observers: [],
             targets: [],
             streetcodePartners: [],
-            title: '',
             rank: '',
         };
         const image: StreetcodeImage = {
@@ -105,7 +105,7 @@ describe('StreetcodeDocument', () => {
         };
         const { container } = render(<StreetcodeDocument streetcode={streetcode} image={image} />);
 
-        screen.getByText(`${streetcode.firstName} ${streetcode.lastName}`);
+        screen.getByText(streetcode.title);
         screen.getByText(streetcode.dateString);
         screen.getByText(streetcode.teaser);
 
