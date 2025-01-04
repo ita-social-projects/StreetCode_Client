@@ -6,8 +6,6 @@ import { useAsync } from '@hooks/stateful/useAsync.hook';
 import Position from '@models/additional-content/teampositions.model';
 import useMobx from '@stores/root-store';
 import { Button, Form, Input, message, Modal, Popover, UploadFile } from 'antd';
-import {parseJsonNumber} from "ajv/dist/runtime/parseJson";
-import position = parseJsonNumber.position;
 import normaliseWhitespaces from '@/app/common/utils/normaliseWhitespaces';
 import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
 
@@ -27,11 +25,23 @@ const TeamPositionsAdminModalComponent: React.FC<TeamPositionsAdminProps> = obse
     const {teamPositionsStore} = useMobx();
     const [form] = Form.useForm();
     const isEditing = !!initialData;
+    const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
+
     const closeModal = () => {
         setIsModalOpen(false);
+        setIsSaveButtonDisabled(true);
     };
 
     useAsync(() => teamPositionsStore.fetchPositions(), []);
+
+    const updateSaveButtonState = () => {
+        const position = form.getFieldValue('position')?.trim();
+        const isChanged = initialData ? initialData.position !== position : true;
+        const isEmpty = !position;
+        const isExisting = isEmpty ? false : teamPositionsStore.getPositionsArray.some((pos) => pos.position === position);
+
+        setIsSaveButtonDisabled(!isChanged || isExisting || isEmpty);
+    };
 
     useEffect(() => {
         if (initialData && isModalVisible) {
@@ -39,6 +49,7 @@ const TeamPositionsAdminModalComponent: React.FC<TeamPositionsAdminProps> = obse
                 position: initialData.position,
             });
         }
+        updateSaveButtonState();
     }, [initialData, isModalVisible, form]);
 
     const validatePosition = uniquenessValidator(
@@ -78,6 +89,7 @@ const TeamPositionsAdminModalComponent: React.FC<TeamPositionsAdminProps> = obse
             await form.validateFields();
             form.submit();
             message.success(`Позицію успішно ${isEditing ? 'змінено' : 'додано'}!`);
+            setIsSaveButtonDisabled(true);
         } catch (error) {
             message.config({
                 top: 100,
@@ -114,6 +126,7 @@ const TeamPositionsAdminModalComponent: React.FC<TeamPositionsAdminProps> = obse
                     onFinish={onSubmit}
                     initialValues={initialData}
                     onKeyDown={(e) => e.key === 'Enter' ? e.preventDefault() : ''}
+                    onValuesChange={updateSaveButtonState}
                 >
                     <div className="center">
                         <h2>{isEditing ? 'Редагувати позицію' : 'Додати нову позицію'}</h2>
@@ -132,6 +145,7 @@ const TeamPositionsAdminModalComponent: React.FC<TeamPositionsAdminProps> = obse
                     <div className="center">
                         <Button
                             className="streetcode-custom-button"
+                            disabled={isSaveButtonDisabled}
                             onClick={() => handleOk()}
                         >
                             Зберегти
