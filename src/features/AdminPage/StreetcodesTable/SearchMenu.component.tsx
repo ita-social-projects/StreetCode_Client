@@ -18,7 +18,7 @@ const SearchMenu = ({ setStatus, setTitle, setRequest }: IProps) => {
     const options: SelectProps['options'] = [
         { value: 'Published', label: 'опублікований' },
         { value: 'Draft', label: 'чернетка' },
-        { value: 'Deleted', label: 'видалений' },
+        { value: 'Deleted', label: 'заархівований' },
     ];
 
     const handleChangeStatus = (value: string[]) => {

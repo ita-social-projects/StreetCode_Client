@@ -84,7 +84,7 @@ const StreetcodesTable = () => {
             key: '1',
         },
         {
-            label: 'Видалений',
+            label: 'Заархівований',
             key: '2',
         },
     ];
@@ -126,7 +126,7 @@ const StreetcodesTable = () => {
                 currentStatus = 'Опублікований';
                 break;
             case 2:
-                currentStatus = 'Видалений';
+                currentStatus = 'Заархівований';
                 break;
             default:
                 currentStatus = 'Чернетка';
@@ -144,9 +144,9 @@ const StreetcodesTable = () => {
         }
     };
 
-    const handleUndoDelete = async (id: number) => {
-        await StreetcodesApi.updateState(id, 0);
-        updateState(id, 'Видалений');
+    const handleUndoArchive = async (id: number) => {
+        await StreetcodesApi.updateState(id, 1);
+        updateState(id, 'Опублікований');
     };
 
     const menuProps = {
@@ -211,7 +211,7 @@ const StreetcodesTable = () => {
             key: 'action',
             render: (_: unknown, record: MapedStreetCode) => (
                 <>
-                    {record.status !== 'Видалений' ? (
+                    {record.status !== 'Заархівований' ? (
                         <>
                             <Link to={`${FRONTEND_ROUTES.ADMIN.EDIT_STREETCODE}/${record.key}`}>
                                 <EditOutlined
@@ -252,7 +252,7 @@ const StreetcodesTable = () => {
                     ) : (
                         <RollbackOutlined
                             className="actionButton"
-                            onClick={() => handleUndoDelete(record.key)}
+                            onClick={() => handleUndoArchive(record.key)}
                         />
                     )}
                 </>
@@ -282,7 +282,7 @@ const StreetcodesTable = () => {
             switch (streetcode.status) {
             case 0: { currentStatus = 'Чернетка'; break; }
             case 1: { currentStatus = 'Опублікований'; break; }
-            case 2: { currentStatus = 'Видалений'; break; }
+            case 2: { currentStatus = 'Заархівований'; break; }
             default: { currentStatus = 'Чернетка'; break; }
             }
             const mapedStreetCode = {
