@@ -24,6 +24,7 @@ import StreetcodeCatalog from '@/features/StreetcodeCatalogPage/StreetcodeCatalo
 import ContextMainPage from '@features/AdminPage/ContextPage/ContextMainPage.component';
 import EditorPage from '@/features/AdminPage/EditorPage/EditorPage.component';
 import RegistrationPage from '@features/Auth/RegistrationPage/RegistrationPage.component';
+import CalendarPage from '@/features/AdditionalPages/CalendarPage/CalendarPage.component';
 
 const router = createBrowserRouter(createRoutesFromElements(
     <Route path="/" element={<App />}>
@@ -38,6 +39,10 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route
             path={`${FRONTEND_ROUTES.ADMIN.EDIT_STREETCODE}/:id`}
             element={<ProtectedComponent><NewStreetcode /></ProtectedComponent>}
+        />
+        <Route
+            path={FRONTEND_ROUTES.OTHER_PAGES.CALENDAR}
+            element={<CalendarPage />}
         />
         <Route
             path={FRONTEND_ROUTES.ADMIN.NEW_STREETCODE}

@@ -23,6 +23,7 @@ const FRONTEND_ROUTES = {
         SUPPORT_US: '/support-us',
         NEWS: '/news',
         ABOUT_US: '/about-us',
+        CALENDAR: '/calendar',
     },
     AUTH: {
         REGISTER: '/register',

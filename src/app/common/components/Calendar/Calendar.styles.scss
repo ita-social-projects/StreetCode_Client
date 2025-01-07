@@ -1,0 +1,45 @@
+@use "@assets/sass/variables/_variables.fonts.scss" as ft;
+@use "@assets/sass/variables/_variables.colors.scss" as c;
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
+@use "@sass/_utils.functions.scss" as f;
+
+.site-calendar-demo-card {
+  width: 70%;
+  margin: f.pxToRem(100px) auto;
+}
+
+.calendar-container {
+  padding: f.pxToRem(30px);
+  margin: 0 auto;
+  border: f.pxToRem(6px) solid c.$accented-red-color;  
+  border-radius: f.pxToRem(50px);
+  border-top: f.pxToRem(60px) solid c.$accented-red-color; 
+  background-color: white;
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+}
+
+.calendar-header p {
+  margin: f.pxToRem(6px) f.pxToRem(20px); 
+  line-height: 1; 
+  color: c.$dark-red-color;
+  font-size: f.pxToRem(30px); 
+  font-weight: 500; 
+}
+
+.calendar-header p:first-child {
+  margin-left: f.pxToRem(60px);
+  font-size: f.pxToRem(40px); 
+  font-weight: bold;
+}
+
+.small-square {
+  width: f.pxToRem(10px);
+  height: f.pxToRem(10px);
+  rotate: 45deg;
+  background-color: c.$dark-red-color;
+}

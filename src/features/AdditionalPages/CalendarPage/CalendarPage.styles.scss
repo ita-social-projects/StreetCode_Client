@@ -1,0 +1,8 @@
+@use "@sass/_utils.functions.scss" as f;
+
+$bgImg: '@assets/images/main-page/background.webp';
+
+.calendarPage {
+    margin-top: f.pxToRem(100px);
+    background: url($bgImg) no-repeat center / 100%;
+}
