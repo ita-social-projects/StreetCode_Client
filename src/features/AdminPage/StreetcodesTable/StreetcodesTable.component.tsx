@@ -6,11 +6,12 @@ import { Link } from 'react-router-dom';
 import {
     BarChartOutlined, DeleteOutlined, DownOutlined, EditOutlined, RollbackOutlined,
 } from '@ant-design/icons';
+import STREETCODE_STATES from '@features/AdminPage/StreetcodesTable/constants/streetcodeStates';
 import { format } from 'date-fns';
 import { uk } from 'date-fns/locale';
 
 import {
-    Button, Dropdown, Empty, MenuProps, Pagination, Space
+    Button, Dropdown, Empty, MenuProps, Pagination, Space,
 } from 'antd';
 import Table from 'antd/es/table/Table';
 
@@ -76,16 +77,16 @@ const StreetcodesTable = () => {
 
     const items: MenuProps['items'] = [
         {
-            label: 'Чернетка',
-            key: '0',
+            label: STREETCODE_STATES.DRAFT.label,
+            key: STREETCODE_STATES.DRAFT.key,
         },
         {
-            label: 'Опублікований',
-            key: '1',
+            label: STREETCODE_STATES.PUBLISHED.label,
+            key: STREETCODE_STATES.PUBLISHED.key,
         },
         {
-            label: 'Заархівований',
-            key: '2',
+            label: STREETCODE_STATES.DELETED.label,
+            key: STREETCODE_STATES.DELETED.key,
         },
     ];
 
@@ -119,17 +120,17 @@ const StreetcodesTable = () => {
             let currentStatus: string;
 
             switch (selectedKey) {
-            case 0:
-                currentStatus = 'Чернетка';
+            case STREETCODE_STATES.DRAFT.key:
+                currentStatus = STREETCODE_STATES.DRAFT.label;
                 break;
-            case 1:
-                currentStatus = 'Опублікований';
+            case STREETCODE_STATES.PUBLISHED.key:
+                currentStatus = STREETCODE_STATES.PUBLISHED.label;
                 break;
-            case 2:
-                currentStatus = 'Заархівований';
+            case STREETCODE_STATES.DELETED.key:
+                currentStatus = STREETCODE_STATES.DELETED.label;
                 break;
             default:
-                currentStatus = 'Чернетка';
+                currentStatus = STREETCODE_STATES.DRAFT.label;
                 break;
             }
             modalStore.setConfirmationModal(
@@ -145,8 +146,8 @@ const StreetcodesTable = () => {
     };
 
     const handleUndoArchive = async (id: number) => {
-        await StreetcodesApi.updateState(id, 1);
-        updateState(id, 'Опублікований');
+        await StreetcodesApi.updateState(id, STREETCODE_STATES.PUBLISHED.key);
+        updateState(id, STREETCODE_STATES.PUBLISHED.label);
     };
 
     const menuProps = {
@@ -211,7 +212,7 @@ const StreetcodesTable = () => {
             key: 'action',
             render: (_: unknown, record: MapedStreetCode) => (
                 <>
-                    {record.status !== 'Заархівований' ? (
+                    {record.status !== STREETCODE_STATES.DELETED.label ? (
                         <>
                             <Link to={`${FRONTEND_ROUTES.ADMIN.EDIT_STREETCODE}/${record.key}`}>
                                 <EditOutlined
@@ -244,7 +245,7 @@ const StreetcodesTable = () => {
                                 }}
                             />
                             <Link to={`${FRONTEND_ROUTES.ADMIN.ANALYTICS}/${record.key}`}>
-                                <BarChartOutlined 
+                                <BarChartOutlined
                                     className="actionButton"
                                 />
                             </Link>
@@ -280,10 +281,10 @@ const StreetcodesTable = () => {
             let currentStatus = '';
 
             switch (streetcode.status) {
-            case 0: { currentStatus = 'Чернетка'; break; }
-            case 1: { currentStatus = 'Опублікований'; break; }
-            case 2: { currentStatus = 'Заархівований'; break; }
-            default: { currentStatus = 'Чернетка'; break; }
+            case STREETCODE_STATES.DRAFT.key: { currentStatus = STREETCODE_STATES.DRAFT.label; break; }
+            case STREETCODE_STATES.PUBLISHED.key: { currentStatus = STREETCODE_STATES.PUBLISHED.label; break; }
+            case STREETCODE_STATES.DELETED.key: { currentStatus = STREETCODE_STATES.DELETED.label; break; }
+            default: { currentStatus = STREETCODE_STATES.DRAFT.label; break; }
             }
             const mapedStreetCode = {
                 key: streetcode.id,
