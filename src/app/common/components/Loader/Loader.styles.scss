@@ -1,0 +1,21 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/variables/_variables.layers.scss" as l;
+
+.loader-container{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: c.$accented-gray-color;
+  @include mut.flexed($justify-content: center, $align-items: center);
+  z-index: l.$loader;
+  pointer-events: none;
+}
+
+.spinner{
+  pointer-events: none;
+  object-fit: cover;
+  @include mut.sized(100%,100%);
+}
