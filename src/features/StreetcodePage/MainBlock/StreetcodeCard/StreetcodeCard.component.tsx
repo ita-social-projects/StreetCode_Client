@@ -2,6 +2,7 @@ import './StreetcodeCard.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { PlayCircleFilled } from '@ant-design/icons';
 import TagList from '@components/TagList/TagList.component';
 import BlockSlider from '@features/SlickSlider/SlickSlider.component';
@@ -34,6 +35,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setShowAllTags }: Props) =
     const [audioIsLoaded, setAudioIsLoaded] = useState<boolean>(false);
     const [images, setImages] = useState<Image[]>([]);
     const [imagesForSlider, setImagesForSlider] = useState<Image[]>([]);
+    const navigate = useNavigate();
 
     useAsync(() => {
         if (id && id > 0) {
@@ -58,6 +60,17 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setShowAllTags }: Props) =
             TransactionLinksApi.getByStreetcodeId(id).then((x) => setArlink(x.url));
         }
     }, [streetcode]);
+
+    const handlePreviewClick = () => {
+        if (streetcode) {
+            navigate(`/${streetcode.transliterationUrl}/pdf-preview`, {
+                state: {
+                    streetcode,
+                    image: imagesForSlider[0] ?? imagesForSlider[1],
+                },
+            });
+        }
+    };
 
     return (
         streecodePageLoaderContext.isPageLoaded ? (
@@ -174,6 +187,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setShowAllTags }: Props) =
                             )}
                         <Button
                             className="cardFooterButton pdfButton"
+                            onClick={handlePreviewClick}
                         >
                             <span>Переглянути PDF</span>
                         </Button>

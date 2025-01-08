@@ -1,0 +1,45 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@assets/sass/variables/_variables.layers.scss" as l;
+@use "@sass/_utils.functions.scss" as f;
+
+$bgImg: '@assets/images/catalog/background.webp';
+$loadImg: '@assets/images/catalog/loading.webp';
+
+.pdfPreviewWrapper {
+}
+
+.pdfPreviewContainer {
+  @include mut.positioned-as(relative);
+  @include mut.flexed(column, flex-start, center);
+  @include mut.rem-padded(90px, 50px, 25px, 50px);
+}
+
+@media screen and (max-width: 1024px) {
+  .pdfPreviewWrapper {
+    @include mut.rem-padded($top: 64px);
+  }
+  .pdfPreviewContainer {
+    @include mut.rem-padded(20px, 20px, 20px, 20px);
+  }
+}
+
+@media screen and (max-width: 680px) {
+  .pdfPreviewWrapper {
+    @include mut.rem-padded($top: 64px);
+  }
+  .pdfPreviewContainer {
+    @include mut.rem-padded(20px, 20px, 20px, 20px);
+  }
+}
+
+.iframeWrapper {
+  @include mut.sized(100%, 100%);
+  padding-bottom: 50px;
+
+  iframe {
+    height: 600px;
+    width: 1250px;
+  }
+}
+
