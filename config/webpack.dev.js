@@ -13,12 +13,10 @@ module.exports = {
     open: true,
     port: "3000",
     historyApiFallback: true,
-    // https: {
-      // DEV.NOTE: uncomment and change names of files according to your generated ones
-
-      // key: fs.readFileSync("cert\\localhost+1-key.pem"),
-      // cert: fs.readFileSync("cert\\localhost+1.pem"),
-    // },
+    https: {
+      key: fs.readFileSync("cert\\localhost+1-key.pem"),
+      cert: fs.readFileSync("cert\\localhost+1.pem"),
+    },
   },
   module: {
     rules: require("./webpack.rules"),
@@ -27,6 +25,9 @@ module.exports = {
     extensions: [".tsx", ".ts", ".js"],
     symlinks: false,
     alias: require("./webpack.aliases"),
+    fallback: {
+      'process/browser': require.resolve('process/browser'),
+    },
   },
   output: {
     filename: "[name].bundle.js",
