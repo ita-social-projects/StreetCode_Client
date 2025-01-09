@@ -22,9 +22,7 @@ const PDFPreviewPage = () => {
     const pdfUrlRef = useRef<string | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [numPages2, setNumPages] = useState<number>();
-    const isMobile = useMediaQuery({ query: '(max-width: 1024px)' });
-    const isLaptop = useMediaQuery({ query: '(min-width: 1025px) and (max-width: 1440px)' });
-    const isLargeScreen = useMediaQuery({ query: '(min-width: 1440px)' });
+    const isLaptop = useMediaQuery({ query: '(min-width: 1025px)' });
 
     const [scale, setScale] = useState(1);
 
@@ -96,49 +94,51 @@ const PDFPreviewPage = () => {
                                     src={pdfUrlRef.current}
                                     title="PDF Preview"
                                 />
-                                <Button
-                                    type="primary"
-                                    className="redButton"
-                                    onClick={downloadPdf}
-                                >
-                                    Додати в кабінет
-                                </Button>
-                            </div>
-                        ) : isMobile || isLargeScreen ? (
-                            <div>
-                                <Document
-                                    file={pdfUrlRef.current}
-                                    onLoadSuccess={({ numPages }) => setNumPages(numPages)}
-                                >
-                                    {Array.from(new Array(numPages2), (el, index) => (
-                                        <Page
-                                            key={`page_${index + 1}`}
-                                            pageNumber={index + 1}
-                                            width={600}
-                                            scale={scale}
-                                            renderTextLayer={false}
-                                            renderAnnotationLayer={false}
-                                        />
-                                    ))}
-                                </Document>
-                                <div className="button-container">
+                                <div className="buttonContainer">
                                     <Button
                                         type="primary"
                                         className="redButton"
-                                    >
-                                        Завантажити PDF
-                                    </Button>
-                                    <Button
-                                        type="primary"
-                                        className="redButton"
-                                        onClick={downloadPdf}
                                         disabled
                                     >
                                         Додати в кабінет
                                     </Button>
                                 </div>
                             </div>
-                        ) : null
+                        ) : (
+                            <div>
+                                <Document
+                                    file={pdfUrlRef.current}
+                                    onLoadSuccess={({numPages}) => setNumPages(numPages)}
+                                >
+                                    {Array.from(new Array(numPages2), (el, index) => (
+                                        <Page
+                                            key={`page_${index + 1}`}
+                                            pageNumber={index + 1}
+                                            // width={600}
+                                            scale={scale}
+                                            renderTextLayer={false}
+                                            renderAnnotationLayer={false}
+                                        />
+                                    ))}
+                                </Document>
+                                <div className="buttonContainer">
+                                    <Button
+                                        type="primary"
+                                        className="redButton"
+                                        onClick={downloadPdf}
+                                    >
+                                        Завантажити PDF
+                                    </Button>
+                                    <Button
+                                        type="primary"
+                                        className="redButton"
+                                        disabled
+                                    >
+                                        Додати в кабінет
+                                    </Button>
+                                </div>
+                            </div>
+                        )
                     ) : (
                         <p>Не вдалося згенерувати PDF</p>
                     )}

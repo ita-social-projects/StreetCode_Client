@@ -6,12 +6,9 @@
 $bgImg: '@assets/images/catalog/background.webp';
 $loadImg: '@assets/images/catalog/loading.webp';
 
-.pdfPreviewWrapper {
-}
-
 .pdfPreviewContainer {
-  @include mut.positioned-as(relative);
-  @include mut.flexed(column, flex-start, center);
+  display: flex;
+  justify-content: center;
   @include mut.rem-padded(90px, 50px, 25px, 50px);
 }
 
@@ -35,11 +32,43 @@ $loadImg: '@assets/images/catalog/loading.webp';
 
 .iframeWrapper {
   @include mut.sized(100%, 100%);
-  padding-bottom: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  flex-direction: column;
 
   iframe {
-    height: 600px;
-    width: 1250px;
+    height: 50vw;
+    width: 100%;
   }
 }
+
+.buttonContainer {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  margin: 20px;
+  width: auto;
+  gap: 10px;
+  border: #8D1F16;
+
+  @media screen and (min-width: 1025px) {
+    align-items: flex-start;
+  }
+}
+
+.redButton {
+  width: 180px;
+  height: 32px;
+  @include mut.full-rounded(12px);
+  background-color: c.$accented-red-color;
+
+  > * {
+    @include mut.with-font($font-weight: 500, $font-size: 18px);
+  }
+  &:hover {
+    background-color: c.$dark-red-color;
+  }
+}
+
 
