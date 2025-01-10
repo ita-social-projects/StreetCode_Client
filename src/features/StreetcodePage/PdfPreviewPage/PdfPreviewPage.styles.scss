@@ -6,7 +6,8 @@
 $bgImg: '@assets/images/catalog/background.webp';
 
 .pdfPreviewContainer {
-  @include mut.bg-image($bgImg);
+  @include mut.bg-image($bgImg, 100%);
+  background-color: c.$streetcode-background-color ;
   @include mut.flex-center();
   @include mut.rem-padded(90px, 50px, 25px, 50px);
 }
