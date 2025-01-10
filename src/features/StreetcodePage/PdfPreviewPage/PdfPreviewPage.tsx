@@ -21,7 +21,7 @@ const PDFPreviewPage = () => {
     const { streetcode, image } = location.state || {};
     const pdfUrlRef = useRef<string | null>(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [numPages2, setNumPages] = useState<number>();
+    const [pageCount, setPageCount] = useState<number>();
     const isLaptop = useMediaQuery({ query: '(min-width: 1025px)' });
 
     const [scale, setScale] = useState(1);
@@ -108,13 +108,12 @@ const PDFPreviewPage = () => {
                             <div>
                                 <Document
                                     file={pdfUrlRef.current}
-                                    onLoadSuccess={({numPages}) => setNumPages(numPages)}
+                                    onLoadSuccess={({ numPages }) => setPageCount(numPages)}
                                 >
-                                    {Array.from(new Array(numPages2), (el, index) => (
+                                    {Array.from(new Array(pageCount), (el, index) => (
                                         <Page
                                             key={`page_${index + 1}`}
                                             pageNumber={index + 1}
-                                            // width={600}
                                             scale={scale}
                                             renderTextLayer={false}
                                             renderAnnotationLayer={false}
