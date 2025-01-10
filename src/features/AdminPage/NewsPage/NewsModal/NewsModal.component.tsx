@@ -352,7 +352,8 @@ const NewsModal: React.FC<{
                                 message: 'Додайте зображення',
                             },
                             {
-                                validator: (_, file) => {
+                                validator: (_, fileList) => {
+                                    const file = fileList[0]
                                     if (file) {
                                         let name = '';
                                         if (file.file) {
