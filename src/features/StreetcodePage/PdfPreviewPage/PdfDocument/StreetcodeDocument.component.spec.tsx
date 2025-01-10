@@ -113,7 +113,10 @@ describe('StreetcodeDocument', () => {
         screen.getByText('Bold text');
 
         const imageSource = `data:${image.mimeType};base64,${image.base64}`;
+        await screen.findAllByRole('img', { name: /mocked image/i });
         const mainImage = container.querySelector(`[src="${imageSource}"]`);
+
+        screen.debug();
         expect(mainImage).not.toBe(null);
 
         screen.getByText(timelineItemTestData.title);
