@@ -26,7 +26,7 @@ const StreetcodeCatalog = () => {
     }, [screen]);
 
     useAsync(async () => {
-        const count = await StreetcodesApi.getCount();
+        const count = await StreetcodesApi.getCount(true);
 
         if (count === getCatalogStreetcodesArray.length) {
             return;
