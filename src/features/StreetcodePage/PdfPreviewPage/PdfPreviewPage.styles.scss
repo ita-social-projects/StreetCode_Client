@@ -4,11 +4,10 @@
 @use "@sass/_utils.functions.scss" as f;
 
 $bgImg: '@assets/images/catalog/background.webp';
-$loadImg: '@assets/images/catalog/loading.webp';
 
 .pdfPreviewContainer {
-  display: flex;
-  justify-content: center;
+  @include mut.bg-image($bgImg);
+  @include mut.flex-center();
   @include mut.rem-padded(90px, 50px, 25px, 50px);
 }
 
@@ -32,34 +31,27 @@ $loadImg: '@assets/images/catalog/loading.webp';
 
 .iframeWrapper {
   @include mut.sized(100%, 100%);
-  display: flex;
-  justify-content: center;
-  align-items: stretch;
-  flex-direction: column;
-
-  iframe {
+  @include mut.flexed(column, stretch, center);
+    iframe {
     height: 50vw;
     width: 100%;
   }
 }
 
 .buttonContainer {
-  display: flex;
-  justify-content: flex-end;
-  flex-wrap: wrap;
+  @include mut.flexed(row, flex-start, center, wrap, 10px);
   margin: 20px;
   width: auto;
-  gap: 10px;
-  border: #8D1F16;
+  border: c.$button-border-red-color;
 
-  @media screen and (min-width: 1025px) {
-    align-items: flex-start;
+    @media screen and (min-width: 1025px) {
+      align-items: flex-start;
+      justify-content: flex-end;
   }
 }
 
 .redButton {
-  width: 180px;
-  height: 32px;
+  @include mut.sized(180px, 32px);
   @include mut.full-rounded(12px);
   background-color: c.$accented-red-color;
 
