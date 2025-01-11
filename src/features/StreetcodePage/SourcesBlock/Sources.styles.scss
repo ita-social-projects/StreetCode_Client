@@ -8,6 +8,11 @@
 .sourcesWrapper {
     @include wr.main-page-block-wrapper();
     margin-top: 110px;
+
+    @media screen and (max-width: 1024px) and (min-width: 481px) {
+        margin-top: 0;
+    }
+
     .sourcesContainer {
         @include mut.sizedImportant(100%, 100%);
         @media screen and (max-width: 768px) {
