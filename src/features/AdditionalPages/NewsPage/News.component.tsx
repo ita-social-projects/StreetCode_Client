@@ -102,8 +102,7 @@ const NewsPage = () => {
                 <meta name="description" content="Будьте в курсі останніх новин від «Historycode»." />
             </Helmet>
 
-            newsValue
-            ? (
+            {newsValue ? (
             <div className="newsContainer">
                 <div className="wrapper" ref={wrapperRef}>
                     <BreadCrumbForNews separator={<div className="separator" />} news={newsValue?.news} />
@@ -154,7 +153,7 @@ const NewsPage = () => {
                     <RandomNewsBlock newsValue={newsValue} />
                 </div>
             </div>
-            )
+            ) : null}
         </>
     );
 };

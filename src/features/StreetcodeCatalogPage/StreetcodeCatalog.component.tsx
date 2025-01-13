@@ -26,7 +26,7 @@ const StreetcodeCatalog = () => {
     }, [screen]);
 
     useAsync(async () => {
-        const count = await StreetcodesApi.getCount();
+        const count = await StreetcodesApi.getCount(true);
 
         if (count === getCatalogStreetcodesArray.length) {
             return;
@@ -63,15 +63,15 @@ const StreetcodeCatalog = () => {
                         )
                     }
                 </div>
+                {
+                    loading && (moreThenEight)
+                    && (
+                        <div className="loadingWrapper">
+                            <div id="loadingGif" />
+                        </div>
+                    )
+                }
             </div>
-            {
-                loading && (moreThenEight)
-                && (
-                    <div className="loadingWrapper">
-                        <div id="loadingGif" />
-                    </div>
-                )
-            }
         </div>
     );
 };

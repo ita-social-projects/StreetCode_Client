@@ -110,8 +110,13 @@ const RelatedFiguresComponent = ({ setActiveTagId, setShowAllTags, streetcode }:
     };
 
     return getRelatedFiguresArray.length > 0 ? (
-        // eslint-disable-next-line max-len
-        <div className={`relatedFiguresWrapper container ${getRelatedFiguresArray.length > 4 ? 'bigWrapper' : 'smallWrapper'}`}>
+        <div
+            className={`relatedFiguresWrapper container ${
+                (!isDesktop && !isMobile)
+                    ? 'smallWrapper'
+                    : (getRelatedFiguresArray.length > 4 ? 'bigWrapper' : 'smallWrapper')
+            }`}
+        >
             <div className="relatedFiguresContainer">
                 <BlockHeading headingText="Зв'язки історії" />
                 <div className="relatedFiguresSliderContainer">
