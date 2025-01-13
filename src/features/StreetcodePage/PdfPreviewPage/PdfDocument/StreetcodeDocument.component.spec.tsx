@@ -65,44 +65,55 @@ jest.mock('@stores/root-store', () => ({
     }),
 }));
 
+const convertedImageBase64 = 'data:image/png;base64,slkdfsdfoisdfo';
+const convertImageMock = jest.fn(() => Promise.resolve(convertedImageBase64));
+jest.mock('@/app/common/utils/convertImage', () => ({
+    __esModule: true,
+    default: () => convertImageMock(),
+}));
+
+const getTestStreetcode = ():Streetcode => ({
+    firstName: 'Name',
+    lastName: 'Surname',
+    title: 'Name Surname',
+    dateString: '9 березня 1814 - 10 березня 1861',
+    teaser: 'teaser',
+    id: 0,
+    index: 0,
+    viewCount: 0,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    eventStartOrPersonBirthDate: new Date(),
+    streetcodeType: StreetcodeType.Person,
+    status: Status.Draft,
+    text: '',
+    transliterationUrl: '',
+    toponyms: [],
+    arts: [],
+    images: [],
+    tags: [],
+    subtitles: [],
+    facts: [],
+    videos: [],
+    sourceLinks: [],
+    timelineItems: [],
+    observers: [],
+    targets: [],
+    streetcodePartners: [],
+    rank: '',
+});
+
+const getTestImage = ():StreetcodeImage => ({
+    id: 0,
+    base64: 'base64string',
+    blobName: 'filename',
+    mimeType: 'image/png',
+});
+
 describe('StreetcodeDocument', () => {
     it('should render document', async () => {
-        const streetcode: Streetcode = {
-            firstName: 'Name',
-            lastName: 'Surname',
-            title: 'Name Surname',
-            dateString: '9 березня 1814 - 10 березня 1861',
-            teaser: 'teaser',
-            id: 0,
-            index: 0,
-            viewCount: 0,
-            createdAt: new Date(),
-            updatedAt: new Date(),
-            eventStartOrPersonBirthDate: new Date(),
-            streetcodeType: StreetcodeType.Person,
-            status: Status.Draft,
-            text: '',
-            transliterationUrl: '',
-            toponyms: [],
-            arts: [],
-            images: [],
-            tags: [],
-            subtitles: [],
-            facts: [],
-            videos: [],
-            sourceLinks: [],
-            timelineItems: [],
-            observers: [],
-            targets: [],
-            streetcodePartners: [],
-            rank: '',
-        };
-        const image: StreetcodeImage = {
-            id: 0,
-            base64: 'base64string',
-            blobName: 'filename',
-            mimeType: 'image/png',
-        };
+        const streetcode = getTestStreetcode();
+        const image = getTestImage();
         const { container } = render(<StreetcodeDocument streetcode={streetcode} image={image} />);
 
         screen.getByText(streetcode.title);
@@ -113,7 +124,11 @@ describe('StreetcodeDocument', () => {
         screen.getByText('Bold text');
 
         const imageSource = `data:${image.mimeType};base64,${image.base64}`;
+        await screen.findAllByRole('img', { name: /mocked image/i });
         const mainImage = container.querySelector(`[src="${imageSource}"]`);
+
+        screen.debug();
+        expect(convertImageMock).not.toHaveBeenCalled();
         expect(mainImage).not.toBe(null);
 
         screen.getByText(timelineItemTestData.title);
@@ -126,5 +141,18 @@ describe('StreetcodeDocument', () => {
         const factImageSource = `data:${factTestData.image!.mimeType};base64,${factTestData.image!.base64}`;
         const factImage = container.querySelector(`[src="${factImageSource}"]`);
         expect(factImage).not.toBe(null);
+    });
+
+    it('should convert image in appropriate format', async () => {
+        const streetcode = getTestStreetcode();
+        const image = getTestImage();
+        image.mimeType = 'image/webp';
+        const { container } = render(<StreetcodeDocument streetcode={streetcode} image={image} />);
+
+        await screen.findAllByRole('img', { name: /mocked image/i });
+        const mainImage = container.querySelector(`[src="${convertedImageBase64}"]`);
+
+        expect(convertImageMock).toHaveBeenCalled();
+        expect(mainImage).not.toBe(null);
     });
 });
