@@ -17,6 +17,7 @@ import FromDateToString from '@/app/common/utils/FromDateToString';
 import StreetcodeImage from '@/models/media/image.model';
 import Streetcode from '@/models/streetcode/streetcode-types.model';
 import TimelineItem from '@/models/timeline/chronology.model';
+import convertImage from '@/app/common/utils/convertImage';
 
 Font.register({ family: 'CloserText', fonts: [{ src: CloserText, fontWeight: 'normal' }] });
 Font.register({ family: 'CloserText', fonts: [{ src: CloserTextBold, fontWeight: 'bold' }] });
@@ -84,6 +85,21 @@ interface Props {
     image: StreetcodeImage;
 }
 
+const getImageSource = async (image?: StreetcodeImage): Promise<string | undefined> => {
+    if (image == null) {
+        return undefined;
+    }
+    const src = base64ToUrl(image.base64, image.mimeType);
+    if (src === undefined) {
+        return undefined;
+    }
+
+    if ((image.mimeType !== 'image/png') && (image.mimeType !== 'image/jpeg') && (image.mimeType !== 'image/jpg')) {
+        return convertImage(src, 'image/png');
+    }
+    return src;
+};
+
 const StreetcodeDocument = ({ streetcode, image }: Props) => {
     const { timelineItemStore, textVideoStore, factsStore } = useMobx();
     const { getTimelineItemArray } = timelineItemStore;
@@ -136,10 +152,10 @@ const StreetcodeDocument = ({ streetcode, image }: Props) => {
     };
 
     return (
-        <Document>
+        <Document title={streetcode.title}>
             <Page size="A4" style={styles.page} wrap>
                 <View style={styles.section}>
-                    <Image source={source} style={{ width: 180 }} />
+                    <Image source={getImageSource(image)} style={{ width: 180 }} />
                     <View style={styles.textBlock}>
                         <Text style={styles.name}>
                             {streetcode.title}
@@ -272,7 +288,7 @@ const StreetcodeDocument = ({ streetcode, image }: Props) => {
                                     }}
                                     >
                                         <Image
-                                            source={base64ToUrl(firstFact.image?.base64, firstFact.image?.mimeType)}
+                                            source={getImageSource(firstFact.image)}
                                         />
                                         <Text style={{
                                             textAlign: 'center',
@@ -305,7 +321,7 @@ const StreetcodeDocument = ({ streetcode, image }: Props) => {
                                         }}
                                         >
                                             <Image
-                                                source={base64ToUrl(fact.image?.base64, fact.image?.mimeType)}
+                                                source={getImageSource(fact.image)}
                                             />
                                             <Text style={{
                                                 textAlign: 'center',

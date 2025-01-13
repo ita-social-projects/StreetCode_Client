@@ -37,7 +37,7 @@ export default [
     {
         tagName: 'P',
         styles: {
-            fontSize: '1rem',
+            fontSize: '0.8rem',
             textIndent: '2rem',
         },
     },
