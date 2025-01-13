@@ -16,6 +16,10 @@ $card-size: 380px;
             display: none;
         }
     }
+
+    @media screen and (max-width: 481px) {
+        height: f.pxToRem(250px) !important;
+    }
 }
 
 .relatedFiguresContainer {
@@ -93,9 +97,10 @@ $card-size: 380px;
     }
 }
 
-@media screen and (max-width: 767px) and (min-width: 481px) {
+@media screen and (max-width: 1024px) and (min-width: 481px) {
     .relatedFiguresWrapper {
-        @include mut.sized($height: 400px);
+        height: f.pxToRem(400px) !important;
+        margin-bottom: 0;
     }
 }
 

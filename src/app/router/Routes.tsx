@@ -24,6 +24,10 @@ import Partners from '@/features/AdminPage/PartnersPage/Partners.component';
 import TeamPage from '@/features/AdminPage/TeamPage/TeamPage.component';
 import TermDictionary from '@/features/AdminPage/TermDictionary/TermDictionary.component';
 import StreetcodeCatalog from '@/features/StreetcodeCatalogPage/StreetcodeCatalog.component';
+import ContextMainPage from '@features/AdminPage/ContextPage/ContextMainPage.component';
+import EditorPage from '@/features/AdminPage/EditorPage/EditorPage.component';
+import RegistrationPage from '@features/Auth/RegistrationPage/RegistrationPage.component';
+
 
 const router = createBrowserRouter(createRoutesFromElements(
     <Route path="/" element={<App />}>
@@ -98,6 +102,7 @@ const router = createBrowserRouter(createRoutesFromElements(
             element={<AboutUsPage />}
         />
         <Route path="/:id/pdf-preview" element={<PDFPreviewPage />} />
+        <Route path={FRONTEND_ROUTES.AUTH.REGISTER} element={<RegistrationPage />} />
     </Route>,
 ));
 

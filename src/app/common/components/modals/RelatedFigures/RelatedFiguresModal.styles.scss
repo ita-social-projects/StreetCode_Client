@@ -79,6 +79,7 @@ $articlesImg: "@assets/images/sources/Articles.webp";
       flex-direction: column;
       overflow: visible;
       max-height: none;
+      height: min-content;
       @include mut.rem-padded($left: 8px, $top: 10.5px, $right: 4px, $bottom: 10.5px);
       background-color: c.$pure-white-color;
       border-radius: 20px;
@@ -106,18 +107,14 @@ $articlesImg: "@assets/images/sources/Articles.webp";
       &::after {
         content: "";
         position: absolute;
-        width: 0;
-        height: 0;
-        margin-left: -3em;
-        bottom: -25px;
-        left: 50%;
-        box-sizing: border-box;
-        z-index: -1 !important;
-        border: 1em solid black;
-        border-color: transparent transparent #FFFFFF #FFFFFF;
-        transform-origin: 0 0;
-        transform: rotate(-45deg);
-        box-shadow: -3px 3px 3px 0 rgba(0, 0, 0, 0.25);
+        top: 99%;
+        left: 30%;
+        transform: translateX(-30%);
+        width: 18px;
+        height: 14px;
+        background-color: #ffffff;
+        clip-path: polygon(0 0, 100% 0, 50% 100%);
+        z-index: -1;
       }
     }
   }
