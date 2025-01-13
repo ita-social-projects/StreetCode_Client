@@ -63,15 +63,15 @@ const StreetcodeCatalog = () => {
                         )
                     }
                 </div>
+                {
+                    loading && (moreThenEight)
+                    && (
+                        <div className="loadingWrapper">
+                            <div id="loadingGif" />
+                        </div>
+                    )
+                }
             </div>
-            {
-                loading && (moreThenEight)
-                && (
-                    <div className="loadingWrapper">
-                        <div id="loadingGif" />
-                    </div>
-                )
-            }
         </div>
     );
 };
