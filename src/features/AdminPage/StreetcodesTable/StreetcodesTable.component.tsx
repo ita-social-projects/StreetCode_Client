@@ -15,6 +15,7 @@ import {
 } from 'antd';
 import Table from 'antd/es/table/Table';
 
+import sortOptions from '@features/AdminPage/StreetcodesTable/constants/sortOptions';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import { useModalContext } from '@/app/stores/root-store';
@@ -50,7 +51,7 @@ const StreetcodesTable = () => {
         Page: pageRequest,
         Amount: amountRequest,
         Title: null,
-        Sort: null,
+        Sort: sortOptions.UpdatedAtDesc,
         Filter: null,
     };
 
@@ -68,7 +69,7 @@ const StreetcodesTable = () => {
             Page: page,
             Amount: amountRequest,
             Title: titleRequest === '' ? null : titleRequest,
-            Sort: null,
+            Sort: requestDefault.Sort,
             Filter: filter,
         });
     };
