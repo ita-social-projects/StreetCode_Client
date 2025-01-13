@@ -5,7 +5,6 @@ import './Streetcode.styles.scss';
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { useMediaQuery } from 'react-responsive';
 import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import ScrollToTopBtn from '@components/ScrollToTopBtn/ScrollToTopBtn.component';
 import ProgressBar from '@features/ProgressBar/ProgressBar.component';
@@ -19,6 +18,7 @@ import TickerBlock from '@streetcode/TickerBlock/Ticker.component';
 import { toStreetcodeRedirectClickEvent } from '@utils/googleAnalytics.unility';
 import { clearWindowHistoryState } from '@utils/window.utility';
 
+import Loader from "@components/Loader/Loader.component";
 import StatisticRecordApi from '@/app/api/analytics/statistic-record.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import ArtGallery from '@/app/common/components/ArtGallery/ArtGalleryBlock.component';
@@ -56,9 +56,6 @@ const StreetcodeContent = () => {
     const { id } = useParams();
 
     const [searchParams, setSearchParams] = useSearchParams();
-    const isMobile = useMediaQuery({
-        query: '(max-width: 4800px)',
-    });
 
     const handleSurveyModalOpen = () => {
         if (inView && !haveBeenDisplayed) {
@@ -116,17 +113,7 @@ const StreetcodeContent = () => {
 
     return (
         <div className={`streetcodeContainer ${!pageLoadercontext.isPageLoaded ? 'no-scroll' : ''}`}>
-            {!pageLoadercontext.isPageLoaded && (
-                <div className="loader-container">
-                    <img
-                        className="spinner"
-                        alt=""
-                        src={isMobile
-                            ? require('@images/gifs/Logo-animation_web.webp')
-                            : require('@images/gifs/Logo-animation_mob.webp')}
-                    />
-                </div>
-            )}
+            {!pageLoadercontext.isPageLoaded && <Loader />}
             <ProgressBar>
                 <MainBlock
                     streetcode={streetcode}

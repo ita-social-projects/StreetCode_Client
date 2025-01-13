@@ -1,11 +1,11 @@
 import { render, screen } from '@testing-library/react';
 
 // eslint-disable-next-line import/extensions
-import FromDateToString from '@/app/common/utils/FromDateToString';
-import StreetcodeImage from '@/models/media/image.model';
-import Streetcode, { Status, StreetcodeType } from '@/models/streetcode/streetcode-types.model';
-import { Fact } from '@/models/streetcode/text-contents.model';
-import TimelineItem from '@/models/timeline/chronology.model';
+import FromDateToString from '@utils/FromDateToString';
+import StreetcodeImage from '@models/media/image.model';
+import Streetcode, { Status, StreetcodeType } from '@models/streetcode/streetcode-types.model';
+import { Fact } from '@models/streetcode/text-contents.model';
+import TimelineItem from '@models/timeline/chronology.model';
 
 import '@testing-library/jest-dom';
 
@@ -124,6 +124,7 @@ describe('StreetcodeDocument', () => {
         screen.getByText('Bold text');
 
         const imageSource = `data:${image.mimeType};base64,${image.base64}`;
+
         await screen.findAllByRole('img', { name: /mocked image/i });
         const mainImage = container.querySelector(`[src="${imageSource}"]`);
 

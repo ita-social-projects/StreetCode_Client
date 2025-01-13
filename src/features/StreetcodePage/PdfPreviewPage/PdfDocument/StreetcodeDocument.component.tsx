@@ -3,20 +3,21 @@ import {
 } from '@react-pdf/renderer';
 import { Style } from '@react-pdf/types';
 import React from 'react';
-import CloserTextBold from '@assets/fonts/CloserText-Bold.woff';
-import CloserTextBoldItalic from '@assets/fonts/CloserText-BoldItalic.woff';
-import CloserTextItalic from '@assets/fonts/CloserText-Italic.woff';
-import CloserText from '@assets/fonts/CloserText-Medium.woff';
-import Roboto from '@assets/fonts/Roboto-Medium.woff';
+
+import CloserTextBold from '@fonts/CloserText-Bold.woff';
+import CloserTextBoldItalic from '@fonts/CloserText-BoldItalic.woff';
+import CloserTextItalic from '@fonts/CloserText-Italic.woff';
+import CloserText from '@fonts/CloserText-Medium.woff';
+import Roboto from '@fonts/Roboto-Medium.woff';
 import TagMap from '@constants/pdf-document-tag-map';
 import useMobx from '@stores/root-store';
 
-import monthsMap from '@/app/common/constants/month-map';
-import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
-import FromDateToString from '@/app/common/utils/FromDateToString';
-import StreetcodeImage from '@/models/media/image.model';
-import Streetcode from '@/models/streetcode/streetcode-types.model';
-import TimelineItem from '@/models/timeline/chronology.model';
+import monthsMap from '@constants/month-map';
+import base64ToUrl from '@utils/base64ToUrl.utility';
+import FromDateToString from '@utils/FromDateToString';
+import StreetcodeImage from '@models/media/image.model';
+import Streetcode from '@models/streetcode/streetcode-types.model';
+import TimelineItem from '@models/timeline/chronology.model';
 import convertImage from '@/app/common/utils/convertImage';
 
 Font.register({ family: 'CloserText', fonts: [{ src: CloserText, fontWeight: 'normal' }] });
