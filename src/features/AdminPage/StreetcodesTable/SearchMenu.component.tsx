@@ -3,6 +3,7 @@ import './StreetcodesTable.styles.scss';
 import MagnifyingGlass from '@images/header/Magnifying_glass.svg';
 
 import { ChangeEvent, Dispatch } from 'react';
+import STREETCODE_STATES from '@features/AdminPage/StreetcodesTable/constants/streetcodeStates';
 
 import { Button, Input, Select, SelectProps } from 'antd';
 
@@ -16,9 +17,9 @@ interface IProps {
 
 const SearchMenu = ({ setStatus, setTitle, setRequest }: IProps) => {
     const options: SelectProps['options'] = [
-        { value: 'Published', label: 'опублікований' },
-        { value: 'Draft', label: 'чернетка' },
-        { value: 'Deleted', label: 'видалений' },
+        { value: 'Published', label: STREETCODE_STATES.PUBLISHED.label.toLowerCase() },
+        { value: 'Draft', label: STREETCODE_STATES.DRAFT.label.toLowerCase() },
+        { value: 'Deleted', label: STREETCODE_STATES.DELETED.label.toLowerCase() },
     ];
 
     const handleChangeStatus = (value: string[]) => {
