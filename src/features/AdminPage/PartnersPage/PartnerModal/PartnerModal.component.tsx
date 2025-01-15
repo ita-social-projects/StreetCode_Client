@@ -7,6 +7,8 @@ import CancelBtn from '@images/utils/Cancel_btn.svg';
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import fileSizeValidator from '@components/modals/validators/fileSizeValidator';
+import MaxFileSizeMB from '@constants/enums/file-size.enum';
 import PreviewFileModal from '@features/AdminPage/NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
 import SOCIAL_OPTIONS from '@features/AdminPage/PartnersPage/PartnerModal/constants/socialOptions';
 import useMobx from '@stores/root-store';
@@ -295,10 +297,19 @@ const PartnerModal: React.FC< {
             }
         };
 
-        const checkFile = (file: UploadFile) => checkImageFileType(file.type);
+        const checkFile = async (file: UploadFile): Promise<boolean> => {
+            if (!checkImageFileType(file.type)) {
+                return false;
+            }
 
-        const handleFileChange = (param: UploadChangeParam<UploadFile<unknown>>) => {
-            if (checkFile(param.file)) {
+            const validator = fileSizeValidator(MaxFileSizeMB.PartnerPhoto);
+            return validator({}, file)
+                .then(() => true)
+                .catch(() => false);
+        };
+
+        const handleFileChange = async (param: UploadChangeParam<UploadFile<unknown>>) => {
+            if (await checkFile(param.file)) {
                 handleInputChange();
                 setFileList(param.fileList);
             }
@@ -397,6 +408,7 @@ const PartnerModal: React.FC< {
                                     message: 'Завантажте лого',
                                 },
                                 { validator: imageValidator },
+                                { validator: fileSizeValidator((MaxFileSizeMB.PartnerPhoto)) },
                             ]}
                         >
                             <FileUploader
