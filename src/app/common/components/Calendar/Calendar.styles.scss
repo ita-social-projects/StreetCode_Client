@@ -6,7 +6,7 @@
 
 .site-calendar-demo-card {
   width: 70%;
-  margin: f.pxToRem(100px) auto;
+  margin: 0 auto;
 }
 
 .calendar-container {
@@ -42,4 +42,37 @@
   height: f.pxToRem(10px);
   rotate: 45deg;
   background-color: c.$dark-red-color;
+} 
+
+.events {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.events .badge {
+  width: 100%;
+  height: fit-content;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin-bottom: f.pxToRem(6px);
+  padding-left: f.pxToRem(5px);
+  border-radius: f.pxToRem(5px); 
+}
+
+.badge.default {
+  background-color: rgb(219, 237, 255);
+}
+
+.badge.birthday {
+  background-color: rgb(255, 219, 219);
+}
+
+.badge.timelineItem {
+  background-color: rgb(255, 237, 219);
+}
+
+.badge.custom {
+  background-color: rgb(255, 219, 252);
 }

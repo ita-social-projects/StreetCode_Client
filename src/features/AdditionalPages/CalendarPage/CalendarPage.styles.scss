@@ -2,7 +2,10 @@
 
 $bgImg: '@assets/images/main-page/background.webp';
 
-.calendarPage {
-    margin-top: f.pxToRem(100px);
+.calendarPageWrapper {
+    
     background: url($bgImg) no-repeat center / 100%;
+}
+.calendarPage {
+    margin: f.pxToRem(200px) 0;
 }
