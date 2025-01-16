@@ -8,7 +8,7 @@ import { useInView } from 'react-intersection-observer';
 import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import ScrollToTopBtn from '@components/ScrollToTopBtn/ScrollToTopBtn.component';
 import ProgressBar from '@features/ProgressBar/ProgressBar.component';
-import { useModalContext, useStreecodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
+import { streetcodeDataStore, useModalContext, useStreecodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
 import DonateBtn from '@streetcode/DonateBtn/DonateBtn.component';
 import MainBlock from '@streetcode/MainBlock/MainBlock.component';
 import QRBlock from '@streetcode/QRBlock/QR.component';
@@ -34,11 +34,12 @@ import PartnersComponent from './PartnersBlock/Partners.component';
 import RelatedFiguresComponent from './RelatedFiguresBlock/RelatedFigures.component';
 import TimelineBlockComponent from './TimelineBlock/TimelineBlock.component';
 import MapBlockComponent from './MapBlock/MapBlock.component';
+import StreetcodeBlock from '@/models/streetcode/streetcode-blocks.model';
 
 const StreetcodeContent = () => {
     const { streetcodeStore } = useStreetcodeDataContext();
+    const streecodePageLoaderContext = useStreecodePageLoaderContext();
     const { setCurrentStreetcodeId } = streetcodeStore;
-    const pageLoadercontext = useStreecodePageLoaderContext();
     const streetcodeUrl = useRef<string>(useRouteUrl());
     const [streetcodeUrlState, setStreetcodeUrlState] = useState(streetcodeUrl.current);
 
@@ -64,7 +65,9 @@ const StreetcodeContent = () => {
             showModalOnScroll.current = false;
         }
     };
+
     setTimeout(handleSurveyModalOpen, 500);
+    setTimeout(() => streecodePageLoaderContext.endTransition(), 1500);
 
     useAsync(async () => {
         const idParam = searchParams.get('qrid');
@@ -89,6 +92,7 @@ const StreetcodeContent = () => {
         setCurrentStreetcodeId(streetcodeUrl.current).then((val) => {
             if ((val?.status === 0 && AuthService.isAdmin()) || val?.status !== 0) {
                 setStreetcode(val);
+                streecodePageLoaderContext.addBlockFetched(StreetcodeBlock.MainStreetcode);
             } else {
                 navigate(`${FRONTEND_ROUTES.OTHER_PAGES.ERROR404}`, { replace: true });
             }
@@ -115,8 +119,8 @@ const StreetcodeContent = () => {
     }, [location.pathname, id]);
 
     return (
-        <div className={`streetcodeContainer ${!pageLoadercontext.isPageLoaded ? 'no-scroll' : ''}`}>
-            {!pageLoadercontext.isPageLoaded && <Loader />}
+        <div className={`streetcodeContainer ${!streecodePageLoaderContext.isPageLoaded ? 'no-scroll' : ''}`}>
+            {!streecodePageLoaderContext.isPageLoaded && <Loader />}
             <ProgressBar>
                 <MainBlock
                     streetcode={streetcode}
@@ -127,7 +131,7 @@ const StreetcodeContent = () => {
                 <InterestingFactsComponent />
                 <TimelineBlockComponent />
                 <MapBlockComponent/>
-                {pageLoadercontext.isPageLoaded ? (
+                {streecodePageLoaderContext.isPageLoaded ? (
                     <ArtGallery isFillArtsStore />
                 ) : (
                     <></>
