@@ -25,6 +25,11 @@ export default class StreetcodePageLoaderStore {
         this.isBlockFetchedMap.set(blockType, true);
     }
 
+    public getFetchedBlocks():StreetcodeBlock[] {
+        return Array.from(this.isBlockFetchedMap.keys())
+            .filter((block) => this.isBlockFetchedMap.get(block));
+    }
+
     public endTransition() {
         this.isTransitionEnded = true;
     }
@@ -39,5 +44,9 @@ export default class StreetcodePageLoaderStore {
     get isPageLoaded():boolean {
         const isAllblocksFetched = Array.from(this.isBlockFetchedMap.values()).every((x) => x);
         return this.isTransitionEnded && isAllblocksFetched;
+    }
+
+    get isTransitionFinished(): boolean {
+        return this.isTransitionEnded;
     }
 }
