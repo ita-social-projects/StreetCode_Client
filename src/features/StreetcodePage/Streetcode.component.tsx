@@ -101,7 +101,10 @@ const StreetcodeContent = () => {
             clearWindowHistoryState();
         }
 
-        return () => pageLoadercontext.resetLoadedBlocks();
+        return () => {
+            streecodePageLoaderContext.resetLoader();
+            streetcodeStore.clearStore();
+        }
     }, [streetcodeUrlState]);
 
     useEffect(() => {
