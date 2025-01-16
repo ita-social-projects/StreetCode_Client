@@ -21,8 +21,8 @@ import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
 import { UploadChangeParam } from 'antd/es/upload';
 
+import imageExtensionValidator, { checkImageFileType } from '@components/modals/validators/imageExtensionValidator';
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
-import imageValidator, { checkImageFileType } from '@/app/common/components/modals/validators/imageValidator';
 import validateSocialLink from '@/app/common/components/modals/validators/socialLinkValidator';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import PartnerLink from '@/features/AdminPage/PartnersPage/PartnerLink.component';
@@ -302,7 +302,7 @@ const PartnerModal: React.FC< {
                 return false;
             }
 
-            const validator = fileSizeValidator(MaxFileSizeMB.PartnerPhoto);
+            const validator = fileSizeValidator(MaxFileSizeMB.Image);
             return validator({}, file)
                 .then(() => true)
                 .catch(() => false);
@@ -407,8 +407,8 @@ const PartnerModal: React.FC< {
                                     required: true,
                                     message: 'Завантажте лого',
                                 },
-                                { validator: imageValidator },
-                                { validator: fileSizeValidator((MaxFileSizeMB.PartnerPhoto)) },
+                                { validator: imageExtensionValidator },
+                                { validator: fileSizeValidator((MaxFileSizeMB.Image)) },
                             ]}
                         >
                             <FileUploader

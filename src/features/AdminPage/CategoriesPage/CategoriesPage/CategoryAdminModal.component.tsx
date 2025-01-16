@@ -14,7 +14,7 @@ import Image from '@models/media/image.model';
 import { SourceCategoryAdmin } from '@models/sources/sources.model';
 import useMobx from '@stores/root-store';
 
-import imageValidator, { checkImageFileType } from '@/app/common/components/modals/validators/imageValidator';
+import imageExtensionValidator, { checkImageFileType } from '@components/modals/validators/imageExtensionValidator';
 
 import {
     Button, Form, Input, message, Modal, Popover,
@@ -208,7 +208,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                         label="Картинка: "
                         rules={[
                             { required: true, message: 'Додайте зображення' },
-                            { validator: imageValidator },
+                            { validator: imageExtensionValidator },
                         ]}
                     >
                         <FileUploader

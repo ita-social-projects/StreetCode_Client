@@ -14,6 +14,7 @@ import { UploadChangeParam } from 'antd/es/upload';
 import FormItem from 'antd/es/form/FormItem';
 
 import { RuleObject } from 'antd/es/form';
+import imageExtensionValidator, { checkImageFileType } from '@components/modals/validators/imageExtensionValidator';
 import AudiosApi from '@/app/api/media/audios.api';
 import ImagesApi from '@/app/api/media/images.api';
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
@@ -21,7 +22,6 @@ import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Audio, { AudioUpdate } from '@/models/media/audio.model';
 
 import PreviewFileModal from './PreviewFileModal/PreviewFileModal.component';
-import imageValidator, { checkImageFileType } from '@/app/common/components/modals/validators/imageValidator';
 
 const convertFileToUploadFile = (file: Image | Audio) => {
     const newFileList: UploadFile = {
@@ -202,7 +202,7 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
         if (!file) {
             return Promise.resolve();
         }
-        return imageValidator(_, file);
+        return imageExtensionValidator(_, file);
     };
 
     return (
@@ -244,7 +244,7 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                             required: true,
                             message: 'Додайте зображення',
                         },
-                        { validator: imageValidator },
+                        { validator: imageExtensionValidator },
                     ]}
                 >
                     <FileUploader

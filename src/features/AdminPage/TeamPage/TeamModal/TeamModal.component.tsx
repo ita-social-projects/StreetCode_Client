@@ -32,7 +32,7 @@ import Image from '@/models/media/image.model';
 
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 import { UploadChangeParam } from 'antd/es/upload';
-import imageValidator, { checkImageFileType } from '@/app/common/components/modals/validators/imageValidator';
+import imageExtensionValidator, { checkImageFileType } from '@components/modals/validators/imageExtensionValidator';
 
 const TeamModal: React.FC<{
     teamMember?: TeamMember, open: boolean,
@@ -311,7 +311,7 @@ const TeamModal: React.FC<{
                                 required: true,
                                 message: 'Будь ласка, завантажте фото',
                             },
-                            { validator: imageValidator },
+                            { validator: imageExtensionValidator },
                         ]}
                     >
                         <FileUploader

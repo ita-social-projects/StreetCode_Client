@@ -8,7 +8,7 @@ import getNewMinNegativeId from '@app/common/utils/newIdForStore';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import useMobx from '@stores/root-store';
 
-import imageValidator, { checkImageFileType } from '@/app/common/components/modals/validators/imageValidator';
+import imageExtensionValidator, { checkImageFileType } from '@components/modals/validators/imageExtensionValidator';
 
 import {
     Button, Form, Input, message, Modal, Popover, UploadFile,
@@ -206,7 +206,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                             name="image"
                             rules={[
                                 { required: true, message: 'Завантажте фото, будь ласка' },
-                                { validator: imageValidator },
+                                { validator: imageExtensionValidator },
                             ]}
                         >
                             <FileUploader

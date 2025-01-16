@@ -21,7 +21,7 @@ import Image from '@/models/media/image.model';
 import Audio from '@/models/media/audio.model';
 
 import PreviewImageModal from './PreviewImageModal/PreviewImageModal.component';
-import { checkImageFileType } from '@/app/common/components/modals/validators/imageValidator';
+import { checkImageFileType } from '@components/modals/validators/imageExtensionValidator';
 
 const DownloadBlock = () => {
     const { id } = useParams<any>();

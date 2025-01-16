@@ -1,5 +1,5 @@
 export enum MaxFileSizeMB {
-    PartnerPhoto = 3,
+    Image = 3,
 }
 
 export default MaxFileSizeMB;
