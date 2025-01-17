@@ -2,6 +2,7 @@ import './StreetcodeCard.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
+import { FaBookmark, FaRegBookmark } from 'react-icons/fa6';
 import { useNavigate } from 'react-router-dom';
 import { PlayCircleFilled } from '@ant-design/icons';
 import TagList from '@components/TagList/TagList.component';
@@ -9,7 +10,8 @@ import BlockSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import { StreetcodeTag } from '@models/additional-content/tag.model';
 import Streetcode from '@models/streetcode/streetcode-types.model';
-import { useAudioContext, useModalContext, useStreecodePageLoaderContext } from '@stores/root-store';
+import { streetcodeDataStore, useAudioContext, useModalContext, useStreecodePageLoaderContext, useStreetcodeDataContext }
+    from '@stores/root-store';
 
 import { Button } from 'antd';
 
@@ -36,6 +38,8 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setShowAllTags }: Props) =
     const [images, setImages] = useState<Image[]>([]);
     const [imagesForSlider, setImagesForSlider] = useState<Image[]>([]);
     const navigate = useNavigate();
+    const { streetcodeStore } = useStreetcodeDataContext();
+    const { isFavourite, deleteFromFavourites, addToFavourites } = streetcodeStore;
 
     useAsync(() => {
         if (id && id > 0) {
@@ -130,6 +134,14 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setShowAllTags }: Props) =
                     </div>
                 </div>
                 <div className="rightSider">
+                    {
+                        isFavourite !== undefined ? (
+                            isFavourite
+                                ? (<FaBookmark className="bookmark" onClick={deleteFromFavourites} />)
+                                : (<FaRegBookmark className="bookmark" onClick={addToFavourites} />)
+                        ) : null
+                    }
+
                     <div className="streetcodeIndex">
                             History-код #
                         {streetcode?.index ?? 0 <= 9999 ? `000${streetcode?.index}`.slice(-4)

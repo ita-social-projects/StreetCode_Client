@@ -48,6 +48,15 @@ export default interface Streetcode extends EventStreetcode, PersonStreetcode {
     streetcodePartners: StreetcodePartner[];
 }
 
+export interface StreetcodeFavourite {
+    id: number;
+    title: string;
+    alias: string | undefined;
+    imageId: number;
+    transliterationUrl: string;
+    type: StreetcodeType;
+}
+
 export interface EventStreetcode {
     title: string;
 }

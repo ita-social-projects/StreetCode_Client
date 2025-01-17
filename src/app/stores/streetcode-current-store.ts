@@ -2,6 +2,7 @@ import { makeAutoObservable } from 'mobx';
 import StreetcodesApi from '@api/streetcode/streetcodes.api';
 
 import Streetcode from '@/models/streetcode/streetcode-types.model';
+import AuthService from '../common/services/auth-service/AuthService';
 
 export default class StreetcodeStore {
     public errorStreetCodeId = -1;
@@ -14,9 +15,21 @@ export default class StreetcodeStore {
 
     public streetcodeUrl = '';
 
+    public isFavourite: boolean | undefined = undefined;
+
     constructor() {
         makeAutoObservable(this);
     }
+
+    public addToFavourites = async () => {
+        this.setFavourite = true;
+        await StreetcodesApi.createFavourite(this.getStreetCodeId);
+    };
+    
+    public deleteFromFavourites = async () => {
+        this.setFavourite = false;
+        await StreetcodesApi.deleteFromFavourite(this.getStreetCodeId);
+    };
 
     public itChangedIdChange = () => {
         this.itChangedId = false;
@@ -35,12 +48,22 @@ export default class StreetcodeStore {
         this.currentStreetcode = streetcode.id;
     }
 
+    public set setFavourite(val: boolean) {
+        this.isFavourite = val;
+    }
+
     public setCurrentStreetcodeId = async (url: string): Promise<Streetcode | undefined> => {
         try {
             if (await StreetcodesApi.existWithUrl(url)) {
                 const streetcode = await StreetcodesApi.getByUrl(url);
                 if (streetcode !== null) {
                     this.setStreetCode = streetcode;
+                    if (AuthService.isLoggedIn()) {
+                        const favourite = await StreetcodesApi.getFavouriteById(streetcode.id);
+                        this.isFavourite = favourite.id !== 0;
+                    } else {
+                        this.isFavourite = undefined;
+                    }
                     return streetcode;
                 }
             }

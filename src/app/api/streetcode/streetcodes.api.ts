@@ -3,7 +3,7 @@ import { API_ROUTES } from '@constants/api-routes.constants';
 import Streetcode,
 {
     EventStreetcode, PersonStreetcode, StreetcodeCatalogRecord,
-    StreetcodeCreate, StreetcodeMainPage, StreetcodeShort, StreetcodeUpdate,
+    StreetcodeCreate, StreetcodeFavourite, StreetcodeMainPage, StreetcodeShort, StreetcodeUpdate,
 } from '@models/streetcode/streetcode-types.model';
 
 import StreetcodeFilterRequestDTO, { StreetcodeFilterResultDTO } from '@/models/filters/streetcode-filter.model';
@@ -19,6 +19,10 @@ const StreetcodesApi = {
     getByIndex: (index: string) => Agent.get<Streetcode>(`${API_ROUTES.STREETCODES.GET_BY_INDEX}/${index}`),
 
     getByUrl: (url: string) => Agent.get<Streetcode>(`${API_ROUTES.STREETCODES.GET_BY_URL}/${url}`),
+
+    // eslint-disable-next-line @typescript-eslint/func-call-spacing
+    getFavouriteById: (streetcodeId: number) =>
+        Agent.get<StreetcodeFavourite>(`${API_ROUTES.STREETCODES.GET_FAVOURITE_BY_ID}/${streetcodeId}`),
 
     getAll: (getAllStreetcodes: GetAllStreetcodes | undefined) => Agent
         .get<{totalAmount: number, streetcodes: Streetcode[]}>(`${API_ROUTES.STREETCODES.GET_ALL}`, getAllStreetcodes),
@@ -66,6 +70,9 @@ const StreetcodesApi = {
     create: (streetcode: StreetcodeCreate) => Agent
         .post<StreetcodeCreate>(`${API_ROUTES.STREETCODES.CREATE}`, streetcode),
 
+    createFavourite: (streetcodeId: number) => Agent
+        .post<number>(`${API_ROUTES.STREETCODES.CREATE_FAVOURITE}/${streetcodeId}`, Object),
+
     update: (streetcode: StreetcodeUpdate) => Agent
         .put<StreetcodeUpdate>(`${API_ROUTES.STREETCODES.UPDATE}`, streetcode),
 
@@ -75,6 +82,8 @@ const StreetcodesApi = {
     ),
 
     delete: (id: number) => Agent.delete(`${API_ROUTES.STREETCODES.DELETE}/${id}`),
+
+    deleteFromFavourite: (id: number) => Agent.delete(`${API_ROUTES.STREETCODES.DELETE_FROM_FAVOURITES}/${id}`),
 
     existWithIndex: (index:number) => Agent.get<boolean>(`${API_ROUTES.STREETCODES.EXIST_WITH_INDEX}/${index}`),
 
