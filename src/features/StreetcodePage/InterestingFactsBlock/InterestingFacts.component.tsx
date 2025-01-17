@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import BlockSlider from '@features/SlickSlider/InterestingFactSliderSlickSlider.component';
 import Image from '@models/media/image.model';
-import useMobx, { useModalContext, useStreetcodeDataContext } from '@stores/root-store';
+import useMobx, { useModalContext, useStreecodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import InterestingFactItem from '@streetcode/InterestingFactsBlock/InterestingFactItem/InterestingFactItem.component';
 
@@ -13,9 +13,11 @@ import ImagesApi from '@/app/api/media/images.api';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import getUrlHash from '@/app/common/utils/getUrlHash.utility';
 import { Fact } from '@/models/streetcode/text-contents.model';
+import StreetcodeBlock from '@/models/streetcode/streetcode-blocks.model';
 
 const InterestingFactsComponent = () => {
     const { streetcodeStore } = useStreetcodeDataContext();
+    const streecodePageLoaderContext = useStreecodePageLoaderContext();
     const { factsStore } = useMobx();
     const { getStreetCodeId, errorStreetCodeId } = streetcodeStore;
     const [sliderArray, setSliderArray] = useState<Fact[]>([]);
@@ -47,6 +49,7 @@ const InterestingFactsComponent = () => {
                 Array.from(uniqueImages.entries())
                     .map(([id, promise]) => promise.then((img) => ({ id, img }))),
             );
+            streecodePageLoaderContext.addBlockFetched(StreetcodeBlock.Facts);
 
             imageResults.forEach(({ id, img }) => {
                 res.forEach((fact) => {
