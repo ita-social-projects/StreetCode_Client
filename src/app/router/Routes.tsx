@@ -2,7 +2,6 @@ import { createBrowserRouter, createRoutesFromElements, Route } from 'react-rout
 import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
 import ContextMainPage from '@features/AdminPage/ContextPage/ContextMainPage.component';
 import RegistrationPage from '@features/Auth/RegistrationPage/RegistrationPage.component';
-import UserProfileComponent from '@features/UserProfile/UserProfile.component';
 import UserProfile from '@features/UserProfile/UserProfile.component';
 import App from '@layout/app/App.component';
 import PDFPreviewPage from '@streetcode/PdfPreviewPage/PdfPreviewPage';
