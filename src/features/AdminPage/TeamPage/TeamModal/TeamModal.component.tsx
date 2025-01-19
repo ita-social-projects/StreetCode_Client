@@ -32,7 +32,7 @@ import Image from '@/models/media/image.model';
 
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 import { UploadChangeParam } from 'antd/es/upload';
-import imageExtensionValidator, { checkImageFileType } from '@components/modals/validators/imageExtensionValidator';
+import combinedImageValidator from "@components/modals/validators/combinedImageValidator";
 
 const TeamModal: React.FC<{
     teamMember?: TeamMember, open: boolean,
@@ -232,10 +232,16 @@ const TeamModal: React.FC<{
 	  const handleInputChange = () => {
 	  	setIsSaveButtonDisabled(false);
   	}
-    const checkFile = (file: UploadFile) => checkImageFileType(file.type);
 
-    const handleFileChange = (param: UploadChangeParam<UploadFile<unknown>>) => {
-        if (checkFile(param.file)) {
+    const checkFile = async (file: UploadFile): Promise<boolean> => {
+        const validator = combinedImageValidator(false);
+        return validator({}, file)
+            .then(() => true)
+            .catch(() => false);
+    };
+
+    const handleFileChange = async (param: UploadChangeParam<UploadFile<unknown>>) => {
+        if (await checkFile(param.file)) {
             setFileList(param.fileList);
         }
         handleInputChange();
@@ -311,7 +317,7 @@ const TeamModal: React.FC<{
                                 required: true,
                                 message: 'Будь ласка, завантажте фото',
                             },
-                            { validator: imageExtensionValidator },
+                            { validator: combinedImageValidator(false) },
                         ]}
                     >
                         <FileUploader
