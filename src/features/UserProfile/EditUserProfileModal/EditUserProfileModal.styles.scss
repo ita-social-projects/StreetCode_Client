@@ -1,0 +1,155 @@
+﻿@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/variables/_variables.fonts.scss" as ft;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/_utils.functions.scss" as f;
+
+.editAvatar{
+  height: 100%;
+  .ant-upload-list-item-container,
+  .ant-upload-list-item-done,
+  .ant-upload-list-item,
+  .ant-upload-select,
+  {
+    @include mut.sizedImportant(256px, 340px);
+  }
+
+
+}
+.ant-upload-list-item{
+  .ant-upload-list-item-thumbnail img {
+    object-fit: cover !important;
+  }
+}
+
+.modalEditContainer {
+  &.ant-modal {
+    @include mut.sizedImportant(835px, auto);
+
+    .ant-modal-close {
+      @include mut.positioned-as(absolute, $right: 25px, $top: 25px);
+      @include mut.circular(80px, c.$lighter-gray-color);
+      @include mut.colored(c.$white-color, c.$light-border-color);
+      @include mut.sized(40px, 40px);
+
+      &:hover {
+        background-color: c.$normal-gray-color;
+      }
+    }
+
+    .ant-modal-content {
+      @include mut.full-rounded(50px, $overflow: visible);
+      padding: f.pxToRem(40px);
+      @include mut.sized(835px, auto);
+
+      .center{
+        display: flex;
+        justify-content: center;
+      }
+      h2{
+        padding-bottom: pxToRem(20px);
+        font-size: 1.7em;
+        font-weight: 500;
+      }
+
+      .ant-select:focus,
+      .ant-input:focus,
+      .ant-input:hover,
+      .ant-picker:hover,
+      .ant-input-focused,
+      .ant-select-focused,
+      .ant-picker-focused{
+        border-color: c.$accented-red-color;
+        box-shadow: none !important;
+      }
+
+      .ant-picker{
+        display: flex;
+      }
+      .ant-select-selector,
+      .ant-input-affix-wrapper,
+      .ant-input-number {
+        @include mut.with-font($font-size: 16px);
+        outline:none ;
+        box-shadow:none !important;
+
+        &:hover{
+          border-color: c.$accented-red-color;
+        }
+
+        &:focus-within {
+          border-color: c.$accented-red-color;
+          box-shadow: none;
+        }
+      }
+
+      .formItem{
+        label{
+          color: c.$darkish-gray-color;
+        }
+      }
+
+
+      .ant-form-item-control{
+        .ant-form-item-explain{
+          text-align: start;
+        }
+      }
+
+      .ant-checkbox-inner {
+        width: f.pxToRem(25px) !important;
+        height: f.pxToRem(25px) !important;
+        border: f.pxToRem(3px) solid #7E7E7E !important;
+        border-radius: 0  !important;
+      }
+      .deleteUser,
+      .saveButton{
+        .ant-btn{
+          @include mut.colored(c.$white-color, c.$accented-red-color);
+          @include mut.rem-padded(15px, 24px, 15px, 24px);
+          @include mut.full-rounded(14px);
+        }
+      }
+      .saveButton{
+        .ant-btn{
+          @include mut.sizedImportant(193px, auto);
+        }
+      }
+      .deleteUser{
+        .ant-btn{
+          @include mut.sizedImportant(300px, auto);
+        }
+      }
+      .lineSeparator{
+        @include mut.sizedImportant(100%, 1px);
+        @include mut.border(c.$accented-gray-color, 1px, solid);
+        @include mut.rem-margined(25px, 0, 25px, 0)
+      }
+      .deleteUserText{
+        @include mut.flexed(column, $gap: 25px);
+        text-align: start;
+        .mainText{
+          @include mut.flexed(column, $gap: 25px);
+          @include mut.with-font($font-size: 16px);
+          .boldText{
+            font-weight: 700;
+          }
+        }
+      }
+
+      .ant-checkbox-checked {
+        .ant-checkbox-inner {
+          border: 3px solid #DB3424 !important;
+        }
+      }
+      .ant-checkbox-wrapper .ant-checkbox-checked .ant-checkbox-inner::after {
+        opacity: 0;
+      }
+
+      .ant-checkbox-wrapper .ant-checkbox-checked .ant-checkbox-inner {
+        background: red !important;
+        box-shadow: inset 0 0 0 2px white !important;
+      }
+    }
+  }
+}
+
