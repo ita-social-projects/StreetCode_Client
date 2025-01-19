@@ -27,6 +27,7 @@ import PreviewFileModal from '../../MainBlock/PreviewFileModal/PreviewFileModal.
 import { UploadChangeParam } from 'antd/es/upload';
 import POPOVER_CONTENT from '@/features/AdminPage/JobsPage/JobsModal/constants/popoverContent';
 import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
+import combinedImageValidator from "@components/modals/validators/combinedImageValidator";
 
 interface Props {
     fact?: FactCreate,
@@ -43,10 +44,15 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
     const [previewOpen, setPreviewOpen] = useState<boolean>(false);
     const [hasUploadedPhoto, setHasUploadedPhoto] = useState<boolean>(false);
 
-    const checkFile = (file: UploadFile) => checkImageFileType(file.type);
+    const checkFile = async (file: UploadFile): Promise<boolean> => {
+        const validator = combinedImageValidator(true);
+        return validator({}, file)
+            .then(() => true)
+            .catch(() => false);
+    };
 
     const handleFileChange = async (param: UploadChangeParam<UploadFile<unknown>>) => {
-        if (checkFile(param.file)) {
+        if (await checkFile(param.file)) {
             setFileList(param.fileList);
         }
     }
@@ -206,7 +212,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                             name="image"
                             rules={[
                                 { required: true, message: 'Завантажте фото, будь ласка' },
-                                { validator: imageExtensionValidator },
+                                { validator: combinedImageValidator(true) },
                             ]}
                         >
                             <FileUploader
