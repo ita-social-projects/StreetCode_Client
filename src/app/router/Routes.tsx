@@ -1,6 +1,9 @@
 import { createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom';
 import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
 import ContextMainPage from '@features/AdminPage/ContextPage/ContextMainPage.component';
+import RegistrationPage from '@features/Auth/RegistrationPage/RegistrationPage.component';
+import UserProfileComponent from '@features/UserProfile/UserProfile.component';
+import UserProfile from '@features/UserProfile/UserProfile.component';
 import App from '@layout/app/App.component';
 import PDFPreviewPage from '@streetcode/PdfPreviewPage/PdfPreviewPage';
 import StreetcodeContent from '@streetcode/Streetcode.component';
@@ -24,10 +27,6 @@ import Partners from '@/features/AdminPage/PartnersPage/Partners.component';
 import TeamPage from '@/features/AdminPage/TeamPage/TeamPage.component';
 import TermDictionary from '@/features/AdminPage/TermDictionary/TermDictionary.component';
 import StreetcodeCatalog from '@/features/StreetcodeCatalogPage/StreetcodeCatalog.component';
-import ContextMainPage from '@features/AdminPage/ContextPage/ContextMainPage.component';
-import EditorPage from '@/features/AdminPage/EditorPage/EditorPage.component';
-import RegistrationPage from '@features/Auth/RegistrationPage/RegistrationPage.component';
-
 
 const router = createBrowserRouter(createRoutesFromElements(
     <Route path="/" element={<App />}>
@@ -103,6 +102,14 @@ const router = createBrowserRouter(createRoutesFromElements(
         />
         <Route path="/:id/pdf-preview" element={<PDFPreviewPage />} />
         <Route path={FRONTEND_ROUTES.AUTH.REGISTER} element={<RegistrationPage />} />
+        <Route
+            path={FRONTEND_ROUTES.OTHER_PAGES.PROFILE}
+            element={(
+                <ProtectedComponent>
+                    <UserProfile />
+                </ProtectedComponent>
+            )}
+        />
     </Route>,
 ));
 
