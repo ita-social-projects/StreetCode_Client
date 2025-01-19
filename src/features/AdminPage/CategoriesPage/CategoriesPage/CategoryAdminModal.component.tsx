@@ -28,6 +28,7 @@ import PreviewFileModal from '../../NewStreetcode/MainBlock/PreviewFileModal/Pre
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
 import normaliseWhitespaces from '@/app/common/utils/normaliseWhitespaces';
+import combinedImageValidator from "@components/modals/validators/combinedImageValidator";
 
 interface SourceModalProps {
     isModalVisible: boolean;
@@ -164,10 +165,15 @@ const SourceModal: React.FC<SourceModalProps> = ({
 
     const handleInputChange = () => setIsSaveButtonDisabled(false);
 
-    const checkFile = (file: UploadFile) => checkImageFileType(file.type);
+    const checkFile = async (file: UploadFile): Promise<boolean> => {
+        const validator = combinedImageValidator(true);
+        return validator({}, file)
+            .then(() => true)
+            .catch(() => false);
+    };
 
     const handleFileChange = async (param: UploadChangeParam<UploadFile<unknown>>) => {
-        if (checkFile(param.file)) {
+        if (await checkFile(param.file)) {
             setFileList(param.fileList);
         }
         handleInputChange();
@@ -208,7 +214,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                         label="Картинка: "
                         rules={[
                             { required: true, message: 'Додайте зображення' },
-                            { validator: imageExtensionValidator },
+                            { validator: combinedImageValidator(true) },
                         ]}
                     >
                         <FileUploader
