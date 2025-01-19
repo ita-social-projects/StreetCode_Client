@@ -32,7 +32,7 @@ import Image from '@/models/media/image.model';
 
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 import { UploadChangeParam } from 'antd/es/upload';
-import combinedImageValidator from "@components/modals/validators/combinedImageValidator";
+import combinedImageValidator, { checkFile } from '@components/modals/validators/combinedImageValidator';
 
 const TeamModal: React.FC<{
     teamMember?: TeamMember, open: boolean,
@@ -232,13 +232,6 @@ const TeamModal: React.FC<{
 	  const handleInputChange = () => {
 	  	setIsSaveButtonDisabled(false);
   	}
-
-    const checkFile = async (file: UploadFile): Promise<boolean> => {
-        const validator = combinedImageValidator(false);
-        return validator({}, file)
-            .then(() => true)
-            .catch(() => false);
-    };
 
     const handleFileChange = async (param: UploadChangeParam<UploadFile<unknown>>) => {
         if (await checkFile(param.file)) {

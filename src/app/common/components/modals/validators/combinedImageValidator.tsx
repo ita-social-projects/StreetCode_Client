@@ -19,4 +19,13 @@ const combinedImageValidator = (isRequired: boolean) => async (_: RuleObject, fi
     }
 };
 
+const checkFile = async (file: UploadFile): Promise<boolean> => {
+    const validator = combinedImageValidator(true);
+    return validator({}, file)
+        .then(() => true)
+        .catch(() => false);
+};
+
 export default combinedImageValidator;
+
+export { checkFile };

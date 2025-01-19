@@ -14,8 +14,6 @@ import Image from '@models/media/image.model';
 import { SourceCategoryAdmin } from '@models/sources/sources.model';
 import useMobx from '@stores/root-store';
 
-import imageExtensionValidator, { checkImageFileType } from '@components/modals/validators/imageExtensionValidator';
-
 import {
     Button, Form, Input, message, Modal, Popover,
     UploadFile,
@@ -28,7 +26,7 @@ import PreviewFileModal from '../../NewStreetcode/MainBlock/PreviewFileModal/Pre
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
 import normaliseWhitespaces from '@/app/common/utils/normaliseWhitespaces';
-import combinedImageValidator from "@components/modals/validators/combinedImageValidator";
+import combinedImageValidator, { checkFile } from '@components/modals/validators/combinedImageValidator';
 
 interface SourceModalProps {
     isModalVisible: boolean;
@@ -164,13 +162,6 @@ const SourceModal: React.FC<SourceModalProps> = ({
     };
 
     const handleInputChange = () => setIsSaveButtonDisabled(false);
-
-    const checkFile = async (file: UploadFile): Promise<boolean> => {
-        const validator = combinedImageValidator(true);
-        return validator({}, file)
-            .then(() => true)
-            .catch(() => false);
-    };
 
     const handleFileChange = async (param: UploadChangeParam<UploadFile<unknown>>) => {
         if (await checkFile(param.file)) {

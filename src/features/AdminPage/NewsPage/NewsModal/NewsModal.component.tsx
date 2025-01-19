@@ -11,7 +11,7 @@ import CancelBtn from '@images/utils/Cancel_btn.svg';
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
 import ReactQuill from 'react-quill';
-import combinedImageValidator from '@components/modals/validators/combinedImageValidator';
+import combinedImageValidator, { checkFile } from '@components/modals/validators/combinedImageValidator';
 import PreviewFileModal from '@features/AdminPage/NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
 import useMobx from '@stores/root-store';
 import dayjs from 'dayjs';
@@ -261,15 +261,8 @@ const NewsModal: React.FC<{
         handleInputChange();
     };
 
-    const beforeFileUpload = async (file: UploadFile): Promise<boolean> => {
-        const validator = combinedImageValidator(true);
-        return validator({}, file)
-            .then(() => true)
-            .catch(() => false);
-    };
-
     const handleFileChange = async (param: UploadChangeParam<UploadFile<unknown>>) => {
-        if (await beforeFileUpload(param.file)) {
+        if (await checkFile(param.file)) {
             setFileList(param.fileList);
             form.setFieldsValue({ image: fileList });
         }
@@ -397,7 +390,7 @@ const NewsModal: React.FC<{
                                 accept=".jpeg,.png,.jpg,.webp"
                                 listType="picture-card"
                                 maxCount={1}
-                                beforeUpload={beforeFileUpload}
+                                beforeUpload={checkFile}
                                 onPreview={handlePreview}
                                 fileList={fileList}
                                 uploadTo="image"

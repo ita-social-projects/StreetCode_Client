@@ -18,6 +18,7 @@ import {
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
 import { UploadChangeParam } from 'antd/es/upload';
+import combinedImageValidator, { checkFile } from '@components/modals/validators/combinedImageValidator';
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 import validateSocialLink from '@/app/common/components/modals/validators/socialLinkValidator';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
@@ -33,7 +34,6 @@ import { StreetcodeShort } from '@/models/streetcode/streetcode-types.model';
 
 // eslint-disable-next-line no-restricted-imports
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
-import combinedImageValidator from "@components/modals/validators/combinedImageValidator";
 
 const PartnerModal: React.FC< {
     partnerItem?: Partner;
@@ -292,13 +292,6 @@ const PartnerModal: React.FC< {
                 message.error('Не вдалось оновити/створити партнера. Спробуйте ще раз.');
                 setWaitingForApiResponse(false);
             }
-        };
-
-        const checkFile = async (file: UploadFile): Promise<boolean> => {
-            const validator = combinedImageValidator(true);
-            return validator({}, file)
-                .then(() => true)
-                .catch(() => false);
         };
 
         const handleFileChange = async (param: UploadChangeParam<UploadFile<unknown>>) => {

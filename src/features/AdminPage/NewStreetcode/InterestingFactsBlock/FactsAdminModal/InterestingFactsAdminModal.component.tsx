@@ -8,8 +8,6 @@ import getNewMinNegativeId from '@app/common/utils/newIdForStore';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import useMobx from '@stores/root-store';
 
-import imageExtensionValidator, { checkImageFileType } from '@components/modals/validators/imageExtensionValidator';
-
 import {
     Button, Form, Input, message, Modal, Popover, UploadFile,
 } from 'antd';
@@ -27,7 +25,7 @@ import PreviewFileModal from '../../MainBlock/PreviewFileModal/PreviewFileModal.
 import { UploadChangeParam } from 'antd/es/upload';
 import POPOVER_CONTENT from '@/features/AdminPage/JobsPage/JobsModal/constants/popoverContent';
 import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
-import combinedImageValidator from "@components/modals/validators/combinedImageValidator";
+import combinedImageValidator, { checkFile } from '@components/modals/validators/combinedImageValidator';
 
 interface Props {
     fact?: FactCreate,
@@ -43,13 +41,6 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
     const [fileList, setFileList] = useState<UploadFile[]>([]);
     const [previewOpen, setPreviewOpen] = useState<boolean>(false);
     const [hasUploadedPhoto, setHasUploadedPhoto] = useState<boolean>(false);
-
-    const checkFile = async (file: UploadFile): Promise<boolean> => {
-        const validator = combinedImageValidator(true);
-        return validator({}, file)
-            .then(() => true)
-            .catch(() => false);
-    };
 
     const handleFileChange = async (param: UploadChangeParam<UploadFile<unknown>>) => {
         if (await checkFile(param.file)) {
