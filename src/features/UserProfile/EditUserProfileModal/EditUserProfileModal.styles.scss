@@ -153,3 +153,22 @@
   }
 }
 
+.modalDeleteContainer{
+  @include mut.sizedImportant(500px, auto);
+  .ant-modal-content{
+    @include mut.full-rounded(25px);
+    @include mut.flexed(column, $align-items: center);
+    .ant-form{
+      @include mut.flexed(column, $align-items: center);
+
+      &.ant-modal {
+      }
+      .confirmDeleteButton{
+        @include mut.sizedImportant(250px, 50px);
+        @include mut.colored(c.$white-color, c.$accented-red-color);
+        @include mut.rem-padded(15px, 24px, 15px, 24px);
+        @include mut.full-rounded(14px);
+      }
+    }
+  }
+}

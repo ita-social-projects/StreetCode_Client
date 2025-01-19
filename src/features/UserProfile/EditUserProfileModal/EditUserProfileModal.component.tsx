@@ -43,7 +43,7 @@ const EditUserModal = ({ isOpen, onClose, image } : Props) => {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [previewOpen, setPreviewOpen] = useState<boolean>(false);
     const [filePreview, setFilePreview] = useState<UploadFile | null>(null);
-    const [avatarId, setAvatarId] = useState<number | null>(null);
+    const [avatarId, setAvatarId] = useState<number | null>(image ? image.id : null);
     const [expertises, setExpertises] = useState<Expertise[]>([]);
     const [selectedExpertises, setSelectedExpertises] = useState(userStore.user?.expertises || []);
 
@@ -92,7 +92,7 @@ const EditUserModal = ({ isOpen, onClose, image } : Props) => {
 
     const handleDeleteAccount = () => {
         if (emailForDeletion !== userStore.user?.email) {
-            message.error('Email does not match!');
+            message.error('Адресу було введено неправильно');
             return;
         }
         userStore.deleteUser(emailForDeletion);
@@ -112,14 +112,14 @@ const EditUserModal = ({ isOpen, onClose, image } : Props) => {
     };
 
     const handleSelectExpertise = (selectedValue : string) => {
-        const expertise = expertises.find((exp) => exp.name === selectedValue);
+        const expertise = expertises.find((exp) => exp.title === selectedValue);
         if (expertise && !selectedExpertises.some((e) => e.id === expertise.id)) {
             setSelectedExpertises((prev) => [...prev, expertise]);
         }
     };
 
     const handleDeselectExpertise = (deselectedValue : string) => {
-        setSelectedExpertises((prev) => prev.filter((expertise) => expertise.name !== deselectedValue));
+        setSelectedExpertises((prev) => prev.filter((expertise) => expertise.title !== deselectedValue));
     };
 
     const handleUpload = (file: Image | Audio) => {
@@ -151,7 +151,7 @@ const EditUserModal = ({ isOpen, onClose, image } : Props) => {
                     layout="vertical"
                     initialValues={{
                         ...userStore.user,
-                        expertises: userStore.user?.expertises.map((x) => x.name),
+                        expertises: userStore.user?.expertises.map((x) => x.title),
                     }}
                 >
                     <Form.Item
@@ -210,10 +210,22 @@ const EditUserModal = ({ isOpen, onClose, image } : Props) => {
                         className="formItem"
                         label="Ім'я"
                         name="name"
-                        rules={[{ required: true, message: "Введіть ім'я" }, {
-                            min: 2,
-                            message: 'Повинно містити від 2 до 128 символів.',
-                        }]}
+                        rules={[
+                            {
+                                required: true,
+                                message: "Введіть ім'я",
+                            },
+                            {
+                                min: 2,
+                                max: 128,
+                                message: 'Повинно містити від 2 до 128 символів.',
+                            },
+                            {
+                                pattern: /^[a-zA-Zа-яА-ЯґҐєЄіІїЇ'-]+$/,
+                                message: 'ім\'я може містити лише літери латиниці '
+                                    + "або кирилиці (великі та малі), дефіс (-) і апостроф (').",
+                            },
+                        ]}
                     >
                         <Input minLength={2} maxLength={128} showCount />
                     </Form.Item>
@@ -221,10 +233,22 @@ const EditUserModal = ({ isOpen, onClose, image } : Props) => {
                         className="formItem"
                         label="Прізвище"
                         name="surname"
-                        rules={[{ required: true, message: 'Введіть прізвище' }, {
-                            min: 2,
-                            message: 'Повинно містити від 2 до 128 символів.',
-                        }]}
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Введіть прізвище',
+                            },
+                            {
+                                min: 2,
+                                max: 128,
+                                message: 'Повинно містити від 2 до 128 символів.',
+                            },
+                            {
+                                pattern: /^[a-zA-Zа-яА-ЯґҐєЄіІїЇ'-]+$/,
+                                message: 'Прізвище може містити лише літери латиниці '
+                                    + "або кирилиці (великі та малі), дефіс (-) і апостроф (').",
+                            },
+                        ]}
                     >
                         <Input minLength={2} maxLength={128} showCount />
                     </Form.Item>
@@ -258,6 +282,7 @@ const EditUserModal = ({ isOpen, onClose, image } : Props) => {
                         className="formItem"
                         label="Експертиза"
                         name="expertises"
+                        style={{ textAlign: 'start' }}
                         rules={[{
                             validator: (_, value) => {
                                 if (value?.length > 3) {
@@ -272,13 +297,13 @@ const EditUserModal = ({ isOpen, onClose, image } : Props) => {
                         <SelectWithCustomSuffix
                             className="expertises-select-input"
                             mode="tags"
-                            placeholder="Обреріть експертизу"
+                            placeholder="Оберіть експертизу"
                             onSelect={handleSelectExpertise}
                             onDeselect={handleDeselectExpertise}
                         >
                             {expertises.map((expertise) => (
-                                <Select.Option key={expertise.id.toString()} value={expertise.name}>
-                                    {expertise.name}
+                                <Select.Option key={expertise.id.toString()} value={expertise.title}>
+                                    {expertise.title}
                                 </Select.Option>
                             ))}
                         </SelectWithCustomSuffix>
@@ -343,6 +368,7 @@ const EditUserModal = ({ isOpen, onClose, image } : Props) => {
                 onCancel={() => setShowDeleteModal(false)}
                 footer={null}
                 width={400}
+                className="modalDeleteContainer"
             >
                 <Form
                     layout="vertical"
@@ -358,8 +384,9 @@ const EditUserModal = ({ isOpen, onClose, image } : Props) => {
                     </Form.Item>
                     <Button
                         htmlType="submit"
+                        className="confirmDeleteButton"
                     >
-                Підтвердити видалення
+                        Підтвердити видалення
                     </Button>
                 </Form>
             </Modal>
