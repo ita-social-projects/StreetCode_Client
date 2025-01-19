@@ -4,22 +4,25 @@ import './Sources.styles.scss';
 import { observer } from 'mobx-react-lite';
 import { useEffect } from 'react';
 import SlickSlider from '@features/SlickSlider/SlickSlider.component';
-import useMobx, { useStreetcodeDataContext } from '@stores/root-store';
+import useMobx, { useStreecodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 
 import SourceItem from './SourceItem/SourceItem.component';
+import StreetcodeBlock from '@/models/streetcode/streetcode-blocks.model';
 
 const SourcesComponent = () => {
     const { sourcesStore } = useMobx();
+    const streecodePageLoaderContext = useStreecodePageLoaderContext();
     const { streetcodeStore: { getStreetCodeId } } = useStreetcodeDataContext();
     const windowsize = useWindowSize();
 
     useEffect(() => {
         const streetcodeId = getStreetCodeId;
         if (streetcodeId > 0) {
-            sourcesStore.fetchSrcCategoriesByStreetcodeId(streetcodeId);
+            sourcesStore.fetchSrcCategoriesByStreetcodeId(streetcodeId)
+                .then(() => streecodePageLoaderContext.addBlockFetched(StreetcodeBlock.Sources));
         }
     }, [getStreetCodeId]);
 
