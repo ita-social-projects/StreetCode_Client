@@ -258,7 +258,7 @@ export const API_ROUTES = {
         GET_ALL_WITH_TEAM_MEMBERS: 'Position/getAllWithTeamMembers',
     },
     USERS: {
-        GET_BY_ID: 'Users/GetByUserId',
+        GET_BY_USERNAME: 'Users/GetByUserName',
         UPDATE: 'Users/Update',
         DELETE: 'Users/Delete',
     },

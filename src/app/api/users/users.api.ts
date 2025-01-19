@@ -6,7 +6,7 @@ import User, { UpdateUser } from '@/models/user/user.model';
 
 const UsersApi = {
     getByUserName: () => (
-        Agent.get<User>(API_ROUTES.USERS.GET_BY_ID)
+        Agent.get<User>(API_ROUTES.USERS.GET_BY_USERNAME)
     ),
     update: (user : UpdateUser) => (
         Agent.put<User>(API_ROUTES.USERS.UPDATE, user)

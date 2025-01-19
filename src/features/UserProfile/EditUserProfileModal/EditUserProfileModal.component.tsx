@@ -1,12 +1,13 @@
 ﻿import './EditUserProfileModal.styles.scss';
 
 import React, { useEffect, useState } from 'react';
-import { redirect } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import expertisesApi from '@api/expertises/expertises.api';
 import FileUploader from '@components/FileUploader/FileUploader.component';
 import imageValidator, { checkImageFileType } from '@components/modals/validators/imageValidator';
 import phoneNumberValidator from '@components/modals/validators/phoneNumberValidator';
 import SelectWithCustomSuffix from '@components/SelectWithCustomSuffix';
+import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
 import PreviewFileModal from '@features/AdminPage/NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import Audio from '@models/media/audio.model';
@@ -46,6 +47,7 @@ const EditUserModal = ({ isOpen, onClose, image } : Props) => {
     const [avatarId, setAvatarId] = useState<number | null>(image ? image.id : null);
     const [expertises, setExpertises] = useState<Expertise[]>([]);
     const [selectedExpertises, setSelectedExpertises] = useState(userStore.user?.expertises || []);
+    const navigate = useNavigate();
 
     useAsync(async () => {
         const fetchExpertises = async () => {
@@ -96,7 +98,8 @@ const EditUserModal = ({ isOpen, onClose, image } : Props) => {
             return;
         }
         userStore.deleteUser(emailForDeletion);
-        redirect('/');
+        message.success('Профіль успішно видалено');
+        navigate(FRONTEND_ROUTES.BASE);
     };
     const checkFile = (file: UploadFile) => checkImageFileType(file.type);
 

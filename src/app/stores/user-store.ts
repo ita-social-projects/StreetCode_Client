@@ -1,7 +1,6 @@
 ﻿import { action, makeObservable, observable, runInAction } from 'mobx';
-import { redirect } from 'react-router-dom';
 import usersApi from '@api/users/users.api';
-import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
+import AuthService from '@app/common/services/auth-service/AuthService';
 import User, { UpdateUser } from '@models/user/user.model';
 
 export default class UserStore {
@@ -48,7 +47,7 @@ export default class UserStore {
             runInAction(() => {
                 this.setUser(null);
             });
-            redirect(FRONTEND_ROUTES.ADMIN.LOGIN);
+            AuthService.logout();
         } catch (error) {
             console.error('Error deleting user:', error);
         }
