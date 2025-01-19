@@ -6,15 +6,13 @@ import { useParams } from 'react-router-dom';
 import { InboxOutlined } from '@ant-design/icons';
 import CreateUpdateMediaStore from '@app/stores/create-update-media-store';
 import useMobx from '@app/stores/root-store';
+import combinedImageValidator from '@components/modals/validators/combinedImageValidator';
 import { ModelState } from '@models/enums/model-state';
 import Image, { ImageAssigment, ImageCreateUpdate } from '@models/media/image.model';
 
 import { FormInstance, Modal, UploadFile } from 'antd';
-import { UploadChangeParam } from 'antd/es/upload';
 import FormItem from 'antd/es/form/FormItem';
 
-import { RuleObject } from 'antd/es/form';
-import imageExtensionValidator, { checkImageFileType } from '@components/modals/validators/imageExtensionValidator';
 import AudiosApi from '@/app/api/media/audios.api';
 import ImagesApi from '@/app/api/media/images.api';
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
@@ -196,13 +194,24 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
         }
     }, []);
 
-    const checkFile = (file: UploadFile) => checkImageFileType(file.type);
+    const checkFile = async (file: UploadFile, isRequired: boolean): Promise<string> => {
+        const validator = combinedImageValidator(isRequired);
+        return validator({}, file)
+            .then(() => '')
+            .catch((error) => error.message);
+    };
 
-    const notRequiredImageValidator = (_: RuleObject, file: any): Promise<void> => {
-        if (!file) {
-            return Promise.resolve();
+    const onImageChange = async (file: UploadFile, fieldName: string) => {
+        const fileCheck = await checkFile(file, false);
+        if (fileCheck) {
+            form.setFieldsValue({ [fieldName]: [] });
+            form.setFields([
+                {
+                    name: fieldName,
+                    errors: [fileCheck],
+                },
+            ]);
         }
-        return imageExtensionValidator(_, file);
     };
 
     return (
@@ -211,7 +220,9 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                 <FormItem
                     name="animations"
                     label="Кольорове"
-                    rules={[{ validator: notRequiredImageValidator }]}
+                    rules={[
+                        { validator: combinedImageValidator(false) },
+                    ]}
                 >
                     <FileUploader
                         accept=".jpeg,.png,.jpg,.webp"
@@ -219,7 +230,7 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                         multiple={false}
                         maxCount={1}
                         fileList={animation}
-                        beforeUpload={checkFile}
+                        beforeUpload={async (file) => !(await checkFile(file, false))}
                         onPreview={handlePreview}
                         uploadTo="image"
                         imageType={ImageAssigment.animation}
@@ -227,6 +238,7 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                             handleFileUpload(file.id, 'animationId', 'imagesUpdate');
                             setAnimation([convertFileToUploadFile(file as Image)]);
                         }}
+                        onChange={(info) => onImageChange(info.file, 'animations')}
                         onRemove={(file) => {
                             fileHandler(file, 'gif');
                         }}
@@ -244,7 +256,7 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                             required: true,
                             message: 'Додайте зображення',
                         },
-                        { validator: imageExtensionValidator },
+                        { validator: combinedImageValidator(true) },
                     ]}
                 >
                     <FileUploader
@@ -253,7 +265,7 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                         listType="picture-card"
                         maxCount={1}
                         fileList={blackAndWhite}
-                        beforeUpload={checkFile}
+                        beforeUpload={async (file) => !(await checkFile(file, true))}
                         onPreview={handlePreview}
                         uploadTo="image"
                         imageType={ImageAssigment.blackandwhite}
@@ -273,7 +285,9 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                 <FormItem
                     name="pictureRelations"
                     label="Для зв'язків"
-                    rules={[{ validator: notRequiredImageValidator }]}
+                    rules={[
+                        { validator: combinedImageValidator(false) },
+                    ]}
                 >
                     <FileUploader
                         multiple={false}
@@ -284,11 +298,12 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                         onPreview={handlePreview}
                         uploadTo="image"
                         imageType={ImageAssigment.relatedfigure}
-                        beforeUpload={checkFile}
+                        beforeUpload={async (file) => !(await checkFile(file, false))}
                         onSuccessUpload={(file: Image | Audio) => {
                             handleFileUpload(file.id, 'relatedFigureId', 'imagesUpdate');
                             setRelatedFigure([convertFileToUploadFile(file as Image)]);
                         }}
+                        onChange={(info) => onImageChange(info.file, 'pictureRelations')}
                         onRemove={(file) => {
                             fileHandler(file, 'relatedFigure');
                         }}
