@@ -87,7 +87,7 @@ const NewsModal: React.FC<{
     }, [actionSuccess]);
 
     const createFileListData = (img: Image) => {
-        if (!newsItem) {
+        if (!newsItem || !img) {
             return [];
         }
 
