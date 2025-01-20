@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable no-param-reassign */
 import './PartnerModal.styles.scss';
 import '@features/AdminPage/AdminModal.styles.scss';
@@ -34,6 +35,7 @@ import Partner, {
 import { StreetcodeShort } from '@/models/streetcode/streetcode-types.model';
 
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
+import partnerNameValidator from '@/app/common/components/modals/validators/partnerNameValidator';
 
 const PartnerModal: React.FC< {
     partnerItem?: Partner;
@@ -69,6 +71,7 @@ const PartnerModal: React.FC< {
         const [actionSuccess, setActionSuccess] = useState(false);
         const [waitingForApiResponse, setWaitingForApiResponse] = useState(false);
         const [isSaved, setIsSaved] = useState(true);
+        const [isUniqueTitle, setIsUniqueTitle] = useState(false);
 
         message.config({
             top: 100,
@@ -177,13 +180,14 @@ const PartnerModal: React.FC< {
                 setUrlTitleEnabled('');
                 setUrlTitleValue('');
                 setFileList([]);
+                setIsUniqueTitle(false);
             }
         };
 
         const closeModal = () => {
             if (!waitingForApiResponse) {
                 setIsModalOpen(false);
-								setIsSaved(true);
+                setIsSaved(true);
             }
         };
 
@@ -216,7 +220,7 @@ const PartnerModal: React.FC< {
             try {
                 await form.validateFields(['url']);
                 setUrlTitleEnabled(value);
-				        handleInputChange();
+                handleInputChange();
             } catch (error) {
                 setUrlTitleEnabled('');
             }
@@ -227,7 +231,7 @@ const PartnerModal: React.FC< {
         ) => {
             const { value } = e.target;
             setUrlTitleValue(value);
-			      handleInputChange();
+            handleInputChange();
         };
 
         const handleShowSecondForm = () => {
@@ -260,14 +264,14 @@ const PartnerModal: React.FC< {
                 partnerSourceLinks,
                 streetcodes: selectedStreetcodes.current,
                 targetUrl: formValues.url?.trim() || null,
-                title: formValues.title,
+                title: formValues.title.trimEnd(),
                 description: formValues.description?.trim() || null,
                 urlTitle: formValues.urlTitle?.trim() || null,
                 isVisibleEverywhere: formValues.isVisibleEverywhere ?? false,
             };
 
             partnersStore.getPartnerArray.map((t) => t).forEach((t) => {
-                if (formValues.title === t.title || imageId.current === t.logoId) partnerItem = t;
+                if (formValues.title === t.title && imageId.current === t.logoId) partnerItem = t;
             });
 
             try {
@@ -293,6 +297,13 @@ const PartnerModal: React.FC< {
         };
 
 		const handleInputChange = () => setIsSaved(false);
+
+        const handleTitleChange = () => {
+            form.validateFields(['title']).then(() => {
+                handleInputChange();
+                setIsUniqueTitle(true);
+            }).catch(() => setIsUniqueTitle(false));
+        };
 
         const checkFile = (file: UploadFile) => checkImageFileType(file.type);
 
@@ -351,11 +362,17 @@ const PartnerModal: React.FC< {
                         <Form.Item
                             name="title"
                             label="Назва: "
-                            rules={[{ required: true, message: 'Введіть назву' }]}
+                            rules={[
+                                { required: true, message: 'Введіть назву' },
+                                {
+                                    validator: (_, value) =>
+                                    partnerNameValidator(_, value, partnersStore, partnerItem)}]}
                         >
-                            <Input maxLength={100} showCount onChange={handleInputChange} />
+                            <Input
+                                maxLength={100}
+                                showCount
+                                onChange={handleTitleChange} />
                         </Form.Item>
-
                         <Form.Item
                             name="url"
                             label="Посилання: "
@@ -542,7 +559,7 @@ const PartnerModal: React.FC< {
                         </Popover>
                     ) : (
                         <Button
-                            disabled={showSecondForm || fileList.length === 0 || isSaved}
+                            disabled={showSecondForm || fileList.length === 0 || isSaved || !isUniqueTitle}
                             className="streetcode-custom-button save"
                             onClick={handleOk}
                         >
