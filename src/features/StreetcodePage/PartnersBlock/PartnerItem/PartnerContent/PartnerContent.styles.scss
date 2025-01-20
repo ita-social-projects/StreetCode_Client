@@ -12,11 +12,12 @@
 
 .header {
     @include mut.flexed($align-items: center, $gap: 14px);
-
+    
     p {
         @include mut.with-font($font-family: f.$closer-text-font, $font-weight: 500);
         line-height: 26.4px;
         color: c.$lighter-black-color;
+        word-break: break-word;
     }
 }
 
