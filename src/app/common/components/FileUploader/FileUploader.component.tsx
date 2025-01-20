@@ -68,14 +68,6 @@ const FileUploader:React.FC<Props> = ({
         }
     };
 
-    const checkFileType = (file: UploadFile) => {
-        const parts = file.name.split('.');
-        const extension = parts.length > 1 ? `.${parts.pop()}` : '';
-        if (uploadProps.accept?.split(',').every((x) => x !== extension)) {
-            return false;
-        }
-        return true;
-    };
 
     const onFileUpload = (uploadType:'image' | 'audio', uplFile:UploadFile, url: string)
     :Promise< ImageNew | Audio> => {
@@ -140,7 +132,6 @@ const FileUploader:React.FC<Props> = ({
     return (
         <Upload
             {...uploadProps}
-            beforeUpload={checkFileType}
             customRequest={customRequest}
             onChange={onUploadChange}
             data-testid="fileuploader"
