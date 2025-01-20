@@ -9,11 +9,13 @@
 /node_modules
 /server/node_modules
 /.vscode
+/.vs
 /.pnp
 .pnp.js
 
 # testing
 /coverage
+/.scannerwork
 
 # production
 /build

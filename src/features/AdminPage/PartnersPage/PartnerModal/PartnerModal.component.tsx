@@ -301,6 +301,11 @@ const PartnerModal: React.FC< {
             }
         };
 
+        const handleRemove = () => {
+            imageId.current = 0;
+            setFileList([]);
+        };
+
         return (
             <Modal
                 open={open}
@@ -406,9 +411,7 @@ const PartnerModal: React.FC< {
                                 onPreview={handlePreview}
                                 beforeUpload={checkFile}
                                 onChange={handleFileChange}
-                                onRemove={() => {
-                                    imageId.current = 0;
-                                }}
+                                onRemove={handleRemove}
                                 uploadTo="image"
                                 onSuccessUpload={(image: Image | Audio) => {
                                     imageId.current = image.id;

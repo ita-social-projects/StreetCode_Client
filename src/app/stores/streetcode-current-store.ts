@@ -35,6 +35,10 @@ export default class StreetcodeStore {
         this.currentStreetcode = streetcode.id;
     }
 
+    public clearStore() {
+        this.currentStreetcode = this.errorStreetCodeId;
+    }
+
     public setCurrentStreetcodeId = async (url: string): Promise<Streetcode | undefined> => {
         try {
             if (await StreetcodesApi.existWithUrl(url)) {
