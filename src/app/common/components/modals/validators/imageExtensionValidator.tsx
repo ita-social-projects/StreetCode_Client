@@ -2,7 +2,7 @@ import { RuleObject } from 'rc-field-form/lib/interface';
 
 import { SUPPORTED_IMAGE_FILE_TYPES } from '@/app/common/constants/file-types.constants';
 
-const imageValidator = (_: RuleObject, file: any): Promise<void> => {
+const imageExtensionValidator = (_: RuleObject, file: any): Promise<void> => {
     if (file) {
         let name = '';
         if (file.file) {
@@ -25,4 +25,4 @@ const imageValidator = (_: RuleObject, file: any): Promise<void> => {
 
 export const checkImageFileType = (type: string | undefined) => type && SUPPORTED_IMAGE_FILE_TYPES.includes(type);
 
-export default imageValidator;
+export default imageExtensionValidator;

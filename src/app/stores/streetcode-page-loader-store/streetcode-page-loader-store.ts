@@ -15,8 +15,6 @@ export default class StreetcodePageLoaderStore {
         [StreetcodeBlock.RelatedFigures, false],
     ]);
 
-    private isTransitionEnded = false;
-
     public constructor() {
         makeAutoObservable(this);
     }
@@ -30,23 +28,14 @@ export default class StreetcodePageLoaderStore {
             .filter((block) => this.isBlockFetchedMap.get(block));
     }
 
-    public endTransition() {
-        this.isTransitionEnded = true;
-    }
-
     public resetLoader() {
         Array.from(this.isBlockFetchedMap.keys()).forEach((key: StreetcodeBlock) => {
             this.isBlockFetchedMap.set(key, false);
         });
-        this.isTransitionEnded = false;
     }
 
     get isPageLoaded():boolean {
         const isAllblocksFetched = Array.from(this.isBlockFetchedMap.values()).every((x) => x);
-        return this.isTransitionEnded && isAllblocksFetched;
-    }
-
-    get isTransitionFinished(): boolean {
-        return this.isTransitionEnded;
+        return isAllblocksFetched;
     }
 }
