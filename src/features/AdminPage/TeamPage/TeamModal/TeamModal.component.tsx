@@ -164,8 +164,9 @@ const TeamModal: React.FC<{
         }]);
     };
 
-    const removeImage = () => {
+    const handleRemove = () => {
         imageId.current = 0;
+        setFileList([]);
     };
 
     const handleOk = async () => {
@@ -325,7 +326,7 @@ const TeamModal: React.FC<{
                             onPreview={(e) => {
                                 setFilePreview(e); setPreviewOpen(true);
                             }}
-                            onRemove={removeImage}
+                            onRemove={handleRemove}
                             uploadTo="image"
                             onSuccessUpload={(file: Image | Audio) => {
                                 const image: Image = file as Image;
