@@ -304,7 +304,7 @@ describe("PartnerModal", () => {
     }
   });
 
-  test("check when required fields are the same then existing partner should be updated instead of created", async () => {
+  test("check when required fields are the same then save button should be disabled", async () => {
     render(<PartnerModal partnerItem={partner} open={true} setIsModalOpen={() => { }} />);
 
     const button = screen.getByRole("button", { name: /зберегти/i });
@@ -329,21 +329,13 @@ describe("PartnerModal", () => {
       throw new Error("File input does not contain any files");
     }
 
-    expect(buttonElement).toBeEnabled();
-
     //Should wrap this in act because new Promise shifts to another framestack(?) 
     //and causes async changing of state of previous multiple components
     //outside of act() framestack (which causes warnings, unexpected behaviour etc.)
     await act(async () => { await new Promise((r) => setTimeout(r, 2000)) });
 
-
-    await act(async () => {
-      userEvent.click(button);
-    })
-
     await waitFor(() => {
-      expect(PartnersApi.update).toHaveBeenCalled();
-      expect(PartnersApi.create).not.toHaveBeenCalled();
+      expect(buttonElement).toBeDisabled();
     });
   });
 
