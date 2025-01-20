@@ -31,7 +31,7 @@ import SourceCreateUpdateStreetcode from './source-category-store-create';
 import StatisticRecordStore from './statistic-record-store';
 import StreetcodeCoordinatesStore from './streetcode-coordinates-store';
 import StreetcodesMainPageStore from './streetcode-mainpage-store';
-import StreetcodePageLoaderStore from './streetcode-page-loader-store';
+import StreetcodePageLoaderStore from './streetcode-page-loader-store/streetcode-page-loader-store';
 import StreetcodesByTagStore from './streetcodes-bytag-store';
 import TeamStore from './team-store';
 import ToponymStore from './toponym-store';

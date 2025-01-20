@@ -15,6 +15,7 @@ import { Text } from '@/models/streetcode/text-contents.model';
 
 import AdditionalText from './AdditionalTextBlock/AdditionalTextBlock.component';
 import ReadMore from './ReadMore/ReadMore.component';
+import StreetcodeBlock from '@/models/streetcode/streetcode-blocks.model';
 
 const TextComponent = () => {
     const { streetcodeStore: { getStreetCodeId } } = useStreetcodeDataContext();
@@ -32,7 +33,7 @@ const TextComponent = () => {
             ]).then(([textResult, videoResult]) => {
                 setText(textResult);
                 setVideo(videoResult);
-                streecodePageLoaderContext.addBlockFetched();
+                streecodePageLoaderContext.addBlockFetched(StreetcodeBlock.Text);
             }).catch((error) => {
                 console.error(error);
             }).then();
