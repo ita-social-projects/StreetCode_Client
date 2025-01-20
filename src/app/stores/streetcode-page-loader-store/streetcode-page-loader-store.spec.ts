@@ -8,9 +8,7 @@ beforeEach(() => {
 });
 
 describe('streetcode-page-loader-store', () => {
-    it('sets isPageLoaded to true when all blocks are loaded and transition is ended', () => {
-        store.endTransition();
-
+    it('sets isPageLoaded to true when all blocks are loaded', () => {
         const blockTypes = Object.values(StreetcodeBlock)
             .filter((value) => typeof value === 'number');
 
@@ -19,9 +17,7 @@ describe('streetcode-page-loader-store', () => {
         expect(store.isPageLoaded).toBe(true);
     });
 
-    it('sets isPageLoaded to false when not all blocks are loaded and transition is ended', () => {
-        store.endTransition();
-
+    it('sets isPageLoaded to false when not all blocks', () => {
         const blockTypes = Object.values(StreetcodeBlock)
             .filter((value) => typeof value === 'number').slice(2);
 
@@ -30,25 +26,13 @@ describe('streetcode-page-loader-store', () => {
         expect(store.isPageLoaded).toBe(false);
     });
 
-    it('sets isPageLoaded to false when all blocks but transition has not ended', () => {
-        const blockTypes = Object.values(StreetcodeBlock)
-            .filter((value) => typeof value === 'number');
-
-        blockTypes.forEach((block) => store.addBlockFetched(block as StreetcodeBlock));
-
-        expect(store.isPageLoaded).toBe(false);
-    });
-
     it('resets loader', () => {
-        store.endTransition();
         store.addBlockFetched(StreetcodeBlock.MainStreetcode);
 
         expect(store.getFetchedBlocks()[0]).toBe(StreetcodeBlock.MainStreetcode);
-        expect(store.isTransitionFinished).toBe(true);
 
         store.resetLoader();
 
         expect(store.getFetchedBlocks().length).toBe(0);
-        expect(store.isTransitionFinished).toBe(false);
     });
 });
