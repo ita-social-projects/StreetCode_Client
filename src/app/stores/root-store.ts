@@ -25,6 +25,7 @@ import TimelineStore from '@stores/timeline-store';
 import UserStore from '@stores/user-store';
 
 import NewsStore from './news-store/news-store';
+import StreetcodePageLoaderStore from './streetcode-page-loader-store/streetcode-page-loader-store';
 import CreateUpdateMediaStore from './create-update-media-store';
 import JobsStore from './jobs-store';
 import NewStreetcodeInfoStore from './newstreetcode-info-store';
@@ -33,7 +34,6 @@ import SourceCreateUpdateStreetcode from './source-category-store-create';
 import StatisticRecordStore from './statistic-record-store';
 import StreetcodeCoordinatesStore from './streetcode-coordinates-store';
 import StreetcodesMainPageStore from './streetcode-mainpage-store';
-import StreetcodePageLoaderStore from './streetcode-page-loader-store';
 import TextVideoStore from './streetcode-text-video-store';
 import StreetcodesByTagStore from './streetcodes-bytag-store';
 import TeamStore from './team-store';
