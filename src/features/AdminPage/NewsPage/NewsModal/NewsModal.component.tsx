@@ -411,7 +411,12 @@ const NewsModal: React.FC<{
                             label="Дата створення: "
                             rules={[{ required: true, message: 'Введіть дату' }]}
                         >
-                            <DatePicker showTime allowClear={false} onChange={handleInputChange} />
+                            <DatePicker 
+                                showTime 
+                                allowClear={false} 
+                                onChange={handleInputChange} 
+                                disabledDate={current => current && current.isBefore(dayjs().startOf('day'))}
+                            />
                         </Form.Item>
                         <PreviewFileModal
                             opened={previewOpen}
