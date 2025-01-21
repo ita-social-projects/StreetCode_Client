@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import {
     BarChartOutlined, DeleteOutlined, DownOutlined, EditOutlined, RollbackOutlined,
 } from '@ant-design/icons';
+import sortOptions from '@features/AdminPage/StreetcodesTable/constants/sortOptions';
 import STREETCODE_STATES from '@features/AdminPage/StreetcodesTable/constants/streetcodeStates';
 import { format } from 'date-fns';
 import { uk } from 'date-fns/locale';
@@ -15,7 +16,6 @@ import {
 } from 'antd';
 import Table from 'antd/es/table/Table';
 
-import sortOptions from '@features/AdminPage/StreetcodesTable/constants/sortOptions';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import { useModalContext } from '@/app/stores/root-store';
@@ -179,7 +179,7 @@ const StreetcodesTable = () => {
             title: 'Статус',
             dataIndex: 'status',
             key: 'status',
-            width: '20%',
+            width: '10%',
             onCell: (record: MapedStreetCode) => ({
                 onClick: () => {
                     setCurrentStreetcodeOption(record.key);
@@ -196,6 +196,15 @@ const StreetcodesTable = () => {
                     </Button>
                 </Dropdown>
             ),
+        },
+        {
+            title: 'Автор',
+            dataIndex: 'author',
+            key: 'author',
+            width: '10%',
+            onCell: (record: MapedStreetCode) => ({
+                onClick: () => window.open(`${FRONTEND_ROUTES.ADMIN.BASE}/${record.url}`, '_blank'),
+            }),
         },
         {
             title: 'Останні зміни',
@@ -268,7 +277,8 @@ const StreetcodesTable = () => {
         status: string,
         date: string,
         name: string,
-        url: string
+        url: string,
+        author: string,
     }
 
     const fetchPaginatedData = async () => {
@@ -298,6 +308,7 @@ const StreetcodesTable = () => {
                 ),
                 name: streetcode.title,
                 url: streetcode.transliterationUrl,
+                author: streetcode.createdBy,
             };
             mapedStreetCodesBuffer.push(mapedStreetCode);
         });
