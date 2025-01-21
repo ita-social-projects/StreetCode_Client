@@ -167,7 +167,7 @@
     .cardFooter {
         gap: f.pxToRem(10px);
 
-        .audioBtn {
+        .audioBtn, .pdfButton {
             @include mut.sized(255px, 73px);
             @include mut.flex-centered();
         }
@@ -244,7 +244,7 @@
         width: 98%;
         @include mut.rem-padded(10px, 0px, 0px, 0px);
 
-        .audioBtn {
+        .audioBtn, .pdfButton {
           @include mut.full-rounded(8px);
           @include mut.with-font($font-weight: 400, $font-size: 14px);
           @include mut.sized(340px, 46px);
@@ -286,7 +286,7 @@
         margin-top: f.pxToRem(39px) !important;
         @include mut.rem-padded(0px, 0px, 0px, 0px);
         width: 100%;
-        .audioBtn{
+        .audioBtn, .pdfButton{
           width: f.pxToRem(340px);
           margin: auto;
         }

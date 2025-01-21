@@ -5,11 +5,10 @@ import './Streetcode.styles.scss';
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { useMediaQuery } from 'react-responsive';
 import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import ScrollToTopBtn from '@components/ScrollToTopBtn/ScrollToTopBtn.component';
 import ProgressBar from '@features/ProgressBar/ProgressBar.component';
-import { useModalContext, useStreecodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
+import { streetcodeDataStore, useModalContext, useStreecodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
 import DonateBtn from '@streetcode/DonateBtn/DonateBtn.component';
 import MainBlock from '@streetcode/MainBlock/MainBlock.component';
 import QRBlock from '@streetcode/QRBlock/QR.component';
@@ -19,6 +18,7 @@ import TickerBlock from '@streetcode/TickerBlock/Ticker.component';
 import { toStreetcodeRedirectClickEvent } from '@utils/googleAnalytics.unility';
 import { clearWindowHistoryState } from '@utils/window.utility';
 
+import Loader from "@components/Loader/Loader.component";
 import StatisticRecordApi from '@/app/api/analytics/statistic-record.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import ArtGallery from '@/app/common/components/ArtGallery/ArtGalleryBlock.component';
@@ -34,11 +34,12 @@ import PartnersComponent from './PartnersBlock/Partners.component';
 import RelatedFiguresComponent from './RelatedFiguresBlock/RelatedFigures.component';
 import TimelineBlockComponent from './TimelineBlock/TimelineBlock.component';
 import MapBlockComponent from './MapBlock/MapBlock.component';
+import StreetcodeBlock from '@/models/streetcode/streetcode-blocks.model';
 
 const StreetcodeContent = () => {
     const { streetcodeStore } = useStreetcodeDataContext();
+    const streecodePageLoaderContext = useStreecodePageLoaderContext();
     const { setCurrentStreetcodeId } = streetcodeStore;
-    const pageLoadercontext = useStreecodePageLoaderContext();
     const streetcodeUrl = useRef<string>(useRouteUrl());
     const [streetcodeUrlState, setStreetcodeUrlState] = useState(streetcodeUrl.current);
 
@@ -56,9 +57,6 @@ const StreetcodeContent = () => {
     const { id } = useParams();
 
     const [searchParams, setSearchParams] = useSearchParams();
-    const isMobile = useMediaQuery({
-        query: '(max-width: 4800px)',
-    });
 
     const handleSurveyModalOpen = () => {
         if (inView && !haveBeenDisplayed) {
@@ -67,6 +65,7 @@ const StreetcodeContent = () => {
             showModalOnScroll.current = false;
         }
     };
+
     setTimeout(handleSurveyModalOpen, 500);
 
     useAsync(async () => {
@@ -92,6 +91,7 @@ const StreetcodeContent = () => {
         setCurrentStreetcodeId(streetcodeUrl.current).then((val) => {
             if ((val?.status === 0 && AuthService.isAdmin()) || val?.status !== 0) {
                 setStreetcode(val);
+                streecodePageLoaderContext.addBlockFetched(StreetcodeBlock.MainStreetcode);
             } else {
                 navigate(`${FRONTEND_ROUTES.OTHER_PAGES.ERROR404}`, { replace: true });
             }
@@ -104,7 +104,10 @@ const StreetcodeContent = () => {
             clearWindowHistoryState();
         }
 
-        return () => pageLoadercontext.resetLoadedBlocks();
+        return () => {
+            streecodePageLoaderContext.resetLoader();
+            streetcodeStore.clearStore();
+        }
     }, [streetcodeUrlState]);
 
     useEffect(() => {
@@ -115,18 +118,8 @@ const StreetcodeContent = () => {
     }, [location.pathname, id]);
 
     return (
-        <div className={`streetcodeContainer ${!pageLoadercontext.isPageLoaded ? 'no-scroll' : ''}`}>
-            {!pageLoadercontext.isPageLoaded && (
-                <div className="loader-container">
-                    <img
-                        className="spinner"
-                        alt=""
-                        src={isMobile
-                            ? require('@images/gifs/Logo-animation_web.webp')
-                            : require('@images/gifs/Logo-animation_mob.webp')}
-                    />
-                </div>
-            )}
+        <div className={`streetcodeContainer ${!streecodePageLoaderContext.isPageLoaded ? 'no-scroll' : ''}`}>
+            {!streecodePageLoaderContext.isPageLoaded && <Loader />}
             <ProgressBar>
                 <MainBlock
                     streetcode={streetcode}
@@ -137,7 +130,7 @@ const StreetcodeContent = () => {
                 <InterestingFactsComponent />
                 <TimelineBlockComponent />
                 <MapBlockComponent/>
-                {pageLoadercontext.isPageLoaded ? (
+                {streecodePageLoaderContext.isPageLoaded ? (
                     <ArtGallery isFillArtsStore />
                 ) : (
                     <></>

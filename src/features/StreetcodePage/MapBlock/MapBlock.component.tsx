@@ -2,7 +2,7 @@ import './MapBlock.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
-import { useStreetcodeDataContext, useToponymContext } from '@stores/root-store';
+import { useStreecodePageLoaderContext, useStreetcodeDataContext, useToponymContext } from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 
 import StreetcodeCoordinatesApi from '@/app/api/additional-content/streetcode-cooridnates.api';
@@ -14,10 +14,13 @@ import StatisticRecord from '@/models/analytics/statisticrecord.model';
 import 'leaflet/dist/leaflet.css';
 
 import MapOSM from './Map/Map.component';
+import Toponym from '@/models/toponyms/toponym.model';
+import StreetcodeBlock from '@/models/streetcode/streetcode-blocks.model';
 
 const MapBlock = () => {
     const { streetcodeStore: { getStreetCodeId } } = useStreetcodeDataContext();
     const toponymContext = useToponymContext();
+    const streecodePageLoaderContext = useStreecodePageLoaderContext();
 
     const [streetcodeCoordinates, setStreetcodeCoordinates] = useState<StreetcodeCoordinate[]>([]);
     const [statisticRecord, setStatisticRecord] = useState<StatisticRecord[]>([]);
@@ -26,10 +29,15 @@ const MapBlock = () => {
         () => {
             const streetcodeId = getStreetCodeId;
             if (streetcodeId > 0) {
+                let toponymPromise: Promise<Toponym[]> = Promise.resolve([]);
                 if (!toponymContext.loaded) {
-                    toponymContext.fetchToponymByStreetcodeId(streetcodeId);
+                    toponymPromise = toponymContext.fetchToponymByStreetcodeId(streetcodeId);
                 }
-                StatisticRecordApi.getAllByStreetcodeId(streetcodeId).then((resp) => setStatisticRecord(resp));
+                const statisticPromise = StatisticRecordApi.getAllByStreetcodeId(streetcodeId)
+                    .then((resp) => setStatisticRecord(resp));
+
+                Promise.all([statisticPromise, toponymPromise])
+                    .then(() => streecodePageLoaderContext.addBlockFetched(StreetcodeBlock.Map));
             }
         },
         [getStreetCodeId],

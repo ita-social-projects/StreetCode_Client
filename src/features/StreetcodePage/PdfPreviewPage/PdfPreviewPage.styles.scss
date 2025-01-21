@@ -1,0 +1,67 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@assets/sass/variables/_variables.layers.scss" as l;
+@use "@sass/_utils.functions.scss" as f;
+
+$bgImg: '@assets/images/catalog/background.webp';
+
+.pdfPreviewContainer {
+  @include mut.bg-image($bgImg, 100%);
+  background-color: c.$streetcode-background-color ;
+  @include mut.flex-center();
+  @include mut.rem-padded(90px, 50px, 25px, 50px);
+}
+
+@media screen and (max-width: 1024px) {
+  .pdfPreviewWrapper {
+    @include mut.rem-padded($top: 64px);
+  }
+  .pdfPreviewContainer {
+    @include mut.rem-padded(20px, 20px, 20px, 20px);
+  }
+}
+
+@media screen and (max-width: 680px) {
+  .pdfPreviewWrapper {
+    @include mut.rem-padded($top: 64px);
+  }
+  .pdfPreviewContainer {
+    @include mut.rem-padded(20px, 20px, 20px, 20px);
+  }
+}
+
+.iframeWrapper {
+  @include mut.sized(100%, 100%);
+  @include mut.flexed(column, stretch, center);
+    iframe {
+    height: 50vw;
+    width: 100%;
+  }
+}
+
+.buttonContainer {
+  @include mut.flexed(row, flex-start, center, wrap, 10px);
+  margin: 20px;
+  width: auto;
+  border: c.$button-border-red-color;
+
+    @media screen and (min-width: 1025px) {
+      align-items: flex-start;
+      justify-content: flex-end;
+  }
+}
+
+.redButton {
+  @include mut.sized(180px, 32px);
+  @include mut.full-rounded(12px);
+  background-color: c.$accented-red-color;
+
+  > * {
+    @include mut.with-font($font-weight: 500, $font-size: 18px);
+  }
+  &:hover {
+    background-color: c.$dark-red-color;
+  }
+}
+
+

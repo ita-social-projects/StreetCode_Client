@@ -7,18 +7,16 @@
 
 .relatedFigureSlide {
     @include mut.sized($width: 278px, $height: 380px);
-    @include mut.full-rounded($rad: 30px);
+    @include mut.full-rounded($rad: 40px);
     border: 3px solid c.$pure-white-color;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    background-size: 285px;
+    background-size: contain;
     background-repeat: no-repeat;
     @include mut.positioned-as();
     @include mut.flexed($justify-content: center, $align-items: flex-end);
 
     @include vnd.vendored(transition, 'all .5s ease');
     cursor: pointer;
-
-    z-index: l.$modal;
 }
 
 .figureSlideText {
@@ -26,7 +24,6 @@
     @include mut.rounded($bottom-left: 30px, $bottom-right: 30px);
 
     background-color: c.$dark-red-color;
-    position: absolute;
     overflow: visible;
     @include vnd.vendored(transition, 'all .5s ease');
 
@@ -55,7 +52,7 @@
 
     &.mobile{
         @include mut.sized($width: 165px, $height: auto);
-        background-color: c.$pure-white-color;
+        background-color: c.$streetcode-background-color ;
 
         .heading {
             @include mut.sized($width: 100%);
@@ -133,6 +130,6 @@
         
         .sliderClass .slider-item-container {
             display: block !important;
-        }   
+        }
     }
 }

@@ -67,6 +67,8 @@ const MainBlockAdmin = React.memo(({
         setTagInput,
         setErrorMessage,
     );
+    const newLineLengthInSymbols = 65;
+    const [teaserValue, setTeaserValue] = useState<string | null>(null);    
 
     const handleInputChange = (fieldName: string, value: unknown) => {
         onChange(fieldName, value);
@@ -146,6 +148,30 @@ const MainBlockAdmin = React.memo(({
             tagsStore.setItemToDelete(tag);
         }
         setSelectedTags(selectedTags.filter((t) => t.title !== deselectedValue));
+    };
+
+    useEffect (() => {
+        if(!teaserValue){
+            setTeaserValue(form.getFieldValue('teaser'));
+        }
+    }, [form.getFieldValue('teaser')])
+
+    const calculateCustomTeaserSymbolsCount = (teaserValue: string) => {
+        const baseSymbolsCount = teaserValue.length;
+        const newLinesCount = (teaserValue.match(/\n/g) || []).length ;
+        return baseSymbolsCount - newLinesCount + newLinesCount * newLineLengthInSymbols;
+    };
+
+    const handleTeaserChange = (fieldName: string, value: string) => {
+        const totalCount = calculateCustomTeaserSymbolsCount(value);
+
+        if (totalCount > teaserMaxCharCount) {
+            form.setFieldsValue({ [fieldName]: teaserValue })
+            return false;
+        }
+
+        setTeaserValue(value);
+        return true;
     };
 
     dayjs.locale('uk');
@@ -400,13 +426,20 @@ const MainBlockAdmin = React.memo(({
                     label="Тизер"
                     name="teaser"
                     className="maincard-item teaser-form-item"
-                    rules={[{ required: true, message: 'Введіть тизер', max: teaserMaxCharCount }]}
+                    rules={[{ required: true, message: 'Введіть тизер'}]}
                 >
                     <Input.TextArea
-                        showCount
+                        value={teaserValue || ""}
+                        showCount={{
+                            formatter: ({value}) => 
+                                `${calculateCustomTeaserSymbolsCount(value)} / ${teaserMaxCharCount}`
+                        }}
                         className="textarea-teaser"
-                        maxLength={teaserMaxCharCount}
-                        onChange={(e) => handleInputChange(Form.Item.name, e.target.value)}
+                        onChange={(e) => {
+                            if(handleTeaserChange('teaser', e.target.value)){
+                                handleInputChange(Form.Item.name, e.target.value)
+                            }   
+                        }}
                     />
                 </Form.Item>
             </div>

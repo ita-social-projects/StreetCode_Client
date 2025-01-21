@@ -68,6 +68,7 @@ const FileUploader:React.FC<Props> = ({
         }
     };
 
+
     const onFileUpload = (uploadType:'image' | 'audio', uplFile:UploadFile, url: string)
     :Promise< ImageNew | Audio> => {
         if (uploadType === 'audio') {
