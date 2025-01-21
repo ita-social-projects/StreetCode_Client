@@ -1,7 +1,7 @@
 import './HeaderDrawerItem.styles.scss';
 
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 interface Props {
     id: number;
@@ -15,20 +15,20 @@ const HeaderDrawerItem = ({
     id, parentActive, text, link, toggleState,
 }: Props) => {
     const [isActive, setActive] = useState(false);
+    const location = useLocation();
     const handleClick = () => {
-        setActive(true);
         toggleState();
     };
+
     useEffect(() => {
-        if (parentActive !== id) {
-            setActive(false);
-        }
-    }, [id, parentActive]);
+        setActive(location.pathname === link || parentActive === id);
+    }, [location, link, parentActive, id]);
+
     return (
         <Link
             to={link}
             className="headerItem"
-            onClick={() => handleClick()}
+            onClick={handleClick}
             id={isActive ? 'active' : ''}
         >
             {text}
