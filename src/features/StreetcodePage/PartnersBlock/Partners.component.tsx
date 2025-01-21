@@ -4,16 +4,18 @@ import { observer } from 'mobx-react-lite';
 import { useState } from 'react';
 import SlickSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
-import { useStreetcodeDataContext } from '@stores/root-store';
+import { useStreecodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
 
 import ImagesApi from '@/app/api/media/images.api';
 import PartnersApi from '@/app/api/partners/partners.api';
 import Partner from '@/models/partners/partners.model';
 
 import PartnerItem from './PartnerItem/PartnerItem.component';
+import StreetcodeBlock from '@/models/streetcode/streetcode-blocks.model';
 
 const PartnersComponent = () => {
     const { streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useStreetcodeDataContext();
+    const streecodePageLoaderContext = useStreecodePageLoaderContext();
     const [partners, setPartners] = useState<Partner[]>([]);
 
     useAsync(
@@ -27,6 +29,7 @@ const PartnersComponent = () => {
                                 res[index].logo = img;
                             }))).then(() => {
                             setPartners(res);
+                            streecodePageLoaderContext.addBlockFetched(StreetcodeBlock.Partnters);
                         });
                     });
             }
