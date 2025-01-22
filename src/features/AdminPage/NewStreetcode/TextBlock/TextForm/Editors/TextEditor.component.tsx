@@ -8,7 +8,7 @@ import { AutoComplete, Button, message, Select } from "antd";
 import FormItem from "antd/es/form/FormItem";
 
 import Editor from "@/app/common/components/Editor/QEditor.component";
-import AddTermModalComponent from "@/app/common/components/modals/Terms/AddTerm/AddTermModal.component";
+import AddTermModal from "@/app/common/components/modals/Terms/AddTerm/AddTermModal.component";
 import { useAsync } from "@/app/common/hooks/stateful/useAsync.hook";
 import { Term, Text } from "@/models/streetcode/text-contents.model";
 
@@ -140,7 +140,6 @@ const TextEditor = ({
                     )}
                 </AutoComplete>
             </FormItem>
-
             <div className="display-flex-row">
                 <Button
                     className="streetcode-custom-button button-margin-vertical button-margin-right"
@@ -157,8 +156,7 @@ const TextEditor = ({
                     Видалити пов&#39;язаний термін
                 </Button>
             </div>
-
-            <AddTermModalComponent handleAdd={handleAddSimple} term={term} setTerm={setTerm} />
+            <AddTermModal handleAdd={handleAddSimple} term={term} setTerm={setTerm} />
         </FormItem>
     );
 };
