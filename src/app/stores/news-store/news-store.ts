@@ -101,6 +101,17 @@ export default class NewsStore {
             });
     };
 
+    public getAllPublished = async (pageSize?: number) => {
+        await NewsApi.getAllPublished(this.CurrentPage, pageSize ?? this.paginationInfo.PageSize)
+            .then((resp) => {
+                this.PaginationInfo.TotalItems = resp.totalAmount;
+                this.setNewsMap(resp.news);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
+
     public createNews = async (news: News) => {
         await NewsApi.create(news)
             .then(() => this.getAll(this.PaginationInfo.PageSize))
