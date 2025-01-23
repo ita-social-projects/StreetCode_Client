@@ -63,7 +63,7 @@ const Newss: React.FC = observer(() => {
 
         },
         {
-            title: 'Дата створення',
+            title: 'Дата публікації',
             dataIndex: 'creationDate',
             key: 'creationDate',
             width: '20%',

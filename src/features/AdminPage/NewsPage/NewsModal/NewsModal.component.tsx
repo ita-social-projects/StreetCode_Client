@@ -408,7 +408,7 @@ const NewsModal: React.FC<{
 
                         <Form.Item
                             name="creationDate"
-                            label="Дата створення: "
+                            label="Дата публікації: "
                             rules={[{ required: true, message: 'Введіть дату' }]}
                         >
                             <DatePicker 
