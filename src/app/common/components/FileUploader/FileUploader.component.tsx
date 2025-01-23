@@ -1,4 +1,5 @@
 import * as React from 'react';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { UploadRequestOption } from 'rc-upload/lib/interface';
 
 import Upload, { RcFile, UploadChangeParam, UploadFile, UploadProps } from 'antd/es/upload';
@@ -148,7 +149,7 @@ const FileUploader:React.FC<Props> = ({
     return (
         enableCrop
             ? (
-                <ImgCrop aspect={cropAspect} rotationSlider>
+                <ImgCrop modalTitle="Редагування фото" aspect={cropAspect} rotationSlider>
                     <Upload
                         {...uploadProps}
                         beforeUpload={checkFileType}
