@@ -4,14 +4,14 @@ import './News.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import React, { useState } from 'react';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import NewsModal from '@features/AdminPage/NewsPage/NewsModal/NewsModal.component';
 import PageBar from '@features/AdminPage/PageBar/PageBar.component';
 import useMobx, { useModalContext } from '@stores/root-store';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 
-import { Button, Empty, Pagination } from 'antd';
+import { Button, Empty, Pagination, Tooltip } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
@@ -73,6 +73,11 @@ const Newss: React.FC = observer(() => {
             render: (value: string) => (
                 <div key={value} className="partner-table-item-name">
                     <p>{value ? dayjs(value).format('YYYY-MM-DD') : ''}</p>
+                    {value && dayjs(value).isAfter(dayjs()) && 
+                    <Tooltip title="Заплановано">
+                        <InfoCircleOutlined style={{ width: '0.8em', height: '0.8em' }} />
+                    </Tooltip>
+                    }
                 </div>
             ),
         },
