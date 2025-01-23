@@ -11,200 +11,199 @@ $bgImg: '@assets/images/streetcode-card/background.webp';
 
   overflow: clip;
   @include mut.rem-padded($top: 82px);
-  @include mut.bg-image($bgImg, auto);
-  background-color: c.$streetcode-background-color ;
+  background: url($bgImg) no-repeat top / 100%;
   overflow-anchor: none;
-
-}
-div[aria-hidden="true"] {
-  display: none;
-}
-.mainUserBlock{
-  @include mut.flexed($direction: column, $align-items: center,
-  $justify-content: stretch,
-  $wrap: nowrap,
-  $gap: 60px);
-}
-.userContent {
-  width: f.pxToRem(1325px);
-  padding-top: f.pxToRem(37px);
-  margin-top: f.pxToRem(34px);
-  @include mut.flex-centered();
-  ::-webkit-scrollbar {
-    width: f.pxToRem(5px);
+  .mainUserBlock{
+    @include mut.flexed($direction: column, $align-items: center,
+    $justify-content: stretch,
+    $wrap: nowrap,
+    $gap: 60px);
   }
-}
-.userCard {
-  display: flex;
-  flex-direction: row;
-  @include mut.rem-padded($top: 0px, $right: 0px, $bottom: 0px, $left: 0px);
-  @include mut.sized(1325px, 560px);
-  @include mut.full-rounded(50px);
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-  line-height: f.pxToRem(19px);
-  background-color: c.$pure-white-color;
-}
-.avatar {
-  @include mut.full-rounded(53px);
-  flex: 0 0 f.pxToRem(420px);
-  background-color: c.$pure-white-color;
-  justify-self: flex-start;
-}
-.avatarContent {
-  background-color: c.$accented-gray-color;
-  @include mut.border(c.$pure-white-color,0px,solid);
-  @include mut.full-rounded(50px);
-  @include mut.parent-sized();
-  @include mut.flex-centered();
-
-}
-.userInfoWrapper {
-  @include mut.rem-padded(49px, 23px, 0px, 51px);
-  height: auto;
-  @include mut.flexed($direction: column,
-  $justify-content: space-between,
-  $wrap: nowrap);
-}
-.userInfo{
-  @include mut.flexed($direction: column,
-  $justify-content: space-between,
-  $wrap: nowrap,
-  $gap: 10px);
-}
-.userIdentity{
-  @include mut.flexed($justify-content: flex-start, $gap: 16px);
-}
-.userIndex {
-  color: c.$dark-red-color;
-  @include mut.with-font(ft.$roboto-font, $font-weight: 500, $font-size: 20px);
-  line-height: f.pxToRem(23.44px);
-}
-.userLabel{
-  @include mut.rem-padded(2px, 16px, 2px, 16px);
-  @include mut.rounded(15px, 15px, 15px, 15px);
-  @include mut.colored(c.$white-color, c.$dark-red-color);
-  @include mut.with-font(ft.$roboto-font, $font-weight: 500, $font-size: 16px);
-}
-.userFullName {
-  @include mut.rem-padded(0px, 10px, 7px, 0px);
-  @include mut.with-font(ft.$closer-text-font, $font-weight: 600, $font-size: 36px);
-  color: c.$lighter-black-color;
-  line-height: f.pxToRem(47.52px);
-}
-.userContacts {
-  @include mut.flexed($justify-content: flex-start, $align-items: center, $gap: 14px);
-  font-size: f.pxToRem(20px);
-  line-height: f.pxToRem(23px);
-}
-.separator {
-  @include mut.sized(11px, 11px);
-  display: inline-block;
-  background-color: c.$accented-red-color;
-}
-.tagContainer{
-  @include mut.rem-margined(13px, 0, 13px, 0);
-}
-.userAboutYourself{
-  @include mut.with-font(ft.$closer-text-font, $font-weight: 300, $font-size: 20px);
-  line-height: f.pxToRem(23px);
-}
-.cardUserFooter {
-  width: 100%;
-  position: relative;
-  @include mut.rem-margined(40px, 0, 34px, 0);
-  @include mut.flexed($justify-content: flex-start, $gap: 20px);
-  .ant-btn-primary:disabled {
-    background-color: c.$lighter-gray-color;
-    color: c.$pure-white-color;
-  }
-}
-.cardFooterEditButton {
-  @include mut.rem-padded(18px, 26px, 18px, 26px);
-  @include mut.sized(300px, 73px);
-  @include mut.flex-centered();
-  @include mut.full-rounded(14px);
-  @include mut.with-font($font-weight: 500);
-  @include mut.flex-centered($direction: row, $gap: 15px);
-}
-.editButton{
-  border: none;
-  @include mut.colored(c.$white-color, c.$accented-red-color);
-  //@include mut.with-font($font-weight: 300, $font-size: 20px);
-  &:hover {
-    box-shadow: 0 4px 4px rgba(219, 52, 36, 0.18);
-  }
-}
-
-.userImg  {
-  object-fit: fill;
-  margin: auto;
-  @include mut.sized(420px, 560px);
-  @include mut.full-rounded(50px);
-}
-
-.accountContent{
-  width: f.pxToRem(1325px);
-  ::-webkit-scrollbar {
-    width: f.pxToRem(5px);
-  }
-}
-
-.accountCard{
-  @include mut.flexed(column);
-  @include mut.rem-padded($top: 0px, $right: 0px, $bottom: 0px, $left: 0px);
-  @include mut.sized(1325px, 710px);
-  @include mut.full-rounded(50px);
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-  line-height: f.pxToRem(19px);
-  background-color: c.$pure-white-color;
-}
-.accountNav{
-  @include mut.sized(100%, 80px);
-  @include mut.rem-padded(40px, 40px, 5px, 40px);
-  border-bottom: 5px solid c.$darkish-gray-color;
-  @include mut.flexed(row, center, flex-start, wrap, $gap: 30px);
-}
-.navContainer{
-  @include mut.flexed(row, $justify-content: center, $gap: 16px);
-  @include mut.rem-padded(0px, 8px, 10px, 8px);
-  @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px);
-  cursor: pointer;
-
-  &:hover{
-    border-bottom: 5px solid c.$transparent-redish-gray-color;
-    color: c.$dark-red-color;
-    .navSvg{
-      fill: c.$dark-red-color;
+  .userContent {
+    width: f.pxToRem(1325px);
+    padding-top: f.pxToRem(37px);
+    margin-top: f.pxToRem(34px);
+    @include mut.flex-centered();
+    ::-webkit-scrollbar {
+      width: f.pxToRem(5px);
     }
   }
-}
-.navButton{
-  @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px);
-}
+  .userCard {
+    display: flex;
+    flex-direction: row;
+    @include mut.rem-padded($top: 0px, $right: 0px, $bottom: 0px, $left: 0px);
+    @include mut.sized(1325px, 560px);
+    @include mut.full-rounded(50px);
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    line-height: f.pxToRem(19px);
+    background-color: c.$pure-white-color;
+  }
+  .avatar {
+    @include mut.full-rounded(53px);
+    flex: 0 0 f.pxToRem(420px);
+    background-color: c.$pure-white-color;
+    justify-self: flex-start;
+  }
+  .avatarContent {
+    background-color: c.$accented-gray-color;
+    @include mut.border(c.$pure-white-color,0px,solid);
+    @include mut.full-rounded(50px);
+    @include mut.parent-sized();
+    @include mut.flex-centered();
 
-.navSvg{
-  @include mut.sized(25px, 25px);
-  fill: black;
-}
+  }
+  .userInfoWrapper {
+    @include mut.rem-padded(49px, 23px, 0px, 51px);
+    height: auto;
+    @include mut.flexed($direction: column,
+    $justify-content: space-between,
+    $wrap: nowrap);
+  }
+  .userInfo{
+    @include mut.flexed($direction: column,
+    $justify-content: space-between,
+    $wrap: nowrap,
+    $gap: 10px);
+  }
+  .userIdentity{
+    @include mut.flexed($justify-content: flex-start, $gap: 16px);
+  }
+  .userIndex {
+    color: c.$dark-red-color;
+    @include mut.with-font(ft.$roboto-font, $font-weight: 500, $font-size: 20px);
+    line-height: f.pxToRem(23.44px);
+  }
+  .userLabel{
+    @include mut.rem-padded(2px, 16px, 2px, 16px);
+    @include mut.rounded(15px, 15px, 15px, 15px);
+    @include mut.colored(c.$white-color, c.$dark-red-color);
+    @include mut.with-font(ft.$roboto-font, $font-weight: 500, $font-size: 16px);
+  }
+  .userFullName {
+    @include mut.rem-padded(0px, 10px, 7px, 0px);
+    @include mut.with-font(ft.$closer-text-font, $font-weight: 600, $font-size: 36px);
+    color: c.$lighter-black-color;
+    line-height: f.pxToRem(47.52px);
+  }
+  .userContacts {
+    @include mut.flexed($justify-content: flex-start, $align-items: center, $gap: 14px);
+    font-size: f.pxToRem(20px);
+    line-height: f.pxToRem(23px);
+  }
+  .separator {
+    @include mut.sized(11px, 11px);
+    display: inline-block;
+    background-color: c.$accented-red-color;
+  }
+  .tagContainer{
+    @include mut.rem-margined(13px, 0, 13px, 0);
+  }
+  .userAboutYourself{
+    @include mut.with-font(ft.$closer-text-font, $font-weight: 300, $font-size: 20px);
+    line-height: f.pxToRem(23px);
+  }
+  .cardUserFooter {
+    width: 100%;
+    position: relative;
+    @include mut.rem-margined(40px, 0, 34px, 0);
+    @include mut.flexed($justify-content: flex-start, $gap: 20px);
+    .ant-btn-primary:disabled {
+      background-color: c.$lighter-gray-color;
+      color: c.$pure-white-color;
+    }
+  }
+  .cardFooterEditButton {
+    @include mut.rem-padded(18px, 26px, 18px, 26px);
+    @include mut.sized(300px, 73px);
+    @include mut.flex-centered();
+    @include mut.full-rounded(14px);
+    @include mut.with-font($font-weight: 500);
+    @include mut.flex-centered($direction: row, $gap: 15px);
+  }
+  .editButton{
+    border: none;
+    @include mut.colored(c.$white-color, c.$accented-red-color);
+    //@include mut.with-font($font-weight: 300, $font-size: 20px);
+    &:hover {
+      box-shadow: 0 4px 4px rgba(219, 52, 36, 0.18);
+    }
+  }
 
-.pencilSvg{
-  width: f.pxToRem(25px);
-  fill: c.$white-color;
-}
-.active{
-  border-bottom: 5px solid c.$accented-red-color;
-  color: c.$accented-red-color;
-  &:hover{
+  .userImg  {
+    object-fit: fill;
+    margin: auto;
+    @include mut.sized(420px, 560px);
+    @include mut.full-rounded(50px);
+  }
+
+  .accountContent{
+    width: f.pxToRem(1325px);
+    ::-webkit-scrollbar {
+      width: f.pxToRem(5px);
+    }
+  }
+
+  .accountCard{
+    @include mut.flexed(column);
+    @include mut.rem-padded($top: 0px, $right: 0px, $bottom: 0px, $left: 0px);
+    @include mut.sized(1325px, 710px);
+    @include mut.full-rounded(50px);
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    line-height: f.pxToRem(19px);
+    background-color: c.$pure-white-color;
+  }
+  .accountNav{
+    @include mut.sized(100%, 80px);
+    @include mut.rem-padded(40px, 40px, 5px, 40px);
+    border-bottom: 5px solid c.$darkish-gray-color;
+    @include mut.flexed(row, center, flex-start, wrap, $gap: 30px);
+  }
+  .navContainer{
+    @include mut.flexed(row, $justify-content: center, $gap: 16px);
+    @include mut.rem-padded(0px, 8px, 10px, 8px);
+    @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px);
+    cursor: pointer;
+
+    &:hover{
+      border-bottom: 5px solid c.$transparent-redish-gray-color;
+      color: c.$dark-red-color;
+      .navSvg{
+        fill: c.$dark-red-color;
+      }
+    }
+  }
+  .navButton{
+    @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 20px);
+  }
+
+  .navSvg{
+    @include mut.sized(25px, 25px);
+    fill: black;
+  }
+
+  .pencilSvg{
+    width: f.pxToRem(25px);
+    fill: c.$white-color;
+  }
+  .active{
     border-bottom: 5px solid c.$accented-red-color;
     color: c.$accented-red-color;
+    &:hover{
+      border-bottom: 5px solid c.$accented-red-color;
+      color: c.$accented-red-color;
+      .navSvg{
+        fill: c.$accented-red-color;
+      }
+    }
     .navSvg{
       fill: c.$accented-red-color;
     }
   }
- .navSvg{
-   fill: c.$accented-red-color;
- }
+  .accountInfo{
+    @include mut.sized(100%, 100%);
+  }
 }
-.accountInfo{
-  @include mut.sized(100%, 100%);
+div[aria-hidden="true"] {
+  display: none;
 }
+

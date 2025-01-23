@@ -73,43 +73,46 @@ const UserProfile = () => {
                                         />
                                     </div>
                                 </div>
-                                <div className="userInfoWrapper">
-                                    <div className="userInfo">
-                                        <div className="userIdentity">
-                                            <div className="userIndex">
-                                                {user?.userName}
+                                {user
+                                && (
+                                    <div className="userInfoWrapper">
+                                        <div className="userInfo">
+                                            <div className="userIdentity">
+                                                <div className="userIndex">
+                                                    {user?.userName}
+                                                </div>
+                                                <div className="userLabel">
+                                                    {user?.role}
+                                                </div>
                                             </div>
-                                            <div className="userLabel">
-                                                {user?.role}
+                                            <h2 className="userFullName">
+                                                {`${user?.name} ${user?.surname}`}
+                                            </h2>
+                                            <div className="userContacts">
+                                                {user?.email}
+                                                <div className={user?.phoneNumber ? 'separator' : ''} />
+                                                {user?.phoneNumber}
+                                            </div>
+                                            <div className="tagListWrapper">
+                                                <TagList
+                                                    tags={user?.expertises}
+                                                />
+                                            </div>
+                                            <div className="userAboutYourself">
+                                                {user?.aboutYourself}
                                             </div>
                                         </div>
-                                        <h2 className="userFullName">
-                                            {`${user?.name} ${user?.surname}`}
-                                        </h2>
-                                        <div className="userContacts">
-                                            {user?.email}
-                                            <div className={user?.phoneNumber ? 'separator' : ''} />
-                                            {user?.phoneNumber}
-                                        </div>
-                                        <div className="tagListWrapper">
-                                            <TagList
-                                                tags={user?.expertises}
-                                            />
-                                        </div>
-                                        <div className="userAboutYourself">
-                                            {user?.aboutYourself}
+                                        <div className="cardUserFooter">
+                                            <Button
+                                                onClick={handleEditProfile}
+                                                className="cardFooterEditButton editButton"
+                                            >
+                                                <Pencil className="pencilSvg" />
+                                                <span>Редагувати профіль</span>
+                                            </Button>
                                         </div>
                                     </div>
-                                    <div className="cardUserFooter">
-                                        <Button
-                                            onClick={handleEditProfile}
-                                            className="cardFooterEditButton editButton"
-                                        >
-                                            <Pencil className="pencilSvg" />
-                                            <span>Редагувати профіль</span>
-                                        </Button>
-                                    </div>
-                                </div>
+                                )}
                             </div>
                         </div>
                         <div className="accountContent">
@@ -137,13 +140,12 @@ const UserProfile = () => {
                         </div>
                     </div>
                 </div>
-                {isModalOpen && (
-                    <EditUserModal
-                        isOpen={isModalOpen}
-                        onClose={handleCloseModal}
-                        image={user?.avatarId ? imagesStore.getImage(user.avatarId) : undefined}
-                    />
-                )}
+                <EditUserModal
+                    isOpen={isModalOpen}
+                    onClose={handleCloseModal}
+                    image={user?.avatarId ? imagesStore.getImage(user.avatarId) : undefined}
+                />
+
             </div>
         ) : <Loader />
     );
