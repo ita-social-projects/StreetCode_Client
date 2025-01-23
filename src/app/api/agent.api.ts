@@ -46,7 +46,7 @@ const createAxiosInstance = (baseUrl: string) => {
                         return instance.request(response.config);
                     })
                     .catch((error) => {
-                        redirect(FRONTEND_ROUTES.ADMIN.LOGIN);
+                        redirect(FRONTEND_ROUTES.AUTH.LOGIN);
                         return Promise.reject(error);
                     });
             }
@@ -98,7 +98,11 @@ const createAxiosInstance = (baseUrl: string) => {
         return config;
     });
 
-    instance.defaults.headers.common.Authorization = `Bearer ${AuthService.getAccessToken()}`;
+    if (AuthService) {
+        instance.defaults.headers.common.Authorization = `Bearer ${AuthService.getAccessToken()}`;
+    } else {
+        console.error('AuthService is not initialized');
+    }
 
     return {
         get: async <T> (url: string, params?: URLSearchParams | GetAllToponymsRequest) => instance.get<T>(url, { params })

@@ -1,4 +1,5 @@
 ﻿import parsePhoneNumber from '@utils/parsePhoneNumber';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { RuleObject } from 'rc-field-form/lib/interface';
 
 import { PhoneNumber } from 'antd-phone-input';
