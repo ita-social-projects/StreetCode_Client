@@ -3,7 +3,7 @@ import UsersApi from '@api/users/users.api';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 
 import AuthApi from '@/app/api/authentication/auth.api';
-import { RefreshTokenRequest, UserRegisterRequest } from '@/models/user/user.model';
+import { RefreshTokenRequest, UserRegisterRequest, UserRole } from '@/models/user/user.model';
 
 interface CustomJwtPayload extends JwtPayload {
     role: string;
@@ -146,6 +146,18 @@ export default class AuthService {
         if (!decodedToken || !decodedToken.role) return false;
 
         return decodedToken.role === 'Admin';
+    }
+
+    public static getUserRole(): UserRole | null {
+        const token = this.getAccessToken();
+        if (!token) return null;
+
+        const decodedToken = this.getDecodedAccessToken(token);
+        if (!decodedToken || !decodedToken.role) return null;
+
+        const role = decodedToken.role as keyof typeof UserRole;
+
+        return UserRole[role];
     }
 
     static async googleLoginAsync(idToken: string | undefined): Promise<void> {

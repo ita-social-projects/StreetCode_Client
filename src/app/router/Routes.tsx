@@ -7,6 +7,7 @@ import Login from '@features/Auth/Login/Login.component';
 import RegistrationPage from '@features/Auth/RegistrationPage/RegistrationPage.component';
 import UserProfile from '@features/UserProfile/UserProfile.component';
 import App from '@layout/app/App.component';
+import { UserRole } from '@models/user/user.model';
 import PDFPreviewPage from '@streetcode/PdfPreviewPage/PdfPreviewPage';
 import StreetcodeContent from '@streetcode/Streetcode.component';
 
@@ -33,31 +34,31 @@ const router = createBrowserRouter(createRoutesFromElements(
     <Route path="/" element={<App />}>
         <Route
             path={FRONTEND_ROUTES.ADMIN.BASE}
-            element={<ProtectedComponent isForAdmin><AdminPage /></ProtectedComponent>}
+            element={<ProtectedComponent allowedRoles={[UserRole.Admin]}><AdminPage /></ProtectedComponent>}
         />
         <Route
             path={`${FRONTEND_ROUTES.ADMIN.BASE}/:id`}
-            element={<ProtectedComponent isForAdmin><StreetcodeContent /></ProtectedComponent>}
+            element={<ProtectedComponent allowedRoles={[UserRole.Admin]}><StreetcodeContent /></ProtectedComponent>}
         />
         <Route
             path={`${FRONTEND_ROUTES.ADMIN.EDIT_STREETCODE}/:id`}
-            element={<ProtectedComponent isForAdmin><NewStreetcode /></ProtectedComponent>}
+            element={<ProtectedComponent allowedRoles={[UserRole.Admin]}><NewStreetcode /></ProtectedComponent>}
         />
         <Route
             path={FRONTEND_ROUTES.ADMIN.NEW_STREETCODE}
-            element={<ProtectedComponent isForAdmin><NewStreetcode /></ProtectedComponent>}
+            element={<ProtectedComponent allowedRoles={[UserRole.Admin]}><NewStreetcode /></ProtectedComponent>}
         />
         <Route
             path={FRONTEND_ROUTES.ADMIN.EDITOR}
-            element={<ProtectedComponent isForAdmin><EditorPage /></ProtectedComponent>}
+            element={<ProtectedComponent allowedRoles={[UserRole.Admin]}><EditorPage /></ProtectedComponent>}
         />
         <Route
             path={FRONTEND_ROUTES.ADMIN.PARTNERS}
-            element={<ProtectedComponent isForAdmin><Partners /></ProtectedComponent>}
+            element={<ProtectedComponent allowedRoles={[UserRole.Admin]}><Partners /></ProtectedComponent>}
         />
         <Route
             path={FRONTEND_ROUTES.ADMIN.CONTEXT}
-            element={<ProtectedComponent isForAdmin><ContextMainPage /></ProtectedComponent>}
+            element={<ProtectedComponent allowedRoles={[UserRole.Admin]}><ContextMainPage /></ProtectedComponent>}
         />
         <Route
             path={`${FRONTEND_ROUTES.ADMIN.ANALYTICS}/:id`}
@@ -66,21 +67,21 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route
             path={FRONTEND_ROUTES.ADMIN.DICTIONARY}
             element={(
-                <ProtectedComponent isForAdmin>
+                <ProtectedComponent allowedRoles={[UserRole.Admin]}>
                     <TermDictionary />
                 </ProtectedComponent>
             )}
         />
         <Route
             path={FRONTEND_ROUTES.ADMIN.NEWS}
-            element={<ProtectedComponent isForAdmin><News /></ProtectedComponent>}
+            element={<ProtectedComponent allowedRoles={[UserRole.Admin]}><News /></ProtectedComponent>}
         />
         <Route path={FRONTEND_ROUTES.OTHER_PAGES.CATALOG} element={<StreetcodeCatalog />} />
 
         <Route
             path={FRONTEND_ROUTES.ADMIN.TEAM}
             element={(
-                <ProtectedComponent isForAdmin>
+                <ProtectedComponent allowedRoles={[UserRole.Admin]}>
                     <TeamPage />
                 </ProtectedComponent>
             )}
@@ -88,7 +89,7 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route
             path={FRONTEND_ROUTES.ADMIN.JOBS}
             element={(
-                <ProtectedComponent isForAdmin>
+                <ProtectedComponent allowedRoles={[UserRole.Admin]}>
                     <JobPage />
                 </ProtectedComponent>
             )}
@@ -113,7 +114,7 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route
             path={FRONTEND_ROUTES.OTHER_PAGES.PROFILE}
             element={(
-                <ProtectedComponent isForAdmin={false}>
+                <ProtectedComponent allowedRoles={[UserRole.User]}>
                     <UserProfile />
                 </ProtectedComponent>
             )}
