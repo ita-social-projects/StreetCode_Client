@@ -259,8 +259,11 @@ export const API_ROUTES = {
     },
     USERS: {
         GET_BY_USERNAME: 'Users/GetByUserName',
+        EXIST_WITH_USERNAME: 'Users/ExistWithUserName',
         UPDATE: 'Users/Update',
         DELETE: 'Users/Delete',
+        FORGOT_PASSWORD: 'Users/ForgotPassword',
+        FORGOT_PASSWORD_UPDATE: 'Users/UpdateForgotPassword',
     },
     EXPERTISES: {
         GET_ALL: 'Expertises/GetAll',
