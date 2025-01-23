@@ -4,12 +4,13 @@
 import { observer } from 'mobx-react-lite';
 import { FC, ReactNode } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
+import { UserRole } from '@models/user/user.model';
 
 import FRONTEND_ROUTES from '../constants/frontend-routes.constants';
 import AuthService from '../services/auth-service/AuthService';
 
-type PropsWithChildren = { children: ReactNode, isForAdmin: boolean };
-const ProtectedComponent:FC<PropsWithChildren> = ({ children, isForAdmin }) => {
+type PropsWithChildren = { children: ReactNode, allowedRoles: UserRole[] | null };
+const ProtectedComponent:FC<PropsWithChildren> = ({ children, allowedRoles = null }) => {
     const navigate = useNavigate();
     const isLoggedIn = AuthService.isLoggedIn();
 
@@ -19,9 +20,13 @@ const ProtectedComponent:FC<PropsWithChildren> = ({ children, isForAdmin }) => {
         return null;
     }
 
-    if (isForAdmin && !AuthService.isAdmin()) {
-        return <Navigate to={FRONTEND_ROUTES.OTHER_PAGES.ERROR404} />;
+    const currentUserRole = AuthService.getUserRole();
+
+    if (currentUserRole && !allowedRoles?.includes(currentUserRole)) {
+        navigate(FRONTEND_ROUTES.OTHER_PAGES.ERROR404);
     }
+
+    navigate(FRONTEND_ROUTES.BASE);
 
     return (
         <>
