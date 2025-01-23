@@ -1,0 +1,84 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/variables/_variables.fonts.scss" as ft;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/_utils.functions.scss" as f;
+
+.registerFormWrapper{
+  @include mut.flexed($justify-content: center);
+  @include mut.rem-margined(100px, 100px, 100px, 100px);
+  .register-form{
+    border-radius: 60px;
+    box-shadow: 13px 13px 32px 0px rgba(0, 0, 0, 0.21);
+    background: rgb(255, 255, 255);
+    @include mut.sized(560px, auto);
+    @include mut.rem-padded(48px, 60px, 48px, 60px);
+    @include mut.flexed(column, $align-items: center, $gap: 28px);
+    .registerTitleWrapper{
+      @include mut.flexed(column,$align-items: center, $justify-content: center);
+      .registerTitle{
+        @include mut.with-font($font-family: ft.$roboto-font,
+        $font-weight: 700,
+        $font-size: 40px,
+        );
+        @include mut.colored($color: c.$lighter-black-color);
+      }
+      .registerSubTitle{
+        @include mut.with-font($font-family: ft.$roboto-font,
+        $font-weight: 400,
+        $font-size: 20px,
+        );
+        @include mut.colored($color: c.$normal-gray-color);
+      }
+    }
+
+    .ant-form-item{
+      @include mut.sized(100%, auto);
+      margin: 0;
+    }
+
+    .registerInputField
+    {
+      @include mut.sized(100%, 50px);
+    }
+
+    .ant-btn{
+      @include mut.sized(100%, auto);
+    }
+
+    .center {
+      display: flex;
+      justify-content: center;
+    }
+
+    .registerButton{
+      @include mut.sized(100%, 60px);
+
+      p{
+        @include mut.with-font($font-family: ft.$roboto-font,
+        $font-weight: 600,
+        $font-size: 20px,
+        );
+        color: c.$white-color;
+      }
+    }
+
+    .loginNav{
+      text-align: center;
+      @include mut.sized(100%, auto);
+      @include mut.with-font($font-family: ft.$roboto-font,
+      $font-weight: 400,
+      $font-size: 15px,
+      $font-style: ft.$roboto-font-style);
+      @include mut.colored($color: c.$normal-gray-color);
+
+      .loginNavButton{
+        @include mut.with-font($font-family: ft.$roboto-font,
+        $font-weight: 600,
+        $font-size: 15px,
+        $font-style: ft.$roboto-font-style);
+        color: c.$dark-red-color;
+        cursor: pointer;
+      }
+    }
+  }
+}
