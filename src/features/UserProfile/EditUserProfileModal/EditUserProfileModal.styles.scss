@@ -22,24 +22,148 @@
 }
 
 .modalEditContainer {
+  .ant-modal-title{
+    text-align: center;
+    @include mut.with-font(
+    $font-family: ft.$roboto-font,
+    $font-weight: 500,
+    $font-size: 24px,
+    $font-style: ft.$roboto-font-style);
+  }
+  .editFormWrapper{
+    @include mut.flexed(
+    row,
+    $justify-content: center,
+    $align-items: flex-start,
+    $gap: 51px);
+    .editFormImageWrapper{
+      @include mut.sizedImportant(256px, 584px);
+      @include mut.flexed(column, $align-items: center,
+      $justify-content: flex-start,
+      $gap: 25px);
+      .ant-form-item{
+        @include mut.rem-margined(0, 0, 0, 0);
+      }
+
+      .ant-form-item-explain-error,
+      .formatText{
+        text-align: center;
+      }
+
+      .imageButtonWrapper{
+        @include mut.flexed(column, $align-items: center, $gap: 16px);
+        @include mut.sized(100%, auto);
+
+        .editImageButton,
+        .removeImageButton{
+          span{
+            height: auto;
+          }
+          @include mut.with-font(
+                  $font-family: ft.$roboto-font,
+                  $font-weight: 500,
+                  $font-size: 20px);
+          @include mut.sized(100%, 53px);
+          @include mut.rem-padded(0, 24px, 0, 24px);
+          @include mut.full-rounded(14px);
+        }
+
+        .editImageButton{
+          @include mut.colored(c.$white-color, c.$accented-red-color);
+        }
+
+        .removeImageButton{
+          @include mut.border($color:c.$accented-red-color, $border-width:2px, $type:solid);
+          @include mut.colored(c.$accented-red-color, c.$white-color);
+        }
+      }
+    }
+
+    .editFormUserInfoWrapper{
+      @include mut.sizedImportant(489px, auto);
+
+      .formItemFirst{
+        .ant-form-item{
+          @include mut.rem-margined(0, 0, 0, 0);
+        }
+      }
+
+      .ant-form-item{
+        @include mut.rem-margined(8px, 0, 0, 0);
+        .ant-form-item-label{
+          @include mut.rem-padded(0, 0, 0, 0)
+        }
+      }
+
+      .formItem{
+        .ant-form-item-control{
+          .ant-form-item-control-input{
+            .ant-form-item-control-input-content{
+              .ant-phone-input-wrapper{
+                .ant-input-group-wrapper{
+                  .ant-input-wrapper{
+                    #phoneNumber{
+                      @include mut.sized(100%, 44px);
+                    }
+                  }
+                }
+              }
+              #email{
+                @include mut.sized(100%, 44px);
+              }
+            }
+          }
+        }
+      }
+
+      .formItem {
+        .ant-form-item-control {
+          .ant-form-item-control-input {
+            .ant-form-item-control-input-content {
+              .ant-input-affix-wrapper,
+              .ant-select-selector {
+                @include mut.sized(100%, 44px)
+              }
+            }
+          }
+        }
+      }
+      .areaTextInput{
+        .ant-input{
+          max-height: f.pxToEm(350px);
+          min-height: f.pxToEm(350px);
+        }
+      }
+    }
+  }
+
   &.ant-modal {
-    @include mut.sizedImportant(835px, auto);
+    @include mut.sizedImportant(886px, auto);
 
     .ant-modal-close {
-      @include mut.positioned-as(absolute, $right: 25px, $top: 25px);
-      @include mut.circular(80px, c.$lighter-gray-color);
-      @include mut.colored(c.$white-color, c.$light-border-color);
-      @include mut.sized(40px, 40px);
+      box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+      @include mut.positioned-as(absolute, $right: -33px, $top: -33px);
+      @include mut.circular(80px, c.$white-color);
+      @include mut.colored($color: c.$light-border-color);
+      @include mut.sized(101px, 101px);
+      svg{
+        @include mut.sized(36px, 36px);
+      }
 
       &:hover {
-        background-color: c.$normal-gray-color;
+        background-color: c.$accented-gray-color;
       }
     }
 
     .ant-modal-content {
       @include mut.full-rounded(50px, $overflow: visible);
       padding: f.pxToRem(40px);
-      @include mut.sized(835px, auto);
+      @include mut.sized(886px, auto);
+      @include mut.flexed(
+              column,
+              $justify-content: center,
+              $align-items: center,
+              $gap: 51px);
 
       .center{
         display: flex;
@@ -103,20 +227,26 @@
       }
       .deleteUser,
       .saveButton{
+        @include mut.rem-margined(25px, 0, 0, 0);
+        @include mut.flexed(row, $justify-content: center);
         .ant-btn{
           @include mut.colored(c.$white-color, c.$accented-red-color);
-          @include mut.rem-padded(15px, 24px, 15px, 24px);
+          @include mut.rem-padded(0, 24px, 0, 24px);
           @include mut.full-rounded(14px);
+          @include mut.with-font(
+                  $font-family: ft.$roboto-font,
+                  $font-weight: 500,
+                  $font-size: 20px);
         }
       }
       .saveButton{
         .ant-btn{
-          @include mut.sizedImportant(193px, auto);
+          @include mut.sizedImportant(279px, 53px);
         }
       }
       .deleteUser{
         .ant-btn{
-          @include mut.sizedImportant(300px, auto);
+          @include mut.sizedImportant(221px, 53px);
         }
       }
       .lineSeparator{
@@ -125,14 +255,19 @@
         @include mut.rem-margined(25px, 0, 25px, 0)
       }
       .deleteUserText{
-        @include mut.flexed(column, $gap: 25px);
+        @include mut.flexed(column, $gap: 10px);
+        @include mut.with-font($font-family: ft.$roboto-font, $font-size: 16px);
         text-align: start;
+        ul{
+          margin-left: f.pxToEm(20px);
+          list-style: inside;
+        }
+        .boldText{
+          font-weight: 700;
+        }
         .mainText{
-          @include mut.flexed(column, $gap: 25px);
+          @include mut.flexed(column);
           @include mut.with-font($font-size: 16px);
-          .boldText{
-            font-weight: 700;
-          }
         }
       }
 
@@ -154,20 +289,98 @@
 }
 
 .modalDeleteContainer{
-  @include mut.sizedImportant(500px, auto);
+  @include mut.sizedImportant(835px, auto);
   .ant-modal-content{
-    @include mut.full-rounded(25px);
-    @include mut.flexed(column, $align-items: center);
-    .ant-form{
-      @include mut.flexed(column, $align-items: center);
+    position: static;
+    @include mut.rem-padded(40px, 40px, 40px, 40px);
+  }
+  .boldText{
+    font-weight: 700;
+  }
+  .deleteText{
+    @include mut.flexed(column, $gap: 10px);
+    @include mut.with-font($font-family: ft.$roboto-font, $font-size: 16px);
+    text-align: start;
+    ul{
+      margin-left: f.pxToEm(20px);
+      list-style: inside;
+    }
+    .boldText{
+      font-weight: 700;
+    }
+    .mainDeleteText{
+      @include mut.flexed(column);
+      @include mut.with-font($font-size: 16px);
+    }
+  }
 
-      &.ant-modal {
+  .ant-form-item-control{
+    .ant-form-item-control-input{
+      .ant-form-item-control-input-content{
+        .ant-input{
+          @include mut.sized(100%, 44px)
+        }
+      }
+    }
+  }
+
+  .ant-form-item-label{
+    label{
+      color: c.$darkish-gray-color;
+    }
+  }
+
+  &.ant-modal {
+    .ant-modal-close {
+      box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+      @include mut.positioned-as(absolute, $right: -33px, $top: -33px);
+      @include mut.circular(80px, c.$white-color);
+      @include mut.colored($color: c.$light-border-color);
+      @include mut.sized(101px, 101px);
+      z-index: 9999999;
+      svg{
+        @include mut.sized(36px, 36px);
+      }
+
+      &:hover {
+        background-color: c.$accented-gray-color;
+      }
+    }
+  }
+
+  .ant-modal-content{
+    @include mut.full-rounded(50px);
+    @include mut.flexed(column, $align-items: center);
+    .ant-modal-header{
+      @include mut.rem-margined(0, 0, 25px, 0);
+      .ant-modal-title{
+        @include mut.with-font($font-family: ft.$roboto-font,
+        $font-weight: 500,
+        $font-size: 24px,
+        $font-style: ft.$roboto-font-style)
+      }
+    }
+    .deleteModalFormWrapper{
+      .ant-form-item{
+        @include mut.rem-margined(25px, 0, 0, 0);
+        .ant-form-item-label{
+          @include mut.rem-padded(0, 0, 0, 0);
+          @include mut.colored();
+        }
       }
       .confirmDeleteButton{
-        @include mut.sizedImportant(250px, 50px);
-        @include mut.colored(c.$white-color, c.$accented-red-color);
-        @include mut.rem-padded(15px, 24px, 15px, 24px);
-        @include mut.full-rounded(14px);
+        @include mut.rem-margined(25px, 0, 0, 0);
+        @include mut.flexed(row, $justify-content: center);
+        .ant-btn{
+          @include mut.sizedImportant(221px, 53px);
+          @include mut.colored(c.$white-color, c.$accented-red-color);
+          @include mut.rem-padded(0, 24px, 0, 24px);
+          @include mut.full-rounded(14px);
+          @include mut.with-font(
+                  $font-family: ft.$roboto-font,
+                  $font-weight: 500,
+                  $font-size: 20px);
+        }
       }
     }
   }
