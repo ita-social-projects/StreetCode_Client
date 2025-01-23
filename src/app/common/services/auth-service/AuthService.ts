@@ -1,6 +1,5 @@
 /* eslint-disable class-methods-use-this */
 import UsersApi from '@api/users/users.api';
-import ForgotPasswordDto, { UpdateForgotPasswordDTO } from '@models/user/password/forgotPassword.model';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 
 import AuthApi from '@/app/api/authentication/auth.api';
@@ -16,7 +15,7 @@ export default class AuthService {
     private static refreshTokenStorageName = 'RefreshToken';
 
     public static getAccessToken(): string | null {
-        return localStorage.getItem(this.accessTokenStorageName);
+        return localStorage.getItem(AuthService.accessTokenStorageName);
     }
 
     public static isLoggedIn(): boolean {
@@ -39,8 +38,8 @@ export default class AuthService {
     ) {
         return AuthApi.login({ login, password, captchaToken })
             .then((response) => {
-                localStorage.setItem(this.accessTokenStorageName, response.accessToken);
-                localStorage.setItem(this.refreshTokenStorageName, response.refreshToken);
+                localStorage.setItem(AuthService.accessTokenStorageName, response.accessToken);
+                localStorage.setItem(AuthService.refreshTokenStorageName, response.refreshToken);
             })
             .catch((error) => {
                 console.error(error);
@@ -99,7 +98,7 @@ export default class AuthService {
             console.log(oldAccesstoken);
 
             const response = await AuthApi.refreshToken(refreshTokenRequest);
-            localStorage.setItem(this.accessTokenStorageName, response.accessToken);
+            localStorage.setItem(AuthService.accessTokenStorageName, response.accessToken);
             console.log(response.accessToken);
         } catch (error) {
             console.error(error);
@@ -131,12 +130,12 @@ export default class AuthService {
     }
 
     private static getRefreshToken() {
-        return localStorage.getItem(this.refreshTokenStorageName);
+        return localStorage.getItem(AuthService.refreshTokenStorageName);
     }
 
     private static clearTokenData() {
-        localStorage.removeItem(this.accessTokenStorageName);
-        localStorage.removeItem(this.refreshTokenStorageName);
+        localStorage.removeItem(AuthService.accessTokenStorageName);
+        localStorage.removeItem(AuthService.refreshTokenStorageName);
     }
 
     public static isAdmin(): boolean {
@@ -154,8 +153,8 @@ export default class AuthService {
             const response = await AuthApi.loginGoogle(idToken);
             const { accessToken, refreshToken } = response;
 
-            localStorage.setItem(this.accessTokenStorageName, accessToken);
-            localStorage.setItem(this.refreshTokenStorageName, refreshToken);
+            localStorage.setItem(AuthService.accessTokenStorageName, accessToken);
+            localStorage.setItem(AuthService.refreshTokenStorageName, refreshToken);
 
             console.log('Успішна авторизація через Google!');
         } catch (error) {
