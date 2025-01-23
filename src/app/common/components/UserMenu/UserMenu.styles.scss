@@ -1,0 +1,38 @@
+﻿@use "@sass/_utils.functions.scss" as f;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/variables/_variables.fonts.scss" as ft;
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+
+.dropdownUser{
+  @include mut.sized(180px, auto);
+  .ant-dropdown-arrow{
+    @include mut.sizedImportant(35px, 16px);
+    &::before{
+      @include mut.sizedImportant(34px, 14px);
+      clip-path: polygon(50% 0%, 0% 100%, 100% 100%)
+    }
+
+    &::after{
+      content: none;
+    }
+  }
+  .ant-dropdown-menu{
+    @include mut.flexed(column, $gap: 8px);
+    .ant-dropdown-menu-item-danger{
+      color: c.$accented-red-color;
+      &:hover{
+        background-color: c.$accented-red-color;
+        color: c.$white-color;
+      }
+    }
+
+    .ant-dropdown-menu-item{
+      @include mut.rem-padded(8px, 16px, 8px, 16px);
+      @include mut.with-font(
+      $font-family: ft.$roboto-font,
+      $font-weight: 400,
+      $font-size: 16px,
+      $font-style: ft.$roboto-font-style)
+    }
+  }
+}
