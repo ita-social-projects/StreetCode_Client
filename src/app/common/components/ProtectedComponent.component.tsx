@@ -8,19 +8,19 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import FRONTEND_ROUTES from '../constants/frontend-routes.constants';
 import AuthService from '../services/auth-service/AuthService';
 
-type PropsWithChildren = { children: ReactNode };
-const ProtectedComponent:FC<PropsWithChildren> = ({ children }) => {
+type PropsWithChildren = { children: ReactNode, isForAdmin: boolean };
+const ProtectedComponent:FC<PropsWithChildren> = ({ children, isForAdmin }) => {
     const navigate = useNavigate();
     const isLoggedIn = AuthService.isLoggedIn();
 
     if (!isLoggedIn) {
         AuthService.refreshTokenAsync()
-            .catch(() => navigate(FRONTEND_ROUTES.ADMIN.LOGIN));
+            .catch(() => navigate(FRONTEND_ROUTES.AUTH.LOGIN));
         return null;
-    }else{
-        if (!AuthService.isAdmin()) {
-            return <Navigate to={FRONTEND_ROUTES.OTHER_PAGES.ERROR404} />;
-        }
+    }
+
+    if (isForAdmin && !AuthService.isAdmin()) {
+        return <Navigate to={FRONTEND_ROUTES.OTHER_PAGES.ERROR404} />;
     }
 
     return (

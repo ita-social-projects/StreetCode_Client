@@ -1,6 +1,9 @@
 import { createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom';
 import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
 import ContextMainPage from '@features/AdminPage/ContextPage/ContextMainPage.component';
+import ForgotPassword from '@features/Auth/ForgotPassword/ForgotPassword.component';
+import ForgotPasswordResetComponent from '@features/Auth/ForgotPassword/ForgotPasswordReset.component';
+import Login from '@features/Auth/Login/Login.component';
 import RegistrationPage from '@features/Auth/RegistrationPage/RegistrationPage.component';
 import UserProfile from '@features/UserProfile/UserProfile.component';
 import App from '@layout/app/App.component';
@@ -19,7 +22,6 @@ import AdminPage from '@/features/AdminPage/AdminPage.component';
 import Analytics from '@/features/AdminPage/Analytics/Analytics.component';
 import EditorPage from '@/features/AdminPage/EditorPage/EditorPage.component';
 import JobPage from '@/features/AdminPage/JobsPage/JobsPage.component';
-import AdminLogin from '@/features/AdminPage/Login/AdminLogin.component';
 import News from '@/features/AdminPage/NewsPage/News.component';
 import NewStreetcode from '@/features/AdminPage/NewStreetcode/MainNewStreetcode.component';
 import Partners from '@/features/AdminPage/PartnersPage/Partners.component';
@@ -31,31 +33,31 @@ const router = createBrowserRouter(createRoutesFromElements(
     <Route path="/" element={<App />}>
         <Route
             path={FRONTEND_ROUTES.ADMIN.BASE}
-            element={<ProtectedComponent><AdminPage /></ProtectedComponent>}
+            element={<ProtectedComponent isForAdmin><AdminPage /></ProtectedComponent>}
         />
         <Route
             path={`${FRONTEND_ROUTES.ADMIN.BASE}/:id`}
-            element={<ProtectedComponent><StreetcodeContent /></ProtectedComponent>}
+            element={<ProtectedComponent isForAdmin><StreetcodeContent /></ProtectedComponent>}
         />
         <Route
             path={`${FRONTEND_ROUTES.ADMIN.EDIT_STREETCODE}/:id`}
-            element={<ProtectedComponent><NewStreetcode /></ProtectedComponent>}
+            element={<ProtectedComponent isForAdmin><NewStreetcode /></ProtectedComponent>}
         />
         <Route
             path={FRONTEND_ROUTES.ADMIN.NEW_STREETCODE}
-            element={<ProtectedComponent><NewStreetcode /></ProtectedComponent>}
+            element={<ProtectedComponent isForAdmin><NewStreetcode /></ProtectedComponent>}
         />
         <Route
             path={FRONTEND_ROUTES.ADMIN.EDITOR}
-            element={<ProtectedComponent><EditorPage /></ProtectedComponent>}
+            element={<ProtectedComponent isForAdmin><EditorPage /></ProtectedComponent>}
         />
         <Route
             path={FRONTEND_ROUTES.ADMIN.PARTNERS}
-            element={<ProtectedComponent><Partners /></ProtectedComponent>}
+            element={<ProtectedComponent isForAdmin><Partners /></ProtectedComponent>}
         />
         <Route
             path={FRONTEND_ROUTES.ADMIN.CONTEXT}
-            element={<ProtectedComponent><ContextMainPage /></ProtectedComponent>}
+            element={<ProtectedComponent isForAdmin><ContextMainPage /></ProtectedComponent>}
         />
         <Route
             path={`${FRONTEND_ROUTES.ADMIN.ANALYTICS}/:id`}
@@ -64,28 +66,35 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route
             path={FRONTEND_ROUTES.ADMIN.DICTIONARY}
             element={(
-                <ProtectedComponent>
+                <ProtectedComponent isForAdmin>
                     <TermDictionary />
                 </ProtectedComponent>
             )}
         />
         <Route
             path={FRONTEND_ROUTES.ADMIN.NEWS}
-            element={<ProtectedComponent><News /></ProtectedComponent>}
+            element={<ProtectedComponent isForAdmin><News /></ProtectedComponent>}
         />
         <Route path={FRONTEND_ROUTES.OTHER_PAGES.CATALOG} element={<StreetcodeCatalog />} />
 
         <Route
             path={FRONTEND_ROUTES.ADMIN.TEAM}
             element={(
-                <ProtectedComponent>
+                <ProtectedComponent isForAdmin>
                     <TeamPage />
                 </ProtectedComponent>
             )}
         />
-        <Route path={FRONTEND_ROUTES.ADMIN.JOBS} element={<ProtectedComponent><JobPage /></ProtectedComponent>} />
+        <Route
+            path={FRONTEND_ROUTES.ADMIN.JOBS}
+            element={(
+                <ProtectedComponent isForAdmin>
+                    <JobPage />
+                </ProtectedComponent>
+            )}
+        />
         <Route path="*" element={<NotFound />} />
-        <Route index path={FRONTEND_ROUTES.ADMIN.LOGIN} element={<AdminLogin />} />
+        <Route index path={FRONTEND_ROUTES.AUTH.LOGIN} element={<Login />} />
         <Route path={FRONTEND_ROUTES.OTHER_PAGES.ERROR404} element={<NotFound />} />
         <Route path={FRONTEND_ROUTES.OTHER_PAGES.PRIVACY_POLICY} element={<PrivatePolicy />} />
         <Route path={FRONTEND_ROUTES.OTHER_PAGES.CONTACT_US} element={<ContactUs />} />
@@ -104,11 +113,13 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route
             path={FRONTEND_ROUTES.OTHER_PAGES.PROFILE}
             element={(
-                <ProtectedComponent>
+                <ProtectedComponent isForAdmin={false}>
                     <UserProfile />
                 </ProtectedComponent>
             )}
         />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/forgot-password-reset" element={<ForgotPasswordResetComponent />} />
     </Route>,
 ));
 

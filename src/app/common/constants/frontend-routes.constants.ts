@@ -7,7 +7,6 @@ const FRONTEND_ROUTES = {
         EDIT_STREETCODE: '/admin-panel/edit-streetcode',
         DICTIONARY: '/admin-panel/dictionary',
         EDITOR: '/admin-panel/editor',
-        LOGIN: '/admin-panel/login',
         TEAM: '/admin-panel/team',
         ANALYTICS: '/admin-panel/analytics',
         NEWS: '/admin-panel/news',
@@ -27,6 +26,8 @@ const FRONTEND_ROUTES = {
     },
     AUTH: {
         REGISTER: '/register',
+        LOGIN: '/login',
+        FORGOT_PASSWORD: '/forgot-password',
     },
 };
 

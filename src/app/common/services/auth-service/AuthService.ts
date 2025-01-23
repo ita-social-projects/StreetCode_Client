@@ -1,4 +1,6 @@
 /* eslint-disable class-methods-use-this */
+import UsersApi from '@api/users/users.api';
+import ForgotPasswordDto, { UpdateForgotPasswordDTO } from '@models/user/password/forgotPassword.model';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 
 import AuthApi from '@/app/api/authentication/auth.api';
@@ -46,6 +48,25 @@ export default class AuthService {
             });
     }
 
+    public static sendForgotPassword(email: string) {
+        UsersApi.forgotPassword({ email }).catch((error) => {
+            console.error(error);
+            return Promise.reject(error);
+        });
+    }
+
+    public static sendForgotPasswordUpdate(
+        password: string,
+        confirmPassword: string,
+        username: string | null,
+        token: string | null,
+    ) {
+        UsersApi.updateForgotPassword({ password, confirmPassword, username, token }).catch((error) => {
+            console.error(error);
+            return Promise.reject(error);
+        });
+    }
+
     public static async registerAsync(
         request: UserRegisterRequest,
     ) {
@@ -62,22 +83,24 @@ export default class AuthService {
             const oldAccesstoken = this.getAccessToken();
             if (!AuthService.isAccessTokenHasValidSignature(oldAccesstoken)) {
                 const error = new Error('Invalid signature of access token');
-                return Promise.reject(error);
+                return await Promise.reject(error);
             }
 
             const refreshToken = this.getRefreshToken();
             if (!refreshToken) {
                 const error = new Error('Refresh token doesn`t exists');
-                return Promise.reject(error);
+                return await Promise.reject(error);
             }
 
             const refreshTokenRequest: RefreshTokenRequest = {
                 accessToken: oldAccesstoken || '',
                 refreshToken,
             };
+            console.log(oldAccesstoken);
 
             const response = await AuthApi.refreshToken(refreshTokenRequest);
             localStorage.setItem(this.accessTokenStorageName, response.accessToken);
+            console.log(response.accessToken);
         } catch (error) {
             console.error(error);
             return Promise.reject(error);
