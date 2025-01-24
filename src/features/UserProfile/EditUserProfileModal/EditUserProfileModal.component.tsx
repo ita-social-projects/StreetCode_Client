@@ -47,6 +47,7 @@ const EditUserModal = ({ isOpen, onClose, image } : Props) => {
     const [form] = Form.useForm();
     const [emailForDeletion, setEmailForDeletion] = useState('');
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [showDeleteConfirmedModal, setShowDeleteConfirmedModal] = useState(false);
     const [previewOpen, setPreviewOpen] = useState<boolean>(false);
     const [filePreview, setFilePreview] = useState<UploadFile | null>(null);
     const [avatarId, setAvatarId] = useState<number | null>(image ? image.id : null);
@@ -112,9 +113,8 @@ const EditUserModal = ({ isOpen, onClose, image } : Props) => {
             message.error('Адресу було введено неправильно');
             return;
         }
-        userStore.deleteUser(emailForDeletion);
-        message.success('Профіль успішно видалено');
-        navigate(FRONTEND_ROUTES.BASE);
+        setShowDeleteModal(false);
+        setShowDeleteConfirmedModal(true);
     };
     const checkFile = (file: UploadFile) => checkImageFileType(file.type);
 
@@ -151,6 +151,10 @@ const EditUserModal = ({ isOpen, onClose, image } : Props) => {
         form.resetFields(['image']);
         setAvatarId(null);
         message.success('Фотографію видалено успішно');
+    };
+
+    const handleDeleteConfirmation = () => {
+        navigate(FRONTEND_ROUTES.BASE);
     };
 
     return (
@@ -456,54 +460,15 @@ const EditUserModal = ({ isOpen, onClose, image } : Props) => {
                 </Form>
             </Modal>
             <Modal
-                title="Видалення профілю"
+                title="Ваш обліковий запис було успішно видалено."
                 open={showDeleteModal}
-                onCancel={() => setShowDeleteModal(false)}
+                onCancel={handleDeleteConfirmation}
                 footer={null}
-                className="modalDeleteContainer"
+                className="modalDeleteConfirmationContainer"
             >
-                <div className="deleteText">
-                    <p className="boldText">Ви впевнені, що хочете видалити свій акаунт?</p>
-                    <div className="mainDeleteText">
-                        <p>Видалення акаунта є незворотною дією та не може бути скасоване.</p>
-                        <p>
-                            Це призведе до:
-                        </p>
-                        <ul>
-                            <li>
-                                Видалення всіх ваших персональних даних,
-                                включаючи інформацію профілю, збережений прогрес і вибраний контент.
-                            </li>
-                            <li>Автоматичного виходу з системи.</li>
-                            <li>Неможливості відновлення ваших даних у майбутньому.</li>
-                        </ul>
-                        <p className="boldText">
-                            Якщо ви бажаєте продовжити, будь ласка, підтвердьте своє рішення.
-                        </p>
-                    </div>
-                </div>
-                <Form
-                    layout="vertical"
-                    onFinish={handleDeleteAccount}
-                    className="deleteModalFormWrapper"
-                >
-                    <Form.Item label="Електронна адреса">
-                        <Input
-                            type="email"
-                            value={emailForDeletion}
-                            onChange={(e) => setEmailForDeletion(e.target.value)}
-                            placeholder="Введіть вашу електронну адресу"
-                            className="formItemDelete"
-                        />
-                    </Form.Item>
-                    <div className="confirmDeleteButton">
-                        <Button
-                            htmlType="submit"
-                        >
-                            Видалити профіль
-                        </Button>
-                    </div>
-                </Form>
+                <p className="navText">
+                    Після закриття цього вікна ви автоматично будете перенаправленні на головну сторінку сайту.
+                </p>
             </Modal>
             <PreviewFileModal file={filePreview} opened={previewOpen} setOpened={setPreviewOpen} />
         </>
