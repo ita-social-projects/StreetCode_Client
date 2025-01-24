@@ -1,0 +1,120 @@
+@use "@assets/sass/variables/_variables.fonts.scss" as ft;
+@use "@assets/sass/variables/_variables.colors.scss" as c;
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
+@use "@sass/_utils.functions.scss" as f;
+
+.site-calendar-demo-card {
+  width: 70%;
+  margin: 0 auto;
+  z-index: 1000 !important;
+}
+
+.calendar-container {
+  position: relative;
+  padding: f.pxToRem(30px);
+  margin: 0 auto;
+  border: f.pxToRem(6px) solid c.$accented-red-color;
+  border-radius: f.pxToRem(50px);
+  border-top: f.pxToRem(60px) solid c.$accented-red-color;
+  background-color: white;
+  z-index: 1000 !important;
+
+  .ant-select-selection-item,
+  .ant-picker-calendar-header .ant-picker-calendar-mode-switch,
+  .ant-picker-calendar-header .ant-picker-calendar-year-select,
+  .ant-picker-calendar-header .ant-picker-calendar-month-select,
+  .ant-picker-calendar .ant-picker-calendar-date-panel .ant-picker-cell-inner,
+  .ant-picker-content th,
+  .ant-select-dropdown {
+    text-transform: uppercase;
+  }
+}
+
+.calendar-container-wrapper {
+  margin: 0;
+  padding: 0;
+}
+
+.calendar-header {
+  height: f.pxToRem(60px);
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  p {
+    margin: f.pxToRem(6px) f.pxToRem(20px);
+    line-height: 1;
+    color: c.$dark-red-color;
+    font-size: f.pxToRem(30px);
+    font-weight: 500;
+
+    &:first-child {
+      margin-left: f.pxToRem(60px);
+      font-size: f.pxToRem(40px);
+      font-weight: bold;
+    }
+  }
+}
+
+.small-calendar-wrapper {
+  width: 300;
+  display: flex;
+  flex-direction: column;
+}
+
+.small-square {
+  width: f.pxToRem(10px);
+  height: f.pxToRem(10px);
+  rotate: 45deg;
+  background-color: c.$dark-red-color;
+}
+
+.small-circle {
+  flex-shrink: 0;
+  margin-right: f.pxToRem(5px);
+  width: f.pxToRem(8px);
+  height: f.pxToRem(8px);
+  border-radius: 50%;
+  background-color: c.$dark-red-color;
+}
+
+.events {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  .badge {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: fit-content;
+    margin-bottom: f.pxToRem(6px);
+    padding-left: f.pxToRem(5px);
+    border-radius: f.pxToRem(5px);
+
+    .badge-text {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+}
+
+.day-view-container {
+  display: flex;
+  gap: 30px;
+  overflow: hidden;
+}
+
+.back-button {
+  background-color: c.$accented-red-color;
+  color: white;
+  padding: 5px 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.ant-tooltip-inner {
+  color: black !important;
+}

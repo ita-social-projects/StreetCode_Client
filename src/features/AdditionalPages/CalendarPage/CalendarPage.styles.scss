@@ -3,9 +3,15 @@
 $bgImg: '@assets/images/main-page/background.webp';
 
 .calendarPageWrapper {
-    
+    padding-top: f.pxToRem(60px);
     background: url($bgImg) no-repeat center / 100%;
+    background-position: top;
 }
+
 .calendarPage {
-    margin: f.pxToRem(200px) 0;
+    margin: f.pxToRem(100px) 0;
+}
+
+.hiddenNavBar + .calendarPageWrapper {
+    padding-top: f.pxToRem(20px); 
 }

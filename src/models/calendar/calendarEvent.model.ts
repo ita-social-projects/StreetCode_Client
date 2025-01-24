@@ -1,8 +1,11 @@
+import dayjs from "dayjs";
+
 export default interface CalendarEvent {
     id: number,
     title: string,
-    date: string, //dayjs.Dayjs
+    description?: string,
+    date: dayjs.Dayjs, 
     type: EventType,
 }
 
-export type EventType = 'default' | 'birthday' | 'timelineItem' | 'custom' ;
+export type EventType = 'historical' | 'custom' ;

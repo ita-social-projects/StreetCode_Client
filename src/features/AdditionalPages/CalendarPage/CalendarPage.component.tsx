@@ -1,6 +1,6 @@
 import React from "react";
-import CalendarComponent from "../../../app/common/components/Calendar/Calendar.component";
-import './CalendarPage.styles.scss';
+import CalendarComponent from "./Calendar/Calendar.component";
+import "./CalendarPage.styles.scss";
 import { Helmet } from "react-helmet";
 
 const CalendarPage: React.FC = () => {

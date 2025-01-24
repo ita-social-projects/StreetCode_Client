@@ -1,0 +1,27 @@
+@use "@assets/sass/variables/_variables.colors.scss" as c;
+
+.dayViewCard {
+  height: 400px;
+  width: 600px;
+  margin: 0 auto;
+}
+
+.event-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 2px solid c.$accented-red-color;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.event-year {
+  font-size: 0.8rem;
+}
+
+.ant-card-head-title {
+  text-align: center;
+  text-transform: uppercase;
+}
