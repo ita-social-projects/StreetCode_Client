@@ -125,7 +125,9 @@ $bgImg: '@assets/images/streetcode-card/background.webp';
     @include mut.colored(c.$white-color, c.$accented-red-color);
     //@include mut.with-font($font-weight: 300, $font-size: 20px);
     &:hover {
-      box-shadow: 0 4px 4px rgba(219, 52, 36, 0.18);
+      //box-shadow: 0 4px 4px rgba(219, 52, 36, 0.18);
+      background-color: c.$dark-red-color;
+      border-color: initial;
     }
   }
 

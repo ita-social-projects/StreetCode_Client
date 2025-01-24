@@ -10,7 +10,7 @@
     border-radius: 60px;
     box-shadow: 13px 13px 32px 0px rgba(0, 0, 0, 0.21);
     background: rgb(255, 255, 255);
-    @include mut.sized(560px, auto);
+    @include mut.sizedImportant(560px, auto);
     @include mut.rem-padded(48px, 60px, 48px, 60px);
     @include mut.flexed(column, $align-items: center, $gap: 28px);
     .registerTitleWrapper{

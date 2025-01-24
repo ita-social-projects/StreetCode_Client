@@ -5,17 +5,6 @@
 
 .dropdownUser{
   @include mut.sized(180px, auto);
-  .ant-dropdown-arrow{
-    @include mut.sizedImportant(35px, 16px);
-    &::before{
-      @include mut.sizedImportant(34px, 14px);
-      clip-path: polygon(50% 0%, 0% 100%, 100% 100%)
-    }
-
-    &::after{
-      content: none;
-    }
-  }
   .ant-dropdown-menu{
     @include mut.flexed(column, $gap: 8px);
     .ant-dropdown-menu-item-danger{
