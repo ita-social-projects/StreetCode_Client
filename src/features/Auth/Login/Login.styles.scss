@@ -63,6 +63,12 @@
     .loginInput,
     .passwordInput
     {
+      &:hover{
+        border-color: c.$accented-red-color;
+      }
+      &:focus{
+        border-color: c.$accented-red-color;
+      }
       @include mut.sized(100%, 50px);
     }
 

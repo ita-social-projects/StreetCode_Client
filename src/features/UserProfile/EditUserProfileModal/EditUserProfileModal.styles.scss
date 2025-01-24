@@ -339,6 +339,13 @@
     .ant-form-item-control-input{
       .ant-form-item-control-input-content{
         .ant-input{
+          &:hover{
+              border-color: c.$accented-red-color;
+          }
+          &:focus{
+            border-color: c.$accented-red-color;
+          }
+
           @include mut.sized(100%, 44px)
         }
       }

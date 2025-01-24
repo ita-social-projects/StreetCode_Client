@@ -95,11 +95,9 @@ export default class AuthService {
                 accessToken: oldAccesstoken || '',
                 refreshToken,
             };
-            console.log(oldAccesstoken);
 
             const response = await AuthApi.refreshToken(refreshTokenRequest);
             localStorage.setItem(AuthService.accessTokenStorageName, response.accessToken);
-            console.log(response.accessToken);
         } catch (error) {
             console.error(error);
             return Promise.reject(error);

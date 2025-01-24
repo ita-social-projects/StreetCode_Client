@@ -1,4 +1,6 @@
-﻿import React, { useState } from 'react';
+﻿import './Password.styles.scss';
+
+import React, { useState } from 'react';
 import PasswordChecklist from 'react-password-checklist';
 
 import { Form, Input } from 'antd';

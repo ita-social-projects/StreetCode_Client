@@ -37,7 +37,7 @@ const ForgotPassword: React.FC = () => {
                 <Form.Item
                     wrapperCol={{ span: 24 }}
                     name="email"
-                    rules={[{ required: true, message: 'Введіть логін' }, { validator: validateEmail }]}
+                    rules={[{ required: true, message: 'Введіть пошту' }, { validator: validateEmail }]}
                 >
                     <Input className="emailInputField" placeholder="Електронна пошта" maxLength={128} />
                 </Form.Item>

@@ -39,6 +39,9 @@
     .registerInputField
     {
       @include mut.sized(100%, 50px);
+      &:hover{
+        border-color: c.$accented-red-color;
+      }
     }
 
     .ant-btn{

@@ -47,7 +47,7 @@ const Login: React.FC = () => {
             try {
                 const token = recaptchaRef?.current?.getValue();
                 await AuthService.loginAsync(login, password, token)
-                    .then(() => navigate(FRONTEND_ROUTES.OTHER_PAGES.PROFILE))
+                    .then(() => navigate(FRONTEND_ROUTES.BASE))
                     .catch((ex) => {
                         if (ex.response?.data) {
                             Object.keys(ex.response.data.message).forEach((key) => {
