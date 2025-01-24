@@ -154,6 +154,7 @@ const EditUserModal = ({ isOpen, onClose, image } : Props) => {
     };
 
     const handleDeleteConfirmation = () => {
+        userStore.deleteUser(emailForDeletion);
         navigate(FRONTEND_ROUTES.BASE);
     };
 
@@ -461,7 +462,7 @@ const EditUserModal = ({ isOpen, onClose, image } : Props) => {
             </Modal>
             <Modal
                 title="Ваш обліковий запис було успішно видалено."
-                open={showDeleteModal}
+                open={showDeleteConfirmedModal}
                 onCancel={handleDeleteConfirmation}
                 footer={null}
                 className="modalDeleteConfirmationContainer"
