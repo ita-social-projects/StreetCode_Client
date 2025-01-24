@@ -123,7 +123,7 @@ const Login: React.FC = () => {
                             const idToken = credentialResponse.credential;
                             await AuthService.googleLoginAsync(idToken);
                             message.success('Успішна авторизація через Google!');
-                            navigate(FRONTEND_ROUTES.OTHER_PAGES.PROFILE);
+                            navigate(FRONTEND_ROUTES.BASE);
                         } catch (error) {
                             message.error('Помилка входу через Google');
                         }
