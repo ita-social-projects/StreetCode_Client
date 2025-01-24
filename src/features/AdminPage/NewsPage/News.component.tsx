@@ -11,7 +11,7 @@ import useMobx, { useModalContext } from '@stores/root-store';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 
-import { Button, Empty, Pagination, Tooltip } from 'antd';
+import { Button, Empty, Pagination, Popover } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
@@ -74,9 +74,9 @@ const Newss: React.FC = observer(() => {
                 <div key={value} className="partner-table-item-name">
                     <p>{value ? dayjs(value).format('YYYY-MM-DD') : ''}</p>
                     {value && dayjs(value).isAfter(dayjs()) && 
-                    <Tooltip title="Заплановано">
+                     <Popover content={"Заплановано"} trigger="hover">
                         <InfoCircleOutlined style={{ width: '0.8em', height: '0.8em' }} />
-                    </Tooltip>
+                    </Popover>
                     }
                 </div>
             ),
