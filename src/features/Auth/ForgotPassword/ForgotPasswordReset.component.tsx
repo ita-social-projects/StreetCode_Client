@@ -6,7 +6,7 @@ import AuthService from '@app/common/services/auth-service/AuthService';
 import Password from '@components/Auth/Password.component';
 import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
 
-import { Button, Form } from 'antd';
+import { Button, Form, message } from 'antd';
 
 const ForgotPasswordResetComponent: React.FC = () => {
     const [form] = Form.useForm();
@@ -20,9 +20,10 @@ const ForgotPasswordResetComponent: React.FC = () => {
         const username = searchParams.get('username');
 
         const newPassword = form.getFieldValue('password');
-        const confirmPassword = form.getFieldValue('confirmPassword');
+        const confirmPassword = form.getFieldValue('passwordConfirmation');
         AuthService.sendForgotPasswordUpdate(newPassword, confirmPassword, username, token);
         navigator(FRONTEND_ROUTES.AUTH.LOGIN);
+        message.success('Пароль успішно оновлено');
     };
 
     const navigateToLogin = () => {

@@ -49,7 +49,6 @@ const Login: React.FC = () => {
                 await AuthService.loginAsync(login, password, token)
                     .then(() => navigate(FRONTEND_ROUTES.OTHER_PAGES.PROFILE))
                     .catch((ex) => {
-                        console.log(ex);
                         if (ex.response?.data) {
                             Object.keys(ex.response.data.message).forEach((key) => {
                                 message.error(`${ex.response.data[key].message}`);
@@ -101,7 +100,6 @@ const Login: React.FC = () => {
                 <Button htmlType="submit" className="streetcode-custom-button loginButton">
                     <p>Увійти</p>
                 </Button>
-
                 <ReCAPTCHA
                     style={{ height: 'auto' }}
                     sitekey={siteKey}

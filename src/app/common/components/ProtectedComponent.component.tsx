@@ -21,12 +21,9 @@ const ProtectedComponent:FC<PropsWithChildren> = ({ children, allowedRoles = nul
     }
 
     const currentUserRole = AuthService.getUserRole();
-
     if (currentUserRole && !allowedRoles?.includes(currentUserRole)) {
         navigate(FRONTEND_ROUTES.OTHER_PAGES.ERROR404);
     }
-
-    navigate(FRONTEND_ROUTES.BASE);
 
     return (
         <>

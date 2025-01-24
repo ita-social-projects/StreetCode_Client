@@ -192,7 +192,6 @@ const EditUserModal = ({ isOpen, onClose, image } : Props) => {
 
                                 <FileUploader
                                     id="imageUpload"
-                                    titlle
                                     className="editAvatar"
                                     enableCrop
                                     multiple={false}
@@ -216,7 +215,7 @@ const EditUserModal = ({ isOpen, onClose, image } : Props) => {
                                         }] : []}
                                 >
                                     {/* ignore */}
-                                    {fileList.length === 0 ? <button type="button">Upload Image</button> : null}
+                                    {fileList.length === 0 ? <button type="button">Завантажити фото</button> : null}
                                 </FileUploader>
                             </div>
                         </Form.Item>
@@ -406,6 +405,56 @@ const EditUserModal = ({ isOpen, onClose, image } : Props) => {
                 </div>
             </Modal>
 
+            <Modal
+                title="Видалення профілю"
+                open={showDeleteModal}
+                onCancel={() => setShowDeleteModal(false)}
+                footer={null}
+                className="modalDeleteContainer"
+            >
+                <div className="deleteText">
+                    <p className="boldText">Ви впевнені, що хочете видалити свій акаунт?</p>
+                    <div className="mainDeleteText">
+                        <p>Видалення акаунта є незворотною дією та не може бути скасоване.</p>
+                        <p>
+                            Це призведе до:
+                        </p>
+                        <ul>
+                            <li>
+                                Видалення всіх ваших персональних даних,
+                                включаючи інформацію профілю, збережений прогрес і вибраний контент.
+                            </li>
+                            <li>Автоматичного виходу з системи.</li>
+                            <li>Неможливості відновлення ваших даних у майбутньому.</li>
+                        </ul>
+                        <p className="boldText">
+                            Якщо ви бажаєте продовжити, будь ласка, підтвердьте своє рішення.
+                        </p>
+                    </div>
+                </div>
+                <Form
+                    layout="vertical"
+                    onFinish={handleDeleteAccount}
+                    className="deleteModalFormWrapper"
+                >
+                    <Form.Item label="Електронна адреса">
+                        <Input
+                            type="email"
+                            value={emailForDeletion}
+                            onChange={(e) => setEmailForDeletion(e.target.value)}
+                            placeholder="Введіть вашу електронну адресу"
+                            className="formItemDelete"
+                        />
+                    </Form.Item>
+                    <div className="confirmDeleteButton">
+                        <Button
+                            htmlType="submit"
+                        >
+                            Видалити профіль
+                        </Button>
+                    </div>
+                </Form>
+            </Modal>
             <Modal
                 title="Видалення профілю"
                 open={showDeleteModal}

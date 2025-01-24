@@ -140,11 +140,14 @@ const UserProfile = () => {
                         </div>
                     </div>
                 </div>
-                <EditUserModal
-                    isOpen={isModalOpen}
-                    onClose={handleCloseModal}
-                    image={user?.avatarId ? imagesStore.getImage(user.avatarId) : undefined}
-                />
+                {isModalOpen
+                && (
+                    <EditUserModal
+                        isOpen={isModalOpen}
+                        onClose={handleCloseModal}
+                        image={user?.avatarId ? imagesStore.getImage(user.avatarId) : undefined}
+                    />
+                )}
 
             </div>
         ) : <Loader />

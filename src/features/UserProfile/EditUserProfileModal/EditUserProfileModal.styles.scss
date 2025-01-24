@@ -69,10 +69,25 @@
         }
 
         .editImageButton{
+          &:hover{
+            background-color: c.$dark-red-color;
+            border-color: initial;
+          }
+
+          &:disabled{
+            @include mut.colored(c.$normal-gray-color, c.$white-color);
+            @include mut.border($color:c.$normal-gray-color, $border-width:2px, $type:solid);
+          }
+
           @include mut.colored(c.$white-color, c.$accented-red-color);
         }
 
         .removeImageButton{
+          &:disabled{
+            @include mut.colored(c.$normal-gray-color, c.$white-color);
+            @include mut.border($color:c.$normal-gray-color, $border-width:2px, $type:solid);
+          }
+
           @include mut.border($color:c.$accented-red-color, $border-width:2px, $type:solid);
           @include mut.colored(c.$accented-red-color, c.$white-color);
         }
@@ -229,6 +244,12 @@
       .saveButton{
         @include mut.rem-margined(25px, 0, 0, 0);
         @include mut.flexed(row, $justify-content: center);
+
+
+        button:hover{
+          background-color: c.$dark-red-color;
+          border-color: initial;
+        }
         .ant-btn{
           @include mut.colored(c.$white-color, c.$accented-red-color);
           @include mut.rem-padded(0, 24px, 0, 24px);
@@ -371,6 +392,11 @@
       .confirmDeleteButton{
         @include mut.rem-margined(25px, 0, 0, 0);
         @include mut.flexed(row, $justify-content: center);
+        button:hover{
+          background-color: c.$dark-red-color;
+          border-color: initial;
+        }
+
         .ant-btn{
           @include mut.sizedImportant(221px, 53px);
           @include mut.colored(c.$white-color, c.$accented-red-color);
