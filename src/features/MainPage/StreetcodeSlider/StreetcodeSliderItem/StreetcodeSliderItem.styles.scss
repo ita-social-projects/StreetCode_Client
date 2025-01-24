@@ -17,7 +17,7 @@
         @include mut.rem-padded($top: 0px, $right: 0px, $bottom: 0px, $left: 0px);
         @include mut.sized(758px, 400px);
         @include mut.full-rounded(50px);
-        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
         line-height: f.pxToRem(23px);
         background-color: c.$pure-white-color;
         margin-left: f.pxToRem(20px);
@@ -125,7 +125,11 @@
             line-height: pxToRem(40px);
 
             @media screen and (max-width: 1024px) {
-                display: none;
+                text-align: center;
+                @include mut.with-font(
+                            ft.$roboto-font,
+                            500,
+                            12px);
             }
         }
 
@@ -133,8 +137,7 @@
             font-weight: 500;
             @include mut.truncated(1);
             @media screen and (max-width: 1024px) {
-               text-align: center;
-                color: c.$lighter-black-color;
+               display: none;
             }
         }
 

@@ -67,7 +67,6 @@ const StreetcodeContent = () => {
     };
 
     setTimeout(handleSurveyModalOpen, 500);
-    setTimeout(() => streecodePageLoaderContext.endTransition(), 1500);
 
     useAsync(async () => {
         const idParam = searchParams.get('qrid');

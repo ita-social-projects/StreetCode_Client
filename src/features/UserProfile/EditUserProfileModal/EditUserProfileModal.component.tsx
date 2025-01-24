@@ -5,7 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import expertisesApi from '@api/expertises/expertises.api';
 import usersApi from '@api/users/users.api';
 import FileUploader from '@components/FileUploader/FileUploader.component';
-import imageValidator, { checkImageFileType } from '@components/modals/validators/imageValidator';
+import combinedImageValidator from '@components/modals/validators/combinedImageValidator';
+import { checkImageFileType } from '@components/modals/validators/imageExtensionValidator';
 import phoneNumberValidator from '@components/modals/validators/phoneNumberValidator';
 import SelectWithCustomSuffix from '@components/SelectWithCustomSuffix';
 import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
@@ -190,7 +191,7 @@ const EditUserModal = ({ isOpen, onClose, image } : Props) => {
                             }
                             style={{ textAlign: 'center', fontWeight: 700 }}
                             rules={[
-                                { validator: imageValidator },
+                                { validator: combinedImageValidator(false) },
                             ]}
                         >
                             <div>
