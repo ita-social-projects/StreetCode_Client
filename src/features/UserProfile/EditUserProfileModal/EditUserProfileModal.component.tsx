@@ -1,7 +1,6 @@
 ﻿import './EditUserProfileModal.styles.scss';
 
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import expertisesApi from '@api/expertises/expertises.api';
 import usersApi from '@api/users/users.api';
 import FileUploader from '@components/FileUploader/FileUploader.component';
@@ -9,8 +8,9 @@ import combinedImageValidator from '@components/modals/validators/combinedImageV
 import { checkImageFileType } from '@components/modals/validators/imageExtensionValidator';
 import phoneNumberValidator from '@components/modals/validators/phoneNumberValidator';
 import SelectWithCustomSuffix from '@components/SelectWithCustomSuffix';
-import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
 import PreviewFileModal from '@features/AdminPage/NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
+import DeleteModal from '@features/UserProfile/DeleteModal/DeleteModal.component';
+import DeleteModalConfirm from '@features/UserProfile/DeleteModalConfirm/DeleteModalConfirm.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import Audio from '@models/media/audio.model';
 import Image from '@models/media/image.model';
@@ -38,7 +38,6 @@ interface Props {
 }
 const EditUserModal = ({ isOpen, onClose, image } : Props) => {
     const { userStore, imagesStore } = useMobx();
-
     const [fileList, setFileList] = useState<UploadFile[]>(image ? [{
         name: '',
         thumbUrl: base64ToUrl(image.base64, image.mimeType),
@@ -54,7 +53,6 @@ const EditUserModal = ({ isOpen, onClose, image } : Props) => {
     const [avatarId, setAvatarId] = useState<number | null>(image ? image.id : null);
     const [expertises, setExpertises] = useState<Expertise[]>([]);
     const [selectedExpertises, setSelectedExpertises] = useState(userStore.user?.expertises || []);
-    const navigate = useNavigate();
 
     useAsync(async () => {
         const fetchExpertises = async () => {
@@ -154,9 +152,8 @@ const EditUserModal = ({ isOpen, onClose, image } : Props) => {
         message.success('Фотографію видалено успішно');
     };
 
-    const handleDeleteConfirmation = () => {
-        userStore.deleteUser(emailForDeletion);
-        navigate(FRONTEND_ROUTES.BASE);
+    const handleOnChangeDelete = (e: ChangeEvent<HTMLInputElement>) => {
+        setEmailForDeletion(e.target.value);
     };
 
     return (
@@ -409,68 +406,17 @@ const EditUserModal = ({ isOpen, onClose, image } : Props) => {
 
                 </div>
             </Modal>
-
-            <Modal
-                title="Видалення профілю"
+            <DeleteModal
+                handleOnChange={handleOnChangeDelete}
+                emailForDeletion={emailForDeletion}
+                handleOnFinish={handleDeleteAccount}
                 open={showDeleteModal}
-                onCancel={() => setShowDeleteModal(false)}
-                footer={null}
-                className="modalDeleteContainer"
-            >
-                <div className="deleteText">
-                    <p className="boldText">Ви впевнені, що хочете видалити свій акаунт?</p>
-                    <div className="mainDeleteText">
-                        <p>Видалення акаунта є незворотною дією та не може бути скасоване.</p>
-                        <p>
-                            Це призведе до:
-                        </p>
-                        <ul>
-                            <li>
-                                Видалення всіх ваших персональних даних,
-                                включаючи інформацію профілю, збережений прогрес і вибраний контент.
-                            </li>
-                            <li>Автоматичного виходу з системи.</li>
-                            <li>Неможливості відновлення ваших даних у майбутньому.</li>
-                        </ul>
-                        <p className="boldText">
-                            Якщо ви бажаєте продовжити, будь ласка, підтвердьте своє рішення.
-                        </p>
-                    </div>
-                </div>
-                <Form
-                    layout="vertical"
-                    onFinish={handleDeleteAccount}
-                    className="deleteModalFormWrapper"
-                >
-                    <Form.Item label="Електронна адреса">
-                        <Input
-                            type="email"
-                            value={emailForDeletion}
-                            onChange={(e) => setEmailForDeletion(e.target.value)}
-                            placeholder="Введіть вашу електронну адресу"
-                            className="formItemDelete"
-                        />
-                    </Form.Item>
-                    <div className="confirmDeleteButton">
-                        <Button
-                            htmlType="submit"
-                        >
-                            Видалити профіль
-                        </Button>
-                    </div>
-                </Form>
-            </Modal>
-            <Modal
-                title="Ваш обліковий запис було успішно видалено."
-                open={showDeleteConfirmedModal}
-                onCancel={handleDeleteConfirmation}
-                footer={null}
-                className="modalDeleteConfirmationContainer"
-            >
-                <p className="navText">
-                    Після закриття цього вікна ви автоматично будете перенаправленні на головну сторінку сайту.
-                </p>
-            </Modal>
+                onClose={() => setShowDeleteModal(false)}
+            />
+            <DeleteModalConfirm
+                emailForDeletion={emailForDeletion}
+                showDeleteConfirmedModal={showDeleteConfirmedModal}
+            />
             <PreviewFileModal file={filePreview} opened={previewOpen} setOpened={setPreviewOpen} />
         </>
     );
