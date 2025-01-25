@@ -220,8 +220,7 @@ const EditUserModal = ({ isOpen, onClose, image } : Props) => {
                                             status: 'done',
                                         }] : []}
                                 >
-                                    {/* ignore */}
-                                    {fileList.length === 0 ? <button type="button">Завантажити фото</button> : null}
+                                    <button type="button">Завантажити фото</button>
                                 </FileUploader>
                             </div>
                         </Form.Item>

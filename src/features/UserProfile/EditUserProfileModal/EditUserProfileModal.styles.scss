@@ -45,6 +45,12 @@
         @include mut.rem-margined(0, 0, 0, 0);
       }
 
+      .ant-upload-list:has(.ant-upload-list-item-container){
+        .ant-upload-animate-inline-leave,
+        .ant-upload{
+          display: none;
+        }
+      }
       .ant-form-item-explain-error,
       .formatText{
         text-align: center;
