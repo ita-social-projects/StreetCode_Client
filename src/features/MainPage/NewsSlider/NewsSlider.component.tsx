@@ -20,7 +20,7 @@ const NewsSlider = () => {
 
     useQuery({
         queryKey: ['news', newsStore.CurrentPage],
-        queryFn: () => newsStore.getAll(10),
+        queryFn: () => newsStore.getAllPublished(10),
     });
 
     imagesStore.fetchImages(newsStore.NewsArray || []);

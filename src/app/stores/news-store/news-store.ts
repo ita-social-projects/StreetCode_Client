@@ -43,11 +43,11 @@ export default class NewsStore {
         const localOffset = new Date().getTimezoneOffset() / 60;
         this.NewsMap.clear();
         if (news) {
-            news.forEach(this.addNews);
             news.forEach((n) => {
                 // eslint-disable-next-line no-param-reassign
                 n.creationDate = dayjs(n.creationDate).subtract(localOffset, 'hours');
             });
+            news.forEach(this.addNews);
         }
     }
 
@@ -92,6 +92,17 @@ export default class NewsStore {
 
     public getAll = async (pageSize?: number) => {
         await NewsApi.getAll(this.CurrentPage, pageSize ?? this.paginationInfo.PageSize)
+            .then((resp) => {
+                this.PaginationInfo.TotalItems = resp.totalAmount;
+                this.setNewsMap(resp.news);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
+
+    public getAllPublished = async (pageSize?: number) => {
+        await NewsApi.getAllPublished(this.CurrentPage, pageSize ?? this.paginationInfo.PageSize)
             .then((resp) => {
                 this.PaginationInfo.TotalItems = resp.totalAmount;
                 this.setNewsMap(resp.news);
