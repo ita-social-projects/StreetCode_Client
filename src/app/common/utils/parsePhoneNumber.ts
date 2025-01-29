@@ -5,5 +5,6 @@ export default function parsePhoneNumber(phoneNumber: PhoneNumber): string | nul
         return null;
     }
     return phoneNumber.countryCode
-        ? `+${phoneNumber.countryCode ?? ''}${phoneNumber.areaCode ?? ''}${phoneNumber.phoneNumber ?? ''}` : null;
+        ? `+${phoneNumber.countryCode ?? ''}${phoneNumber.areaCode ?? ''}${phoneNumber.phoneNumber ?? ''}`
+        : null;
 }

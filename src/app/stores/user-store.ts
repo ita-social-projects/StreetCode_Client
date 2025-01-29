@@ -1,4 +1,4 @@
-﻿import { action, makeObservable, observable, runInAction } from 'mobx';
+﻿import { makeAutoObservable, runInAction } from 'mobx';
 import usersApi from '@api/users/users.api';
 import AuthService from '@app/common/services/auth-service/AuthService';
 import User, { UpdateUser } from '@models/user/user.model';
@@ -7,12 +7,7 @@ export default class UserStore {
     public user : null | User = null;
 
     constructor() {
-        makeObservable(this, {
-            user: observable,
-            fetchCurrentUser: action,
-            setUser: action,
-            updateUser: action,
-        });
+        makeAutoObservable(this);
     }
 
     public setUser(user: User | null) {

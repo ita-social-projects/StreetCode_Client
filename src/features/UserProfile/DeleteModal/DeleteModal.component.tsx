@@ -1,20 +1,20 @@
 ﻿import './DeleteModal.styles.scss';
 
-import React, { useState } from 'react';
+import React, { ChangeEvent } from 'react';
 
 import { Button, Form, Input, Modal } from 'antd';
 
 interface Props {
-    open:boolean;
-    onClose:() => void;
+    open: boolean;
+    onClose: () => void;
     emailForDeletion: string;
-    handleOnChange:(value:any) => void;
-    handleOnFinish:(value:any) => void;
+    handleOnChange: (value: ChangeEvent<HTMLInputElement>) => void;
+    handleOnFinish: () => void;
 }
 
 const DeleteModal = ({
     open, onClose, emailForDeletion, handleOnChange, handleOnFinish,
-} :Props) => (
+}: Props) => (
 
     <Modal
         title="Видалення профілю"
@@ -58,9 +58,7 @@ const DeleteModal = ({
                 />
             </Form.Item>
             <div className="confirmDeleteButton">
-                <Button
-                    htmlType="submit"
-                >
+                <Button htmlType="submit">
                         Видалити профіль
                 </Button>
             </div>

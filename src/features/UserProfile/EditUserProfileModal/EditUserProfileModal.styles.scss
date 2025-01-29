@@ -5,6 +5,7 @@
 
 .editAvatar{
   height: 100%;
+
   .ant-upload-list-item-container,
   .ant-upload-list-item-done,
   .ant-upload-list-item,
@@ -12,9 +13,8 @@
   {
     @include mut.sizedImportant(256px, 340px);
   }
-
-
 }
+
 .ant-upload-list-item{
   .ant-upload-list-item-thumbnail img {
     object-fit: cover !important;
@@ -22,6 +22,7 @@
 }
 
 .modalEditContainer {
+
   .ant-modal-title{
     text-align: center;
     @include mut.with-font(
@@ -30,17 +31,24 @@
     $font-size: 24px,
     $font-style: ft.$roboto-font-style);
   }
+
   .editFormWrapper{
     @include mut.flexed(
-    row,
-    $justify-content: center,
-    $align-items: flex-start,
-    $gap: 51px);
+      row,
+      $justify-content: center,
+      $align-items: flex-start,
+      $gap: 51px
+    );
+
     .editFormImageWrapper{
       @include mut.sizedImportant(256px, 584px);
-      @include mut.flexed(column, $align-items: center,
-      $justify-content: flex-start,
-      $gap: 25px);
+      @include mut.flexed(
+        column,
+        $align-items: center,
+        $justify-content: flex-start,
+        $gap: 25px
+      );
+
       .ant-form-item{
         @include mut.rem-margined(0, 0, 0, 0);
       }
@@ -51,6 +59,7 @@
           display: none;
         }
       }
+
       .ant-form-item-explain-error,
       .formatText{
         text-align: center;
@@ -66,9 +75,10 @@
             height: auto;
           }
           @include mut.with-font(
-                  $font-family: ft.$roboto-font,
-                  $font-weight: 500,
-                  $font-size: 20px);
+            $font-family: ft.$roboto-font,
+            $font-weight: 500,
+            $font-size: 20px
+          );
           @include mut.sized(100%, 53px);
           @include mut.rem-padded(0, 24px, 0, 24px);
           @include mut.full-rounded(14px);
@@ -111,6 +121,7 @@
 
       .ant-form-item{
         @include mut.rem-margined(8px, 0, 0, 0);
+
         .ant-form-item-label{
           @include mut.rem-padded(0, 0, 0, 0)
         }
@@ -120,12 +131,20 @@
         .ant-form-item-control{
           .ant-form-item-control-input{
             .ant-form-item-control-input-content{
+
+              .ant-input-affix-wrapper,
+              .ant-select-selector {
+                @include mut.sized(100%, 44px)
+              }
+
               .ant-phone-input-wrapper{
                 .ant-input-group-wrapper{
                   .ant-input-wrapper{
+
                     #phoneNumber{
                       @include mut.sized(100%, 44px);
                     }
+
                   }
                 }
               }
@@ -137,18 +156,6 @@
         }
       }
 
-      .formItem {
-        .ant-form-item-control {
-          .ant-form-item-control-input {
-            .ant-form-item-control-input-content {
-              .ant-input-affix-wrapper,
-              .ant-select-selector {
-                @include mut.sized(100%, 44px)
-              }
-            }
-          }
-        }
-      }
       .areaTextInput{
         .ant-input{
           max-height: f.pxToEm(350px);
@@ -167,6 +174,7 @@
       @include mut.circular(80px, c.$white-color);
       @include mut.colored($color: c.$light-border-color);
       @include mut.sized(101px, 101px);
+
       svg{
         @include mut.sized(36px, 36px);
       }
@@ -181,15 +189,17 @@
       padding: f.pxToRem(40px);
       @include mut.sized(886px, auto);
       @include mut.flexed(
-              column,
-              $justify-content: center,
-              $align-items: center,
-              $gap: 51px);
+        column,
+        $justify-content: center,
+        $align-items: center,
+        $gap: 51px
+      );
 
       .center{
         display: flex;
         justify-content: center;
       }
+
       h2{
         padding-bottom: pxToRem(20px);
         font-size: 1.7em;
@@ -210,6 +220,7 @@
       .ant-picker{
         display: flex;
       }
+
       .ant-select-selector,
       .ant-input-affix-wrapper,
       .ant-input-number {
@@ -233,7 +244,6 @@
         }
       }
 
-
       .ant-form-item-control{
         .ant-form-item-explain{
           text-align: start;
@@ -246,6 +256,7 @@
         border: f.pxToRem(3px) solid #7E7E7E !important;
         border-radius: 0  !important;
       }
+
       .deleteUser,
       .saveButton{
         @include mut.rem-margined(25px, 0, 0, 0);
@@ -256,42 +267,51 @@
           background-color: c.$dark-red-color;
           border-color: initial;
         }
+
         .ant-btn{
           @include mut.colored(c.$white-color, c.$accented-red-color);
           @include mut.rem-padded(0, 24px, 0, 24px);
           @include mut.full-rounded(14px);
           @include mut.with-font(
-                  $font-family: ft.$roboto-font,
-                  $font-weight: 500,
-                  $font-size: 20px);
+            $font-family: ft.$roboto-font,
+            $font-weight: 500,
+            $font-size: 20px
+          );
         }
       }
+
       .saveButton{
         .ant-btn{
           @include mut.sizedImportant(279px, 53px);
         }
       }
+
       .deleteUser{
         .ant-btn{
           @include mut.sizedImportant(221px, 53px);
         }
       }
+
       .lineSeparator{
         @include mut.sizedImportant(100%, 1px);
         @include mut.border(c.$accented-gray-color, 1px, solid);
         @include mut.rem-margined(25px, 0, 25px, 0)
       }
+
       .deleteUserText{
         @include mut.flexed(column, $gap: 10px);
         @include mut.with-font($font-family: ft.$roboto-font, $font-size: 16px);
         text-align: start;
+
         ul{
           margin-left: f.pxToEm(20px);
           list-style: inside;
         }
+
         .boldText{
           font-weight: 700;
         }
+
         .mainText{
           @include mut.flexed(column);
           @include mut.with-font($font-size: 16px);
@@ -303,6 +323,7 @@
           border: 3px solid #DB3424 !important;
         }
       }
+
       .ant-checkbox-wrapper .ant-checkbox-checked .ant-checkbox-inner::after {
         opacity: 0;
       }
@@ -314,7 +335,3 @@
     }
   }
 }
-
-
-
-

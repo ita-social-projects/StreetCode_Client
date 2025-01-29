@@ -9,7 +9,11 @@ type Props = {
 };
 
 export const Modal = ({
-    title, open, onOk, onCancel, children,
+    title,
+    open,
+    onOk,
+    onCancel,
+    children,
 }: Props): JSX.Element => (
     <>
         <div className="modalTitle">{title}</div>

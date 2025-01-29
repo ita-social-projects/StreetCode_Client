@@ -5,8 +5,10 @@
 
 .dropdownUser{
   @include mut.sized(180px, auto);
+
   .ant-dropdown-menu{
     @include mut.flexed(column, $gap: 8px);
+
     .ant-dropdown-menu-item-danger{
       color: c.$accented-red-color;
       &:hover{

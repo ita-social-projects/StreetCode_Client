@@ -138,20 +138,28 @@ export default class AuthService {
 
     public static isAdmin(): boolean {
         const token = this.getAccessToken();
-        if (!token) return false;
+        if (!token) {
+            return false;
+        }
 
         const decodedToken = this.getDecodedAccessToken(token);
-        if (!decodedToken || !decodedToken.role) return false;
+        if (!decodedToken || !decodedToken.role) {
+            return false;
+        }
 
         return decodedToken.role === 'Admin';
     }
 
     public static getUserRole(): UserRole | null {
         const token = this.getAccessToken();
-        if (!token) return null;
+        if (!token) {
+            return null;
+        }
 
         const decodedToken = this.getDecodedAccessToken(token);
-        if (!decodedToken || !decodedToken.role) return null;
+        if (!decodedToken || !decodedToken.role) {
+            return null;
+        }
 
         const role = decodedToken.role as keyof typeof UserRole;
 

@@ -22,7 +22,11 @@ const Password = () => {
             <Form.Item
                 wrapperCol={{ span: 24 }}
                 name="password"
-                rules={[{ required: true, message: 'Введіть пароль' }]}
+                rules={[
+                    {
+                        required: true, message: 'Введіть пароль',
+                    },
+                ]}
             >
                 <Input.Password
                     value={password}

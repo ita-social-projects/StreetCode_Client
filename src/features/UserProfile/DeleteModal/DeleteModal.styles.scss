@@ -5,24 +5,28 @@
 
 .modalDeleteContainer{
   @include mut.sizedImportant(835px, auto);
-  .ant-modal-content{
-    position: static;
-    @include mut.rem-padded(40px, 40px, 40px, 40px);
-  }
+
   .boldText{
     font-weight: 700;
   }
+
   .deleteText{
     @include mut.flexed(column, $gap: 10px);
-    @include mut.with-font($font-family: ft.$roboto-font, $font-size: 16px);
+    @include mut.with-font(
+      $font-family: ft.$roboto-font,
+      $font-size: 16px
+    );
     text-align: start;
+
     ul{
       margin-left: f.pxToEm(20px);
       list-style: inside;
     }
+
     .boldText{
       font-weight: 700;
     }
+
     .mainDeleteText{
       @include mut.flexed(column);
       @include mut.with-font($font-size: 16px);
@@ -60,6 +64,7 @@
       @include mut.colored($color: c.$light-border-color);
       @include mut.sized(101px, 101px);
       z-index: 9999999;
+
       svg{
         @include mut.sized(36px, 36px);
       }
@@ -71,25 +76,35 @@
   }
 
   .ant-modal-content{
+    position: static;
+    @include mut.rem-padded(40px, 40px, 40px, 40px);
     @include mut.full-rounded(50px);
     @include mut.flexed(column, $align-items: center);
+
     .ant-modal-header{
       @include mut.rem-margined(0, 0, 25px, 0);
+
       .ant-modal-title{
-        @include mut.with-font($font-family: ft.$roboto-font,
-        $font-weight: 500,
-        $font-size: 24px,
-        $font-style: ft.$roboto-font-style)
+        @include mut.with-font(
+          $font-family: ft.$roboto-font,
+          $font-weight: 500,
+          $font-size: 24px,
+          $font-style: ft.$roboto-font-style
+        );
       }
     }
+
     .deleteModalFormWrapper{
+
       .ant-form-item{
         @include mut.rem-margined(25px, 0, 0, 0);
+
         .ant-form-item-label{
           @include mut.rem-padded(0, 0, 0, 0);
           @include mut.colored();
         }
       }
+
       .confirmDeleteButton{
         @include mut.rem-margined(25px, 0, 0, 0);
         @include mut.flexed(row, $justify-content: center);
@@ -104,9 +119,10 @@
           @include mut.rem-padded(0, 24px, 0, 24px);
           @include mut.full-rounded(14px);
           @include mut.with-font(
-                  $font-family: ft.$roboto-font,
-                  $font-weight: 500,
-                  $font-size: 20px);
+            $font-family: ft.$roboto-font,
+            $font-weight: 500,
+            $font-size: 20px
+          );
         }
       }
     }

@@ -6,36 +6,47 @@
 .loginFormWrapper {
   @include mut.flexed($justify-content: center);
   @include mut.rem-margined(100px, 100px, 100px, 100px);
+
   .loginTitleWrapper{
-    @include mut.flexed(column,$align-items: center, $justify-content: center);
+    @include mut.flexed(
+        column,
+        $align-items: center,
+        $justify-content: center
+    );
+
     .loginTitle{
-      @include mut.with-font($font-family: ft.$roboto-font,
-      $font-weight: 700,
-      $font-size: 40px,
+      @include mut.with-font(
+        $font-family: ft.$roboto-font,
+        $font-weight: 700,
+        $font-size: 40px,
       );
       @include mut.colored($color: c.$lighter-black-color);
     }
+
     .loginSubTitle{
-      @include mut.with-font($font-family: ft.$roboto-font,
-      $font-weight: 400,
-      $font-size: 20px,
+      @include mut.with-font(
+        $font-family: ft.$roboto-font,
+        $font-weight: 400,
+        $font-size: 20px,
       );
       @include mut.colored($color: c.$normal-gray-color);
     }
   }
 
   .admin-login-form{
-    border-radius: 60px;
+    @include mut.full-rounded(60px);
     box-shadow: 13px 13px 32px 0px rgba(0, 0, 0, 0.21);
     background: rgb(255, 255, 255);
     @include mut.sized(560px, auto);
     @include mut.rem-padded(48px, 60px, 48px, 60px);
     @include mut.flexed(column, $align-items: center, $gap: 28px);
+
     .continueWith{
       @include mut.flexed(row, $align-items: center, $gap: 16px);
+
       .line{
         @include mut.sized(auto, 0);
-        width: 78.64px;
+        width: f.pxToRem(78.64px);
         height: 0;
         border: 1px solid rgb(217, 217, 217);
       }
@@ -44,17 +55,21 @@
         min-width: 250px;
         text-align: center;
         @include mut.colored($color: c.$normal-gray-color);
-        @include mut.with-font($font-family: ft.$roboto-font,
-        $font-weight: 400,
-        $font-size: 15px,
-        $font-style: ft.$roboto-font-style);
+        @include mut.with-font(
+          $font-family: ft.$roboto-font,
+          $font-weight: 400,
+          $font-size: 15px,
+          $font-style: ft.$roboto-font-style
+        );
       }
     }
     .forgotPassword{
-      @include mut.with-font($font-family: ft.$roboto-font,
-      $font-weight: 600,
-      $font-size: 15px,
-      $font-style: ft.$roboto-font-style);
+      @include mut.with-font(
+        $font-family: ft.$roboto-font,
+        $font-weight: 600,
+        $font-size: 15px,
+        $font-style: ft.$roboto-font-style
+      );
       color: c.$dark-red-color;
       cursor: pointer;
       align-self: flex-start;
@@ -85,27 +100,33 @@
       @include mut.sized(100%, 60px);
 
       p{
-        @include mut.with-font($font-family: ft.$roboto-font,
-        $font-weight: 600,
-        $font-size: 20px,
+        @include mut.with-font(
+          $font-family: ft.$roboto-font,
+          $font-weight: 600,
+          $font-size: 20px,
         );
         color: c.$white-color;
       }
     }
+
     .registerNav{
       text-align: center;
       @include mut.sized(100%, auto);
-      @include mut.with-font($font-family: ft.$roboto-font,
-      $font-weight: 400,
-      $font-size: 15px,
-      $font-style: ft.$roboto-font-style);
+      @include mut.with-font(
+        $font-family: ft.$roboto-font,
+        $font-weight: 400,
+        $font-size: 15px,
+        $font-style: ft.$roboto-font-style
+      );
       @include mut.colored($color: c.$normal-gray-color);
 
       .registerNavButton{
-        @include mut.with-font($font-family: ft.$roboto-font,
-        $font-weight: 600,
-        $font-size: 15px,
-        $font-style: ft.$roboto-font-style);
+        @include mut.with-font(
+          $font-family: ft.$roboto-font,
+          $font-weight: 600,
+          $font-size: 15px,
+          $font-style: ft.$roboto-font-style
+        );
         color: c.$dark-red-color;
         cursor: pointer;
       }

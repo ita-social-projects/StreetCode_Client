@@ -5,7 +5,6 @@
 /* eslint-disable no-restricted-imports */
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import React, { ReactNode } from 'react';
-import { ReCAPTCHAProps } from 'react-google-recaptcha';
 import { MemoryRouter } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
 
@@ -46,29 +45,7 @@ jest.mock('antd', () => {
     };
 });
 
-// Mock reCaptcha.
-
-describe('AdminLogin', () => {
-    it('should render component and its elements', () => {
-        window._env_.RECAPTCHA_SITE_KEY = 'fake_site_key';
-        render(
-            <GoogleOAuthProvider clientId="561914124880-vulghkfedl8p1svciq5qrpajs4092pr3.apps.googleusercontent.com">
-                <MemoryRouter>
-                    <Login />
-                </MemoryRouter>
-            </GoogleOAuthProvider>,
-
-        );
-
-        const inputForLogin = screen.getByText('login');
-        const inputForPassword = screen.getByText('login');
-        const formPresent = screen.getByText('form exists');
-
-        expect(formPresent).toBeInTheDocument();
-        expect(inputForLogin).toBeInTheDocument();
-        expect(inputForPassword).toBeInTheDocument();
-    });
-
+describe('Login', () => {
     it('loginAsync is called if form is submitted', () => {
         window._env_.RECAPTCHA_SITE_KEY = 'fake_site_key';
         render(

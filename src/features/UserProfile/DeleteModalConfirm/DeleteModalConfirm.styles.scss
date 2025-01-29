@@ -17,6 +17,7 @@
       @include mut.colored($color: c.$light-border-color);
       @include mut.sized(101px, 101px);
       z-index: 9999999;
+
       svg{
         @include mut.sized(36px, 36px);
       }
@@ -28,24 +29,32 @@
   }
 
   .ant-modal-content{
+
     .navText{
-      @include mut.with-font($font-family: ft.$roboto-font,
-      $font-weight: normal,
-      $font-size: 16px,
-      $font-style: ft.$roboto-font-style)
+      @include mut.with-font(
+        $font-family: ft.$roboto-font,
+        $font-weight: normal,
+        $font-size: 16px,
+        $font-style: ft.$roboto-font-style
+      );
     }
+
     text-align: center;
     position: static;
     @include mut.rem-padded(40px, 40px, 40px, 40px);
     @include mut.full-rounded(50px);
     @include mut.flexed(column, $align-items: center);
+
     .ant-modal-header{
       @include mut.rem-margined(0, 0, 25px, 0);
+
       .ant-modal-title{
-        @include mut.with-font($font-family: ft.$roboto-font,
-        $font-weight: 500,
-        $font-size: 24px,
-        $font-style: ft.$roboto-font-style)
+        @include mut.with-font(
+          $font-family: ft.$roboto-font,
+          $font-weight: 500,
+          $font-size: 24px,
+          $font-style: ft.$roboto-font-style
+        );
       }
     }
   }

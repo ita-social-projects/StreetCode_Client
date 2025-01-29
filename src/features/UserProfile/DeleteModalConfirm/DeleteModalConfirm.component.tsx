@@ -3,10 +3,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
-import Image from '@models/media/image.model';
 import useMobx from '@stores/root-store';
 
-import { Modal } from 'antd';
+import { message, Modal } from 'antd';
 
 interface Props {
     emailForDeletion: string
@@ -18,7 +17,8 @@ const DeleteModalConfirm = ({ emailForDeletion, showDeleteConfirmedModal } : Pro
     const navigate = useNavigate();
 
     const handleDeleteConfirmation = () => {
-        userStore.deleteUser(emailForDeletion);
+        userStore.deleteUser(emailForDeletion)
+            .catch(() => message.error('Виникла помилка при видаленні користувача'));
         navigate(FRONTEND_ROUTES.BASE);
     };
     return (

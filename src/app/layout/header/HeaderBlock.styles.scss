@@ -9,6 +9,7 @@ $navbar-innerwidth: 500px;
 $navbar-hidden-innerwidth: 400px;
 
 .HeaderBlock{
+
   .ant-popover-inner{
     @include mut.rem-padded(0, 6px, 0, 0);
   }
@@ -81,6 +82,7 @@ $navbar-hidden-innerwidth: 400px;
 .rightPartContainer {
   @include mut.sizedImportant(auto, auto);
   @include mut.flexed($justify-content: flex-start, $align-items: center);
+
   .rightSectionContainer {
     @include mut.flexed($direction: row,
     $align-items: center,
@@ -88,6 +90,7 @@ $navbar-hidden-innerwidth: 400px;
     $wrap: nowrap,
     $gap: 15px);
     @include mut.sizedImportant(auto, auto);
+
     .participateButton {
       @include mut.sized(139.34px, 39px);
       @include mut.full-rounded(12px);
@@ -185,7 +188,6 @@ $navbar-hidden-innerwidth: 400px;
         }    
     }
 
-
     .rightSectionContainer{
       svg {
         @include mut.rem-margined($right: 15px);
@@ -256,6 +258,7 @@ $navbar-hidden-innerwidth: 400px;
 
   .searchMobPopover {
     max-width: 100vw;
+
     .ant-popover-inner {
       margin-top: -10px;
       @include mut.rem-padded(0, 0, 0, 0);

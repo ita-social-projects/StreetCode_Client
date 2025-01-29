@@ -119,7 +119,8 @@ const UserProfile = () => {
                             <div className="accountCard">
                                 <div className="accountNav">
                                     {buttonConfigs.map((config, index) => (
-                                        <div
+                                        <button
+                                            type="button"
                                             onClick={() => handleIsActive(index)}
                                             className={activeButton === index ? 'active navContainer' : 'navContainer'}
                                             key={config.label}
@@ -130,7 +131,7 @@ const UserProfile = () => {
                                             >
                                                 {config.label}
                                             </div>
-                                        </div>
+                                        </button>
                                     ))}
                                 </div>
                                 <div className="accountInfo">
@@ -148,7 +149,6 @@ const UserProfile = () => {
                         image={user?.avatarId ? imagesStore.getImage(user.avatarId) : undefined}
                     />
                 )}
-
             </div>
         ) : <Loader />
     );
