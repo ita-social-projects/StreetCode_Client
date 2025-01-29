@@ -35,7 +35,7 @@
 
   .admin-login-form{
     @include mut.full-rounded(60px);
-    box-shadow: 13px 13px 32px 0px rgba(0, 0, 0, 0.21);
+    box-shadow: 13px 13px 32px 0 rgba(0, 0, 0, 0.21);
     background: rgb(255, 255, 255);
     @include mut.sized(560px, auto);
     @include mut.rem-padded(48px, 60px, 48px, 60px);
