@@ -6,6 +6,10 @@
 .partners-page{
     @include mut.admin-page-base-layout();
 
+    p {
+        word-break: break-word;
+    }
+
     .container-justify-end{
         display: flex;
         justify-content: end;

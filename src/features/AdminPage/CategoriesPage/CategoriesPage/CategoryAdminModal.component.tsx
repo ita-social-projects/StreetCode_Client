@@ -14,8 +14,6 @@ import Image from '@models/media/image.model';
 import { SourceCategoryAdmin } from '@models/sources/sources.model';
 import useMobx from '@stores/root-store';
 
-import imageValidator, { checkImageFileType } from '@/app/common/components/modals/validators/imageValidator';
-
 import {
     Button, Form, Input, message, Modal, Popover,
     UploadFile,
@@ -28,6 +26,7 @@ import PreviewFileModal from '../../NewStreetcode/MainBlock/PreviewFileModal/Pre
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
 import normaliseWhitespaces from '@/app/common/utils/normaliseWhitespaces';
+import combinedImageValidator, { checkFile } from '@components/modals/validators/combinedImageValidator';
 
 interface SourceModalProps {
     isModalVisible: boolean;
@@ -164,10 +163,8 @@ const SourceModal: React.FC<SourceModalProps> = ({
 
     const handleInputChange = () => setIsSaveButtonDisabled(false);
 
-    const checkFile = (file: UploadFile) => checkImageFileType(file.type);
-
     const handleFileChange = async (param: UploadChangeParam<UploadFile<unknown>>) => {
-        if (checkFile(param.file)) {
+        if (await checkFile(param.file)) {
             setFileList(param.fileList);
         }
         handleInputChange();
@@ -208,7 +205,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                         label="Картинка: "
                         rules={[
                             { required: true, message: 'Додайте зображення' },
-                            { validator: imageValidator },
+                            { validator: combinedImageValidator(true) },
                         ]}
                     >
                         <FileUploader
