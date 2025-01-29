@@ -246,19 +246,18 @@ const EditUserModal = ({ isOpen, onClose, image } : Props) => {
                                 name="userName"
                                 rules={[{
                                     validator: async (_, value) => {
-                                        if (value) {
-                                            if (userStore.user) {
-                                                if (userStore.user.userName === value) {
-                                                    return Promise.resolve();
-                                                }
-                                            }
-                                            const isUnique = checkUniqueUserName(value);
-
-                                            if (await isUnique) {
-                                                return Promise.resolve();
-                                            }
-                                            return Promise.reject(new Error("Це ім'я користувача вже існує"));
+                                        if (!value) {
+                                            return;
                                         }
+                                        if (userStore.user?.userName === value) {
+                                            return Promise.resolve();
+                                        }
+                                        const isUnique = checkUniqueUserName(value);
+
+                                        if (await isUnique) {
+                                            return Promise.resolve();
+                                        }
+                                        return Promise.reject(new Error("Це ім'я користувача вже існує"));
                                     },
                                 },
                                 {
