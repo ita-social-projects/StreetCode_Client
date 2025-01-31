@@ -59,7 +59,7 @@ const DeleteModal = ({
             </Form.Item>
             <div className="confirmDeleteButton">
                 <Button htmlType="submit">
-                        Видалити профіль
+                    Видалити профіль
                 </Button>
             </div>
         </Form>

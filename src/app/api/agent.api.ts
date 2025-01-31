@@ -77,7 +77,7 @@ const createAxiosInstance = (baseUrl: string) => {
 
     instance.interceptors.request.use(async (config) => {
         const methodsToApply = ['post', 'delete', 'update'];
-        const method = (config.method || ' ').toLowerCase() ?? 'get';
+        const method = (config.method ?? ' ').toLowerCase() ?? 'get';
 
         if (methodsToApply.includes(method) && config.url !== `${API_ROUTES.EMAIL.SEND}`) {
             let token = AuthService.getAccessToken();
@@ -105,20 +105,25 @@ const createAxiosInstance = (baseUrl: string) => {
     }
 
     return {
-        get: async <T> (url: string, params?: URLSearchParams | GetAllToponymsRequest) => instance.get<T>(url, { params })
-            .then(responseData),
+        get: async <T> (url: string, params?: URLSearchParams | GetAllToponymsRequest) => (
+            instance.get<T>(url, { params }).then(responseData)
+        ),
 
-        getPaginated: async <T> (url: string, params?: URLSearchParams) => instance.get<T>(url, { params })
-            .then(paginationResponseData),
+        getPaginated: async <T> (url: string, params?: URLSearchParams) => (
+            instance.get<T>(url, { params }).then(paginationResponseData)
+        ),
 
-        post: async <T> (url: string, body: object, headers?: object) => instance.post<T>(url, body, headers)
-            .then(responseData),
+        post: async <T> (url: string, body: object, headers?: object) => (
+            instance.post<T>(url, body, headers).then(responseData)
+        ),
 
-        put: async <T> (url: string, body: object) => instance.put<T>(url, body)
-            .then(responseData),
+        put: async <T> (url: string, body: object) => (
+            instance.put<T>(url, body).then(responseData)
+        ),
 
-        delete: async <T>(url: string) => instance.delete<T>(url)
-            .then(responseData),
+        delete: async <T>(url: string) => (
+            instance.delete<T>(url).then(responseData)
+        ),
     };
 };
 
