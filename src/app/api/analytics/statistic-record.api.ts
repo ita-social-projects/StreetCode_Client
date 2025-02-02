@@ -13,10 +13,6 @@ const StatisticRecordApi = {
 
     existByQrId: (qrId: number) => Agent.get<boolean>(`${API_ROUTES.STATISTIC_RECORD.EXIST_BY_QRID}/${qrId}`),
 
-    create: (statisticRecord: StatisticRecord) => Agent.post<StatisticRecord>(`${
-        API_ROUTES.STATISTIC_RECORD.CREATE
-    }`, statisticRecord),
-
     update: (qrId: number) => Agent.put(`${API_ROUTES.STATISTIC_RECORD.UPDATE}/${qrId}`, {}),
 
     delete: (id: number) => Agent.delete(`${API_ROUTES.STATISTIC_RECORD.DELETE}/${id}`),

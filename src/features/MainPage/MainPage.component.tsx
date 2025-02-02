@@ -4,14 +4,12 @@ import { useNavigate } from 'react-router-dom';
 
 import ScrollToTopBtn from '../../app/common/components/ScrollToTopBtn/ScrollToTopBtn.component';
 
-import InstagramBlock from './InstagramBlock/InstagramBlock.component';
 import NewsSliderComponent from './NewsSlider/NewsSlider.component';
 import PartnersBlockComponent from './PartnersBlockMain/PartnersBlockMain.component';
 import StaticBanner from './StaticBanners/StaticBanner.component';
 import StreetcodeSliderComponent from './StreetcodeSlider/StreetcodeSlider.component';
 import TeamComponent from './TeamSlider/TeamComponent.component';
 import TopCarouselComponent from './TopCarousel/TopCarousel.component';
-import ErrorBoundary from '@/app/common/components/ErrorBoundary/ErrorBoundary';
 
 const mainPageContent = () => {
     const navigate = useNavigate();
@@ -34,10 +32,7 @@ const mainPageContent = () => {
                 <NewsSliderComponent />
                 <TeamComponent />
                 <PartnersBlockComponent />
-                <ErrorBoundary fallback={<></>}>                
-                <InstagramBlock />
-                </ErrorBoundary>
-            <StaticBanner
+                <StaticBanner
                     id="support"
                     blockName="Слід в історії у кожного різний. У тебе може бути свій"
                     blockContent="Підтримай проєкт про історію в назвах вулиць.
