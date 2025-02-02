@@ -7,10 +7,11 @@ import { toast } from 'react-toastify';
 import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
+
 import GetAllToponymsRequest from '@/models/toponyms/getAllToponyms.request';
 
-import AuthService from '../common/services/auth-service/AuthService';
 import { API_ROUTES } from '../common/constants/api-routes.constants';
+import AuthService from '../common/services/auth-service/AuthService';
 
 const defaultBaseUrl = process.env.NODE_ENV === 'development'
     ? 'https://localhost:5001/api' : window._env_.API_URL;
@@ -45,7 +46,7 @@ const createAxiosInstance = (baseUrl: string) => {
                         return instance.request(response.config);
                     })
                     .catch((error) => {
-                        redirect(FRONTEND_ROUTES.ADMIN.LOGIN);
+                        redirect(FRONTEND_ROUTES.AUTH.LOGIN);
                         return Promise.reject(error);
                     });
             }
@@ -76,45 +77,53 @@ const createAxiosInstance = (baseUrl: string) => {
 
     instance.interceptors.request.use(async (config) => {
         const methodsToApply = ['post', 'delete', 'update'];
-        const method = (config.method || " ").toLowerCase() ?? "get";
-    
+        const method = (config.method ?? ' ').toLowerCase() ?? 'get';
+
         if (methodsToApply.includes(method) && config.url !== `${API_ROUTES.EMAIL.SEND}`) {
             let token = AuthService.getAccessToken();
-    
-            if (token && AuthService.isAccessTokenExpired(token)) { 
+
+            if (token && AuthService.isAccessTokenExpired(token)) {
                 try {
                     await AuthService.refreshTokenAsync();
                     token = AuthService.getAccessToken();
                 } catch (error) {
-                    redirect(FRONTEND_ROUTES.ADMIN.LOGIN);
+                    redirect(FRONTEND_ROUTES.AUTH.LOGIN);
                     return Promise.reject(error);
                 }
             }
 
             config.headers.Authorization = `Bearer ${token}`;
         }
-    
+
         return config;
     });
-    
 
-    instance.defaults.headers.common.Authorization = `Bearer ${AuthService.getAccessToken()}`;
+    if (AuthService) {
+        instance.defaults.headers.common.Authorization = `Bearer ${AuthService.getAccessToken()}`;
+    } else {
+        console.error('AuthService is not initialized');
+    }
 
     return {
-        get: async <T> (url: string, params?: URLSearchParams|GetAllToponymsRequest) => instance.get<T>(url, { params })
-            .then(responseData),
+        get: async <T> (url: string, params?: URLSearchParams | GetAllToponymsRequest) => (
+            instance.get<T>(url, { params }).then(responseData)
+        ),
 
-        getPaginated: async <T> (url: string, params?: URLSearchParams) => instance.get<T>(url, { params })
-            .then(paginationResponseData),
+        getPaginated: async <T> (url: string, params?: URLSearchParams) => (
+            instance.get<T>(url, { params }).then(paginationResponseData)
+        ),
 
-        post: async <T> (url: string, body: object, headers?: object) => instance.post<T>(url, body, headers)
-            .then(responseData),
+        post: async <T> (url: string, body: object, headers?: object) => (
+            instance.post<T>(url, body, headers).then(responseData)
+        ),
 
-        put: async <T> (url: string, body: object) => instance.put<T>(url, body)
-            .then(responseData),
+        put: async <T> (url: string, body: object) => (
+            instance.put<T>(url, body).then(responseData)
+        ),
 
-        delete: async <T>(url: string) => instance.delete<T>(url)
-            .then(responseData),
+        delete: async <T>(url: string) => (
+            instance.delete<T>(url).then(responseData)
+        ),
     };
 };
 
