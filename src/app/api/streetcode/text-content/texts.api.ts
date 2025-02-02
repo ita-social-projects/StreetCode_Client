@@ -3,21 +3,33 @@ import { API_ROUTES } from '@constants/api-routes.constants';
 import { Text, TextPreviewContent } from '@models/streetcode/text-contents.model';
 
 const TextsApi = {
-    getAll: () => Agent.get<Text[]>(`${API_ROUTES.TEXTS.GET_ALL}`),
-
-    getById: (id: number) => Agent.get<Text>(`${API_ROUTES.TEXTS.GET}/${id}`),
-
-    getByStreetcodeId: (streetcodeId: number) => Agent.get<Text>(
-        `${API_ROUTES.TEXTS.GET_BY_STREETCODE_ID}/${streetcodeId}`,
+    getAll: () => (
+        Agent.get<Text[]>(`${API_ROUTES.TEXTS.GET_ALL}`)
     ),
 
-    updateParsed: (text: TextPreviewContent) => Agent.post<string>(`${API_ROUTES.TEXTS.UPDATE_PARSED}`, text),
+    getById: (id: number) => (
+        Agent.get<Text>(`${API_ROUTES.TEXTS.GET}/${id}`)
+    ),
 
-    create: (text: Text) => Agent.post<Text>(`${API_ROUTES.TEXTS.CREATE}`, text),
+    getByStreetcodeId: (streetcodeId: number) => (
+        Agent.get<Text>(`${API_ROUTES.TEXTS.GET_BY_STREETCODE_ID}/${streetcodeId}`)
+    ),
 
-    update: (text: Text) => Agent.put<Text>(`${API_ROUTES.TEXTS.UPDATE}`, text),
+    updateParsed: (text: TextPreviewContent) => (
+        Agent.post<string>(`${API_ROUTES.TEXTS.UPDATE_PARSED}`, text)
+    ),
 
-    delete: (id: number) => Agent.delete(`${API_ROUTES.TEXTS.DELETE}/${id}`),
+    create: (text: Text) => (
+        Agent.post<Text>(`${API_ROUTES.TEXTS.CREATE}`, text)
+    ),
+
+    update: (text: Text) => (
+        Agent.put<Text>(`${API_ROUTES.TEXTS.UPDATE}`, text)
+    ),
+
+    delete: (id: number) => (
+        Agent.delete(`${API_ROUTES.TEXTS.DELETE}/${id}`)
+    ),
 };
 
 export default TextsApi;
