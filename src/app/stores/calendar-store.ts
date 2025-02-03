@@ -1,22 +1,49 @@
-import CalendarEvent from "@/models/calendar/calendarEvent.model";
+import CalendarEvent, {
+  mapEventType,
+} from "@/models/calendar/calendarEvent.model";
+import { PaginationInfo } from "@/models/pagination/pagination.model";
 import eventsApi from "@api/events/events.api";
 import dayjs from "dayjs";
 import { makeAutoObservable, runInAction } from "mobx";
 
-class CalendarStore {
+export default class CalendarStore {
   events: CalendarEvent[] = [];
+
+  private defaultPageSize = 10;
+
+  public CurrentPage = 1;
+
+  private paginationInfo: PaginationInfo = {
+    PageSize: this.defaultPageSize,
+    TotalPages: 1,
+    TotalItems: 1,
+    CurrentPage: 1,
+  };
 
   constructor() {
     makeAutoObservable(this);
-    //this.initializeStubEvents();
   }
 
-  fetchAllEvents = async () => {
+  public setCurrentPage(currPage: number) {
+    this.paginationInfo.CurrentPage = currPage;
+  }
+
+  public get PaginationInfo(): PaginationInfo {
+    return this.paginationInfo;
+  }
+
+  fetchAllEvents = async (pageSize?: number) => {
     try {
-      const response = await eventsApi.getAll();
-      runInAction(() => {
-        this.events = response.events;
-      });
+      const response = await eventsApi.getAll(
+        this.PaginationInfo.CurrentPage,
+        pageSize ?? this.paginationInfo.PageSize
+      );
+
+      this.paginationInfo.TotalItems = response.totalAmount;
+      this.events = response.events.map((event) => ({
+        ...event,
+        eventType: mapEventType(Number(event.eventType)),
+      }));
     } catch (error: unknown) {
       console.error("Failed to fetch events:", error);
     }
@@ -36,41 +63,4 @@ class CalendarStore {
       return eventDate === date;
     });
   }
-
-  // initializeStubEvents() {
-  //     this.events = [
-  //         {
-  //             id: 1,
-  //             title: 'День народження Коненка',
-  //             date: '2025-01-10T00:00:00',
-  //             type: 'historical',
-  //         },
-  //         {
-  //             id: 2,
-  //             title: 'Повстання армії',
-  //             date: '2025-01-10T00:00:00',
-  //             type: 'historical',
-  //         },
-  //         {
-  //             id: 3,
-  //             title: 'Лекція з історії',
-  //             date: '2025-01-10T00:00:00',
-  //             type: 'custom',
-  //         },
-  //         {
-  //             id: 4,
-  //             title: 'Важлива історична подія',
-  //             date: '2025-01-2T00:00:00',
-  //             type: 'historical',
-  //         },
-  //         {
-  //             id: 5,
-  //             title: 'Дата смерті відомого письменника',
-  //             date: '2025-01-25T00:00:00',
-  //             type: 'historical',
-  //         },
-  //     ];
-  // }
 }
-
-export const calendarStore = new CalendarStore();

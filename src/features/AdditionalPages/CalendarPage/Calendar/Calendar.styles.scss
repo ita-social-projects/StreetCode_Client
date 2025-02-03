@@ -5,9 +5,11 @@
 @use "@sass/_utils.functions.scss" as f;
 
 .site-calendar-demo-card {
-  width: 70%;
-  margin: 0 auto;
   z-index: 1000 !important;
+}
+
+.ant-tooltip-inner {
+  color: black !important;
 }
 
 .calendar-container {
@@ -19,6 +21,12 @@
   border-top: f.pxToRem(60px) solid c.$accented-red-color;
   background-color: white;
   z-index: 1000 !important;
+
+  td,
+  .ant-picker-calendar-date,
+  .ant-picker-cell-inner {
+    //height: 70px !important;
+  }
 
   .ant-select-selection-item,
   .ant-picker-calendar-header .ant-picker-calendar-mode-switch,
@@ -113,8 +121,4 @@
   padding: 5px 10px;
   margin-bottom: 10px;
   border-radius: 5px;
-}
-
-.ant-tooltip-inner {
-  color: black !important;
 }

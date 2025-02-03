@@ -1,12 +1,13 @@
 import dayjs, { Dayjs } from "dayjs";
 import "./DayViewCard.styles.scss";
 import { Card } from "antd";
-import { calendarStore } from "@/app/stores/calendar-store";
+import useMobx from "@/app/stores/root-store";
 
 interface Props {
   selectedDate: Dayjs;
 }
 const DayViewCard: React.FC<Props> = ({ selectedDate }) => {
+  const { calendarStore } = useMobx();
   const eventsForDay = calendarStore.getEventsByDate(
     selectedDate.format("MM-DD")
   );

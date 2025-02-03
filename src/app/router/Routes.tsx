@@ -24,10 +24,9 @@ import Partners from '@/features/AdminPage/PartnersPage/Partners.component';
 import TeamPage from '@/features/AdminPage/TeamPage/TeamPage.component';
 import TermDictionary from '@/features/AdminPage/TermDictionary/TermDictionary.component';
 import StreetcodeCatalog from '@/features/StreetcodeCatalogPage/StreetcodeCatalog.component';
-import ContextMainPage from '@features/AdminPage/ContextPage/ContextMainPage.component';
-import EditorPage from '@/features/AdminPage/EditorPage/EditorPage.component';
 import RegistrationPage from '@features/Auth/RegistrationPage/RegistrationPage.component';
 import CalendarPage from '@/features/AdditionalPages/CalendarPage/CalendarPage.component';
+import CalendarAdminPage from '@/features/AdminPage/CalendarAdminPage/CalendarAdminPage.component';
 
 
 const router = createBrowserRouter(createRoutesFromElements(
@@ -63,6 +62,10 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route
             path={FRONTEND_ROUTES.ADMIN.CONTEXT}
             element={<ProtectedComponent><ContextMainPage /></ProtectedComponent>}
+        />
+        <Route 
+            path={FRONTEND_ROUTES.ADMIN.CALENDAR}
+            element={<ProtectedComponent><CalendarAdminPage /></ProtectedComponent>}
         />
         <Route
             path={`${FRONTEND_ROUTES.ADMIN.ANALYTICS}/:id`}

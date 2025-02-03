@@ -1,8 +1,8 @@
 import CalendarEvent from "@/models/calendar/calendarEvent.model";
 import { Calendar, CalendarProps, ConfigProvider, Tooltip } from "antd/es";
 import uk_UA from "antd/locale/uk_UA";
-import  { Dayjs } from "dayjs";
-import { calendarStore } from "@stores/calendar-store";
+import { Dayjs } from "dayjs";
+import useMobx from "@/app/stores/root-store";
 
 interface CalendarViewProps {
   currentMonth: Dayjs;
@@ -15,6 +15,8 @@ const CalendarView: React.FC<CalendarViewProps> = ({
   setCurrentMonth,
   onDateClick,
 }) => {
+  const { calendarStore } = useMobx();
+
   const dateCellRender = (value: Dayjs) => {
     const events: CalendarEvent[] = calendarStore.getEventsByDate(
       value.format("MM-DD")

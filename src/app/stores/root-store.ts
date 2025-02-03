@@ -24,6 +24,7 @@ import ContextStore from '@stores/context-store';
 import TeamPositionsStore from '@stores/teampoistions-store';
 
 import NewsStore from './news-store/news-store';
+import CalendarStore from './calendar-store';
 import CreateUpdateMediaStore from './create-update-media-store';
 import NewStreetcodeInfoStore from './newstreetcode-info-store';
 import PositionsStore from './position-store';
@@ -68,6 +69,7 @@ interface Store {
     relatedByTag: StreetcodesByTagStore,
     createUpdateMediaStore: CreateUpdateMediaStore,
     contextStore: ContextStore,
+    calendarStore: CalendarStore,
     textVideoStore: TextVideoStore,
     artGalleryTemplateStore: ArtGalleryTemplateStore,
     teamPositionsStore: TeamPositionsStore,
@@ -109,6 +111,7 @@ export const store: Store = {
     relatedByTag: new StreetcodesByTagStore(),
     createUpdateMediaStore: new CreateUpdateMediaStore(),
     contextStore: new ContextStore(),
+    calendarStore: new CalendarStore(),
     artGalleryTemplateStore: new ArtGalleryTemplateStore(),
     streetcodeArtSlideStore: new StreetcodeArtSlideStore(),
     artStore: new ArtStore(),

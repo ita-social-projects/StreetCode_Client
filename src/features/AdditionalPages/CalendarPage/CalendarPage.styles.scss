@@ -1,5 +1,5 @@
 @use "@sass/_utils.functions.scss" as f;
-
+@use "@sass/mixins/_utils.mixins.scss" as mut;
 $bgImg: '@assets/images/main-page/background.webp';
 
 .calendarPageWrapper {
@@ -9,7 +9,8 @@ $bgImg: '@assets/images/main-page/background.webp';
 }
 
 .calendarPage {
-    margin: f.pxToRem(100px) 0;
+    @include mut.sized(70%);
+    margin: f.pxToRem(100px) auto;
 }
 
 .hiddenNavBar + .calendarPageWrapper {

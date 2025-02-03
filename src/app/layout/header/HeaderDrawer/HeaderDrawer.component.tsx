@@ -17,23 +17,26 @@ import HeaderDrawerItem from '@/app/layout/header/HeaderDrawer/HeaderDrawerItem/
 
 import SocialMediaLinks from './SocialMediaLinks/SocialMediaLinks.component';
 
-const mobileOptions = 8;
-const desktopOptions = 6;
+const mobileOptions = 9;
+const desktopOptions = 7;
 const scaleDesktop = 1;
 const scaleMobile = 12;
 const menuPositionsMobile = [
     1 * scaleMobile,
     2 * scaleMobile,
-    3 * scaleMobile - 1,
-    4 * scaleMobile - 2,
-    5 * scaleMobile - 3,
+    3 * scaleMobile,
+    4 * scaleMobile - 1,
+    5 * scaleMobile - 2,
     6 * scaleMobile - 3,
-    7 * scaleMobile - 2,
-    8 * scaleMobile,
+    7 * scaleMobile - 3,
+    8 * scaleMobile - 2,
+    9 * scaleMobile,
 ];
+
 const menuOptions = [
     FRONTEND_ROUTES.BASE,
     FRONTEND_ROUTES.OTHER_PAGES.CATALOG,
+    FRONTEND_ROUTES.OTHER_PAGES.CALENDAR,
     FRONTEND_ROUTES.OTHER_PAGES.ABOUT_US,
     FRONTEND_ROUTES.OTHER_PAGES.PARTNERS,
     FRONTEND_ROUTES.OTHER_PAGES.SUPPORT_US,
@@ -45,12 +48,13 @@ const menuOptions = [
 const MENU_ID = {
     HOME: 1,
     CATALOG: 2,
-    ABOUT: 3,
-    PARTNERS: 4,
-    DONATE: 5,
-    CONTACTS: 6,
-    PRIVACY_POLICY: 7,
-    FEEDBACK: 8,
+    CALENDAR: 3,
+    ABOUT: 4,
+    PARTNERS: 5,
+    DONATE: 6,
+    CONTACTS: 7,
+    PRIVACY_POLICY: 8,
+    FEEDBACK: 9,
 };
 
 const HeaderDrawer = () => {
@@ -136,6 +140,13 @@ const HeaderDrawer = () => {
                                 parentActive={active}
                                 text="History-коди"
                                 link={FRONTEND_ROUTES.OTHER_PAGES.CATALOG}
+                                toggleState={toggle}
+                            />
+                            <HeaderDrawerItem
+                                id={MENU_ID.CALENDAR}
+                                parentActive={active}
+                                text="Календар"
+                                link={FRONTEND_ROUTES.OTHER_PAGES.CALENDAR}
                                 toggleState={toggle}
                             />
                             <HeaderDrawerItem

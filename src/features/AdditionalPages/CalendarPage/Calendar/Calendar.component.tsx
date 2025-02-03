@@ -2,19 +2,19 @@ import React, { useEffect, useRef, useState } from "react";
 import { ConfigProvider, theme } from "antd";
 import "dayjs/locale/uk";
 import type { Dayjs } from "dayjs";
-import { calendarStore } from "@stores/calendar-store";
 import "./Calendar.styles.scss";
 import { observer } from "mobx-react-lite/dist";
 import CalendarHeader from "./CalendarHeader/CalendarHeader.component";
 import dayjs from "dayjs";
 import CalendarView from "./CalendarView/CalendarView.component";
 import DayView from "./DayView/DayView.component";
+import useMobx from "@/app/stores/root-store";
 
 dayjs.locale("uk");
 
 const CalendarComponent: React.FC = observer(() => {
   const { token } = theme.useToken();
-
+  const { calendarStore } = useMobx();
   const topRef = useRef<HTMLDivElement>(null);
 
   const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
