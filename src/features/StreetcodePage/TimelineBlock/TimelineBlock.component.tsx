@@ -53,7 +53,7 @@ const TimelineBlock = () => {
                 ? (
                     <div
                         id="timeline"
-                        className="timelineContainer container"
+                        className="timelineContainer"
                     >
                         <BlockHeading headingText="Хронологія" />
                         <TimelineTimespan />

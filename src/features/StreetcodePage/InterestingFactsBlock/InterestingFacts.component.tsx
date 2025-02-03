@@ -12,8 +12,8 @@ import InterestingFactItem from '@streetcode/InterestingFactsBlock/InterestingFa
 import ImagesApi from '@/app/api/media/images.api';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import getUrlHash from '@/app/common/utils/getUrlHash.utility';
-import { Fact } from '@/models/streetcode/text-contents.model';
 import StreetcodeBlock from '@/models/streetcode/streetcode-blocks.model';
+import { Fact } from '@/models/streetcode/text-contents.model';
 
 const InterestingFactsComponent = () => {
     const { streetcodeStore } = useStreetcodeDataContext();
@@ -84,8 +84,7 @@ const InterestingFactsComponent = () => {
         }
     }, [isScrolled]);
 
-    const handleModalOpen = () =>
-    {
+    const handleModalOpen = () => {
         setModal('facts', facts.current[0].id, true);
     };
 
@@ -136,10 +135,12 @@ const InterestingFactsComponent = () => {
             {facts.current.length > 0 ? (
                 <div
                     id="wow-facts"
-                    className={'container "interestingFactsWrapper"'}
+                    className="interestingFactsWrapper"
                 >
                     <BlockHeading headingText="Wow-факти" />
-                    <div className={`interestingFactsContainer ${facts.current.length === 1 ? 'oneFactContainer' : ''}`}>
+                    <div
+                        className={`interestingFactsContainer ${facts.current.length === 1 ? 'oneFactContainer' : ''}`}
+                    >
                         <div className="interestingFactsSliderContainer">
                             <div
                                 style={{ height: '100%' }}

@@ -4,7 +4,7 @@
 @use "@sass/variables/_variables.colors.scss" as c;
 $moreInfo-width: 150px;
 $card-size: 380px;
-.relatedFiguresWrapper.container {
+.relatedFiguresWrapper {
     margin-top: f.pxToRem(120px);
     height: 535px;
 }
@@ -18,7 +18,7 @@ $card-size: 380px;
     }
 
     @media screen and (max-width: 481px) {
-        height: f.pxToRem(250px) !important;
+        height: auto;
     }
 }
 
@@ -105,7 +105,7 @@ $card-size: 380px;
 }
 
 @media screen and (max-width: 1024px) {
-    .relatedFiguresWrapper.container {
+    .relatedFiguresWrapper {
         margin-top: f.pxToRem(60px);
     }
     .relatedFiguresSliderContainer {

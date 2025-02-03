@@ -50,7 +50,7 @@ const TimelineSwiper: React.FC<Props> = ({
         <div className="timeline-swiper">
             <Swiper
                 className="swiperClass"
-                pagination={{clickable: true}}
+                pagination={{ clickable: true }}
                 centeredSlides
                 allowTouchMove={false}
                 speed={100}
@@ -73,7 +73,7 @@ const TimelineSwiper: React.FC<Props> = ({
                 }
 
                 {children.map((child, idx) => (
-                    <SwiperSlide key={idx}>
+                    <SwiperSlide key={child.key}>
                         <div className={`tickContainer ${(idx === activeSlide) ? 'active' : ''}`}>
                             {child}
                         </div>
