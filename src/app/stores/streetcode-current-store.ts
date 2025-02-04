@@ -2,6 +2,7 @@ import { makeAutoObservable } from 'mobx';
 import StreetcodesApi from '@api/streetcode/streetcodes.api';
 
 import Streetcode from '@/models/streetcode/streetcode-types.model';
+
 import AuthService from '../common/services/auth-service/AuthService';
 
 export default class StreetcodeStore {
@@ -25,7 +26,7 @@ export default class StreetcodeStore {
         this.setFavourite = true;
         await StreetcodesApi.createFavourite(this.getStreetCodeId);
     };
-    
+
     public deleteFromFavourites = async () => {
         this.setFavourite = false;
         await StreetcodesApi.deleteFromFavourite(this.getStreetCodeId);
@@ -50,6 +51,10 @@ export default class StreetcodeStore {
 
     public set setFavourite(val: boolean) {
         this.isFavourite = val;
+    }
+
+    public clearStore() {
+        this.currentStreetcode = this.errorStreetCodeId;
     }
 
     public setCurrentStreetcodeId = async (url: string): Promise<Streetcode | undefined> => {

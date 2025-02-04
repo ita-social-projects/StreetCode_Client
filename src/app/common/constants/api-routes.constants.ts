@@ -28,8 +28,7 @@ export const API_ROUTES = {
         GET_SPONSORS: 'partners/getSponsors',
         GET: 'partners/getById',
         GET_BY_STREETCODE_ID: 'partners/getByStreetcodeId',
-        GET_PARTNERS_TO_UPDATE_BY_STREETCODE_ID:
-            'partners/getPartnersToUpdateByStreetcodeId',
+        GET_PARTNERS_TO_UPDATE_BY_STREETCODE_ID: 'partners/getPartnersToUpdateByStreetcodeId',
         CREATE: 'partners/create',
         UPDATE: 'partners/update',
         DELETE: 'partners/delete',
@@ -102,8 +101,7 @@ export const API_ROUTES = {
         GET_ALL_CATEGORIES: 'sources/getAllCategories',
         GET: 'sources/getCategoryById',
         GET_CATEGORIES_BY_STREETCODE_ID: 'sources/getCategoriesByStreetcodeId',
-        GET_CONTENT_BY_STREETCODE_ID:
-            'sources/getCategoryContentByStreetcodeId',
+        GET_CONTENT_BY_STREETCODE_ID: 'sources/getCategoryContentByStreetcodeId',
         CREATE: 'sources/createCategory',
         UPDATE: 'sources/updateCategory',
         DELETE: 'sources/deleteCategory',
@@ -151,8 +149,7 @@ export const API_ROUTES = {
     },
     STREETCODE_ART_SLIDES: {
         GET_SLIDES_BY_STREETCODE_ID: 'streetcodeArtSlide/getPageByStreetcodeId',
-        GET_ALL_COUNT_BY_STREETCODE_ID:
-            'streetcodeArtSlide/getAllCountByStreetcodeId',
+        GET_ALL_COUNT_BY_STREETCODE_ID: 'streetcodeArtSlide/getAllCountByStreetcodeId',
     },
     RELATED_FIGURES: {
         GET_ALL: 'relatedFigure/getAll',
@@ -260,5 +257,16 @@ export const API_ROUTES = {
         DELETE: 'Position/delete',
         GET_BY_TITLE: 'Position/GetByTitle',
         GET_ALL_WITH_TEAM_MEMBERS: 'Position/getAllWithTeamMembers',
+    },
+    USERS: {
+        GET_BY_USERNAME: 'Users/GetByUserName',
+        EXIST_WITH_USERNAME: 'Users/ExistWithUserName',
+        UPDATE: 'Users/Update',
+        DELETE: 'Users/Delete',
+        FORGOT_PASSWORD: 'Users/ForgotPassword',
+        FORGOT_PASSWORD_UPDATE: 'Users/UpdateForgotPassword',
+    },
+    EXPERTISES: {
+        GET_ALL: 'Expertises/GetAll',
     },
 };
