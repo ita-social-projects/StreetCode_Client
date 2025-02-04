@@ -30,8 +30,8 @@ const StreetcodesApi = {
         Agent.get<Streetcode>(`${API_ROUTES.STREETCODES.GET_BY_URL}/${url}`)
     ),
 
-    getFavouriteById: (streetcodeId: number) =>
-        Agent.get<StreetcodeFavourite>(`${API_ROUTES.STREETCODES.GET_FAVOURITE_BY_ID}/${streetcodeId}`),
+    getFavouriteById: (streetcodeId: number) => Agent
+        .get<StreetcodeFavourite>(`${API_ROUTES.STREETCODES.GET_FAVOURITE_BY_ID}/${streetcodeId}`),
 
     getAll: (getAllStreetcodes: GetAllStreetcodes | undefined) => (
         Agent.get<{ totalAmount: number, streetcodes: Streetcode[] }>(
@@ -88,8 +88,8 @@ const StreetcodesApi = {
     update: (streetcode: StreetcodeUpdate) => Agent
         .put<StreetcodeUpdate>(`${API_ROUTES.STREETCODES.UPDATE}`, streetcode),
 
-    updateState: (id: number, stateId: number) => Agent.put<void>(
-        `${API_ROUTES.STREETCODES.UPDATE_STATE}/${id}/${stateId}`, {}),
+    updateState: (id: number, stateId: number) => Agent
+        .put<void>(`${API_ROUTES.STREETCODES.UPDATE_STATE}/${id}/${stateId}`, {}),
 
     getShortById: (id: number) => (
         Agent.get<Streetcode>(`${API_ROUTES.STREETCODES.GET_SHORT_BY_ID}/${id}`)
@@ -106,36 +106,8 @@ const StreetcodesApi = {
 
     existWithIndex: (index:number) => Agent.get<boolean>(`${API_ROUTES.STREETCODES.EXIST_WITH_INDEX}/${index}`),
 
-    getEvents: () => (
-        Agent.get<EventStreetcode[]>(`${API_ROUTES.STREETCODES.GET_EVENTS}`)
-    ),
-
-    getPersons: () => (
-        Agent.get<PersonStreetcode[]>(`${API_ROUTES.STREETCODES.GET_PERSONS}`)
-    ),
-
-    getUrlByQrId: (id: number) => (
-        Agent.get<string>(`${API_ROUTES.STREETCODES.GET_URL_BY_QR_ID}/${id}`)
-    ),
-
-    create: (streetcode: StreetcodeCreate) => (
-        Agent.post<StreetcodeCreate>(`${API_ROUTES.STREETCODES.CREATE}`, streetcode)
-    ),
-
-    update: (streetcode: StreetcodeUpdate) => (
-        Agent.put<StreetcodeUpdate>(`${API_ROUTES.STREETCODES.UPDATE}`, streetcode)
-    ),
-
-    updateState: (id: number, stateId: number) => (
-        Agent.put<void>(`${API_ROUTES.STREETCODES.UPDATE_STATE}/${id}/${stateId}`, {})
-    ),
-
     delete: (id: number) => (
         Agent.delete(`${API_ROUTES.STREETCODES.DELETE}/${id}`)
-    ),
-
-    existWithIndex: (index:number) => (
-        Agent.get<boolean>(`${API_ROUTES.STREETCODES.EXIST_WITH_INDEX}/${index}`)
     ),
 
     existWithUrl: (url: string) => (
