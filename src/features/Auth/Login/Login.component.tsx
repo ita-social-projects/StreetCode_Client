@@ -4,11 +4,12 @@
 import './Login.styles.scss';
 
 import { GoogleLogin } from '@react-oauth/google';
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { Navigate, useNavigate } from 'react-router-dom';
 import AuthService from '@app/common/services/auth-service/AuthService';
-import { ERROR_MESSAGES, INVALID_LOGIN_ATTEMPT } from '@constants/error-messages.constants';
+import { INVALID_LOGIN_ATTEMPT } from '@constants/error-messages.constants';
 import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
 import validateEmail from '@utils/userValidators/validateEmail';
 
@@ -17,18 +18,8 @@ import { Button, Form, Input, message } from 'antd';
 const Login: React.FC = () => {
     const navigate = useNavigate();
     const [form] = Form.useForm();
-    const [isVerified, setIsVerified] = useState(false);
     const recaptchaRef = useRef<ReCAPTCHA>(null);
-    const siteKey = window._env_.RECAPTCHA_SITE_KEY;
-    const { RECAPTCHA_CHECK } = ERROR_MESSAGES;
-
-    const handleVerify = () => {
-        setIsVerified(true);
-    };
-
-    const handleExpiration = () => {
-        setIsVerified(false);
-    };
+    const { executeRecaptcha } = useGoogleReCaptcha();
 
     message.config({
         duration: 2,
@@ -43,24 +34,23 @@ const Login: React.FC = () => {
     };
 
     const handleLogin = async ({ login, password }: any) => {
-        if (isVerified) {
-            try {
-                const token = recaptchaRef?.current?.getValue();
-                await AuthService.loginAsync(login, password, token)
-                    .then(() => navigate(FRONTEND_ROUTES.BASE))
-                    .catch((ex) => {
-                        if (ex.response?.data) {
-                            Object.keys(ex.response.data.message).forEach((key) => {
-                                message.error(`${ex.response.data[key].message}`);
-                            });
-                        }
-                    });
-                recaptchaRef.current?.reset();
-            } catch (error) {
-                message.error(INVALID_LOGIN_ATTEMPT);
+        try {
+            if (!executeRecaptcha) {
+                return;
             }
-        } else {
-            message.error(RECAPTCHA_CHECK);
+            const token = await executeRecaptcha('login');
+            await AuthService.loginAsync(login, password, token)
+                .then(() => navigate(FRONTEND_ROUTES.BASE))
+                .catch((ex) => {
+                    if (ex.response?.data) {
+                        Object.keys(ex.response.data.message).forEach((key) => {
+                            message.error(`${ex.response.data[key].message}`);
+                        });
+                    }
+                });
+            recaptchaRef.current?.reset();
+        } catch (error) {
+            message.error(INVALID_LOGIN_ATTEMPT);
         }
     };
 
@@ -100,14 +90,6 @@ const Login: React.FC = () => {
                 <Button htmlType="submit" className="streetcode-custom-button loginButton">
                     <p>Увійти</p>
                 </Button>
-                <ReCAPTCHA
-                    style={{ height: 'auto' }}
-                    sitekey={siteKey}
-                    onChange={handleVerify}
-                    onExpired={handleExpiration}
-                    ref={recaptchaRef}
-                    hl="uk"
-                />
                 <p className="registerNav">
                     Немає облікового запису?
                     <span className="registerNavButton" onClick={navigateRegister}> Зареєструватися</span>

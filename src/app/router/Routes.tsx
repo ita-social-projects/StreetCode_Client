@@ -1,3 +1,4 @@
+import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 import { createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom';
 import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
 import ContextMainPage from '@features/AdminPage/ContextPage/ContextMainPage.component';
@@ -30,98 +31,127 @@ import TeamPage from '@/features/AdminPage/TeamPage/TeamPage.component';
 import TermDictionary from '@/features/AdminPage/TermDictionary/TermDictionary.component';
 import StreetcodeCatalog from '@/features/StreetcodeCatalogPage/StreetcodeCatalog.component';
 
-const router = createBrowserRouter(createRoutesFromElements(
-    <Route path="/" element={<App />}>
-        <Route
-            path={FRONTEND_ROUTES.ADMIN.BASE}
-            element={<ProtectedComponent allowedRoles={[UserRole.Admin]}><AdminPage /></ProtectedComponent>}
-        />
-        <Route
-            path={`${FRONTEND_ROUTES.ADMIN.BASE}/:id`}
-            element={<ProtectedComponent allowedRoles={[UserRole.Admin]}><StreetcodeContent /></ProtectedComponent>}
-        />
-        <Route
-            path={`${FRONTEND_ROUTES.ADMIN.EDIT_STREETCODE}/:id`}
-            element={<ProtectedComponent allowedRoles={[UserRole.Admin]}><NewStreetcode /></ProtectedComponent>}
-        />
-        <Route
-            path={FRONTEND_ROUTES.ADMIN.NEW_STREETCODE}
-            element={<ProtectedComponent allowedRoles={[UserRole.Admin]}><NewStreetcode /></ProtectedComponent>}
-        />
-        <Route
-            path={FRONTEND_ROUTES.ADMIN.EDITOR}
-            element={<ProtectedComponent allowedRoles={[UserRole.Admin]}><EditorPage /></ProtectedComponent>}
-        />
-        <Route
-            path={FRONTEND_ROUTES.ADMIN.PARTNERS}
-            element={<ProtectedComponent allowedRoles={[UserRole.Admin]}><Partners /></ProtectedComponent>}
-        />
-        <Route
-            path={FRONTEND_ROUTES.ADMIN.CONTEXT}
-            element={<ProtectedComponent allowedRoles={[UserRole.Admin]}><ContextMainPage /></ProtectedComponent>}
-        />
-        <Route
-            path={`${FRONTEND_ROUTES.ADMIN.ANALYTICS}/:id`}
-            element={<Analytics />}
-        />
-        <Route
-            path={FRONTEND_ROUTES.ADMIN.DICTIONARY}
-            element={(
-                <ProtectedComponent allowedRoles={[UserRole.Admin]}>
-                    <TermDictionary />
-                </ProtectedComponent>
-            )}
-        />
-        <Route
-            path={FRONTEND_ROUTES.ADMIN.NEWS}
-            element={<ProtectedComponent allowedRoles={[UserRole.Admin]}><News /></ProtectedComponent>}
-        />
-        <Route path={FRONTEND_ROUTES.OTHER_PAGES.CATALOG} element={<StreetcodeCatalog />} />
+function createRoutes(recaptchaKey : string) {
+    return createBrowserRouter(createRoutesFromElements(
+        <Route path="/" element={<App />}>
+            <Route
+                path={FRONTEND_ROUTES.ADMIN.BASE}
+                element={<ProtectedComponent allowedRoles={[UserRole.Admin]}><AdminPage /></ProtectedComponent>}
+            />
+            <Route
+                path={`${FRONTEND_ROUTES.ADMIN.BASE}/:id`}
+                element={(
+                    <ProtectedComponent
+                        allowedRoles={[UserRole.Admin]}
+                    >
+                        <StreetcodeContent />
+                    </ProtectedComponent>
+                )}
+            />
+            <Route
+                path={`${FRONTEND_ROUTES.ADMIN.EDIT_STREETCODE}/:id`}
+                element={<ProtectedComponent allowedRoles={[UserRole.Admin]}><NewStreetcode /></ProtectedComponent>}
+            />
+            <Route
+                path={FRONTEND_ROUTES.ADMIN.NEW_STREETCODE}
+                element={<ProtectedComponent allowedRoles={[UserRole.Admin]}><NewStreetcode /></ProtectedComponent>}
+            />
+            <Route
+                path={FRONTEND_ROUTES.ADMIN.EDITOR}
+                element={<ProtectedComponent allowedRoles={[UserRole.Admin]}><EditorPage /></ProtectedComponent>}
+            />
+            <Route
+                path={FRONTEND_ROUTES.ADMIN.PARTNERS}
+                element={<ProtectedComponent allowedRoles={[UserRole.Admin]}><Partners /></ProtectedComponent>}
+            />
+            <Route
+                path={FRONTEND_ROUTES.ADMIN.CONTEXT}
+                element={(
+                    <ProtectedComponent
+                        allowedRoles={[UserRole.Admin]}
+                    >
+                        <ContextMainPage />
+                    </ProtectedComponent>
+                )}
+            />
+            <Route
+                path={`${FRONTEND_ROUTES.ADMIN.ANALYTICS}/:id`}
+                element={<Analytics />}
+            />
+            <Route
+                path={FRONTEND_ROUTES.ADMIN.DICTIONARY}
+                element={(
+                    <ProtectedComponent allowedRoles={[UserRole.Admin]}>
+                        <TermDictionary />
+                    </ProtectedComponent>
+                )}
+            />
+            <Route
+                path={FRONTEND_ROUTES.ADMIN.NEWS}
+                element={<ProtectedComponent allowedRoles={[UserRole.Admin]}><News /></ProtectedComponent>}
+            />
+            <Route path={FRONTEND_ROUTES.OTHER_PAGES.CATALOG} element={<StreetcodeCatalog />} />
 
-        <Route
-            path={FRONTEND_ROUTES.ADMIN.TEAM}
-            element={(
-                <ProtectedComponent allowedRoles={[UserRole.Admin]}>
-                    <TeamPage />
-                </ProtectedComponent>
-            )}
-        />
-        <Route
-            path={FRONTEND_ROUTES.ADMIN.JOBS}
-            element={(
-                <ProtectedComponent allowedRoles={[UserRole.Admin]}>
-                    <JobPage />
-                </ProtectedComponent>
-            )}
-        />
-        <Route path="*" element={<NotFound />} />
-        <Route index path={FRONTEND_ROUTES.AUTH.LOGIN} element={<Login />} />
-        <Route path={FRONTEND_ROUTES.OTHER_PAGES.ERROR404} element={<NotFound />} />
-        <Route path={FRONTEND_ROUTES.OTHER_PAGES.PRIVACY_POLICY} element={<PrivatePolicy />} />
-        <Route path={FRONTEND_ROUTES.OTHER_PAGES.CONTACT_US} element={<ContactUs />} />
-        <Route path={FRONTEND_ROUTES.OTHER_PAGES.PARTNERS} element={<PartnersPage />} />
-        <Route path={FRONTEND_ROUTES.OTHER_PAGES.SUPPORT_US} element={<SupportUs />} />
-        <Route path={FRONTEND_ROUTES.OTHER_PAGES.NEWS} element={<NewsPage />} />
-        <Route index path="/:id" element={<StreetcodeContent />} />
-        <Route index path={`${FRONTEND_ROUTES.OTHER_PAGES.NEWS}/:id`} element={<NewsPage />} />
-        <Route path={FRONTEND_ROUTES.OTHER_PAGES.ABOUT_US} element={<AboutUsPage />} />
-        <Route
-            path={`${FRONTEND_ROUTES.OTHER_PAGES.ABOUT_US}/:section`}
-            element={<AboutUsPage />}
-        />
-        <Route path="/:id/pdf-preview" element={<PDFPreviewPage />} />
-        <Route path={FRONTEND_ROUTES.AUTH.REGISTER} element={<RegistrationPage />} />
-        <Route
-            path={FRONTEND_ROUTES.OTHER_PAGES.PROFILE}
-            element={(
-                <ProtectedComponent allowedRoles={[UserRole.User]}>
-                    <UserProfile />
-                </ProtectedComponent>
-            )}
-        />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/forgot-password-reset" element={<ForgotPasswordResetComponent />} />
-    </Route>,
-));
+            <Route
+                path={FRONTEND_ROUTES.ADMIN.TEAM}
+                element={(
+                    <ProtectedComponent allowedRoles={[UserRole.Admin]}>
+                        <TeamPage />
+                    </ProtectedComponent>
+                )}
+            />
+            <Route
+                path={FRONTEND_ROUTES.ADMIN.JOBS}
+                element={(
+                    <ProtectedComponent allowedRoles={[UserRole.Admin]}>
+                        <JobPage />
+                    </ProtectedComponent>
+                )}
+            />
+            <Route path="*" element={<NotFound />} />
+            <Route
+                index
+                path={FRONTEND_ROUTES.AUTH.LOGIN}
+                element={(
+                    <GoogleReCaptchaProvider reCaptchaKey={recaptchaKey}>
+                        <Login />
+                    </GoogleReCaptchaProvider>
+                )}
+            />
+            <Route path={FRONTEND_ROUTES.OTHER_PAGES.ERROR404} element={<NotFound />} />
+            <Route path={FRONTEND_ROUTES.OTHER_PAGES.PRIVACY_POLICY} element={<PrivatePolicy />} />
+            <Route
+                path={FRONTEND_ROUTES.OTHER_PAGES.CONTACT_US}
+                element={(
+                    <GoogleReCaptchaProvider reCaptchaKey={recaptchaKey}>
+                        <ContactUs />
+                    </GoogleReCaptchaProvider>
+                )}
+            />
+            <Route path={FRONTEND_ROUTES.OTHER_PAGES.PARTNERS} element={<PartnersPage />} />
+            <Route path={FRONTEND_ROUTES.OTHER_PAGES.SUPPORT_US} element={<SupportUs />} />
+            <Route path={FRONTEND_ROUTES.OTHER_PAGES.NEWS} element={<NewsPage />} />
+            <Route index path="/:id" element={<StreetcodeContent />} />
+            <Route index path={`${FRONTEND_ROUTES.OTHER_PAGES.NEWS}/:id`} element={<NewsPage />} />
+            <Route path={FRONTEND_ROUTES.OTHER_PAGES.ABOUT_US} element={<AboutUsPage />} />
+            <Route
+                path={`${FRONTEND_ROUTES.OTHER_PAGES.ABOUT_US}/:section`}
+                element={<AboutUsPage />}
+            />
+            <Route path="/:id/pdf-preview" element={<PDFPreviewPage />} />
+            <Route path={FRONTEND_ROUTES.AUTH.REGISTER} element={<RegistrationPage />} />
+            <Route
+                path={FRONTEND_ROUTES.OTHER_PAGES.PROFILE}
+                element={(
+                    <ProtectedComponent allowedRoles={[UserRole.User]}>
+                        <UserProfile />
+                    </ProtectedComponent>
+                )}
+            />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/forgot-password-reset" element={<ForgotPasswordResetComponent />} />
+        </Route>,
+    ));
+}
 
-export default router;
+export default createRoutes;
