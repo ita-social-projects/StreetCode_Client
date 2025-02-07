@@ -1,8 +1,10 @@
-import useMobx from "@/app/stores/root-store";
+import useMobx, { useModalContext } from "@/app/stores/root-store";
 import PageBar from "../PageBar/PageBar.component";
 import { useQuery } from "@tanstack/react-query";
 import Table, { ColumnsType } from "antd/es/table";
-import CalendarEvent from "@/models/calendar/calendarEvent.model";
+import CalendarEvent, {
+  mapEventTypeToNum,
+} from "@/models/calendar/calendarEvent.model";
 import {
   Button,
   ConfigProvider,
@@ -12,26 +14,31 @@ import {
   Pagination,
   Select,
   Space,
+  Tag,
 } from "antd/es";
 import dayjs from "dayjs";
 import "./CalendarAdminPage.styles.scss";
-import { JSXElementConstructor, ReactElement, ReactFragment, ReactPortal, SetStateAction, useState } from "react";
 import {
-  DeleteOutlined,
-  DownOutlined,
-  EditOutlined,
-} from "@ant-design/icons/lib";
-import modalStore from "@/app/stores/modal-store";
+  JSXElementConstructor,
+  ReactElement,
+  ReactFragment,
+  ReactPortal,
+  useState,
+} from "react";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons/lib";
+import { EventType } from "@/models/calendar/calendarEvent.model";
 import CalendarControlBar from "./CalendarControlBar/CalendarControlBar.component";
+import { StreetcodeShort } from "@/models/streetcode/streetcode-types.model";
 
 const CalendarAdminPage = () => {
+  const { modalStore } = useModalContext();
   const { calendarStore } = useMobx();
-  
+
   const [eventType, setEventType] = useState<string>("historical");
 
   const { isLoading } = useQuery({
-    queryKey: ["events", calendarStore.CurrentPage],
-    queryFn: () => calendarStore.fetchAllEvents(),
+    queryKey: ["events", eventType, calendarStore.CurrentPage],
+    queryFn: () => calendarStore.fetchAllEvents(mapEventTypeToNum(eventType)),
   });
 
   const menuProps: MenuProps = {
@@ -52,7 +59,7 @@ const CalendarAdminPage = () => {
       title: "Назва",
       dataIndex: "title",
       key: "title",
-      width: "35%",
+      width: "30%",
       sorter: (a, b) => a.title.localeCompare(b.title),
       showSorterTooltip: false,
       render(value: string, record: CalendarEvent) {
@@ -77,6 +84,30 @@ const CalendarAdminPage = () => {
         return <div>{date.format("YYYY-MM-DD")}</div>;
       },
     },
+    {
+      title: "Пов'язані History-коди",
+      dataIndex: "streetcodes",
+      key: "streetcodes",
+      width: "20%",
+      render: (streetcodes?: StreetcodeShort[]) => {
+        return streetcodes ? (
+          <div className='tagModalContainer'>
+            {streetcodes.map((s) => (
+              <Tag
+                className='tagItem'
+                color='#FFFFFF'
+                bordered={false}
+                key={s.id}
+              >
+                {s.title}
+              </Tag>
+            ))}
+          </div>
+        ) : (
+          ""
+        );
+      },
+    },
   ];
 
   const actionColumn: ColumnsType<CalendarEvent>[0] = {
@@ -84,33 +115,33 @@ const CalendarAdminPage = () => {
     dataIndex: "action",
     key: "action",
     width: "10%",
-    render: (value, partner, index) => (
-      <div key={`${partner.id}${index}`} className="partner-page-actions">
+    render: (value, event, index) => (
+      <div key={`${event.id}${index}`} className='event-page-actions'>
         <DeleteOutlined
-          key={`${partner.id}${index}111`}
-          className="actionButton"
+          key={`${event.id}${index}111`}
+          className='actionButton'
           onClick={() => {
             modalStore.setConfirmationModal(
               "confirmation",
               () => {
-                calendarStore.removeEvent(partner.id);
-                modalStore.setConfirmationModal("confirmation", () => {}, "");
+                calendarStore.removeEvent(event.id);
+                modalStore.setConfirmationModal("confirmation");
               },
-              "Ви впевнені, що хочете видалити цього партнера?"
+              "Ви впевнені, що хочете видалити цю подію?"
             );
           }}
         />
         <EditOutlined
-          key={`${partner.id}${index}222`}
-          className="actionButton"
-          onClick={() => {
-            
-          }}
+          key={`${event.id}${index}`}
+          className='actionButton'
+          onClick={() => {}}
         />
       </div>
     ),
   };
-  const columnsHistorical: ColumnsType<CalendarEvent> = [...columnsBase].concat(actionColumn);
+  const columnsHistorical: ColumnsType<CalendarEvent> = [...columnsBase].concat(
+    actionColumn
+  );
 
   const columnsCustom: ColumnsType<CalendarEvent> = [
     ...columnsBase,
@@ -119,7 +150,7 @@ const CalendarAdminPage = () => {
       dataIndex: "location",
       key: "location",
       width: "20%",
-      render(value: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined, record: { id: any; }) {
+      render(value: any, record: { id: any }) {
         return <div key={`${value}${record.id}`}>{value}</div>;
       },
     },
@@ -128,7 +159,7 @@ const CalendarAdminPage = () => {
       dataIndex: "organizer",
       key: "organizer",
       width: "20%",
-      render(value: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined, record: { id: any; }) {
+      render(value: any, record: { id: any }) {
         return <div key={`${value}${record.id}`}>{value}</div>;
       },
     },
@@ -150,18 +181,14 @@ const CalendarAdminPage = () => {
       <div className='calendar-admin-page'>
         <PageBar />
         <div className='calendar-admin-page-container'>
-          <CalendarControlBar handleChange={handleChange}/>
+          <CalendarControlBar handleChange={handleChange} />
           <Table
             pagination={false}
             className='calendar-table'
             columns={
               eventType === "historical" ? columnsHistorical : columnsCustom
             }
-            dataSource={
-              calendarStore.events.filter(
-                (event) => event.eventType == eventType
-              ) || []
-            }
+            dataSource={calendarStore.events}
             rowKey='id'
             locale={{
               emptyText: isLoading ? (

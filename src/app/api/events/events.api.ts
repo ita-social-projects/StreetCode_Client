@@ -6,8 +6,9 @@ const EventsApi = {
   getById: (id: string) =>
     Agent.get<CalendarEvent>(`${API_ROUTES.EVENT.GET}/${id}`),
 
-  getAll: (page?: number, pageSize?: number) => {
+  getAll: (eventType?: number, page?: number, pageSize?: number, p0?: number) => {
     const params = Object.entries({
+      eventType: eventType?.toString() ?? "",
       page: page?.toString() ?? "",
       pageSize: pageSize?.toString() ?? "",
     });

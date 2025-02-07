@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button, Input, Select } from "antd/es";
 import "./CalendarControlBar.styles.scss";
 import MagnifyingGlass from "@images/header/Magnifying_glass.svg";
+import FRONTEND_ROUTES from "@/app/common/constants/frontend-routes.constants";
 
 interface Props {
   handleChange: (value: string) => void;
@@ -19,7 +20,7 @@ const CalendarControlBar: React.FC<Props> = ({ handleChange }) => {
       <div className='calendarControlBarElement Input'>
         <Input
           prefix={<MagnifyingGlass />}
-          // onChange={handleChangeTitle}
+          // onChange={handleChangeTitle} haven`r been implemented
           placeholder='Назва або індекс події'
         />
       </div>
@@ -35,7 +36,7 @@ const CalendarControlBar: React.FC<Props> = ({ handleChange }) => {
         />
       </div>
       <div className='calendarControlBarElement'>
-        <Button className='Button' onClick={() => setModalAddOpened(true)}>
+        <Button className='Button' onClick={() => window.open(`${FRONTEND_ROUTES.ADMIN.NEW_EVENT}`, '_blank')}>
           Додати подію
         </Button>
       </div>

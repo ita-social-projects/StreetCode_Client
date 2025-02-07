@@ -1,12 +1,11 @@
-import CalendarEvent, {
-  mapEventType,
-} from "@/models/calendar/calendarEvent.model";
+import CreateCalendarEvent, { mapEventTypeToStr } from "@/models/calendar/calendarEvent.model";
+import CalendarEvent from "@/models/calendar/calendarEvent.model";
 import { PaginationInfo } from "@/models/pagination/pagination.model";
 import eventsApi from "@api/events/events.api";
 import dayjs from "dayjs";
 import { makeAutoObservable, runInAction } from "mobx";
 
-export default class CalendarStore {
+export default class  CalendarStore {
   events: CalendarEvent[] = [];
 
   private defaultPageSize = 10;
@@ -32,9 +31,10 @@ export default class CalendarStore {
     return this.paginationInfo;
   }
 
-  fetchAllEvents = async (pageSize?: number) => {
+  fetchAllEvents = async (eventType?: number, pageSize?: number) => {
     try {
       const response = await eventsApi.getAll(
+        eventType,
         this.PaginationInfo.CurrentPage,
         pageSize ?? this.paginationInfo.PageSize
       );
@@ -42,19 +42,29 @@ export default class CalendarStore {
       this.paginationInfo.TotalItems = response.totalAmount;
       this.events = response.events.map((event) => ({
         ...event,
-        eventType: mapEventType(Number(event.eventType)),
+        eventType: mapEventTypeToStr(Number(event.eventType)),
       }));
     } catch (error: unknown) {
       console.error("Failed to fetch events:", error);
     }
   };
-
-  addEvent(event: CalendarEvent) {
-    this.events.push(event);
+  
+  addEvent = async (event: CreateCalendarEvent) => {
+    try {
+      await eventsApi.create(event); 
+      this.events.push(event);
+    } catch (error) {
+      console.error("Failed to create event:", error);
+    }
   }
 
-  removeEvent(eventId: number) {
-    this.events = this.events.filter((event) => event.id !== eventId);
+  removeEvent = async (eventId: number) => {
+    try {
+      await eventsApi.delete(eventId.toString()); 
+      this.events = this.events.filter((event) => event.id !== eventId);
+    } catch (error) {
+      console.error("Failed to delete event:", error);
+    }
   }
 
   getEventsByDate(date: string): CalendarEvent[] {

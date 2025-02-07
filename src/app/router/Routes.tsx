@@ -27,6 +27,7 @@ import StreetcodeCatalog from '@/features/StreetcodeCatalogPage/StreetcodeCatalo
 import RegistrationPage from '@features/Auth/RegistrationPage/RegistrationPage.component';
 import CalendarPage from '@/features/AdditionalPages/CalendarPage/CalendarPage.component';
 import CalendarAdminPage from '@/features/AdminPage/CalendarAdminPage/CalendarAdminPage.component';
+import NewEventPage from '@/features/AdminPage/CalendarAdminPage/NewEventPage/NewEventPage.component';
 
 
 const router = createBrowserRouter(createRoutesFromElements(
@@ -66,6 +67,10 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route 
             path={FRONTEND_ROUTES.ADMIN.CALENDAR}
             element={<ProtectedComponent><CalendarAdminPage /></ProtectedComponent>}
+        />
+        <Route 
+            path={FRONTEND_ROUTES.ADMIN.NEW_EVENT}
+            element={<ProtectedComponent><NewEventPage /></ProtectedComponent>}
         />
         <Route
             path={`${FRONTEND_ROUTES.ADMIN.ANALYTICS}/:id`}
