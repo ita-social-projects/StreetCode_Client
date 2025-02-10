@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
-import { Cascader } from "antd/es";
-import useMobx from "@/app/stores/root-store";
-import dayjs from "dayjs";
+import { useEffect, useState } from 'react';
+import { Cascader } from 'antd/es';
+import useMobx from '@/app/stores/root-store';
+import dayjs from 'dayjs';
 
 interface Option {
   value: number;
@@ -39,7 +39,7 @@ const EventStreetcodeCascader = ({ form }: { form: any }) => {
 
         setCascaderOptions(formattedOptions);
       } catch (error) {
-        console.error("Помилка завантаження стріткодів:", error);
+        console.error('Помилка завантаження стріткодів:', error);
       }
     };
 
@@ -49,29 +49,35 @@ const EventStreetcodeCascader = ({ form }: { form: any }) => {
   const [cascaderOptions, setCascaderOptions] = useState<Option[]>([]);
 
   const handleChange = async (value: any) => {
-    await timelineItemStore.fetchTimelineItemsByStreetcodeId(value[0]);
+    const selectedStreetcodeId = value[0];
+    const selectedTimelineItemId = value[1];
+    await timelineItemStore.fetchTimelineItemsByStreetcodeId(
+      selectedStreetcodeId
+    );
     const selectedTimelineItem = timelineItemStore.getTimelineItemArray.find(
-      (item) => item.id === value[1]
+      (item) => item.id === selectedTimelineItemId
     );
 
     await streetcodeCatalogStore.fetchCatalogStreetcodes(1);
     const selectedStreetcode =
       streetcodeCatalogStore.getCatalogStreetcodesArray.find(
-        (item) => item.id === value[0]
+        (item) => item.id === selectedTimelineItemId
       );
 
-    console.log(
-      "selected tl " + selectedTimelineItem + selectedTimelineItem?.date
-    );
     if (selectedTimelineItem) {
       form.setFieldsValue({
-        timelineItemId: value[1],
+        streetcodeId: selectedStreetcodeId,
+        timelineItemId: selectedTimelineItemId,
         title: `${selectedStreetcode?.title}: ${selectedTimelineItem.title}`,
         date: dayjs(selectedTimelineItem.date),
         description: selectedTimelineItem.description,
+        streetcodes: [
+          ...(form.getFieldValue('streetcodes') || []),
+          selectedStreetcodeId,
+        ],
       });
     } else {
-      console.error("Selected timeline item is undefined");
+      console.error('Selected timeline item is undefined');
     }
   };
 

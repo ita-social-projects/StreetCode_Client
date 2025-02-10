@@ -1,5 +1,5 @@
-import dayjs from "dayjs";
-import { StreetcodeShort } from "../streetcode/streetcode-types.model";
+import dayjs from 'dayjs';
+import { StreetcodeShort } from '../streetcode/streetcode-types.model';
 
 export default interface CalendarEvent {
   id: number;
@@ -24,24 +24,24 @@ export default interface CreateCalendarEvent {
   streetcodeIds?: number[];
 }
 
-export type EventType = "historical" | "custom";
+export type EventType = 'historical' | 'custom';
 
 export function mapEventTypeToStr(type: number): EventType {
   switch (type) {
     case 0:
-      return "historical";
+      return 'historical';
     case 1:
-      return "custom";
+      return 'custom';
     default:
-      return "custom";
+      return 'custom';
   }
 }
 
 export function mapEventTypeToNum(type: EventType | string): number {
   switch (type) {
-    case "historical":
+    case 'historical':
       return 0;
-    case "custom":
+    case 'custom':
       return 1;
     default:
       return 0;

@@ -1,10 +1,10 @@
-import useMobx, { useModalContext } from "@/app/stores/root-store";
-import PageBar from "../PageBar/PageBar.component";
-import { useQuery } from "@tanstack/react-query";
-import Table, { ColumnsType } from "antd/es/table";
+import useMobx, { useModalContext } from '@/app/stores/root-store';
+import PageBar from '../PageBar/PageBar.component';
+import { useQuery } from '@tanstack/react-query';
+import Table, { ColumnsType } from 'antd/es/table';
 import CalendarEvent, {
   mapEventTypeToNum,
-} from "@/models/calendar/calendarEvent.model";
+} from '@/models/calendar/calendarEvent.model';
 import {
   Button,
   ConfigProvider,
@@ -12,54 +12,46 @@ import {
   Empty,
   MenuProps,
   Pagination,
-  Select,
-  Space,
   Tag,
-} from "antd/es";
-import dayjs from "dayjs";
-import "./CalendarAdminPage.styles.scss";
-import {
-  JSXElementConstructor,
-  ReactElement,
-  ReactFragment,
-  ReactPortal,
-  useState,
-} from "react";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons/lib";
-import { EventType } from "@/models/calendar/calendarEvent.model";
-import CalendarControlBar from "./CalendarControlBar/CalendarControlBar.component";
-import { StreetcodeShort } from "@/models/streetcode/streetcode-types.model";
+} from 'antd/es';
+import dayjs from 'dayjs';
+import './CalendarAdminPage.styles.scss';
+import { useState } from 'react';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons/lib';
+import CalendarControlBar from './CalendarControlBar/CalendarControlBar.component';
+import { StreetcodeShort } from '@/models/streetcode/streetcode-types.model';
+import { observer } from 'mobx-react-lite/dist';
 
-const CalendarAdminPage = () => {
+const CalendarAdminPage = observer(() => {
   const { modalStore } = useModalContext();
   const { calendarStore } = useMobx();
 
-  const [eventType, setEventType] = useState<string>("historical");
+  const [eventType, setEventType] = useState<string>('historical');
 
   const { isLoading } = useQuery({
-    queryKey: ["events", eventType, calendarStore.CurrentPage],
+    queryKey: ['events', eventType, calendarStore.CurrentPage],
     queryFn: () => calendarStore.fetchAllEvents(mapEventTypeToNum(eventType)),
   });
 
   const menuProps: MenuProps = {
     items: [
       {
-        key: "1",
-        label: "Історичні події",
+        key: '1',
+        label: 'Історичні події',
       },
       {
-        key: "2",
-        label: "Власні події",
+        key: '2',
+        label: 'Власні події',
       },
     ],
   };
 
   const columnsBase: ColumnsType<CalendarEvent> = [
     {
-      title: "Назва",
-      dataIndex: "title",
-      key: "title",
-      width: "30%",
+      title: 'Назва',
+      dataIndex: 'title',
+      key: 'title',
+      width: '30%',
       sorter: (a, b) => a.title.localeCompare(b.title),
       showSorterTooltip: false,
       render(value: string, record: CalendarEvent) {
@@ -74,21 +66,21 @@ const CalendarAdminPage = () => {
       },
     },
     {
-      title: "Дата",
-      dataIndex: "date",
-      key: "date",
+      title: 'Дата',
+      dataIndex: 'date',
+      key: 'date',
       sorter: (a, b) => dayjs(a.date).unix() - dayjs(b.date).unix(),
       showSorterTooltip: false,
       render: (value) => {
         const date = dayjs(value);
-        return <div>{date.format("YYYY-MM-DD")}</div>;
+        return <div>{date.format('YYYY-MM-DD')}</div>;
       },
     },
     {
       title: "Пов'язані History-коди",
-      dataIndex: "streetcodes",
-      key: "streetcodes",
-      width: "20%",
+      dataIndex: 'streetcodes',
+      key: 'streetcodes',
+      width: '20%',
       render: (streetcodes?: StreetcodeShort[]) => {
         return streetcodes ? (
           <div className='tagModalContainer'>
@@ -104,17 +96,17 @@ const CalendarAdminPage = () => {
             ))}
           </div>
         ) : (
-          ""
+          ''
         );
       },
     },
   ];
 
   const actionColumn: ColumnsType<CalendarEvent>[0] = {
-    title: "Дії",
-    dataIndex: "action",
-    key: "action",
-    width: "10%",
+    title: 'Дії',
+    dataIndex: 'action',
+    key: 'action',
+    width: '10%',
     render: (value, event, index) => (
       <div key={`${event.id}${index}`} className='event-page-actions'>
         <DeleteOutlined
@@ -122,12 +114,12 @@ const CalendarAdminPage = () => {
           className='actionButton'
           onClick={() => {
             modalStore.setConfirmationModal(
-              "confirmation",
+              'confirmation',
               () => {
                 calendarStore.removeEvent(event.id);
-                modalStore.setConfirmationModal("confirmation");
+                modalStore.setConfirmationModal('confirmation');
               },
-              "Ви впевнені, що хочете видалити цю подію?"
+              'Ви впевнені, що хочете видалити цю подію?'
             );
           }}
         />
@@ -146,19 +138,19 @@ const CalendarAdminPage = () => {
   const columnsCustom: ColumnsType<CalendarEvent> = [
     ...columnsBase,
     {
-      title: "Локація",
-      dataIndex: "location",
-      key: "location",
-      width: "20%",
+      title: 'Локація',
+      dataIndex: 'location',
+      key: 'location',
+      width: '20%',
       render(value: any, record: { id: any }) {
         return <div key={`${value}${record.id}`}>{value}</div>;
       },
     },
     {
-      title: "Організатор",
-      dataIndex: "organizer",
-      key: "organizer",
-      width: "20%",
+      title: 'Організатор',
+      dataIndex: 'organizer',
+      key: 'organizer',
+      width: '20%',
       render(value: any, record: { id: any }) {
         return <div key={`${value}${record.id}`}>{value}</div>;
       },
@@ -173,8 +165,8 @@ const CalendarAdminPage = () => {
     <ConfigProvider
       theme={{
         token: {
-          colorPrimary: "#E04031",
-          colorPrimaryHover: "#ff4d4f",
+          colorPrimary: '#E04031',
+          colorPrimaryHover: '#ff4d4f',
         },
       }}
     >
@@ -183,10 +175,11 @@ const CalendarAdminPage = () => {
         <div className='calendar-admin-page-container'>
           <CalendarControlBar handleChange={handleChange} />
           <Table
+            key={calendarStore.events.length}
             pagination={false}
             className='calendar-table'
             columns={
-              eventType === "historical" ? columnsHistorical : columnsCustom
+              eventType === 'historical' ? columnsHistorical : columnsCustom
             }
             dataSource={calendarStore.events}
             rowKey='id'
@@ -219,6 +212,6 @@ const CalendarAdminPage = () => {
       </div>
     </ConfigProvider>
   );
-};
+});
 
 export default CalendarAdminPage;

@@ -1,38 +1,39 @@
-import eventsApi from "@/app/api/events/events.api";
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import {
   Button,
   DatePicker,
   Form,
   Input,
   message,
+  Popover,
   Radio,
   RadioChangeEvent,
-  Select,
-} from "antd/es";
-import { CheckboxGroupProps } from "antd/es/checkbox";
-import EventStreetcodeCascader from "../../EventStreetcodeCascader/EventStreetcodeCascader.component";
+} from 'antd/es';
+import { CheckboxGroupProps } from 'antd/es/checkbox';
+import EventStreetcodeCascader from '../../EventStreetcodeCascader/EventStreetcodeCascader.component';
 import CreateCalendarEvent, {
   EventType,
   mapEventTypeToNum,
-} from "@/models/calendar/calendarEvent.model";
-import SelectWithCustomSuffix from "@/app/common/components/SelectWithCustomSuffix";
-import useMobx from "@/app/stores/root-store";
+} from '@/models/calendar/calendarEvent.model';
+import SelectWithCustomSuffix from '@/app/common/components/SelectWithCustomSuffix';
+import useMobx from '@/app/stores/root-store';
+import { InfoCircleOutlined } from '@ant-design/icons/lib';
+import './NewEventBlock.styles.scss';
 
 const NewEventBlock: React.FC = () => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [currentEventType, setCurrentEventType] =
-    useState<EventType>("historical");
+    useState<EventType>('historical');
   const { calendarStore, streetcodeCatalogStore } = useMobx();
   const [streetcodesOptions, setStreetcodesOptions] = useState<
     { label: string; value: number }[]
   >([]);
   const [selectedStreetcodes, setSelectedStreetcodes] = useState<number[]>([]);
 
-  const options: CheckboxGroupProps["options"] = [
-    { label: "Історична", value: "historical" },
-    { label: "Власна", value: "custom" },
+  const options: CheckboxGroupProps['options'] = [
+    { label: 'Історична', value: 'historical' },
+    { label: 'Власна', value: 'custom' },
   ];
 
   useEffect(() => {
@@ -67,24 +68,25 @@ const NewEventBlock: React.FC = () => {
 
   const handleSubmit = async (values: any) => {
     setLoading(true);
-
+    console.log('values', values); //logggg
     try {
       const newEvent: CreateCalendarEvent = {
         title: values.title,
-        date: values.date.format("YYYY-MM-DD"),
+        date: values.date.format('YYYY-MM-DD'),
         description: values.description,
         eventType: mapEventTypeToNum(currentEventType),
         location: values.location || null,
         organizer: values.organizer || null,
-        streetcodeIds: selectedStreetcodes,
+        timelineItemId: values.timelineItemId || null,
+        streetcodeIds: values.streetcodes || [],
       };
 
       calendarStore.addEvent(newEvent);
-      message.success("Подію успішно додано!");
+      message.success('Подію успішно додано!');
       form.resetFields();
     } catch (error) {
-      console.error("Помилка створення події:", error);
-      message.error("Не вдалося створити подію.");
+      console.error('Помилка створення події:', error);
+      message.error('Не вдалося створити подію.');
     } finally {
       setLoading(false);
     }
@@ -99,14 +101,14 @@ const NewEventBlock: React.FC = () => {
         onFinish={handleSubmit}
         scrollToFirstError
         initialValues={{
-          eventType: "historical",
+          eventType: 'historical',
         }}
       >
         <div className='mainblock-add-form'>
           <Form.Item
             name='eventType'
             label='Тип події'
-            rules={[{ required: true, message: "Оберіть тип події!" }]}
+            rules={[{ required: true, message: 'Оберіть тип події!' }]}
           >
             <div className='radio-type'>
               <Radio.Group
@@ -119,10 +121,30 @@ const NewEventBlock: React.FC = () => {
             </div>
           </Form.Item>
 
-          {currentEventType === "historical" ? (
+          {currentEventType === 'historical' ? (
             <Form.Item
               name='timelineItemId'
-              label='Бажаєте обрати подію з хронології існуючого History-коду?'
+              label={
+                <div className='choose-timeline-item-block-label'>
+                  <p>
+                    Бажаєте обрати подію з хронології існуючого History-коду?
+                  </p>
+                  <Popover
+                    className='info-container'
+                    placement='topLeft'
+                    content={
+                      <p className='label-tags-block-info-container-content'>
+                        Оберіть з переліку History-код та подію з пов'язаною з
+                        ним хронологією. Деякі поля будуть автоматично заповнені
+                        згідно обраної хронологічної події, але їх можна буде
+                        змінити.
+                      </p>
+                    }
+                  >
+                    <InfoCircleOutlined className='info-icon' />
+                  </Popover>
+                </div>
+              }
             >
               <EventStreetcodeCascader form={form} />
             </Form.Item>
@@ -135,7 +157,7 @@ const NewEventBlock: React.FC = () => {
             rules={[
               {
                 required: true,
-                message: "Будь ласка, введіть назву події!",
+                message: 'Будь ласка, введіть назву події!',
               },
             ]}
           >
@@ -145,7 +167,7 @@ const NewEventBlock: React.FC = () => {
           <Form.Item
             name='date'
             label='Дата події'
-            rules={[{ required: true, message: "Будь ласка, виберіть дату!" }]}
+            rules={[{ required: true, message: 'Будь ласка, виберіть дату!' }]}
           >
             <DatePicker format='YYYY-MM-DD' />
           </Form.Item>
@@ -162,20 +184,20 @@ const NewEventBlock: React.FC = () => {
               onSelect={handleAdd}
               onDeselect={handleDelete}
               filterOption={(input, option) =>
-                typeof option?.label === "string" &&
+                typeof option?.label === 'string' &&
                 option.label.toLowerCase().includes(input.toLowerCase())
               }
               options={streetcodesOptions}
             />
           </Form.Item>
 
-          {currentEventType === "custom" ? (
+          {currentEventType === 'custom' ? (
             <Form.Item name='location' label='Локація'>
               <Input showCount />
             </Form.Item>
           ) : null}
 
-          {currentEventType === "custom" ? (
+          {currentEventType === 'custom' ? (
             <Form.Item name='organizer' label='Організатор'>
               <Input showCount />
             </Form.Item>
@@ -185,9 +207,9 @@ const NewEventBlock: React.FC = () => {
         <Button
           htmlType='submit'
           className='streetcode-custom-button submit-button'
-          name={"submit"}
+          name={'submit'}
         >
-          {"Додати подію"}
+          {'Додати подію'}
         </Button>
       </Form>
     </>
