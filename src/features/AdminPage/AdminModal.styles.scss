@@ -4,7 +4,6 @@
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
 
 .modalContainer {
-
     &.ant-modal {
         .ant-modal-close {
             @include mut.positioned-as(absolute, $left: 90%, $top: -25px);
@@ -81,6 +80,24 @@
                 box-shadow: inset 0 0 0 2px white !important;
             }
         }
+    }
+}
+
+.ant-picker-dropdown {
+    .ant-picker-cell-selected .ant-picker-cell-inner{
+        background-color: c.$accented-red-color;
+    }
+
+    .ant-picker-now-btn{
+        color: c.$dark-red-color;
+
+        &:hover {
+            color: c.$accented-red-color;
+        }
+    }
+
+    .ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner{
+        background: c.$darkish-gray-color;
     }
 }
 
