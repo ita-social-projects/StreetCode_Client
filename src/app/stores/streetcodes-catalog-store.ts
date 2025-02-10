@@ -34,7 +34,12 @@ export default class StreetcodesCatalogStore {
                 this.moreThenEight = this.catalog.length < fetchedPublishCount
                     && fetchedPublishCount > this.fetchNumber;
             });
-        } catch (error) { /* empty */ }
+        } catch (error) {
+            console.error('Failed to fetch catalog streetcodes:', error);
+            runInAction(() => {
+                this.moreThenEight = false;
+            });
+        }
     };
 
     get getCatalogStreetcodesArray() {
