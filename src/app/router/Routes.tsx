@@ -32,6 +32,22 @@ import TermDictionary from '@/features/AdminPage/TermDictionary/TermDictionary.c
 import StreetcodeCatalog from '@/features/StreetcodeCatalogPage/StreetcodeCatalog.component';
 
 function createRoutes(recaptchaKey : string) {
+    const recaptchaContainerConfig: {
+        element?: string | HTMLElement;
+        parameters: {
+            badge?: 'inline' | 'bottomleft' | 'bottomright';
+            theme?: 'dark' | 'light';
+            tabindex?: number;
+            callback?: () => void;
+            expiredCallback?: () => void;
+            errorCallback?: () => void;
+        };
+    } = {
+        parameters: {
+            badge: undefined,
+        },
+    };
+
     return createBrowserRouter(createRoutesFromElements(
         <Route path="/" element={<App />}>
             <Route
@@ -113,7 +129,10 @@ function createRoutes(recaptchaKey : string) {
                 index
                 path={FRONTEND_ROUTES.AUTH.LOGIN}
                 element={(
-                    <GoogleReCaptchaProvider reCaptchaKey={recaptchaKey}>
+                    <GoogleReCaptchaProvider
+                        container={recaptchaContainerConfig}
+                        reCaptchaKey={recaptchaKey}
+                    >
                         <Login />
                     </GoogleReCaptchaProvider>
                 )}
@@ -123,7 +142,10 @@ function createRoutes(recaptchaKey : string) {
             <Route
                 path={FRONTEND_ROUTES.OTHER_PAGES.CONTACT_US}
                 element={(
-                    <GoogleReCaptchaProvider reCaptchaKey={recaptchaKey}>
+                    <GoogleReCaptchaProvider
+                        container={recaptchaContainerConfig}
+                        reCaptchaKey={recaptchaKey}
+                    >
                         <ContactUs />
                     </GoogleReCaptchaProvider>
                 )}
