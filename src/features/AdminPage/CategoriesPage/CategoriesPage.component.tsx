@@ -15,6 +15,7 @@ import Image from '@/models/media/image.model';
 import { SourceCategoryAdmin } from '@/models/sources/sources.model';
 
 import CategoryAdminModal from './CategoriesPage/CategoryAdminModal.component';
+import BUTTON_LABELS from "@constants/buttonLabels";
 
 const CategoriesMainPage: React.FC = observer(() => {
     const { modalStore } = useModalContext();
@@ -130,7 +131,7 @@ const CategoriesMainPage: React.FC = observer(() => {
                         className="streetcode-custom-button categories-page-add-button"
                         onClick={() => setModalAddOpened(true)}
                     >
-                        Додати нову категорію
+                        {BUTTON_LABELS.ADD_CATEGORY}
                     </Button>
                 </div>
                 <Table

@@ -28,6 +28,7 @@ import PreviewFileModal from '../../NewStreetcode/MainBlock/PreviewFileModal/Pre
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
 import normaliseWhitespaces from '@/app/common/utils/normaliseWhitespaces';
+import BUTTON_LABELS from "@constants/buttonLabels";
 
 interface SourceModalProps {
     isModalVisible: boolean;
@@ -242,7 +243,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                             className="streetcode-custom-button"
                             onClick={() => handleOk()}
                         >
-                            Зберегти
+                            {BUTTON_LABELS.SAVE}
                         </Button>
                     </div>
                 </Form>
