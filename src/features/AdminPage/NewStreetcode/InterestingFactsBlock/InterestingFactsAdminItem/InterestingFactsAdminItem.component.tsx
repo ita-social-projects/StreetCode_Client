@@ -9,6 +9,7 @@ import useMobx from '@stores/root-store';
 import { Modal } from 'antd';
 
 import InterestingFactsAdminModal from '../FactsAdminModal/InterestingFactsAdminModal.component';
+import BUTTON_LABELS from "@constants/buttonLabels";
 
 interface Props {
     fact: Fact,
@@ -55,6 +56,8 @@ const InterestingFactAdminItem = ({ fact, onChange }: Props) => {
                         onChange('fact', fact);
                     }}
                     onCancel={handleCancelModalRemove}
+                    okText={BUTTON_LABELS.SUBMIT}
+                    cancelText={BUTTON_LABELS.CANCEL}
                 />
             </div>
         </div>

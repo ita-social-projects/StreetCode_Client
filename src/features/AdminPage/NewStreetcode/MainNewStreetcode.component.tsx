@@ -78,6 +78,7 @@ import SubtitleBlock from './SubtitileBlock/SubtitleBlock.component';
 import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
 import MapBlockAdmin from './MapBlock/MapBlockAdmin.component';
+import BUTTON_LABELS from "@constants/buttonLabels";
 
 dayjs.extend(utc);
 dayjs.extend(tz);
@@ -93,8 +94,6 @@ function reindex<T extends { index?: number }>(list: T[]): T[] {
 }
 
 const NewStreetcode = () => {
-    const publish = 'Опублікувати';
-    const draft = 'Зберегти як чернетку';
     const [form] = useForm();
     const {
         factsStore,
@@ -359,7 +358,7 @@ const NewStreetcode = () => {
         let tempStatus = 1;
         const buttonName = data.target.innerText;
         if (buttonName) {
-            if (buttonName.includes(draft)) {
+            if (buttonName.includes(BUTTON_LABELS.DRAFT)) {
                 tempStatus = 0;
                 setSavedChanges(true);
             }
@@ -698,24 +697,26 @@ const NewStreetcode = () => {
                     <Button
                         className="streetcode-custom-button submit-button"
                         onClick={onFinish}
-                        name={draft}
+                        name={BUTTON_LABELS.DRAFT}
                         htmlType="submit"
                     >
-                        {draft}
+                        {BUTTON_LABELS.DRAFT}
                     </Button>
                     <Modal
                         title="Ви впевнені, що хочете опублікувати цей history-код?"
                         open={visibleModal}
                         onOk={handleModalOk}
                         onCancel={handleCancelModalRemove}
+                        okText={BUTTON_LABELS.SUBMIT}
+                        cancelText={BUTTON_LABELS.CANCEL}
                     />
                     <Button
                         htmlType="submit"
                         className="streetcode-custom-button submit-button"
                         onClick={handleRemove}
-                        name={publish}
+                        name={BUTTON_LABELS.PUBLISH}
                     >
-                        {publish}
+                        {BUTTON_LABELS.PUBLISH}
                     </Button>
                 </div>
             </ConfigProvider>

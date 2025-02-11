@@ -4,6 +4,7 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import useMobx from '@stores/root-store';
 
 import { Modal } from 'antd';
+import BUTTON_LABELS from "@constants/buttonLabels";
 
 const CategoriesAdminItem: React.FC<{
     index:number,
@@ -35,6 +36,8 @@ const CategoriesAdminItem: React.FC<{
                 </div>
                 <Modal
                     title="Ви впевнені, що хочете видалити дану категорію?"
+                    okText={BUTTON_LABELS.SUBMIT}
+                    cancelText={BUTTON_LABELS.CANCEL}
                     open={visibleModal}
                     onOk={(e) => {
                         sourceCreateUpdateStreetcode.removeSourceCategoryContent(index); setVisibleModal(false);

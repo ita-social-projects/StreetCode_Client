@@ -5,6 +5,7 @@ import useMobx from '@app/stores/root-store';
 import { Modal } from 'antd';
 
 import TimelineItem from '@/models/timeline/chronology.model';
+import BUTTON_LABELS from "@constants/buttonLabels";
 
 interface NewTimelineItemProps {
     timelineItem: TimelineItem;
@@ -56,6 +57,8 @@ const NewTimelineItem: React.FC<NewTimelineItemProps> = ({
                         onChange('timelineItem', timelineItem);
                     }}
                     onCancel={handleCancelModalRemove}
+                    okText={BUTTON_LABELS.SUBMIT}
+                    cancelText={BUTTON_LABELS.CANCEL}
                 />
             </div>
         </div>
