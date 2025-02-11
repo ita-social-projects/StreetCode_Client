@@ -12,5 +12,7 @@ export const BUTTON_LABELS = {
     PUBLISH: 'Опублікувати',
     DRAFT: 'Зберегти як чернетку',
     ADD_CATEGORY: 'Додати нову категорію',
+    ADD_PARTNER: 'Додати партнера',
+    ADD_SOCIAL_NETWORK: 'Додати соціальну мережу'
 };
 export default BUTTON_LABELS;

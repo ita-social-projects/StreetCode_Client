@@ -34,6 +34,7 @@ import Partner, {
 import { StreetcodeShort } from '@/models/streetcode/streetcode-types.model';
 
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
+import BUTTON_LABELS from "@constants/buttonLabels";
 
 const PartnerModal: React.FC< {
     partnerItem?: Partner;
@@ -466,7 +467,7 @@ const PartnerModal: React.FC< {
                         onClick={handleShowSecondForm}
                         className="add-social-media-button"
                     >
-                        Додати соціальну мережу
+                        {BUTTON_LABELS.ADD_SOCIAL_NETWORK}
                     </Button>
                 )}
                 <Form
@@ -536,7 +537,7 @@ const PartnerModal: React.FC< {
                         <Popover content="Завершіть додавання соціальної мережі" trigger="hover">
                             <span>
                                 <Button disabled className="streetcode-custom-button save">
-                                    Зберегти
+                                    {BUTTON_LABELS.SAVE}
                                 </Button>
                             </span>
                         </Popover>
@@ -546,7 +547,7 @@ const PartnerModal: React.FC< {
                             className="streetcode-custom-button save"
                             onClick={handleOk}
                         >
-                            Зберегти
+                            {BUTTON_LABELS.SAVE}
                         </Button>
                     )}
                 </div>

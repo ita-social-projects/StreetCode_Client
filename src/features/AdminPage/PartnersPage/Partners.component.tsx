@@ -23,6 +23,7 @@ import PageBar from '../PageBar/PageBar.component';
 
 import PartnerModal from './PartnerModal/PartnerModal.component';
 import { useQuery } from '@tanstack/react-query';
+import BUTTON_LABELS from "@constants/buttonLabels";
 
 const LogoType = [twitter, instagram, facebook, youtube];
 
@@ -176,7 +177,7 @@ const Partners: React.FC = observer(() => {
                         className="streetcode-custom-button"
                         onClick={() => setModalAddOpened(true)}
                     >
-                        Створити партнера
+                        {BUTTON_LABELS.ADD_PARTNER}
                     </Button>
                 </div>
                 <div>
