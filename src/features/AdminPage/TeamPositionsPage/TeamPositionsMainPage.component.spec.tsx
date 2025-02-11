@@ -4,6 +4,7 @@ import TeamPositionsMainPage from '@features/AdminPage/TeamPositionsPage/TeamPos
 import React from 'react';
 import userEvent from '@testing-library/user-event';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import BUTTON_LABELS from "@constants/buttonLabels";
 
 jest.mock('antd', () => {
     const antd = jest.requireActual('antd');
@@ -58,7 +59,7 @@ describe('TeamPositionsMainPage', () => {
         );
         const column1 = screen.getByRole('columnheader', {name: /назва/i});
         const column2 = screen.getByRole('columnheader', {name: /дії/i});
-        const button = screen.getByText(/додати нову позицію/i);
+        const button = screen.getByText(BUTTON_LABELS.ADD_POSITION);
         expect(column1).toBeInTheDocument();
         expect(column2).toBeInTheDocument();
         expect(button).toBeInTheDocument();
@@ -70,9 +71,9 @@ describe('TeamPositionsMainPage', () => {
                 <TeamPositionsMainPage/>
             </QueryClientProvider>,
         );
-        const addButton = screen.getByText(/додати нову позицію/i);
+        const addButton = screen.getByText(BUTTON_LABELS.ADD_POSITION);
         userEvent.click(addButton);
-        const button = screen.getByText(/зберегти/i);
+        const button = screen.getByText(BUTTON_LABELS.SAVE);
         const title = screen.getByRole('heading', {name: /додати нову позицію/i});
         const label = screen.getByText(/назва:/i);
         expect(button).toBeInTheDocument();
@@ -86,7 +87,7 @@ describe('TeamPositionsMainPage', () => {
                 <TeamPositionsMainPage/>
             </QueryClientProvider>,
         );
-        const addButton = screen.getByText(/додати нову позицію/i);
+        const addButton = screen.getByText(BUTTON_LABELS.ADD_POSITION);
         userEvent.click(addButton);
         const row = screen.getByRole('row', { name: /pos1/i });
         const button = within(row).getByRole('img', { name: /edit/i });

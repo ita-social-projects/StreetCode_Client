@@ -13,6 +13,8 @@ export const BUTTON_LABELS = {
     DRAFT: 'Зберегти як чернетку',
     ADD_CATEGORY: 'Додати нову категорію',
     ADD_PARTNER: 'Додати партнера',
-    ADD_SOCIAL_NETWORK: 'Додати соціальну мережу'
+    ADD_SOCIAL_NETWORK: 'Додати соціальну мережу',
+    ADD_TEAM_MEMBER: 'Створити нового члена команди',
+    ADD_POSITION: 'Додати нову позицію',
 };
 export default BUTTON_LABELS;

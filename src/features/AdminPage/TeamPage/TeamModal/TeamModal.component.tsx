@@ -33,6 +33,7 @@ import Image from '@/models/media/image.model';
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 import { UploadChangeParam } from 'antd/es/upload';
 import imageValidator, { checkImageFileType } from '@/app/common/components/modals/validators/imageValidator';
+import BUTTON_LABELS from "@constants/buttonLabels";
 
 const TeamModal: React.FC<{
     teamMember?: TeamMember, open: boolean,
@@ -417,11 +418,11 @@ const TeamModal: React.FC<{
 
                 <div className="center">
                     <Button
-                        disabled={isSaveButtonDisabled || fileList.length === 0} 
+                        disabled={isSaveButtonDisabled || fileList.length === 0}
                         className="streetcode-custom-button"
                         onClick={handleOk}
                     >
-                        Зберегти
+                        {BUTTON_LABELS.SAVE}
                     </Button>
                 </div>
             </Form>

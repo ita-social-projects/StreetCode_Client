@@ -12,6 +12,7 @@ import Table, { ColumnsType } from 'antd/es/table';
 import Position from '@/models/additional-content/teampositions.model';
 
 import TeamPositionsAdminModal from './TeamPositionsModal/TeamPositionsAdminModal.component';
+import BUTTON_LABELS from "@constants/buttonLabels";
 
 const TeamPositionsMainPage: React.FC = observer(() => {
     const { modalStore } = useModalContext();
@@ -93,7 +94,7 @@ const TeamPositionsMainPage: React.FC = observer(() => {
                         className="streetcode-custom-button positions-page-add-button"
                         onClick={() => setModalAddOpened(true)}
                     >
-                        Додати нову позицію
+                        {BUTTON_LABELS.ADD_POSITION}
                     </Button>
                 </div>
                 <Table

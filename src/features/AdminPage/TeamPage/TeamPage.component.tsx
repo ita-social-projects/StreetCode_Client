@@ -18,6 +18,7 @@ import PageBar from '../PageBar/PageBar.component';
 
 import LOGO_ICONS from './TeamModal/constants/logoIcons';
 import TeamModal from './TeamModal/TeamModal.component';
+import BUTTON_LABELS from "@constants/buttonLabels";
 
 const TeamPage = () => {
     const { teamStore } = useMobx();
@@ -176,7 +177,7 @@ const TeamPage = () => {
                         className="streetcode-custom-button"
                         onClick={() => setModalAddOpened(true)}
                     >
-                        Створити нового члена команди
+                        {BUTTON_LABELS.ADD_TEAM_MEMBER}
                     </Button>
                 </div>
                 <Table
