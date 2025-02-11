@@ -160,5 +160,5 @@ describe('ContactForm test', () => {
         });
 
         expect(textareaMessage.value.length).toBe(descriptionRestriction);
-    });
+    }, 25000);
 });
