@@ -102,7 +102,8 @@
 }
 
 .ant-picker-dropdown {
-    .ant-picker-cell-selected .ant-picker-cell-inner{
+    .ant-picker-cell-selected .ant-picker-cell-inner,
+    .ant-picker-ok .ant-btn-primary:not(:disabled){
         background-color: c.$accented-red-color;
     }
 
@@ -116,6 +117,10 @@
 
     .ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner{
         background: c.$darkish-gray-color;
+    }
+
+    .ant-picker-cell-today .ant-picker-cell-inner::before {
+        border-color: c.$dark-red-color;
     }
 }
 
