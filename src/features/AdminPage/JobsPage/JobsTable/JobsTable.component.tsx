@@ -13,6 +13,7 @@ import JobApi from '@/app/api/job/Job.api';
 import useMobx, { useModalContext } from '@/app/stores/root-store';
 
 import JobsModalComponent from '../JobsModal/JobsModal.component';
+import BUTTON_LABELS from "@constants/buttonLabels";
 
 const JobsTable = observer(() => {
     const { jobsStore } = useMobx();
@@ -154,7 +155,7 @@ const JobsTable = observer(() => {
                     className="streetcode-custom-button partners-page-add-button"
                     onClick={handleAddButtonClick}
                 >
-                    Додати нову вакансію
+                    {BUTTON_LABELS.ADD_VACANCY}
                 </Button>
             </div>
             <JobsModalComponent
