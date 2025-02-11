@@ -12,6 +12,7 @@ import Table, { ColumnsType } from 'antd/es/table';
 import Tag from '@/models/additional-content/tag.model';
 
 import TagAdminModal from './TagsPage/TagAdminModal';
+import BUTTON_LABELS from "@constants/buttonLabels";
 
 const TagsMainPage: React.FC = observer(() => {
     const { modalStore } = useModalContext();
@@ -93,7 +94,7 @@ const TagsMainPage: React.FC = observer(() => {
                         className="streetcode-custom-button tags-page-add-button"
                         onClick={() => setModalAddOpened(true)}
                     >
-                        Додати новий тег
+                        {BUTTON_LABELS.ADD_TAG}
                     </Button>
                 </div>
                 <Table
