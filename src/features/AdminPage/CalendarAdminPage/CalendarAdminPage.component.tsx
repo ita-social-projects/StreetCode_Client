@@ -2,18 +2,11 @@ import useMobx, { useModalContext } from '@/app/stores/root-store';
 import PageBar from '../PageBar/PageBar.component';
 import { useQuery } from '@tanstack/react-query';
 import Table, { ColumnsType } from 'antd/es/table';
-import CalendarEvent, {
+import {
+  CalendarEvent,
   mapEventTypeToNum,
 } from '@/models/calendar/calendarEvent.model';
-import {
-  Button,
-  ConfigProvider,
-  Dropdown,
-  Empty,
-  MenuProps,
-  Pagination,
-  Tag,
-} from 'antd/es';
+import { ConfigProvider, Empty, Pagination, Tag } from 'antd/es';
 import dayjs from 'dayjs';
 import './CalendarAdminPage.styles.scss';
 import { useState } from 'react';
@@ -21,6 +14,8 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons/lib';
 import CalendarControlBar from './CalendarControlBar/CalendarControlBar.component';
 import { StreetcodeShort } from '@/models/streetcode/streetcode-types.model';
 import { observer } from 'mobx-react-lite/dist';
+import { Link } from 'react-router-dom/dist';
+import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 
 const CalendarAdminPage = observer(() => {
   const { modalStore } = useModalContext();
@@ -32,19 +27,6 @@ const CalendarAdminPage = observer(() => {
     queryKey: ['events', eventType, calendarStore.CurrentPage],
     queryFn: () => calendarStore.fetchAllEvents(mapEventTypeToNum(eventType)),
   });
-
-  const menuProps: MenuProps = {
-    items: [
-      {
-        key: '1',
-        label: 'Історичні події',
-      },
-      {
-        key: '2',
-        label: 'Власні події',
-      },
-    ],
-  };
 
   const columnsBase: ColumnsType<CalendarEvent> = [
     {
@@ -123,11 +105,13 @@ const CalendarAdminPage = observer(() => {
             );
           }}
         />
-        <EditOutlined
-          key={`${event.id}${index}`}
-          className='actionButton'
-          onClick={() => {}}
-        />
+        <Link to={`${FRONTEND_ROUTES.ADMIN.EDIT_EVENT}/${event.id}`}>
+          <EditOutlined
+            key={`${event.id}${index}`}
+            className='actionButton'
+            onClick={() => {}}
+          />
+        </Link>
       </div>
     ),
   };

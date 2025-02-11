@@ -72,6 +72,10 @@ const router = createBrowserRouter(createRoutesFromElements(
             path={FRONTEND_ROUTES.ADMIN.NEW_EVENT}
             element={<ProtectedComponent><NewEventPage /></ProtectedComponent>}
         />
+        <Route 
+            path={`${FRONTEND_ROUTES.ADMIN.EDIT_EVENT}/:id`}
+            element={<ProtectedComponent><NewEventPage /></ProtectedComponent>}
+        />
         <Route
             path={`${FRONTEND_ROUTES.ADMIN.ANALYTICS}/:id`}
             element={<Analytics />}

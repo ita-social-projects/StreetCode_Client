@@ -28,7 +28,7 @@ const CalendarControlBar: React.FC<Props> = ({ handleChange }) => {
           onChange={handleChange}
           options={[
             { value: 'historical', label: 'Історичні події' },
-            { value: 'custom', label: 'Кастомні події' },
+            { value: 'custom', label: 'Власні події' },
           ]}
         />
       </div>

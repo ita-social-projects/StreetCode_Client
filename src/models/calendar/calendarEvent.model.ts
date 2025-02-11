@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { StreetcodeShort } from '../streetcode/streetcode-types.model';
 
-export default interface CalendarEvent {
+export interface CalendarEvent {
   id: number;
   title: string;
   description?: string;
@@ -13,7 +13,19 @@ export default interface CalendarEvent {
   streetcodes?: StreetcodeShort[];
 }
 
-export default interface CreateCalendarEvent {
+export interface CreateCalendarEvent {
+  title: string;
+  description?: string;
+  date: dayjs.Dayjs;
+  eventType: EventType | number;
+  location?: string;
+  organizer?: string;
+  timelineItemId?: number;
+  streetcodeIds?: number[];
+}
+
+export interface UpdateCalendarEvent {
+  id: number;
   title: string;
   description?: string;
   date: dayjs.Dayjs;

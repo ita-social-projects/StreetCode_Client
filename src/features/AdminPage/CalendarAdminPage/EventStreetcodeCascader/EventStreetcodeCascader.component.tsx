@@ -61,7 +61,7 @@ const EventStreetcodeCascader = ({ form }: { form: any }) => {
     await streetcodeCatalogStore.fetchCatalogStreetcodes(1);
     const selectedStreetcode =
       streetcodeCatalogStore.getCatalogStreetcodesArray.find(
-        (item) => item.id === selectedTimelineItemId
+        (item) => item.id === selectedStreetcodeId
       );
 
     if (selectedTimelineItem) {
@@ -81,12 +81,18 @@ const EventStreetcodeCascader = ({ form }: { form: any }) => {
     }
   };
 
+  const timelineItemId = form.getFieldValue('timelineItemId');
+  const streetcodeId = cascaderOptions.find((option) =>
+    option.children?.some((child) => child.value === timelineItemId)
+  )?.value;
+
   return (
     <>
       <Cascader
         options={cascaderOptions}
         onChange={handleChange}
         placeholder='Оберіть подію'
+        value={timelineItemId ? [streetcodeId, timelineItemId] : undefined}
       />
     </>
   );

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import {
   Button,
+  ConfigProvider,
   DatePicker,
   Form,
   Input,
@@ -11,14 +12,22 @@ import {
 } from 'antd/es';
 import { CheckboxGroupProps } from 'antd/es/checkbox';
 import EventStreetcodeCascader from '../../EventStreetcodeCascader/EventStreetcodeCascader.component';
-import CreateCalendarEvent, {
+import {
+  CreateCalendarEvent,
   EventType,
   mapEventTypeToNum,
+  UpdateCalendarEvent,
 } from '@/models/calendar/calendarEvent.model';
 import SelectWithCustomSuffix from '@/app/common/components/SelectWithCustomSuffix';
 import useMobx from '@/app/stores/root-store';
 import { InfoCircleOutlined } from '@ant-design/icons/lib';
 import './NewEventBlock.styles.scss';
+import 'dayjs/locale/uk';
+import dayjs from 'dayjs';
+import ukUA from 'antd/es/locale/uk_UA';
+import { useParams } from 'react-router-dom/dist';
+
+dayjs.locale('uk');
 
 const NewEventBlock: React.FC = () => {
   const [form] = Form.useForm();
@@ -26,6 +35,8 @@ const NewEventBlock: React.FC = () => {
   const [currentEventType, setCurrentEventType] =
     useState<EventType>('historical');
   const { calendarStore, streetcodeCatalogStore } = useMobx();
+  const { id } = useParams<any>();
+  const parseId = id ? +id : null;
   const [streetcodesOptions, setStreetcodesOptions] = useState<
     { label: string; value: number }[]
   >([]);
@@ -35,6 +46,30 @@ const NewEventBlock: React.FC = () => {
     { label: 'Історична', value: 'historical' },
     { label: 'Власна', value: 'custom' },
   ];
+
+  useEffect(() => {
+    if (parseId) {
+      calendarStore.fetchAllEvents();
+      const event = calendarStore.events.find((e) => e.id === parseId);
+
+      form.setFieldsValue({
+        title: event?.title,
+        date: dayjs(event?.date),
+        description: event?.description,
+        location: event?.location,
+        organizer: event?.organizer,
+        timelineItemId: event?.timelineItemId,
+        eventType: event?.eventType,
+        streetcodes: event?.streetcodes?.map((s) => s.id),
+      });
+
+      setCurrentEventType(event?.eventType as EventType);
+    } else {
+      form.setFieldsValue({
+        eventType: 'historical',
+      });
+    }
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -68,7 +103,7 @@ const NewEventBlock: React.FC = () => {
 
   const handleSubmit = async (values: any) => {
     setLoading(true);
-    console.log('values', values); //logggg
+
     try {
       const newEvent: CreateCalendarEvent = {
         title: values.title,
@@ -80,13 +115,22 @@ const NewEventBlock: React.FC = () => {
         timelineItemId: values.timelineItemId || null,
         streetcodeIds: values.streetcodes || [],
       };
+      if (parseId) {
+        const updatedEvent: UpdateCalendarEvent = {
+          ...newEvent,
+          id: parseId,
+        };
+        await calendarStore.updateEvent(updatedEvent);
+        message.success('Подію успішно оновлено!');
+      } else {
+        await calendarStore.addEvent(newEvent);
+        message.success('Подію успішно додано!');
 
-      calendarStore.addEvent(newEvent);
-      message.success('Подію успішно додано!');
-      form.resetFields();
+        form.resetFields();
+      }
     } catch (error) {
-      console.error('Помилка створення події:', error);
-      message.error('Не вдалося створити подію.');
+      console.error('Помилка зберегти події:', error);
+      message.error('Не вдалося зберегти подію.');
     } finally {
       setLoading(false);
     }
@@ -100,9 +144,6 @@ const NewEventBlock: React.FC = () => {
         layout='vertical'
         onFinish={handleSubmit}
         scrollToFirstError
-        initialValues={{
-          eventType: 'historical',
-        }}
       >
         <div className='mainblock-add-form'>
           <Form.Item
@@ -113,7 +154,7 @@ const NewEventBlock: React.FC = () => {
             <div className='radio-type'>
               <Radio.Group
                 options={options}
-                defaultValue='historical'
+                value={currentEventType}
                 optionType='button'
                 buttonStyle='solid'
                 onChange={handleEventTypeChange}
@@ -164,13 +205,17 @@ const NewEventBlock: React.FC = () => {
             <Input showCount maxLength={100} />
           </Form.Item>
 
-          <Form.Item
-            name='date'
-            label='Дата події'
-            rules={[{ required: true, message: 'Будь ласка, виберіть дату!' }]}
-          >
-            <DatePicker format='YYYY-MM-DD' />
-          </Form.Item>
+          <ConfigProvider locale={ukUA}>
+            <Form.Item
+              name='date'
+              label='Дата події'
+              rules={[
+                { required: true, message: 'Будь ласка, виберіть дату!' },
+              ]}
+            >
+              <DatePicker format='YYYY-MM-DD' />
+            </Form.Item>
+          </ConfigProvider>
 
           <Form.Item name='description' label='Опис'>
             <Input.TextArea showCount maxLength={500} style={{ height: 120 }} />
@@ -209,7 +254,7 @@ const NewEventBlock: React.FC = () => {
           className='streetcode-custom-button submit-button'
           name={'submit'}
         >
-          {'Додати подію'}
+          {parseId ? 'Оновити подію' : 'Додати подію'}
         </Button>
       </Form>
     </>

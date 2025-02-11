@@ -15,6 +15,7 @@ const FRONTEND_ROUTES = {
         CONTEXT: '/admin-panel/context',
         CALENDAR: '/admin-panel/calendar',
         NEW_EVENT: '/admin-panel/new-event',
+        EDIT_EVENT: '/admin-panel/edit-event',
     },
     OTHER_PAGES: {
         CATALOG: '/catalog',

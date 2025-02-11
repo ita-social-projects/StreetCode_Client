@@ -1,11 +1,12 @@
-import CreateCalendarEvent, {
-  mapEventTypeToStr,
+import { mapEventTypeToStr } from '@/models/calendar/calendarEvent.model';
+import {
+  CalendarEvent,
+  CreateCalendarEvent,
 } from '@/models/calendar/calendarEvent.model';
-import CalendarEvent from '@/models/calendar/calendarEvent.model';
 import { PaginationInfo } from '@/models/pagination/pagination.model';
 import eventsApi from '@api/events/events.api';
 import dayjs from 'dayjs';
-import { makeAutoObservable, runInAction } from 'mobx';
+import { makeAutoObservable, observable, runInAction } from 'mobx';
 
 export default class CalendarStore {
   events: CalendarEvent[] = [];
@@ -14,9 +15,9 @@ export default class CalendarStore {
 
   public CurrentPage = 1;
 
-  private paginationInfo: PaginationInfo = {
+  public paginationInfo: PaginationInfo = {
     PageSize: this.defaultPageSize,
-    TotalPages: 1,
+    TotalPages: 2,
     TotalItems: 1,
     CurrentPage: 1,
   };
@@ -42,6 +43,7 @@ export default class CalendarStore {
       );
 
       this.paginationInfo.TotalItems = response.totalAmount;
+
       this.events = response.events.map((event) => ({
         ...event,
         eventType: mapEventTypeToStr(Number(event.eventType)),
@@ -51,15 +53,30 @@ export default class CalendarStore {
     }
   };
 
+  fetchEventById = async (eventId: number) => {
+    try {
+      const response = await eventsApi.getById(eventId.toString());
+      response.eventType = mapEventTypeToStr(Number(response.eventType));
+    } catch (error: unknown) {
+      console.error('Failed to fetch event:', error);
+    }
+  };
+
   addEvent = async (event: CreateCalendarEvent) => {
     try {
       await eventsApi.create(event);
-      this.events.push(event);
     } catch (error) {
       console.error('Failed to create event:', error);
     }
   };
 
+  updateEvent = async (event: CalendarEvent) => {
+    try {
+      await eventsApi.update(event);
+    } catch (error) {
+      console.error('Failed to update event:', error);
+    }
+  };
   removeEvent = async (eventId: number) => {
     try {
       await eventsApi.delete(eventId.toString());
