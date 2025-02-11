@@ -3,6 +3,7 @@ import './ContextMainPage.style.scss';
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import BUTTON_LABELS from '@constants/buttonLabels';
 import ContextAdminModalComponent from '@features/AdminPage/ContextPage/ContextModal/ContextAdminModal.component';
 import useMobx, { useModalContext } from '@stores/root-store';
 import { useQuery } from '@tanstack/react-query';
@@ -92,7 +93,7 @@ const ContextMainPage: React.FC = observer(() => {
                         className="streetcode-custom-button partners-page-add-button"
                         onClick={() => setModalAddOpened(true)}
                     >
-                        Додати новий контекст
+                        {BUTTON_LABELS.ADD_CONTEXT}
                     </Button>
                 </div>
                 <Table
