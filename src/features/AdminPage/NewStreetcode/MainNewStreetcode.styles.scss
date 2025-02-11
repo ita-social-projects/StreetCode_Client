@@ -125,6 +125,10 @@ $articlesImg: "@assets/images/sources/Articles.webp";
             }
         }
 
+        .ant-upload-list-item-file path:nth-of-type(2) {
+            fill: c.$dark-red-color;
+        }
+
         .ant-form-item-label >label{
             @include mut.with-font($font-size: 16px);
         }
