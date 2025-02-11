@@ -14,6 +14,9 @@
                     background-color: c.$modal-hover-color;
                 }
         }
+        .ant-modal-close:focus-visible{
+            outline: 4px solid c.$accented-red-color;
+        }
 
         .ant-modal-content {
             @include mut.full-rounded(60px, $overflow: visible);
@@ -96,6 +99,10 @@
             .ql-snow.ql-toolbar button:hover .ql-fill,
             .ql-snow.ql-toolbar button:focus .ql-fill {
                 fill: c.$dark-red-color;
+            }
+
+            .ant-upload.ant-upload-select:not(.ant-upload-disabled):hover{
+                border-color: c.$dark-red-color;
             }
         }
     }
