@@ -10,6 +10,7 @@ import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
 
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
+import BUTTON_LABELS from "@constants/buttonLabels";
 
 interface Props {
     artIdx: number,
@@ -112,7 +113,7 @@ const PreviewFileModal = ({ opened, setOpened, artIdx }: Props) => {
                             maxLength={400}
                         />
                     </FormItem>
-                    <Button onClick={handleSave} className="saveButton">Зберегти</Button>
+                    <Button onClick={handleSave} className="saveButton">{BUTTON_LABELS.SAVE}</Button>
                 </div>
 
             </Form>

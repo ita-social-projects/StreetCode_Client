@@ -18,6 +18,7 @@ import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 
 import { Button } from "antd";
 import { useMediaQuery } from "react-responsive";
+import BUTTON_LABELS from "@constants/buttonLabels";
 
 const MAX_SLIDES_AMOUNT = 30;
 
@@ -328,10 +329,10 @@ const ArtGallery = ({
       {(artGalleryTemplateStore.isEdited || artGalleryTemplateStore.isRedact) && isConfigurationGallery ? (
         <div className="configurationGalleryControls">
           <Button type="primary" onClick={handleAddNewSlide}>
-            Додати
+            {BUTTON_LABELS.ADD}
           </Button>
           <Button danger onClick={handleClearSlideTemplate}>
-            Скасувати
+            {BUTTON_LABELS.CANCEL}
           </Button>
         </div>
       ) : (

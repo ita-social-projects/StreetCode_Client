@@ -23,6 +23,7 @@ import TimelineItem, {
 } from '@/models/timeline/chronology.model';
 import POPOVER_CONTENT from '@/features/AdminPage/JobsPage/JobsModal/constants/popoverContent';
 import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
+import BUTTON_LABELS from "@constants/buttonLabels";
 
 interface NewTimelineModalProps {
     timelineItem?: TimelineItem;
@@ -373,7 +374,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                             onClick={() => handleOk()}
                             data-testid="button-save"
                         >
-                            Зберегти
+                            {BUTTON_LABELS.SAVE}
                         </Button>
                     </div>
                 </Form>
