@@ -34,6 +34,7 @@ import { StreetcodeShort } from '@/models/streetcode/streetcode-types.model';
 
 // eslint-disable-next-line no-restricted-imports
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
+import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
 
 const PartnerModal: React.FC< {
     partnerItem?: Partner;
@@ -306,6 +307,12 @@ const PartnerModal: React.FC< {
             setFileList([]);
         };
 
+        const validateTitle = uniquenessValidator(
+            () => (partnersStore.getPartnerArray.map((partner) => partner.title)),
+            () => (partnerItem?.title),
+            'Партнер з такою назвою вже існує',
+        );
+
         return (
             <Modal
                 open={open}
@@ -354,7 +361,7 @@ const PartnerModal: React.FC< {
                         <Form.Item
                             name="title"
                             label="Назва: "
-                            rules={[{ required: true, message: 'Введіть назву' }]}
+                            rules={[{ required: true, message: 'Введіть назву' }, { validator: validateTitle }]}
                         >
                             <Input maxLength={100} showCount onChange={handleInputChange} />
                         </Form.Item>
