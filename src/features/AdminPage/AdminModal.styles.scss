@@ -79,6 +79,24 @@
                 background: red !important;
                 box-shadow: inset 0 0 0 2px white !important;
             }
+
+            .ql-snow.ql-toolbar button:hover,
+            .ql-snow.ql-toolbar .ql-picker-item:hover,          
+            .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke,
+            .ql-snow.ql-toolbar .ql-picker-label:hover{
+                color: c.$dark-red-color;
+            }                       
+
+            .ql-snow.ql-toolbar button:hover .ql-stroke ,
+            .ql-snow.ql-toolbar button:focus .ql-stroke,
+            .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke{
+                stroke: c.$dark-red-color;
+            }
+
+            .ql-snow.ql-toolbar button:hover .ql-fill,
+            .ql-snow.ql-toolbar button:focus .ql-fill {
+                fill: c.$dark-red-color;
+            }
         }
     }
 }
