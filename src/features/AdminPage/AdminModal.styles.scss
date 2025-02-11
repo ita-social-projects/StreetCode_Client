@@ -83,51 +83,10 @@
                 box-shadow: inset 0 0 0 2px white !important;
             }
 
-            .ql-snow.ql-toolbar button:hover,
-            .ql-snow.ql-toolbar .ql-picker-item:hover,          
-            .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke,
-            .ql-snow.ql-toolbar .ql-picker-label:hover{
-                color: c.$dark-red-color;
-            }                       
-
-            .ql-snow.ql-toolbar button:hover .ql-stroke ,
-            .ql-snow.ql-toolbar button:focus .ql-stroke,
-            .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke{
-                stroke: c.$dark-red-color;
-            }
-
-            .ql-snow.ql-toolbar button:hover .ql-fill,
-            .ql-snow.ql-toolbar button:focus .ql-fill {
-                fill: c.$dark-red-color;
-            }
-
             .ant-upload.ant-upload-select:not(.ant-upload-disabled):hover{
                 border-color: c.$dark-red-color;
             }
         }
-    }
-}
-
-.ant-picker-dropdown {
-    .ant-picker-cell-selected .ant-picker-cell-inner,
-    .ant-picker-ok .ant-btn-primary:not(:disabled){
-        background-color: c.$accented-red-color;
-    }
-
-    .ant-picker-now-btn{
-        color: c.$dark-red-color;
-
-        &:hover {
-            color: c.$accented-red-color;
-        }
-    }
-
-    .ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner{
-        background: c.$darkish-gray-color;
-    }
-
-    .ant-picker-cell-today .ant-picker-cell-inner::before {
-        border-color: c.$dark-red-color;
     }
 }
 

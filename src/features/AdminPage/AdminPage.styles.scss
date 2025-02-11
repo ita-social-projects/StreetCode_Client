@@ -31,6 +31,57 @@ $loadImg: '@assets/images/catalog/loading.webp';
     overflow: hidden;
 }
 
+.ql-snow.ql-toolbar {
+    button:hover,
+    .ql-picker-item:hover,
+    .ql-picker-label:hover {
+        color: c.$dark-red-color;
+    }
+
+    button:hover .ql-stroke,
+    button:focus .ql-stroke,
+    .ql-picker-label:hover .ql-stroke {
+        stroke: c.$dark-red-color;
+    }
+
+    button:hover .ql-fill,
+    button:focus .ql-fill {
+        fill: c.$dark-red-color;
+    }
+}
+
+.ant-picker-dropdown {
+    .ant-picker-cell-selected .ant-picker-cell-inner,
+    .ant-picker-ok .ant-btn-primary:not(:disabled) {
+        background-color: c.$accented-red-color;
+    }
+
+    .ant-picker-now-btn,
+    .ant-picker-today-btn {
+        color: c.$dark-red-color;
+
+        &:hover {
+            color: c.$accented-red-color;
+        }
+    }
+
+    .ant-picker-header-view button:hover{
+        color: c.$dark-red-color;
+    }
+
+    .ant-picker-cell-inner::before {
+        border-color: c.$dark-red-color;
+    }
+
+    .ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner {
+        background: c.$darkish-gray-color;
+    }
+}
+
+.ant-btn:focus-visible{
+    outline: 4px solid c.$dark-red-color;
+}
+
 .loadingWrapper {
     background-color: c.$pure-white-color;
     width: 100%;

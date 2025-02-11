@@ -97,7 +97,7 @@ $articlesImg: "@assets/images/sources/Articles.webp";
         .ant-input-focused,
         .ant-select-focused,
         .ant-picker-focused,
-        .my-picker :hover{
+        .ant-picker:hover{
             border-color: c.$accented-red-color;
             box-shadow: none !important;
         }
