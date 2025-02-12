@@ -123,7 +123,6 @@ pipeline {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'docker-login-streetcode', passwordVariable: 'password', usernameVariable: 'username')]){
-                    //    sh "docker build -t ${username}/streetcode_client:latest ."
                         sh "docker build -t ${username}/streetcode_client:${env.CODE_VERSION} ."
                         IS_IMAGE_BUILDED = true
                     }
@@ -138,8 +137,6 @@ pipeline {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'docker-login-streetcode', passwordVariable: 'password', usernameVariable: 'username')]){
                         sh 'echo "${password}" | docker login -u "${username}" --password-stdin'
-                        //sh "docker push ${username}/streetcode_client:latest"
-                        //sh "docker tag  ${username}/streetcode_client:latest ${username}/streetcode_client:${env.CODE_VERSION}"
                         sh "docker push ${username}/streetcode_client:${env.CODE_VERSION}"
                         IS_IMAGE_PUSH = true
                     }
