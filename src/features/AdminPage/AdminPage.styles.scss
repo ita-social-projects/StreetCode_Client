@@ -92,7 +92,8 @@ $loadImg: '@assets/images/catalog/loading.webp';
 
 .ant-btn,
 .ant-modal-close,
-.ant-pagination-item {
+.ant-pagination-item ,
+.ant-switch{
     &:focus-visible {
             outline: 4px solid c.$dark-red-color;
     }
