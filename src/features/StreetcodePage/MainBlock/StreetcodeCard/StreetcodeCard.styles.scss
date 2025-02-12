@@ -57,9 +57,8 @@
   position: absolute;
   height: f.pxToRem(60px);
   width: f.pxToRem(69px);
-  top: 0;
   right: 0;
-  @include mut.rem-margined(49px, 23px, 0px, 51px);
+  @include mut.rem-margined(30px, 60px, 0, 0);
 
   &:hover {
     cursor: pointer;
@@ -229,6 +228,10 @@
   .blockCentering {
     @include mut.rem-padded($top: 0px, $right: 0px, $bottom: 0px, $left: 0px);
   }
+
+  .bookmark {
+    @include mut.rem-margined(20px, 10px, 0, 0);
+  }
 }
 
 @media screen and (max-width: 1120px) {
@@ -240,6 +243,11 @@
 @media screen and (max-width: 560px) {
   .cardFooter {
     flex-direction: column;
+  }
+
+  .bookmark {
+    height: f.pxToRem(40px);
+    width: f.pxToRem(49px);
   }
 }
 

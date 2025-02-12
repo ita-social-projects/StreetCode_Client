@@ -63,9 +63,10 @@ export default class StreetcodeStore {
                 const streetcode = await StreetcodesApi.getByUrl(url);
                 if (streetcode !== null) {
                     this.setStreetCode = streetcode;
-                    if (AuthService.isLoggedIn()) {
-                        const favourite = await StreetcodesApi.getFavouriteById(streetcode.id);
-                        this.isFavourite = favourite.id !== 0;
+                    if (AuthService.isLoggedIn() && !AuthService.isAdmin()) {
+                        try {
+                            this.isFavourite = await StreetcodesApi.getFavouriteStatus(this.currentStreetcode);
+                        } catch (error) {}
                     } else {
                         this.isFavourite = undefined;
                     }
