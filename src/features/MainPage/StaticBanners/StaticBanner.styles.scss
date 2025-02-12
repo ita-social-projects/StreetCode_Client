@@ -27,10 +27,12 @@
             p.title {
                 @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 500, $font-size: 36px);
                 @include mut.rem-margined($bottom: 30px);
+                @include mut.colored(c.$lighter-black-color);
             }
 
             p.content {
                 @include mut.with-font($font-family: ft.$roboto-font, $font-weight: 400, $font-size: 24px);
+                @include mut.colored(c.$lighter-black-color);
                 line-height: 28.13px;
             }
         }
