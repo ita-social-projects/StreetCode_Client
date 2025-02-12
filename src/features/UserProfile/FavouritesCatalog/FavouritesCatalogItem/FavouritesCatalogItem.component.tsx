@@ -18,7 +18,6 @@ const FavouritesCatalogItem = ({ streetcode, image }: Props) => {
         style: {
             backgroundImage: `url(${base64ToUrl(image?.base64, image?.mimeType)})`
         },
-        to: `../${streetcode.transliterationUrl}`,
     };
 
     return (
