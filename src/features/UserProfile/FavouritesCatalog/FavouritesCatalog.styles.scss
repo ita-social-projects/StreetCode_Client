@@ -1,0 +1,28 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/variables/_variables.fonts.scss" as ft;
+@use "@sass/_utils.functions.scss" as f;
+
+.favouritesContainer {
+    @include mut.rem-padded(40px, 40px, 5px, 40px);
+    @include mut.flexed(row, flex-start, flex-start, wrap, $gap: 42px);
+    overflow-y: auto;
+    @include mut.sized(100%, 88%);
+}
+
+.favourites {
+    min-height: 0;
+    @include mut.sized(100%, 88%);
+
+    .ant-dropdown-trigger {
+        @include mut.rem-margined(16px, 0, 10px, 40px);
+
+        &:hover {
+            color: c.$accented-red-color;
+        }
+    }
+
+    .ant-btn-default {
+        border-color: c.$accented-red-color;
+    }
+}

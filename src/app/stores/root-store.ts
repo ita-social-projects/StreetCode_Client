@@ -27,6 +27,7 @@ import UserStore from '@stores/user-store';
 import NewsStore from './news-store/news-store';
 import StreetcodePageLoaderStore from './streetcode-page-loader-store/streetcode-page-loader-store';
 import CreateUpdateMediaStore from './create-update-media-store';
+import FavouritesCatalogStore from './favourites-catalog-store';
 import JobsStore from './jobs-store';
 import NewStreetcodeInfoStore from './newstreetcode-info-store';
 import PositionsStore from './position-store';
@@ -59,6 +60,7 @@ interface Store {
     relatedTermStore: RelatedTermsStore,
     historicalContextStore: HistoricalContextStore,
     streetcodeCatalogStore: StreetcodesCatalogStore,
+    favouritesCatalogStore: FavouritesCatalogStore,
     streetcodeShortStore: StreetcodeShortStore,
     newStreetcodeInfoStore: NewStreetcodeInfoStore,
     streetcodeCoordinatesStore: StreetcodeCoordinatesStore,
@@ -100,6 +102,7 @@ export const store: Store = {
     relatedTermStore: new RelatedTermsStore(),
     historicalContextStore: new HistoricalContextStore(),
     streetcodeCatalogStore: new StreetcodesCatalogStore(),
+    favouritesCatalogStore: new FavouritesCatalogStore(),
     streetcodeShortStore: new StreetcodeShortStore(),
     newStreetcodeInfoStore: new NewStreetcodeInfoStore(),
     streetcodeCoordinatesStore: new StreetcodeCoordinatesStore(),

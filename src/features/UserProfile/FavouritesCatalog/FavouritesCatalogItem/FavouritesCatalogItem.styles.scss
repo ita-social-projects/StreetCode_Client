@@ -1,0 +1,80 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/_utils.functions.scss" as *;
+@use "@sass/mixins/_vendor.mixins.scss" as vnd;
+@use "@sass/variables/_variables.fonts.scss" as f;
+
+.favouriteItem {
+    @include mut.sized($width: 278px, $height: 380px);
+    @include mut.full-rounded($rad: 30px);
+    border: 3px solid c.$pure-white-color;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-color: c.$white-color;
+    @include mut.flexed($justify-content: center, $align-items: flex-end);
+    cursor: pointer;
+
+    &:hover {
+        @include mut.positioned-as();
+        @include vnd.vendored(transition, 'all .5s ease');
+        overflow: visible !important;
+    }
+}
+
+.favouritesItemText {
+    @include mut.sized($width: 278px, $height: 97px);
+    @include mut.rounded($bottom-left: 30px, $bottom-right: 30px);
+
+    background-color: c.$dark-red-color;
+
+    @include vnd.vendored(transition, 'all .5s ease');
+
+    .heading {
+        @include mut.sized($width: 100%, $height: 88px);
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        .aliasText {
+            @include mut.rem-padded($left: 5px, $right: 5px, $top: 5px, $bottom: 0px);
+            line-height: pxToRem(16.4px);
+            font-size: 14px;
+        }
+
+        p {
+            @include mut.truncated($line-num: 2);
+            @include mut.rem-padded($left: 12px, $right: 12px, $top: 10px);
+
+            @include mut.with-font($font-family: f.$closer-text-font, $font-weight: 500);
+            text-align: center;
+            color: c.$pure-white-color;
+        }
+    }
+
+    &.mobile {
+        min-height: pxToRem(65px);
+        @include mut.sized($width: 165px, $height: auto);
+        background-color: transparent !important;
+        line-height: pxToRem(18.48px);
+        color: c.$pure-black-color;
+
+        .heading {
+            display: inline;
+            height: 100%;
+
+            p {
+                font-size: 14px;
+                color: c.$pure-black-color;
+                padding-top: pxToRem(9px) !important;
+            }
+
+            .aliasText {
+                line-height: pxToRem(13.2px);
+                font-size: 10px;
+                padding-top: pxToRem(0px) !important;
+            }
+        }
+    }
+}

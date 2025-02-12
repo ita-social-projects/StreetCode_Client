@@ -3,6 +3,7 @@
 import { observer } from 'mobx-react-lite';
 import { useState } from 'react';
 import defaultAvatar from '@assets/images/user-profile/default-avatar.webp';
+import Bookmark from '@assets/images/utils/bookmark.svg';
 import Calendar from '@assets/images/utils/calendar-regular.svg';
 import Pencil from '@assets/images/utils/pencil-solid.svg';
 import Loader from '@components/Loader/Loader.component';
@@ -14,15 +15,18 @@ import base64ToUrl from '@utils/base64ToUrl.utility';
 
 import { Button } from 'antd';
 
+import FavouritesCatalog from './FavouritesCatalog/FavouritesCatalog.component';
+
 const UserProfile = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [activeButton, setActiveButton] = useState<number>(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const { userStore, imagesStore } = useMobx();
+    const { userStore, imagesStore, favouritesCatalogStore } = useMobx();
     const { user } = userStore;
     const buttonConfigs = [
-        { label: 'Календар', icon: Calendar },
-        { label: 'Панель', icon: Pencil },
+        { label: 'Календар', icon: Calendar, component: '' },
+        { label: 'Панель', icon: Pencil, component: '' },
+        { label: 'Улюблені', icon: Bookmark, component: <FavouritesCatalog /> },
     ];
 
     useAsync(async () => {
@@ -30,6 +34,7 @@ const UserProfile = () => {
         const fetchUserData = async () => {
             await userStore.fetchCurrentUser();
             const imageId = userStore?.user?.avatarId;
+            await favouritesCatalogStore.fetchAllFavourites();
             if (imageId) {
                 await imagesStore.fetchImage(imageId);
             }
@@ -38,6 +43,8 @@ const UserProfile = () => {
         await fetchUserData();
         setIsLoading(false);
     }, []);
+
+    imagesStore.fetchImages(favouritesCatalogStore.getFavouritesArray || []);
 
     const handleIsActive = (buttonIndex: number) => {
         setActiveButton(buttonIndex);
@@ -50,6 +57,8 @@ const UserProfile = () => {
     const handleCloseModal = () => {
         setIsModalOpen(false);
     };
+
+    
 
     return (
         !isLoading ? (
@@ -135,7 +144,7 @@ const UserProfile = () => {
                                     ))}
                                 </div>
                                 <div className="accountInfo">
-                                    {/* {buttonConfigs.at(activeButton)?.component} */}
+                                    {buttonConfigs[activeButton].component}
                                 </div>
                             </div>
                         </div>
