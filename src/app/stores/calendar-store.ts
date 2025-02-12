@@ -6,7 +6,7 @@ import {
 import { PaginationInfo } from '@/models/pagination/pagination.model';
 import eventsApi from '@api/events/events.api';
 import dayjs from 'dayjs';
-import { makeAutoObservable, observable, runInAction } from 'mobx';
+import { makeAutoObservable } from 'mobx';
 
 export default class CalendarStore {
   events: CalendarEvent[] = [];
@@ -15,9 +15,9 @@ export default class CalendarStore {
 
   public CurrentPage = 1;
 
-  public paginationInfo: PaginationInfo = {
+  private paginationInfo: PaginationInfo = {
     PageSize: this.defaultPageSize,
-    TotalPages: 2,
+    TotalPages: 1,
     TotalItems: 1,
     CurrentPage: 1,
   };
@@ -28,6 +28,10 @@ export default class CalendarStore {
 
   public setCurrentPage(currPage: number) {
     this.paginationInfo.CurrentPage = currPage;
+  }
+
+  public set PaginationInfo(paginationInfo: PaginationInfo) {
+    this.paginationInfo = paginationInfo;
   }
 
   public get PaginationInfo(): PaginationInfo {

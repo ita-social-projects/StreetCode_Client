@@ -24,8 +24,10 @@ const CalendarAdminPage = observer(() => {
   const [eventType, setEventType] = useState<string>('historical');
 
   const { isLoading } = useQuery({
-    queryKey: ['events', eventType, calendarStore.CurrentPage],
-    queryFn: () => calendarStore.fetchAllEvents(mapEventTypeToNum(eventType)),
+    queryKey: ['events', eventType, calendarStore.PaginationInfo.CurrentPage],
+    queryFn: () => {
+      calendarStore.fetchAllEvents(mapEventTypeToNum(eventType));
+    },
   });
 
   const columnsBase: ColumnsType<CalendarEvent> = [
