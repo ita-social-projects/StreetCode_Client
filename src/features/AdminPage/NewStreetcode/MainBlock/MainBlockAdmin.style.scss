@@ -1,139 +1,162 @@
 @use "@sass/variables/_variables.colors.scss" as c;
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/_utils.functions.scss" as f;
+
 .ant-message {
     position: absolute;
     top: 100px !important;
-    width: f.pxToRem(400px) ;
-  }
-.label-tags-block-info-container-content{
+    width: f.pxToRem(400px);
+}
+
+.label-tags-block-info-container-content {
     width: f.pxToRem(500px);
 }
 
-.mainblock-add-form{
-    .checknumber{
+.mainblock-add-form {
+    .checknumber {
         margin: 0 f.pxToRem(20px);
     }
-        .p-margin{
-            gap:5px;
-            p{
-                font-size: 18px;
-            }
-        }
 
-        .grey-text{
-            color:grey;
-        }
+    .p-margin {
+        gap:5px;
 
-        .red-text{
-            color: c.$accented-red-color;
+        p{
+            font-size: 18px;
         }
-
-        .ant-switch-checked{
-            background-color: c.$dark-red-color;
-        }
-
     }
 
+    .grey-text {
+        color:grey;
+    }
 
-    .date-picker-container{
-        .date-picker-group{
-            display: flex;
-            gap: f.pxToRem(10px);
-            .my-picker{
-                margin-bottom: 0px;
-            }
+    .red-text {
+        color: c.$accented-red-color;
+    }
 
-            .date-picker-type-input{
-                margin-bottom: f.pxToRem(10px);
-            }
-            .date-picker-group-item{
-                width: 100%;
-                .streetcode-first-formitem-datepicker{
-                    .ant-row{
-                        //flex-direction: column;
-                        flex-flow: row nowrap;
-                    }
+    .ant-switch-checked {
+        background-color: c.$dark-red-color;
+    }
+}
+
+.date-picker-container {
+    .date-picker-group {
+        display: flex;
+        gap: f.pxToRem(10px);
+
+        .my-picker {
+            margin-bottom: 0;
+        }
+
+        .date-picker-type-input {
+            margin-bottom: f.pxToRem(10px);
+        }
+
+        .date-picker-group-item {
+            width: 100%;
+
+            .streetcode-first-formitem-datepicker {
+                .ant-row {
+                    //flex-direction: column;
+                    flex-flow: row nowrap;
                 }
             }
         }
     }
+}
 
-    .tags-block{
+.tags-block {
+    display: flex;
+    flex-direction: column;
+
+     .ant-select-selector {
+        box-shadow: none !important;
+     }
+
+    .label-tags-block {
+        @include mut.flexed( $direction: row,
+        $align-items: center,
+        $justify-content: center,
+        $wrap: nowrap,
+        $gap: 10px);
+
+        .ant-popover-content, .ant-popover {
+            width: f.pxToRem(500px);
+        }
+
+        .info-icon {
+            @include mut.sized(40px,40px);
+        }
+    }
+
+    .tags-block-tagitems {
+        width: 100%;
+
+        .tags-select-input {
+            width: 100%;
+        }
+    }
+    .device-sizes-list {
+        p {
+            margin-bottom: 2px;
+        }
+
         display: flex;
         flex-direction: column;
-         .ant-select-selector{
-            box-shadow: none !important;
-        }
-        .label-tags-block{
-            @include mut.flexed( $direction: row,
-            $align-items: center,
-            $justify-content: center,
-            $wrap: nowrap,
-            $gap: 10px);
-            .ant-popover-content, .ant-popover{
-                width: f.pxToRem(500px);
-            }
-            .info-icon{
-                @include mut.sized(40px,40px);
-            }
-        }
+        justify-content: left;
 
-        .tags-block-tagitems{
-            width: 100%;
-            .tags-select-input{
-                width: 100%;
-            }
-        }
-        .device-sizes-list{
-            p{
-                margin-bottom: 2px;
-            }
-            display: flex;
-            flex-direction: column;
-            justify-content: left;
-            p:hover{
-                color: c.$dark-red-color;
-                font-weight: 600;
-             }
-        }
+        p:hover {
+            color: c.$dark-red-color;
+            font-weight: 600;
+         }
     }
+}
 
-    .textarea-teaser{
-        height:f.pxToRem(80px);
-    }
-    .ant-input-textarea > textarea{
+.textarea-teaser {
+    height: f.pxToRem(80px);
+}
+.ant-input-textarea > textarea {
+    resize: none;
+}
+
+.teaser-form-item {
+    .textarea-teaser {
         resize: none;
     }
-
-    .teaser-form-item{
-        .textarea-teaser{
-            resize: none;
-        }
-        .amount-left-char-textarea-teaser{
-            display: flex;
-            justify-content: flex-end;
-            padding-right: f.pxToRem(10px);
-            .warning{
-                color:c.$accented-red-color;
-            }
-        }
-    }
-
-    .photo-uploader-container{
+    .amount-left-char-textarea-teaser {
         display: flex;
-        justify-content: space-between;
-    }
+        justify-content: flex-end;
+        padding-right: f.pxToRem(10px);
 
-    .tagInput-counter {
-        position: absolute;
-        right: f.pxToRem(2px);
-        bottom: f.pxToRem(2px);
-        font-size: f.pxToRem(17px);
-        font-weight: light;
-        color: rgba(154, 154, 154, 255);
+        .warning {
+            color: c.$accented-red-color;
+        }
     }
+}
 
-    .ant-upload, .ant-select-selector{
-        width: 100%;
-    }
+.photo-uploader-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.photo-uploader-title {
+    font-size: 1rem;
+    margin-bottom: f.pxToRem(10px);
+}
+
+.photo-uploader-items-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.tagInput-counter {
+    position: absolute;
+    right: f.pxToRem(2px);
+    bottom: f.pxToRem(2px);
+    font-size: f.pxToRem(17px);
+    font-weight: light;
+    color: rgba(154, 154, 154, 255);
+}
+
+.ant-upload, .ant-select-selector {
+    width: 100%;
+}
