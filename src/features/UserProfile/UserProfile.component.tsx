@@ -44,7 +44,7 @@ const UserProfile = () => {
         setIsLoading(false);
     }, []);
 
-    imagesStore.fetchImages(favouritesCatalogStore.getFavouritesArray || []);
+    imagesStore.fetchImages(favouritesCatalogStore.getFavouritesArray ?? []);
 
     const handleIsActive = (buttonIndex: number) => {
         setActiveButton(buttonIndex);
