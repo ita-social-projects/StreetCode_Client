@@ -180,6 +180,7 @@ export const API_ROUTES = {
         GET_URL_BY_QR_ID: 'streetcode/getByQrId',
         GET_ALL_FAVOURITES: 'streetcode/getAllFavourites',
         GET_FAVOURITE_BY_ID: 'streetcode/getFavouriteById',
+        GET_FAVOURITE_STATUS: 'streetcode/getFavouriteStatus',
         CREATE: 'streetcode/create',
         CREATE_FAVOURITE: 'streetcode/createFavourite',
         UPDATE: 'streetcode/update',

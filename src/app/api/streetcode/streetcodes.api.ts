@@ -33,6 +33,9 @@ const StreetcodesApi = {
     getFavouriteById: (streetcodeId: number) => Agent
         .get<StreetcodeFavourite>(`${API_ROUTES.STREETCODES.GET_FAVOURITE_BY_ID}/${streetcodeId}`),
 
+    getFavouriteStatus: (streetcodeId: number) => Agent
+        .get<boolean>(`${API_ROUTES.STREETCODES.GET_FAVOURITE_STATUS}/${streetcodeId}`),
+
     getAll: (getAllStreetcodes: GetAllStreetcodes | undefined) => (
         Agent.get<{ totalAmount: number, streetcodes: Streetcode[] }>(
             `${API_ROUTES.STREETCODES.GET_ALL}`,
@@ -63,6 +66,11 @@ const StreetcodesApi = {
         .get<StreetcodeCatalogRecord[]>(
             `${API_ROUTES.STREETCODES.GET_ALL_CATALOG}`,
             new URLSearchParams({ page: page.toString(), count: count.toString() }),
+        ),
+
+    getAllFavourites: () => Agent
+        .get<StreetcodeFavourite[]>(
+            `${API_ROUTES.STREETCODES.GET_ALL_FAVOURITES}`,
         ),
 
     getCount: (onlyPublished = false) => (
