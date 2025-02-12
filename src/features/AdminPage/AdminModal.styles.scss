@@ -14,9 +14,6 @@
                     background-color: c.$modal-hover-color;
                 }
         }
-        .ant-modal-close:focus-visible{
-            outline: 4px solid c.$accented-red-color;
-        }
 
         .ant-modal-content {
             @include mut.full-rounded(60px, $overflow: visible);

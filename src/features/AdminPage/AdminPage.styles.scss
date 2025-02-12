@@ -78,8 +78,24 @@ $loadImg: '@assets/images/catalog/loading.webp';
     }
 }
 
-.ant-btn:focus-visible{
-    outline: 4px solid c.$dark-red-color;
+.ant-btn-primary {
+    background-color: c.$accented-red-color;
+    &:hover {
+        background-color: c.$dark-red-color;
+    }
+}
+
+.ant-modal-footer .ant-btn-default:not(:disabled):hover{
+    color: c.$accented-red-color;
+    border-color: c.$accented-red-color;
+}
+
+.ant-btn,
+.ant-modal-close,
+.ant-pagination-item {
+    &:focus-visible {
+            outline: 4px solid c.$dark-red-color;
+    }
 }
 
 .loadingWrapper {
