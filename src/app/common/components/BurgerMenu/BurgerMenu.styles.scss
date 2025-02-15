@@ -5,7 +5,7 @@
 .burgerMenuContainer {
   @include mut.sized(36px, 28px);
   @include mut.flexed($direction: column, $justify-content: center, $gap: 6px);
-  @include mut.rem-margined($right: 20px);
+  @include mut.rem-margined(0);
 
   &:hover {
     cursor: pointer;

@@ -19,9 +19,8 @@ import {
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
 import { UploadChangeParam } from 'antd/es/upload';
-
+import combinedImageValidator, { checkFile } from '@components/modals/validators/combinedImageValidator';
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
-import imageValidator, { checkImageFileType } from '@/app/common/components/modals/validators/imageValidator';
 import validateSocialLink from '@/app/common/components/modals/validators/socialLinkValidator';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import PartnerLink from '@/features/AdminPage/PartnersPage/PartnerLink.component';
@@ -36,6 +35,7 @@ import { StreetcodeShort } from '@/models/streetcode/streetcode-types.model';
 
 // eslint-disable-next-line no-restricted-imports
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
+import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
 
 const PartnerModal: React.FC< {
     partnerItem?: Partner;
@@ -184,6 +184,8 @@ const PartnerModal: React.FC< {
             }
         };
 
+        const handleInputChange = () => setIsSaved(false);
+
         const closeModal = () => {
             if (!waitingForApiResponse) {
                 setIsModalOpen(false);
@@ -298,12 +300,23 @@ const PartnerModal: React.FC< {
 
         const checkFile = (file: UploadFile) => checkImageFileType(file.type);
 
-        const handleFileChange = (param: UploadChangeParam<UploadFile<unknown>>) => {
-            if (checkFile(param.file)) {
+        const handleFileChange = async (param: UploadChangeParam<UploadFile<unknown>>) => {
+            if (await checkFile(param.file)) {
                 handleInputChange();
                 setFileList(param.fileList);
             }
         };
+
+        const handleRemove = () => {
+            imageId.current = 0;
+            setFileList([]);
+        };
+
+        const validateTitle = uniquenessValidator(
+            () => (partnersStore.getPartnerArray.map((partner) => partner.title)),
+            () => (partnerItem?.title),
+            'Партнер з такою назвою вже існує',
+        );
 
         return (
             <Modal
@@ -353,7 +366,7 @@ const PartnerModal: React.FC< {
                         <Form.Item
                             name="title"
                             label="Назва: "
-                            rules={[{ required: true, message: 'Введіть назву' }]}
+                            rules={[{ required: true, message: 'Введіть назву' }, { validator: validateTitle }]}
                         >
                             <Input maxLength={100} showCount onChange={handleInputChange} />
                         </Form.Item>
@@ -397,7 +410,7 @@ const PartnerModal: React.FC< {
                                     required: true,
                                     message: 'Завантажте лого',
                                 },
-                                { validator: imageValidator },
+                                { validator: combinedImageValidator(true) },
                             ]}
                         >
                             <FileUploader
@@ -410,9 +423,7 @@ const PartnerModal: React.FC< {
                                 onPreview={handlePreview}
                                 beforeUpload={checkFile}
                                 onChange={handleFileChange}
-                                onRemove={() => {
-                                    imageId.current = 0;
-                                }}
+                                onRemove={handleRemove}
                                 uploadTo="image"
                                 onSuccessUpload={(image: Image | Audio) => {
                                     imageId.current = image.id;

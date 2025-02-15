@@ -3,6 +3,7 @@ import ArtGalleryTemplateStore from '@stores/art-gallery-template-store';
 import ArtStore from '@stores/art-store';
 import AudioStore from '@stores/audio-store';
 import CheckBoxStore from '@stores/checkbox-store';
+import ContextStore from '@stores/context-store';
 import FactsStore from '@stores/facts-store';
 import HistoricalContextStore from '@stores/historicalcontext-store';
 import ImageStore from '@stores/image-store';
@@ -18,25 +19,25 @@ import StreetcodesCatalogStore from '@stores/streetcodes-catalog-store';
 import StreetcodeShortStore from '@stores/streetcodeshort-store';
 import SubtitlesStore from '@stores/subtitles-store';
 import TagsStore from '@stores/tags-store';
+import TeamPositionsStore from '@stores/teampoistions-store';
 import TermStore from '@stores/term-store';
 import TimelineStore from '@stores/timeline-store';
-import ContextStore from '@stores/context-store';
-import TeamPositionsStore from '@stores/teampoistions-store';
+import UserStore from '@stores/user-store';
 
 import NewsStore from './news-store/news-store';
+import StreetcodePageLoaderStore from './streetcode-page-loader-store/streetcode-page-loader-store';
 import CreateUpdateMediaStore from './create-update-media-store';
+import JobsStore from './jobs-store';
 import NewStreetcodeInfoStore from './newstreetcode-info-store';
 import PositionsStore from './position-store';
 import SourceCreateUpdateStreetcode from './source-category-store-create';
 import StatisticRecordStore from './statistic-record-store';
 import StreetcodeCoordinatesStore from './streetcode-coordinates-store';
 import StreetcodesMainPageStore from './streetcode-mainpage-store';
-import StreetcodePageLoaderStore from './streetcode-page-loader-store';
+import TextVideoStore from './streetcode-text-video-store';
 import StreetcodesByTagStore from './streetcodes-bytag-store';
 import TeamStore from './team-store';
 import ToponymStore from './toponym-store';
-import JobsStore from './jobs-store';
-import TextVideoStore from './streetcode-text-video-store';
 
 interface Store {
     factsStore: FactsStore,
@@ -46,6 +47,7 @@ interface Store {
     imagesStore: ImageStore,
     partnersStore: PartnersStore,
     teamStore: TeamStore,
+    userStore: UserStore,
     termsStore: TermStore,
     timelineItemStore: TimelineStore,
     sourcesStore: SourcesStore,
@@ -90,6 +92,7 @@ export const store: Store = {
     partnersStore: new PartnersStore(),
     termsStore: new TermStore(),
     teamStore: new TeamStore(),
+    userStore: new UserStore(),
     timelineItemStore: new TimelineStore(),
     sourcesStore: new SourcesStore(),
     relatedFiguresStore: new RelatedFiguresStore(),
