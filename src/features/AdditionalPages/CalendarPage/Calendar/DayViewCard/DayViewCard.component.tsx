@@ -18,7 +18,7 @@ const DayViewCard: React.FC<Props> = ({ selectedDate }) => {
         {eventsForDay.length === 0 ? (
           <p>Немає подій на цей день.</p>
         ) : (
-          <ul className='events-container'>
+          <ul className='events-container events-scroll-container'>
             {eventsForDay.map((event) => {
               const eventDate = dayjs(event.date);
 

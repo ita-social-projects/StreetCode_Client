@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import Table, { ColumnsType } from 'antd/es/table';
 import {
   CalendarEvent,
-  mapEventTypeToNum,
+  EventType
 } from '@/models/calendar/calendarEvent.model';
 import { ConfigProvider, Empty, Pagination, Tag } from 'antd/es';
 import dayjs from 'dayjs';
@@ -21,12 +21,12 @@ const CalendarAdminPage = observer(() => {
   const { modalStore } = useModalContext();
   const { calendarStore } = useMobx();
 
-  const [eventType, setEventType] = useState<string>('historical');
+  const [eventType, setEventType] = useState<EventType>('Historical');
 
   const { isLoading } = useQuery({
     queryKey: ['events', eventType, calendarStore.PaginationInfo.CurrentPage],
     queryFn: () => {
-      calendarStore.fetchAllEvents(mapEventTypeToNum(eventType));
+      calendarStore.fetchAllEvents(eventType);
     },
   });
 
@@ -143,7 +143,7 @@ const CalendarAdminPage = observer(() => {
     },
   ].concat(actionColumn);
 
-  const handleChange = (value: string) => {
+  const handleChange = (value: EventType) => {
     setEventType(value);
   };
 
@@ -165,7 +165,7 @@ const CalendarAdminPage = observer(() => {
             pagination={false}
             className='calendar-table'
             columns={
-              eventType === 'historical' ? columnsHistorical : columnsCustom
+              eventType === 'Historical' ? columnsHistorical : columnsCustom
             }
             dataSource={calendarStore.events}
             rowKey='id'

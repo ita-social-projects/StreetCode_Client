@@ -1,4 +1,4 @@
-import { mapEventTypeToStr } from '@/models/calendar/calendarEvent.model';
+import { EventType } from '@/models/calendar/calendarEvent.model';
 import {
   CalendarEvent,
   CreateCalendarEvent,
@@ -38,7 +38,7 @@ export default class CalendarStore {
     return this.paginationInfo;
   }
 
-  fetchAllEvents = async (eventType?: number, pageSize?: number) => {
+  fetchAllEvents = async (eventType?: EventType, pageSize?: number) => {
     try {
       const response = await eventsApi.getAll(
         eventType,
@@ -48,19 +48,16 @@ export default class CalendarStore {
 
       this.paginationInfo.TotalItems = response.totalAmount;
 
-      this.events = response.events.map((event) => ({
-        ...event,
-        eventType: mapEventTypeToStr(Number(event.eventType)),
-      }));
+      this.events = response.events;
     } catch (error: unknown) {
       console.error('Failed to fetch events:', error);
     }
   };
 
-  fetchEventById = async (eventId: number) => {
+  getEventById = async (eventId: number) => {
     try {
       const response = await eventsApi.getById(eventId.toString());
-      response.eventType = mapEventTypeToStr(Number(response.eventType));
+      return response;
     } catch (error: unknown) {
       console.error('Failed to fetch event:', error);
     }

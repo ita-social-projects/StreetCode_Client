@@ -15,7 +15,6 @@ import EventStreetcodeCascader from '../../EventStreetcodeCascader/EventStreetco
 import {
   CreateCalendarEvent,
   EventType,
-  mapEventTypeToNum,
   UpdateCalendarEvent,
 } from '@/models/calendar/calendarEvent.model';
 import SelectWithCustomSuffix from '@/app/common/components/SelectWithCustomSuffix';
@@ -33,7 +32,7 @@ const NewEventBlock: React.FC = () => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [currentEventType, setCurrentEventType] =
-    useState<EventType>('historical');
+    useState<EventType>('Historical');
   const { calendarStore, streetcodeCatalogStore } = useMobx();
   const { id } = useParams<any>();
   const parseId = id ? +id : null;
@@ -43,8 +42,8 @@ const NewEventBlock: React.FC = () => {
   const [selectedStreetcodes, setSelectedStreetcodes] = useState<number[]>([]);
 
   const options: CheckboxGroupProps['options'] = [
-    { label: 'Історична', value: 'historical' },
-    { label: 'Власна', value: 'custom' },
+    { label: 'Історична', value: 'Historical' },
+    { label: 'Власна', value: 'Custom' },
   ];
 
   useEffect(() => {
@@ -66,7 +65,7 @@ const NewEventBlock: React.FC = () => {
       setCurrentEventType(event?.eventType as EventType);
     } else {
       form.setFieldsValue({
-        eventType: 'historical',
+        eventType: 'Historical',
       });
     }
   }, []);
@@ -109,7 +108,7 @@ const NewEventBlock: React.FC = () => {
         title: values.title,
         date: values.date.format('YYYY-MM-DD'),
         description: values.description,
-        eventType: mapEventTypeToNum(currentEventType),
+        eventType: currentEventType,
         location: values.location || null,
         organizer: values.organizer || null,
         timelineItemId: values.timelineItemId || null,
@@ -162,7 +161,7 @@ const NewEventBlock: React.FC = () => {
             </div>
           </Form.Item>
 
-          {currentEventType === 'historical' ? (
+          {currentEventType === 'Historical' ? (
             <Form.Item
               name='timelineItemId'
               label={
@@ -236,13 +235,13 @@ const NewEventBlock: React.FC = () => {
             />
           </Form.Item>
 
-          {currentEventType === 'custom' ? (
+          {currentEventType === 'Custom' ? (
             <Form.Item name='location' label='Локація'>
               <Input showCount />
             </Form.Item>
           ) : null}
 
-          {currentEventType === 'custom' ? (
+          {currentEventType === 'Custom' ? (
             <Form.Item name='organizer' label='Організатор'>
               <Input showCount />
             </Form.Item>

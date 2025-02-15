@@ -1,4 +1,4 @@
-import CalendarEvent from "@/models/calendar/calendarEvent.model";
+import { CalendarEvent } from "@/models/calendar/calendarEvent.model";
 import { Calendar, CalendarProps, ConfigProvider, Tooltip } from "antd/es";
 import uk_UA from "antd/locale/uk_UA";
 import { Dayjs } from "dayjs";
@@ -53,6 +53,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({
       <div className='calendar-container-wrapper'>
         <ConfigProvider locale={uk_UA}>
           <Calendar
+            className='calendar-full'
             onSelect={(date) => {
               if (date.isSame(currentMonth, "month")) {
                 onDateClick(date);

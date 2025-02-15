@@ -24,7 +24,7 @@ import ContextStore from '@stores/context-store';
 import TeamPositionsStore from '@stores/teampoistions-store';
 
 import NewsStore from './news-store/news-store';
-import CalendarStore from './calendar-store';
+import CalendarStore from './calendar-store/calendar-store';
 import CreateUpdateMediaStore from './create-update-media-store';
 import NewStreetcodeInfoStore from './newstreetcode-info-store';
 import PositionsStore from './position-store';

@@ -2,9 +2,10 @@ import { Button, Input, Select } from 'antd/es';
 import './CalendarControlBar.styles.scss';
 import MagnifyingGlass from '@images/header/Magnifying_glass.svg';
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
+import { EventType } from '@/models/calendar/calendarEvent.model';
 
 interface Props {
-  handleChange: (value: string) => void;
+  handleChange: (value: EventType) => void;
 }
 const CalendarControlBar: React.FC<Props> = ({ handleChange }) => {
   return (
@@ -24,11 +25,11 @@ const CalendarControlBar: React.FC<Props> = ({ handleChange }) => {
       <div className='calendarControlBarElement'>
         <Select
           className='calendarControlBarStatusSelected'
-          defaultValue='historical'
+          defaultValue='Historical'
           onChange={handleChange}
           options={[
-            { value: 'historical', label: 'Історичні події' },
-            { value: 'custom', label: 'Власні події' },
+            { value: 'Historical', label: 'Історичні події' },
+            { value: 'Custom', label: 'Власні події' },
           ]}
         />
       </div>

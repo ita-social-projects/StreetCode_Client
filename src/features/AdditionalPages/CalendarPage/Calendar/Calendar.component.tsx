@@ -1,16 +1,17 @@
-import React, { useEffect, useRef, useState } from "react";
-import { ConfigProvider, theme } from "antd";
-import "dayjs/locale/uk";
-import type { Dayjs } from "dayjs";
-import "./Calendar.styles.scss";
-import { observer } from "mobx-react-lite/dist";
-import CalendarHeader from "./CalendarHeader/CalendarHeader.component";
-import dayjs from "dayjs";
-import CalendarView from "./CalendarView/CalendarView.component";
-import DayView from "./DayView/DayView.component";
-import useMobx from "@/app/stores/root-store";
+import React, { useRef, useState } from 'react';
+import { ConfigProvider, theme } from 'antd';
+import 'dayjs/locale/uk';
+import type { Dayjs } from 'dayjs';
+import './Calendar.styles.scss';
+import { observer } from 'mobx-react-lite/dist';
+import CalendarHeader from './CalendarHeader/CalendarHeader.component';
+import dayjs from 'dayjs';
+import CalendarView from './CalendarView/CalendarView.component';
+import DayView from './DayView/DayView.component';
+import useMobx from '@/app/stores/root-store';
+import { useQuery } from '@tanstack/react-query';
 
-dayjs.locale("uk");
+dayjs.locale('uk');
 
 const CalendarComponent: React.FC = observer(() => {
   const { token } = theme.useToken();
@@ -18,20 +19,20 @@ const CalendarComponent: React.FC = observer(() => {
   const topRef = useRef<HTMLDivElement>(null);
 
   const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
-  const [viewMode, setViewMode] = useState<"calendar" | "dayView">("calendar");
+  const [viewMode, setViewMode] = useState<'calendar' | 'dayView'>('calendar');
   const [currentMonth, setCurrentMonth] = useState(dayjs());
 
-  useEffect(() => {
-    const fetchEvents = async () => {
-      await calendarStore.fetchAllEvents();
-    };
-    fetchEvents();
-  }, []);
+  const { isLoading } = useQuery({
+    queryKey: ['events', calendarStore.events.length],
+    queryFn: () => {
+      calendarStore.fetchAllEvents();
+    },
+  });
 
   const onDateClick = (date: Dayjs) => {
-    if (!selectedDate || !date.isSame(selectedDate, "date")) {
+    if (!selectedDate || !date.isSame(selectedDate, 'date')) {
       setSelectedDate(date);
-      setViewMode("dayView");
+      setViewMode('dayView');
     }
 
     executeScroll();
@@ -42,17 +43,17 @@ const CalendarComponent: React.FC = observer(() => {
     setCurrentMonth(currentLocalDate);
 
     setSelectedDate(null);
-    setViewMode("calendar");
+    setViewMode('calendar');
 
     executeScroll();
   };
 
   const executeScroll = () => {
-    topRef.current?.scrollIntoView({ behavior: "smooth" });
+    topRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   const renderView = () => {
-    if (viewMode === "calendar") {
+    if (viewMode === 'calendar') {
       return (
         <CalendarView
           currentMonth={currentMonth}
@@ -62,7 +63,7 @@ const CalendarComponent: React.FC = observer(() => {
       );
     }
 
-    if (viewMode === "dayView" && selectedDate) {
+    if (viewMode === 'dayView' && selectedDate) {
       return (
         <DayView
           selectedDate={selectedDate}
@@ -80,8 +81,8 @@ const CalendarComponent: React.FC = observer(() => {
       <ConfigProvider
         theme={{
           token: {
-            colorPrimary: "#E04031",
-            colorPrimaryHover: "#ff4d4f",
+            colorPrimary: '#E04031',
+            colorPrimaryHover: '#ff4d4f',
           },
         }}
       >

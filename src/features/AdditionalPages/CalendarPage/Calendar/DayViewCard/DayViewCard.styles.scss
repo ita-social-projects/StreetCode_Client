@@ -6,6 +6,12 @@
   margin: 0 auto;
 }
 
+.events-scroll-container {
+  max-height: 300px; 
+  overflow-y: auto;
+  padding-right: 10px; 
+}
+
 .event-item {
   display: flex;
   align-items: center;

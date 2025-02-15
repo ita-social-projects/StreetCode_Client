@@ -6,7 +6,7 @@ export interface CalendarEvent {
   title: string;
   description?: string;
   date: dayjs.Dayjs;
-  eventType: EventType | number;
+  eventType: EventType;
   location?: string;
   organizer?: string;
   timelineItemId?: number;
@@ -17,7 +17,7 @@ export interface CreateCalendarEvent {
   title: string;
   description?: string;
   date: dayjs.Dayjs;
-  eventType: EventType | number;
+  eventType: EventType;
   location?: string;
   organizer?: string;
   timelineItemId?: number;
@@ -29,33 +29,11 @@ export interface UpdateCalendarEvent {
   title: string;
   description?: string;
   date: dayjs.Dayjs;
-  eventType: EventType | number;
+  eventType: EventType;
   location?: string;
   organizer?: string;
   timelineItemId?: number;
   streetcodeIds?: number[];
 }
 
-export type EventType = 'historical' | 'custom';
-
-export function mapEventTypeToStr(type: number): EventType {
-  switch (type) {
-    case 0:
-      return 'historical';
-    case 1:
-      return 'custom';
-    default:
-      return 'custom';
-  }
-}
-
-export function mapEventTypeToNum(type: EventType | string): number {
-  switch (type) {
-    case 'historical':
-      return 0;
-    case 'custom':
-      return 1;
-    default:
-      return 0;
-  }
-}
+export type EventType = 'Historical' | 'Custom';
