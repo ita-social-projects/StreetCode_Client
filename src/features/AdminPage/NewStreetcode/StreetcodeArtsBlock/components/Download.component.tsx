@@ -13,7 +13,6 @@ import { ModelState } from '@models/enums/model-state';
 import { ArtCreateUpdate } from '@models/media/art.model';
 
 import { Button, Modal, Upload, Typography } from 'antd';
-const { Text } = Typography;
 import type { UploadFile, UploadFileStatus } from 'antd/es/upload/interface';
 
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
@@ -22,6 +21,8 @@ import Audio from '@/models/media/audio.model';
 
 import PreviewImageModal from './PreviewImageModal/PreviewImageModal.component';
 import { checkImageFileType } from '@/app/common/components/modals/validators/imageValidator';
+import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
+const { Text } = Typography;
 
 const DownloadBlock = () => {
     const { id } = useParams<any>();
@@ -192,7 +193,7 @@ const DownloadBlock = () => {
                 </Button>
             ) : <></>}
             <Modal
-                title="Ви впевнені, що хочете видалити цей арт?"
+                title={CONFIRMATION_MESSAGES.DELETE_ART}
                 open={visibleModal}
                 onOk={onRemoveArtsSubmit}
                 onCancel={handleCancelModalRemove}

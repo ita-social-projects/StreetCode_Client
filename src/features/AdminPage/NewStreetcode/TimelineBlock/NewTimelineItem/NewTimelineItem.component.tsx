@@ -1,11 +1,9 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import useMobx from '@app/stores/root-store';
-
-import { Modal } from 'antd';
+import useMobx, { useModalContext } from '@app/stores/root-store';
+import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
 
 import TimelineItem from '@/models/timeline/chronology.model';
-import BUTTON_LABELS from "@constants/buttonLabels";
 
 interface NewTimelineItemProps {
     timelineItem: TimelineItem;
@@ -21,14 +19,19 @@ const NewTimelineItem: React.FC<NewTimelineItemProps> = ({
     onChange,
 }) => {
     const { timelineItemStore } = useMobx();
-    const [visibleModal, setVisibleModal] = useState(false);
+    const { modalStore } = useModalContext();
+
     const handleRemove = useCallback(() => {
-        setVisibleModal(true);
+        modalStore.setConfirmationModal(
+            'confirmation',
+            () => {
+                timelineItemStore.deleteTimelineFromMap(timelineItem.id);
+                onChange('timelineItem', timelineItem);
+            },
+            CONFIRMATION_MESSAGES.DELETE_TIMELINE,
+        );
     }, []);
 
-    const handleCancelModalRemove = useCallback(() => {
-        setVisibleModal(false);
-    }, []);
     return (
         <div className="textBlockButton">
             <div
@@ -49,17 +52,6 @@ const NewTimelineItem: React.FC<NewTimelineItemProps> = ({
                 <div className="blockItem">
                     <DeleteOutlined onClick={() => handleRemove()} />
                 </div>
-                <Modal
-                    title="Ви впевнені, що хочете видалити цей таймлайн?"
-                    open={visibleModal}
-                    onOk={(e) => {
-                        timelineItemStore.deleteTimelineFromMap(timelineItem.id); setVisibleModal(false);
-                        onChange('timelineItem', timelineItem);
-                    }}
-                    onCancel={handleCancelModalRemove}
-                    okText={BUTTON_LABELS.SUBMIT}
-                    cancelText={BUTTON_LABELS.CANCEL}
-                />
             </div>
         </div>
     );

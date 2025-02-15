@@ -1,8 +1,10 @@
-import './TeamPositionsMainPage.style.scss'
+import './TeamPositionsMainPage.style.scss';
 
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import BUTTON_LABELS from '@constants/buttonLabels';
+import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
 import useMobx, { useModalContext } from '@stores/root-store';
 import { useQuery } from '@tanstack/react-query';
 
@@ -12,7 +14,6 @@ import Table, { ColumnsType } from 'antd/es/table';
 import Position from '@/models/additional-content/teampositions.model';
 
 import TeamPositionsAdminModal from './TeamPositionsModal/TeamPositionsAdminModal.component';
-import BUTTON_LABELS from "@constants/buttonLabels";
 
 const TeamPositionsMainPage: React.FC = observer(() => {
     const { modalStore } = useModalContext();
@@ -33,6 +34,22 @@ const TeamPositionsMainPage: React.FC = observer(() => {
     useEffect(() => {
         updatedPositions();
     }, [modalAddOpened, modalEditOpened]);
+
+    const handleDeletePosition = (positionId: number) => {
+        modalStore.setConfirmationModal(
+            'confirmation',
+            () => {
+                if (positionId !== undefined) {
+                    teamPositionsStore.deletePosition(positionId)
+                        .catch((e) => {
+                            console.error(e);
+                        });
+                    modalStore.setConfirmationModal('confirmation');
+                }
+            },
+            CONFIRMATION_MESSAGES.DELETE_POSITION,
+        );
+    };
 
     const columns: ColumnsType<Position> = [
         {
@@ -57,21 +74,7 @@ const TeamPositionsMainPage: React.FC = observer(() => {
                     <DeleteOutlined
                         key={`${positions.id}${index}`}
                         className="actionButton"
-                        onClick={() => {
-                            modalStore.setConfirmationModal(
-                                'confirmation',
-                                () => {
-                                    if (positions.id != undefined) {
-                                        teamPositionsStore.deletePosition(positions.id)
-                                            .catch((e) => {
-                                                console.error(e);
-                                            });
-                                        modalStore.setConfirmationModal('confirmation');
-                                    }
-                                },
-                                'Ви впевнені, що хочете видалити цю позицію?',
-                            );
-                        }}
+                        onClick={() => handleDeletePosition(positions.id)}
                     />
                     <EditOutlined
                         key={`${positions.id}${index}2`}
@@ -130,8 +133,15 @@ const TeamPositionsMainPage: React.FC = observer(() => {
                     </div>
                 </div>
             </div>
-            <TeamPositionsAdminModal isModalVisible={modalAddOpened} setIsModalOpen={setModalAddOpened} />
-            <TeamPositionsAdminModal isModalVisible={modalEditOpened} setIsModalOpen={setModalEditOpened} initialData={positionToEdit} />
+            <TeamPositionsAdminModal
+                isModalVisible={modalAddOpened}
+                setIsModalOpen={setModalAddOpened}
+            />
+            <TeamPositionsAdminModal
+                isModalVisible={modalEditOpened}
+                setIsModalOpen={setModalEditOpened}
+                initialData={positionToEdit}
+            />
         </div>
 
     );

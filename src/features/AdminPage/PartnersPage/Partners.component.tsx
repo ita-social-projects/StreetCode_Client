@@ -1,5 +1,6 @@
 import './Partners.styles.scss';
 
+import { runInAction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
 import { DeleteOutlined, EditOutlined, StarOutlined } from '@ant-design/icons';
@@ -7,23 +8,24 @@ import facebook from '@assets/images/partners/facebook.svg';
 import instagram from '@assets/images/partners/instagram.svg';
 import twitter from '@assets/images/partners/twitterNew.svg';
 import youtube from '@assets/images/partners/youtube.svg';
+import BUTTON_LABELS from '@constants/buttonLabels';
+import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
+import ImageStore from '@stores/image-store';
 import useMobx, { useModalContext } from '@stores/root-store';
+import { useQuery } from '@tanstack/react-query';
 
 import { Button, Empty, Pagination } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 
-import ImageStore from '@stores/image-store';
-import { runInAction } from 'mobx';
 import PartnersApi from '@/app/api/partners/partners.api';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Image from '@/models/media/image.model';
 import Partner, { PartnerSourceLink } from '@/models/partners/partners.model';
 
+// eslint-disable-next-line no-restricted-imports
 import PageBar from '../PageBar/PageBar.component';
 
 import PartnerModal from './PartnerModal/PartnerModal.component';
-import { useQuery } from '@tanstack/react-query';
-import BUTTON_LABELS from "@constants/buttonLabels";
 
 const LogoType = [twitter, instagram, facebook, youtube];
 
@@ -60,6 +62,21 @@ const Partners: React.FC = observer(() => {
     useEffect(() => {
         updatedPartners();
     }, [modalAddOpened, modalEditOpened]);
+
+    const handleDeletePartner = (partnerId: number) => {
+        modalStore.setConfirmationModal(
+            'confirmation',
+            () => {
+                PartnersApi.delete(partnerId)
+                    .then(() => {
+                        partnersStore.PartnerMap.delete(partnerId);
+                    })
+                    .catch(() => { });
+                modalStore.setConfirmationModal('confirmation');
+            },
+            CONFIRMATION_MESSAGES.DELETE_PARTNER,
+        );
+    };
 
     const columns: ColumnsType<Partner> = [
         {
@@ -102,7 +119,7 @@ const Partners: React.FC = observer(() => {
                     key={`${record.id}${record.logo?.id}}`}
                     className="partners-table-logo"
                     src={base64ToUrl(logo?.base64, logo?.mimeType ?? '')}
-                    alt={logo?.imageDetails?.alt ?? "default"}
+                    alt={logo?.imageDetails?.alt ?? 'default'}
                 />
             ),
 
@@ -141,19 +158,7 @@ const Partners: React.FC = observer(() => {
                     <DeleteOutlined
                         key={`${partner.id}${index}111`}
                         className="actionButton"
-                        onClick={() => {
-                            modalStore.setConfirmationModal(
-                                'confirmation',
-                                () => {
-                                    PartnersApi.delete(partner.id)
-                                        .then(() => {
-                                            partnersStore.PartnerMap.delete(partner.id);
-                                        }).catch((e) => { });
-                                    modalStore.setConfirmationModal('confirmation');
-                                },
-                                'Ви впевнені, що хочете видалити цього партнера?',
-                            );
-                        }}
+                        onClick={() => handleDeletePartner(partner.id)}
                     />
                     <EditOutlined
                         key={`${partner.id}${index}222`}
@@ -164,7 +169,7 @@ const Partners: React.FC = observer(() => {
                         }}
                     />
                 </div>
-            )
+            ),
         },
     ];
 

@@ -1,4 +1,4 @@
-/* eslint-disable no-param-reassign */
+/* eslint-disable no-param-reassign,import/extensions */
 import './PartnerModal.styles.scss';
 import '@features/AdminPage/AdminModal.styles.scss';
 
@@ -7,6 +7,7 @@ import CancelBtn from '@images/utils/Cancel_btn.svg';
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import BUTTON_LABELS from '@constants/buttonLabels';
 import PreviewFileModal from '@features/AdminPage/NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
 import SOCIAL_OPTIONS from '@features/AdminPage/PartnersPage/PartnerModal/constants/socialOptions';
 import useMobx from '@stores/root-store';
@@ -33,8 +34,8 @@ import Partner, {
 } from '@/models/partners/partners.model';
 import { StreetcodeShort } from '@/models/streetcode/streetcode-types.model';
 
+// eslint-disable-next-line no-restricted-imports
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
-import BUTTON_LABELS from "@constants/buttonLabels";
 
 const PartnerModal: React.FC< {
     partnerItem?: Partner;
@@ -140,6 +141,8 @@ const PartnerModal: React.FC< {
             setPreviewOpen(true);
         };
 
+        const handleInputChange = () => setIsSaved(false);
+
         const onStreetcodeSelect = (value: string) => {
             const index = streetcodeShortStore.streetcodes.findIndex(
                 (c) => c.title === value,
@@ -159,7 +162,7 @@ const PartnerModal: React.FC< {
                 await form.validateFields();
                 form.submit();
                 message.success('Партнера успішно додано!');
-				        setIsSaved(true);
+                setIsSaved(true);
             } catch (error) {
                 setWaitingForApiResponse(false);
                 message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
@@ -184,7 +187,7 @@ const PartnerModal: React.FC< {
         const closeModal = () => {
             if (!waitingForApiResponse) {
                 setIsModalOpen(false);
-								setIsSaved(true);
+                setIsSaved(true);
             }
         };
 
@@ -209,7 +212,7 @@ const PartnerModal: React.FC< {
             partnerLinksForm.resetFields();
             setShowSecondForm(false);
             setShowSecondFormButton(true);
-			      handleInputChange();
+            handleInputChange();
         };
 
         const handleUrlChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -217,7 +220,7 @@ const PartnerModal: React.FC< {
             try {
                 await form.validateFields(['url']);
                 setUrlTitleEnabled(value);
-				        handleInputChange();
+                handleInputChange();
             } catch (error) {
                 setUrlTitleEnabled('');
             }
@@ -228,7 +231,7 @@ const PartnerModal: React.FC< {
         ) => {
             const { value } = e.target;
             setUrlTitleValue(value);
-			      handleInputChange();
+            handleInputChange();
         };
 
         const handleShowSecondForm = () => {
@@ -292,8 +295,6 @@ const PartnerModal: React.FC< {
                 setWaitingForApiResponse(false);
             }
         };
-
-		const handleInputChange = () => setIsSaved(false);
 
         const checkFile = (file: UploadFile) => checkImageFileType(file.type);
 
@@ -430,7 +431,7 @@ const PartnerModal: React.FC< {
                             <Form.Item name="partnersStreetcodes" label="History-коди: ">
                                 <Select
                                     mode="multiple"
-									                  onChange={handleInputChange}
+                                    onChange={handleInputChange}
                                     onSelect={onStreetcodeSelect}
                                     onDeselect={onStreetcodeDeselect}
                                 >
@@ -479,7 +480,7 @@ const PartnerModal: React.FC< {
                         <div>
                             <div className="button-container">
                                 <Button onClick={handleHideSecondForm} className="close-button">
-                                    Закрити
+                                    {BUTTON_LABELS.CLOSE}
                                 </Button>
                             </div>
                             <div className="link-container">

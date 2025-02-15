@@ -1,11 +1,14 @@
+/* eslint-disable no-restricted-imports */
 import './TeamPage.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import { DeleteOutlined, EditOutlined, StarOutlined } from '@ant-design/icons';
+import BUTTON_LABELS from '@constants/buttonLabels';
+import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
 import { useQuery } from '@tanstack/react-query';
 
-import { Button, Empty, Pagination,Table } from 'antd';
+import { Button, Empty, Pagination, Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 
 import Image from '@/models/media/image.model';
@@ -18,7 +21,6 @@ import PageBar from '../PageBar/PageBar.component';
 
 import LOGO_ICONS from './TeamModal/constants/logoIcons';
 import TeamModal from './TeamModal/TeamModal.component';
-import BUTTON_LABELS from "@constants/buttonLabels";
 
 const TeamPage = () => {
     const { teamStore } = useMobx();
@@ -45,6 +47,21 @@ const TeamPage = () => {
     useEffect(() => {
         updatedTeam();
     }, []);
+
+    const handleDeleteTeamMember = (teamId: number) => {
+        modalStore.setConfirmationModal(
+            'confirmation',
+            () => {
+                teamStore.deleteTeam(teamId).then(() => {
+                    teamStore.TeamMap.delete(teamId);
+                }).catch((e) => {
+                    console.error(e);
+                });
+                modalStore.setConfirmationModal('confirmation');
+            },
+            CONFIRMATION_MESSAGES.DELETE_TEAM_MEMBER,
+        );
+    };
 
     const renderImageColumn = (image: Image, record: { id: any; }) => (
         <img
@@ -140,20 +157,7 @@ const TeamPage = () => {
                     <DeleteOutlined
                         key={`${team.id}${index}111`}
                         className="actionButton"
-                        onClick={() => {
-                            modalStore.setConfirmationModal(
-                                'confirmation',
-                                () => {
-                                    teamStore.deleteTeam(team.id).then(() => {
-                                        teamStore.TeamMap.delete(team.id);
-                                    }).catch((e) => {
-                                        console.error(e);
-                                    });
-                                    modalStore.setConfirmationModal('confirmation');
-                                },
-                                'Ви впевнені, що хочете видалити цього члена команди?',
-                            );
-                        }}
+                        onClick={() => handleDeleteTeamMember(team.id)}
                     />
                     <EditOutlined
                         key={`${team.id}${index}222`}

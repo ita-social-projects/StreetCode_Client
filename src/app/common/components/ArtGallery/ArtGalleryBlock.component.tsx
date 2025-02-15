@@ -18,7 +18,7 @@ import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 
 import { Button } from "antd";
 import { useMediaQuery } from "react-responsive";
-import BUTTON_LABELS from "@constants/buttonLabels";
+import BUTTON_LABELS from '@constants/buttonLabels';
 
 const MAX_SLIDES_AMOUNT = 30;
 
@@ -255,7 +255,7 @@ const ArtGallery = ({
                   className="art-custom-button"
                   onClick={handleOpenModal}
                 >
-                  Обрати шаблон
+                  {BUTTON_LABELS.CHOOSE_TEMPLATE}
                 </Button>
               </div>
             )}

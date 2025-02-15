@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import BUTTON_LABELS from '@constants/buttonLabels';
+import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
 import ContextAdminModalComponent from '@features/AdminPage/ContextPage/ContextModal/ContextAdminModal.component';
 import useMobx, { useModalContext } from '@stores/root-store';
 import { useQuery } from '@tanstack/react-query';
@@ -33,6 +34,22 @@ const ContextMainPage: React.FC = observer(() => {
         updatedContexts();
     }, [modalAddOpened, modalEditOpened]);
 
+    const handleDeleteContext = (contextId: number) => {
+        modalStore.setConfirmationModal(
+            'confirmation',
+            () => {
+                if (contextId !== undefined) {
+                    contextStore.deleteContext(contextId)
+                        .catch((e) => {
+                            console.error(e);
+                        });
+                    modalStore.setConfirmationModal('confirmation');
+                }
+            },
+            CONFIRMATION_MESSAGES.DELETE_CONTEXT,
+        );
+    };
+
     const columns: ColumnsType<Context> = [
         {
             title: 'Назва',
@@ -56,21 +73,7 @@ const ContextMainPage: React.FC = observer(() => {
                     <DeleteOutlined
                         key={`${context.id}${index}`}
                         className="actionButton"
-                        onClick={() => {
-                            modalStore.setConfirmationModal(
-                                'confirmation',
-                                () => {
-                                    if (context.id !== undefined) {
-                                        contextStore.deleteContext(context.id)
-                                            .catch((e) => {
-                                                console.error(e);
-                                            });
-                                        modalStore.setConfirmationModal('confirmation');
-                                    }
-                                },
-                                'Ви впевнені, що хочете видалити цей контекст?',
-                            );
-                        }}
+                        onClick={() => handleDeleteContext(context.id)}
                     />
                     <EditOutlined
                         key={`${context.id}${index}2`}
@@ -129,8 +132,15 @@ const ContextMainPage: React.FC = observer(() => {
                     </div>
                 </div>
             </div>
-            <ContextAdminModalComponent isModalVisible={modalAddOpened} setIsModalOpen={setModalAddOpened} />
-            <ContextAdminModalComponent isModalVisible={modalEditOpened} setIsModalOpen={setModalEditOpened} initialData={contextToEdit} />
+            <ContextAdminModalComponent
+                isModalVisible={modalAddOpened}
+                setIsModalOpen={setModalAddOpened}
+            />
+            <ContextAdminModalComponent
+                isModalVisible={modalEditOpened}
+                setIsModalOpen={setModalEditOpened}
+                initialData={contextToEdit}
+            />
         </div>
     );
 });

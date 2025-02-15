@@ -1,8 +1,11 @@
+/* eslint-disable import/extensions */
 import './JobsTable.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import { DeleteOutlined, DownOutlined, EditOutlined } from '@ant-design/icons';
+import BUTTON_LABELS from '@constants/buttonLabels';
+import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
 import { useQuery } from '@tanstack/react-query';
 
 import {
@@ -12,8 +15,8 @@ import {
 import JobApi from '@/app/api/job/Job.api';
 import useMobx, { useModalContext } from '@/app/stores/root-store';
 
+// eslint-disable-next-line no-restricted-imports
 import JobsModalComponent from '../JobsModal/JobsModal.component';
-import BUTTON_LABELS from "@constants/buttonLabels";
 
 const JobsTable = observer(() => {
     const { jobsStore } = useMobx();
@@ -44,7 +47,7 @@ const JobsTable = observer(() => {
                     );
                 modalStore.setConfirmationModal('confirmation');
             },
-            'Ви впевненні що хочете видалити вакансію?',
+            CONFIRMATION_MESSAGES.DELETE_VACANCY,
         );
     };
     const items: MenuProps['items'] = [
@@ -76,7 +79,7 @@ const JobsTable = observer(() => {
                         console.error(e);
                     }
                 },
-                'Ви впевнені, що хочете змінити статус вакансії?',
+                CONFIRMATION_MESSAGES.CHANGE_VACANCY_STATUS,
             );
         } catch (error) {
             console.error(error);
