@@ -4,8 +4,9 @@
 @use "@sass/_utils.functions.scss" as f;
 
 .favouritesContainer {
-    @include mut.rem-padded(40px, 40px, 5px, 40px);
-    @include mut.flexed(row, flex-start, flex-start, wrap, $gap: 42px);
+    @include mut.rem-margined(10px, 0, 0, 0);
+    @include mut.rem-padded(0, 40px, 5px, 40px);
+    @include mut.flexed(row, flex-start, flex-start, wrap, $gap: 35px);
     overflow-y: auto;
     @include mut.sized(100%, 88%);
 }
@@ -13,7 +14,7 @@
 .favourites {
     min-height: 0;
     @include mut.sized(100%, 88%);
-
+    @include mut.flexed(row);
     .ant-dropdown-trigger {
         @include mut.rem-margined(16px, 0, 10px, 40px);
 
@@ -25,4 +26,27 @@
     .ant-btn-default {
         border-color: c.$accented-red-color;
     }
+}
+
+.ant-menu-inline >.ant-menu-item {
+    @include mut.sized(auto, 60px);
+    @include mut.rem-margined(10px, 0, 10px, -8px);
+    border-radius: 6px;
+    font-family: "Roboto", "Helvetica Neue", sans-serif !important;
+    font-size: 1rem;
+    font-weight: 500;
+    font-style: normal;
+}
+
+.ant-menu-item-selected {
+    background-color: c.$accented-gray-color;
+    border-inline-end: 6px solid c.$accented-red-color;
+}
+
+.ant-menu-item-active {
+    background-color: c.$accented-gray-color;
+}
+  
+.ant-menu-light.ant-menu-root.ant-menu-inline {
+    border-inline-end: none;
 }

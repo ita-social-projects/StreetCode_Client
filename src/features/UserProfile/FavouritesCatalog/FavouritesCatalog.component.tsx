@@ -2,11 +2,9 @@ import './FavouritesCatalog.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import { useState } from 'react';
-import { DownOutlined } from '@ant-design/icons/lib';
 import useMobx from '@stores/root-store';
 
-import type { MenuProps } from 'antd';
-import { Button, Dropdown, Space } from 'antd';
+import { Badge, Menu, MenuProps } from 'antd';
 
 import FAVOURITE_STREETCODE_TYPES from '@/app/common/constants/favourite-streetcode-types';
 import { StreetcodeType } from '@/models/streetcode/streetcode-types.model';
@@ -21,16 +19,19 @@ const FavouritesCatalog = () => {
 
     const types: MenuProps['items'] = [
         {
+            icon: selectedType === undefined ? <Badge color='#D12F1F' /> : undefined,
+            label: FAVOURITE_STREETCODE_TYPES.ALL.label,
+            key: FAVOURITE_STREETCODE_TYPES.ALL.key,
+        },
+        {
+            icon: selectedType === StreetcodeType.Person ? <Badge color='#D12F1F' /> : undefined,
             label: FAVOURITE_STREETCODE_TYPES.PERSON.label,
             key: FAVOURITE_STREETCODE_TYPES.PERSON.key,
         },
         {
+            icon: selectedType === StreetcodeType.Event ? <Badge color='#D12F1F' /> : undefined,
             label: FAVOURITE_STREETCODE_TYPES.EVENT.label,
             key: FAVOURITE_STREETCODE_TYPES.EVENT.key,
-        },
-        {
-            label: FAVOURITE_STREETCODE_TYPES.ALL.label,
-            key: FAVOURITE_STREETCODE_TYPES.ALL.key,
         },
     ];
 
@@ -66,14 +67,13 @@ const FavouritesCatalog = () => {
 
     return (
         <div className="favourites">
-            <Dropdown menu={menuProps} trigger={['click']}>
-                <Button>
-                    <Space>
-                        {filter}
-                        <DownOutlined />
-                    </Space>
-                </Button>
-            </Dropdown>
+            <Menu
+                onClick={handleMenuClick}
+                style={{ width: 256 }}
+                defaultSelectedKeys={[FAVOURITE_STREETCODE_TYPES.ALL.key.toString()]}
+                mode='inline'
+                items={types}
+            />
             <div className="favouritesContainer">
                 {getFavouritesArray.map((streetcode, index) => (
                     selectedType === streetcode.type || selectedType === undefined) && (
