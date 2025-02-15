@@ -7,6 +7,8 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
 import FavouritesCatalog from './FavouritesCatalog.component';
+import { StreetcodeType } from '@/models/streetcode/streetcode-types.model';
+import { act } from 'react-dom/test-utils';
 
 
 jest.mock('@stores/root-store', () => ({
@@ -15,6 +17,21 @@ jest.mock('@stores/root-store', () => ({
 }));
 
 describe('FavouritesCatalog', () => {
+    const mockFavouritesArray = [
+        {
+            id: 1,
+            title: 'mock person',
+            type: StreetcodeType.Person,
+            imageId: 1,
+        },
+        {
+            id: 2,
+            title: 'mock event',
+            type: StreetcodeType.Event,
+            imageId: 2,
+        },
+    ];
+
     let mockStore: any;
     beforeEach(() => {
         mockStore = {
@@ -22,7 +39,7 @@ describe('FavouritesCatalog', () => {
                 getImage: jest.fn(() => 'mockImage.png'),
             },
             favouritesCatalogStore: {
-                getFavouritesArray: [],
+                getFavouritesArray: mockFavouritesArray,
             },
         };
         (useMobx as jest.Mock).mockReturnValue(mockStore);
@@ -32,11 +49,8 @@ describe('FavouritesCatalog', () => {
         jest.clearAllMocks();
     });
 
-    const setState = jest.fn();
-    const useStateMock: any = (initState: any) => [initState, setState];
-
     const queryClient = new QueryClient();
-    it('should render component and its elements', () => {
+    it('should render the FavouritesCatalog with the correct initial filter (All)', () => {
         const { container } = render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
@@ -45,19 +59,12 @@ describe('FavouritesCatalog', () => {
             </QueryClientProvider>,
         );
 
-        const favourites = container.getElementsByClassName('favourites');
-        const filteringDropdown = screen.getByText('Усі');
-        const scrollableContainer = container.getElementsByClassName('favouritesContainer');
-
-        expect(favourites).toHaveLength(1);
-        expect(favourites[0]).toBeInTheDocument();
-        expect(filteringDropdown).toBeInTheDocument();
-        expect(scrollableContainer).toHaveLength(1);
-        expect(scrollableContainer[0]).toBeInTheDocument();
+        expect(screen.getByRole('menuitem', {name: /Усі/i})).toHaveClass('ant-menu-item ant-menu-item-selected');
+        expect(screen.getByText('mock person')).toBeInTheDocument();
+        expect(screen.getByText('mock event')).toBeInTheDocument();
     });
 
-    it('should change filter when chosing another dropdown option', () => {
-        jest.spyOn(React, 'useState').mockImplementation(useStateMock);
+    it('should change filter when chosing another type option', () => {
 
         render(
             <QueryClientProvider client={queryClient}>
@@ -67,14 +74,23 @@ describe('FavouritesCatalog', () => {
             </QueryClientProvider>,
         );
 
-        const dropdown = screen.getByRole('button', { name: /усі/i });
+        act(() => {
+        fireEvent.click(screen.getByText(/подія/i));
+        });
 
-        fireEvent.click(dropdown);
+        expect(screen.queryByText('mock person')).not.toBeInTheDocument();
+        expect(screen.getByText('mock event')).toBeInTheDocument();
 
-        const option = screen.getByText(/постать/i);
+        act(() => {
+        fireEvent.click(screen.getByText(/постать/i));
+        });
+        expect(screen.getByText('mock person')).toBeInTheDocument();
+        expect(screen.queryByText('mock event')).not.toBeInTheDocument();
 
-        fireEvent.click(option);
-
-        expect(setState).toHaveBeenCalled();
+        act(() => {
+        fireEvent.click(screen.getByText(/усі/i));
+        });
+        expect(screen.getByText('mock person')).toBeInTheDocument();
+        expect(screen.queryByText('mock event')).toBeInTheDocument();
     });
 });
