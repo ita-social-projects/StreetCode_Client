@@ -57,7 +57,12 @@ const FavouritesCatalog = () => {
                 setSelectedType(undefined);
                 break;
             }
-        } catch (error) { }
+        } catch (error) {
+            console.error('Failed to update filter:', error);
+            // Reset to default state
+            setFilter(FAVOURITE_STREETCODE_TYPES.ALL.label);
+            setSelectedType(undefined);
+        }
     };
 
     const menuProps = {
