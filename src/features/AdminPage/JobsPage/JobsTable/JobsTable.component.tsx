@@ -67,13 +67,11 @@ const JobsTable = observer(() => {
             const currentStatus: boolean = opt.key === '0';
             modalStore.setConfirmationModal(
                 'confirmation',
-                async () => {
+                () => {
                     try {
-                        await JobApi.changeStatus(currentId, currentStatus);
-
+                        JobApi.changeStatus(currentId, currentStatus);
                         jobsStore.setInternalMap(jobsStore.getJobsArray
                             .map((job) => (job.id === currentId ? { ...job, status: currentStatus } : job)));
-
                         modalStore.setConfirmationModal('confirmation');
                     } catch (e) {
                         console.error(e);
