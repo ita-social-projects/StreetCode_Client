@@ -33,7 +33,6 @@ import Image from '@/models/media/image.model';
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 import { UploadChangeParam } from 'antd/es/upload';
 
-import imageValidator, { checkImageFileType } from '@/app/common/components/modals/validators/imageValidator';
 import BUTTON_LABELS from "@constants/buttonLabels";
 
 import combinedImageValidator, { checkFile } from '@components/modals/validators/combinedImageValidator';

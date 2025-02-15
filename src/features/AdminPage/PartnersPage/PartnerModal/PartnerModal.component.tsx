@@ -184,8 +184,6 @@ const PartnerModal: React.FC< {
             }
         };
 
-        const handleInputChange = () => setIsSaved(false);
-
         const closeModal = () => {
             if (!waitingForApiResponse) {
                 setIsModalOpen(false);
@@ -297,8 +295,6 @@ const PartnerModal: React.FC< {
                 setWaitingForApiResponse(false);
             }
         };
-
-        const checkFile = (file: UploadFile) => checkImageFileType(file.type);
 
         const handleFileChange = async (param: UploadChangeParam<UploadFile<unknown>>) => {
             if (await checkFile(param.file)) {
