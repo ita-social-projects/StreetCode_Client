@@ -27,6 +27,19 @@ export default class AuthService {
         return true;
     }
 
+    public static async refreshOnTokenExpiry(): Promise<boolean> {
+        if (!AuthService.isLoggedIn()) {
+            try {
+                await AuthService.refreshTokenAsync();
+                return true;
+            } catch (err) {
+                return false;
+            }
+        } else {
+            return true;
+        }
+    }
+
     public static logout() {
         this.clearTokenData();
     }
@@ -82,13 +95,13 @@ export default class AuthService {
             const oldAccesstoken = this.getAccessToken();
             if (!AuthService.isAccessTokenHasValidSignature(oldAccesstoken)) {
                 const error = new Error('Invalid signature of access token');
-                return await Promise.reject(error);
+                throw error;
             }
 
             const refreshToken = this.getRefreshToken();
             if (!refreshToken) {
                 const error = new Error('Refresh token doesn`t exists');
-                return await Promise.reject(error);
+                throw error;
             }
 
             const refreshTokenRequest: RefreshTokenRequest = {
@@ -99,8 +112,10 @@ export default class AuthService {
             const response = await AuthApi.refreshToken(refreshTokenRequest);
             localStorage.setItem(AuthService.accessTokenStorageName, response.accessToken);
         } catch (error) {
-            console.error(error);
-            return Promise.reject(error);
+            if (error instanceof Error) {
+                console.error(error);
+                return Promise.reject(error);
+            }
         }
     };
 
