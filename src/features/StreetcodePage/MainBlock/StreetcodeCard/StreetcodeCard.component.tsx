@@ -13,7 +13,7 @@ import Streetcode from '@models/streetcode/streetcode-types.model';
 import { useAudioContext, useModalContext, useStreecodePageLoaderContext, useStreetcodeDataContext }
     from '@stores/root-store';
 
-import { Button } from 'antd';
+import { Button, Popover } from 'antd';
 
 import ImagesApi from '@/app/api/media/images.api';
 import TransactionLinksApi from '@/app/api/transactions/transactLinks.api';
@@ -137,8 +137,18 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setShowAllTags }: Props) =
                 {
                     isFavourite !== undefined ? (
                         isFavourite
-                            ? (<FaBookmark className="bookmark" onClick={deleteFromFavourites} />)
-                            : (<FaRegBookmark className="bookmark" onClick={addToFavourites} />)
+                            ? (<Popover
+                                content="Видалити з улюблених"
+                                trigger={'hover'}
+                            >
+                                <FaBookmark className="bookmark" onClick={deleteFromFavourites} />
+                            </Popover>)
+                            : (<Popover 
+                                content="Додати до улюблених"
+                                trigger={'hover'}
+                            >
+                                <FaRegBookmark className="bookmark" onClick={addToFavourites} />
+                            </Popover>)
                     ) : null
                 }
                 <div className="streetcodeIndex">
