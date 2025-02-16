@@ -178,7 +178,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
     return (
         <>
             <Modal
-                title={isEditing ? 'Редагувати категорію' : 'Додати нову категорію'}
+                title={isEditing ? 'Редагувати категорію' : 'Додати категорію'}
                 open={isModalVisible}
                 onCancel={closeModal}
                 className="modalContainer categoryModal"
