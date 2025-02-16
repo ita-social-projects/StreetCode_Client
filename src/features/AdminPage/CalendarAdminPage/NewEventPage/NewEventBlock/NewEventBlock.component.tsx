@@ -250,7 +250,7 @@ const NewEventBlock: React.FC = () => {
 
         <Button
           htmlType='submit'
-          className='streetcode-custom-button submit-button'
+          className='submit-event-button'
           name={'submit'}
         >
           {parseId ? 'Оновити подію' : 'Додати подію'}
