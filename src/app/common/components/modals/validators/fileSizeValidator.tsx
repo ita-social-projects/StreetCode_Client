@@ -4,6 +4,7 @@ import { RuleObject } from 'rc-field-form/lib/interface';
 import { UploadFileStatus } from 'antd/es/upload/interface';
 
 import { MaxFileSizeMB } from '@/app/common/constants/enums/file-size.enum';
+import { MESSAGES } from '@/app/common/constants/messages/messages';
 
 const fileSizeValidator = (maxFileSize: MaxFileSizeMB) => (_: RuleObject, file: any): Promise<void> => {
     if (file?.file?.status === 'removed' as UploadFileStatus) {
@@ -15,7 +16,7 @@ const fileSizeValidator = (maxFileSize: MaxFileSizeMB) => (_: RuleObject, file: 
 
     if (fileSize > maxSizeInBytes) {
         return Promise.reject(
-            new Error(`Розмір файлу не має бути більше ${maxFileSize} MB!`),
+            new Error(MESSAGES.VALIDATION.FILE_SIZE(maxFileSize)),
         );
     }
 
