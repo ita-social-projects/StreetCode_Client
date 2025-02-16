@@ -33,6 +33,7 @@ import Image from '@/models/media/image.model';
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 import { UploadChangeParam } from 'antd/es/upload';
 import combinedImageValidator, { checkFile } from '@components/modals/validators/combinedImageValidator';
+import { MESSAGES } from '@/app/common/constants/messages/messages';
 
 const TeamModal: React.FC<{
     teamMember?: TeamMember, open: boolean,
@@ -82,7 +83,7 @@ const TeamModal: React.FC<{
     useEffect(() => {
         setWaitingForApiResponse(false);
         if (actionSuccess) {
-            message.success('Члена команди успішно додано/оновлено!');
+            message.success(MESSAGES.SUCCESS.ITEM_ADDED_UPDATED('Члена команди'));
             setActionSuccess(false);
         }
     }, [actionSuccess]);
@@ -176,12 +177,12 @@ const TeamModal: React.FC<{
             await form.submit();
             setIsSaveButtonDisabled(true);
         } catch (error) {
-            message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
+            message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");//here
         }
     };
 
     const onSuccesfulSubmitPosition = async (formValues: any) => {
-        message.loading('Зберігання...');
+        message.loading(MESSAGES.SAVING);
         teamSourceLinks.forEach((el, index) => {
             if (el.id < 0) {
                 teamSourceLinks[index].id = 0;
@@ -220,7 +221,7 @@ const TeamModal: React.FC<{
             }
             setActionSuccess(true);
         } catch (error: unknown) {
-            message.error('Не вдалось оновити/створити члена команди. Спробуйте ще раз.');
+            message.error(MESSAGES.ERROR.COULD_NOT_LOAD('члена команди')); 
             setWaitingForApiResponse(false);
         }
     };
@@ -277,7 +278,7 @@ const TeamModal: React.FC<{
                     <Form.Item
                         name="name"
                         label="Прізвище та ім'я: "
-                        rules={[{ required: true, message: "Введіть прізвище та ім'я" }]}
+                        rules={[{ required: true, message: MESSAGES.VALIDATION.ENTER_SURNAME_NAME }]}
                     >
                         <Input maxLength={41} showCount onChange={handleInputChange} />
                     </Form.Item>
@@ -309,7 +310,7 @@ const TeamModal: React.FC<{
                         rules={[
                             {
                                 required: true,
-                                message: 'Будь ласка, завантажте фото',
+                                message: MESSAGES.VALIDATION.ADD_IMAGE,
                             },
                             { validator: combinedImageValidator(false) },
                         ]}
@@ -371,7 +372,7 @@ const TeamModal: React.FC<{
                     <Form.Item
                         name="logotype"
                         label="Соціальна мережа"
-                        rules={[{ required: true, message: 'Оберіть соц. мережу' }]}
+                        rules={[{ required: true, message: MESSAGES.VALIDATION.CHOOSE_SOCIAL_NETWORK }]}
                         style={{ minWidth: '135px' }}
                     >
                         <Select
@@ -386,7 +387,7 @@ const TeamModal: React.FC<{
                         className="url-input"
                         name="url"
                         rules={[
-                            { required: true, message: 'Введіть посилання' },
+                            { required: true, message: MESSAGES.VALIDATION.ENTER_LINK },
                             {
                                 validator: (_, value) => {
                                     const socialName = teamLinksForm.getFieldValue('logotype');

@@ -1,5 +1,6 @@
 /* eslint-disable import/extensions */
 
+import { MESSAGES } from '@/app/common/constants/messages/messages';
 import { doesUrlContainSiteName, isInvalidUrl } from '@/app/common/utils/checkUrl';
 import SocialItem from '@/models/social-link/socialItem';
 
@@ -12,7 +13,7 @@ export default function validateSocialLink<T>(
 ): Promise<unknown> {
     if (!link || isInvalidUrl(link)) {
         return Promise.reject(new Error(
-            'Недійсний формат посилання',
+            MESSAGES.VALIDATION.INVALID_LINK,
         ));
     }
 
@@ -21,14 +22,14 @@ export default function validateSocialLink<T>(
         || logotype === null
         || (!doesUrlContainSiteName(link, logoTypes[Number(logotype)]))) {
         return Promise.reject(new Error(
-            'Посилання не співпадає з вибраним текстом',
+           MESSAGES.VALIDATION.SOCIAL_NETWORK_NOT_MATCH,
         ));
     }
 
     const doesLinkWithLogoTypeAlreadyExist = sourceLinks.some((obj) => obj.logoType === Number(logotype));
     if (doesLinkWithLogoTypeAlreadyExist) {
         return Promise.reject(new Error(
-            'Посилання на таку соціальну мережу вже додано',
+            MESSAGES.VALIDATION.SOCIAL_NETWORK_ALREADY_EXISTS,
         ));
     }
 

@@ -2,7 +2,7 @@ export const MESSAGES = {
   SAVING: 'Зберігання..',
   ERROR: {
     COULD_NOT_LOAD: (item: string) =>
-      `Не вдалось оновити/створити ${item}. Спробуйте ще раз.`,
+      `Не вдалось оновити/додати ${item}. Спробуйте ще раз.`,
   },
   VALIDATION: {
     REQUIRED: "Це поле є обов'язковим",
@@ -13,7 +13,11 @@ export const MESSAGES = {
     ENTER_RIGHT_LINK: 'Введіть правильне посилання',
     ADD_IMAGE: 'Додайте фото',
     ADD_LOGO: 'Додайте лого',
-    CHOOSE_SOCIAL_NETWORK: 'Оберіть соціальну мережу',
+    CHOOSE_SOCIAL_NETWORK: 'Оберіть соц. мережу',
+    SOCIAL_NETWORK_NOT_MATCH: 'Посилання не відповідає соціальній мережі',
+    SOCIAL_NETWORK_ALREADY_EXISTS:
+      'Посилання на цю таку соціальну мережу вже додано',
+    INVALID_LINK: 'Невірний формат посилання',
     FILE_FORMAT: (formats: string[]) =>
       `Дозволені формати - ${formats.join(', ')}`,
     FILE_SIZE: (size: number) => `Розмір файлу не має бути більше ${size} Мб`,
