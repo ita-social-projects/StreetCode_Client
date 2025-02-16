@@ -1,31 +1,41 @@
-@use "@sass/mixins/_utils.mixins.scss" as mut;
-@use "@sass/variables/_variables.fonts.scss" as ft;
-@use "@sass/variables/_variables.colors.scss" as c;
-@use "@sass/_utils.functions.scss" as f;
+@use '@sass/mixins/_utils.mixins.scss' as mut;
+@use '@sass/variables/_variables.fonts.scss' as ft;
+@use '@sass/variables/_variables.colors.scss' as c;
+@use '@sass/_utils.functions.scss' as f;
 
-.calendar-admin-page{
-    @include mut.admin-page-base-layout();
+.calendar-admin-page {
+  @include mut.admin-page-base-layout();
 
-    p {
-        word-break: break-word;
+  p {
+    word-break: break-word;
+  }
+
+  .calendar-admin-page-container {
+    @include mut.sized(80%);
+
+    .partner-page-actions {
+      display: flex;
+      gap: f.pxToRem(30px);
+    }
+    .calendar-table {
+      margin-top: f.pxToRem(20px);
+    }
+    .calendar-table-item-name {
+      @include mut.flexed(row, start, flex-start, wrap, 4px);
     }
 
-    .calendar-admin-page-container{
-        @include mut.sized(80%);
-
-        .partner-page-actions{
-            display: flex;
-            gap: f.pxToRem(30px);
-        }
-        .calendar-table{
-            margin-top: f.pxToRem(20px);
-        }
-        .calendar-table-item-name{
-            @include mut.flexed(row, start,flex-start, wrap, 4px);
-        }
-        
-        .underTableElement {
-            padding-bottom: 10px;
-        }
+    .underTableElement {
+      padding-bottom: 10px;
     }
+  }
+
+  .streetcodes-container {
+    width: 100%;
+    display: flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 10px;
+  }
 }

@@ -64,10 +64,10 @@ const CalendarAdminPage = observer(() => {
       title: "Пов'язані History-коди",
       dataIndex: 'streetcodes',
       key: 'streetcodes',
-      width: '20%',
+      width: '25%',
       render: (streetcodes?: StreetcodeShort[]) => {
         return streetcodes ? (
-          <div className='tagModalContainer'>
+          <div className='streetcodes-container'>
             {streetcodes.map((s) => (
               <Tag
                 className='tagItem'

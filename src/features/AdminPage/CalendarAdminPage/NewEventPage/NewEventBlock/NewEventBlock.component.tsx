@@ -137,7 +137,7 @@ const NewEventBlock: React.FC = () => {
 
   return (
     <>
-      <h2>Нова подія до календаря</h2>
+      {!parseId ? <h2>Нова подія до календаря</h2> : null}
       <Form
         form={form}
         layout='vertical'
