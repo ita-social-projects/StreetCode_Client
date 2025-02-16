@@ -25,7 +25,7 @@ const CalendarComponent: React.FC = observer(() => {
   const { isLoading } = useQuery({
     queryKey: ['events', calendarStore.events.length],
     queryFn: () => {
-      calendarStore.fetchAllEvents();
+      calendarStore.fetchAllEventsShort();
     },
   });
 

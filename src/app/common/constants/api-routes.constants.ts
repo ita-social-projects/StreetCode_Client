@@ -215,6 +215,7 @@ export const API_ROUTES = {
     },
     EVENT: {
         GET_ALL: "events/getAll",
+        GET_ALL_SHORT: "events/getAllShort",
         GET: "events/getById",
         GET_BY_STREETCODE_ID: "events/getByStreetcodeId",
         CREATE: "events/create",

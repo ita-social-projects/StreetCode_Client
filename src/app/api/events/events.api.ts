@@ -27,6 +27,8 @@ const EventsApi = {
       searchParams
     );
   },
+  getAllShort: () =>
+    Agent.get<CalendarEvent[]>(`${API_ROUTES.EVENT.GET_ALL_SHORT}`),
 
   create: (eventData: any) =>
     Agent.post<CalendarEvent>(`${API_ROUTES.EVENT.CREATE}`, eventData),

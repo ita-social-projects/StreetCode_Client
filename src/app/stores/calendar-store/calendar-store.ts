@@ -54,6 +54,14 @@ export default class CalendarStore {
     }
   };
 
+  fetchAllEventsShort = async () => {
+    try {
+      this.events = await eventsApi.getAllShort();
+    } catch (error: unknown) {
+      console.error('Failed to fetch events short:', error);
+    }
+  };
+
   getEventById = async (eventId: number) => {
     try {
       const response = await eventsApi.getById(eventId.toString());
