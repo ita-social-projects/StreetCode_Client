@@ -176,7 +176,7 @@ const Partners: React.FC = observer(() => {
                         className="streetcode-custom-button"
                         onClick={() => setModalAddOpened(true)}
                     >
-                        Створити партнера
+                        Створити нового партнера
                     </Button>
                 </div>
                 <div>
