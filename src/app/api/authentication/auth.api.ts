@@ -3,6 +3,7 @@ import axios from 'axios';
 
 import { API_ROUTES } from '@/app/common/constants/api-routes.constants';
 import {
+    GoogleLoginRequest,
     RefreshTokenRequest,
     RefreshTokenResponce,
     UserLoginRequest,
@@ -27,11 +28,10 @@ const AuthApi = {
         instance.post<UserLoginResponse>(API_ROUTES.AUTH.LOGIN, loginParams)
             .then((response) => response.data)
     ),
-    loginGoogle: (idToken: string | undefined) => (
+    loginGoogle: (googleLoginRequest: GoogleLoginRequest) => (
         instance.post<UserLoginResponse>(
             API_ROUTES.AUTH.LOGIN_GOOGLE,
-            JSON.stringify(idToken),
-            { headers: { 'Content-Type': 'application/json' } },
+            googleLoginRequest,
         ).then((response) => response.data)
     ),
     refreshToken: (tokenTokenPapams: RefreshTokenRequest) => (

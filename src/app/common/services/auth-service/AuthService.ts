@@ -166,9 +166,9 @@ export default class AuthService {
         return UserRole[role];
     }
 
-    static async googleLoginAsync(idToken: string | undefined): Promise<void> {
+    static async googleLoginAsync(idToken: string): Promise<void> {
         try {
-            const response = await AuthApi.loginGoogle(idToken);
+            const response = await AuthApi.loginGoogle({ idToken });
             const { accessToken, refreshToken } = response;
 
             localStorage.setItem(AuthService.accessTokenStorageName, accessToken);
