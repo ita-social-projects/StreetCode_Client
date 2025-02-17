@@ -77,7 +77,7 @@ describe('ContextMainPage', () => {
         const addButton = screen.getByText(/додати новий контекст/i);
         userEvent.click(addButton);
         const button = screen.getByText(/зберегти/i);
-        const title = screen.getByRole('heading', {name: /додати новий контекст/i});
+        const title = screen.getByRole('heading', { name: /додати контекст/i });
         const label = screen.getByText(/назва:/i);
         expect(button).toBeInTheDocument();
         expect(title).toBeInTheDocument();
