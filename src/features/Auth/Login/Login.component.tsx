@@ -6,7 +6,7 @@ import './Login.styles.scss';
 import { GoogleLogin } from '@react-oauth/google';
 import React, { useRef, useState } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import AuthService from '@app/common/services/auth-service/AuthService';
 import { ERROR_MESSAGES, INVALID_LOGIN_ATTEMPT } from '@constants/error-messages.constants';
 import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
@@ -21,6 +21,7 @@ const Login: React.FC = () => {
     const recaptchaRef = useRef<ReCAPTCHA>(null);
     const siteKey = window._env_.RECAPTCHA_SITE_KEY;
     const { RECAPTCHA_CHECK } = ERROR_MESSAGES;
+    const location = useLocation();
 
     const handleVerify = () => {
         setIsVerified(true);
@@ -47,7 +48,7 @@ const Login: React.FC = () => {
             try {
                 const token = recaptchaRef?.current?.getValue();
                 await AuthService.loginAsync(login, password, token)
-                    .then(() => navigate(FRONTEND_ROUTES.BASE))
+                    .then(() => navigate(location.state.previousUrl))
                     .catch((ex) => {
                         if (ex.response?.data) {
                             Object.keys(ex.response.data.message).forEach((key) => {
