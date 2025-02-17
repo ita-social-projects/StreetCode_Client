@@ -116,7 +116,7 @@ const TeamPositionsAdminModalComponent: React.FC<TeamPositionsAdminProps> = obse
                     onKeyDown={(e) => e.key === 'Enter' ? e.preventDefault() : ''}
                 >
                     <div className="center">
-                        <h2>{isEditing ? 'Редагувати позицію' : 'Додати нову позицію'}</h2>
+                        <h2>{isEditing ? 'Редагувати позицію' : 'Додати позицію'}</h2>
                     </div>
                     <Form.Item
                         name="position"
