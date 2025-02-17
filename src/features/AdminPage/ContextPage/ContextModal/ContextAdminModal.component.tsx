@@ -121,7 +121,7 @@ const ContextAdminModalComponent: React.FC<ContextAdminProps> = observer(({
                     onKeyDown={(e) => e.key === 'Enter' ? e.preventDefault() : ''}
                 >
                     <div className="center">
-                        <h2>{isEditing ? 'Редагувати контекст' : 'Додати новий контекст'}</h2>
+                        <h2>{isEditing ? 'Редагувати контекст' : 'Додати контекст'}</h2>
                     </div>
                     <Form.Item
                         name="title"
