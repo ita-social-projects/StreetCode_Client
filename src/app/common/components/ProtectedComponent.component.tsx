@@ -3,7 +3,7 @@
 /* eslint-disable import/extensions */
 import { observer } from 'mobx-react-lite';
 import { FC, ReactNode } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { UserRole } from '@models/user/user.model';
 
 import FRONTEND_ROUTES from '../constants/frontend-routes.constants';
@@ -13,15 +13,10 @@ type PropsWithChildren = { children: ReactNode, allowedRoles: UserRole[] | null 
 const ProtectedComponent:FC<PropsWithChildren> = ({ children, allowedRoles = null }) => {
     const navigate = useNavigate();
     const isLoggedIn = AuthService.isLoggedIn();
-    const location = useLocation();
 
     if (!isLoggedIn) {
         AuthService.refreshTokenAsync()
-            .catch(() => navigate(FRONTEND_ROUTES.AUTH.LOGIN, {
-                state: {
-                    previousUrl: location.pathname,
-                },
-            }));
+            .catch(() => navigate(FRONTEND_ROUTES.AUTH.LOGIN));
         return null;
     }
 
