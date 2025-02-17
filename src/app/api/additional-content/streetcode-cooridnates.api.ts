@@ -4,9 +4,13 @@ import { API_ROUTES } from '@constants/api-routes.constants';
 import StreetcodeCoordinate from '@/models/additional-content/coordinate.model';
 
 const StreetcodeCoordinateApi = {
-    getAll: () => Agent.get<StreetcodeCoordinate[]>(`${API_ROUTES.STREETCODE_COORDINATES.GET_ALL}`),
+    getAll: () => (
+        Agent.get<StreetcodeCoordinate[]>(`${API_ROUTES.STREETCODE_COORDINATES.GET_ALL}`)
+    ),
 
-    getById: (id: number) => Agent.get<StreetcodeCoordinate>(`${API_ROUTES.STREETCODE_COORDINATES.GET}/${id}`),
+    getById: (id: number) => (
+        Agent.get<StreetcodeCoordinate>(`${API_ROUTES.STREETCODE_COORDINATES.GET}/${id}`)
+    ),
 
     getByStreetcodeId: (streetcodeId: number) => Agent.get<StreetcodeCoordinate[]>(
         `${API_ROUTES.STREETCODE_COORDINATES.GET_BY_STREETCODE_ID}/${streetcodeId}`,

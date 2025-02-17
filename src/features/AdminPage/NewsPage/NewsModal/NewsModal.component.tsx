@@ -309,7 +309,7 @@ const NewsModal: React.FC<{
                             <h2>
                                 {newsItem ? 'Редагувати' : 'Додати'}
                                 {' '}
-                                Новину
+                                новину
                             </h2>
                         </div>
                         <Form.Item
@@ -434,4 +434,5 @@ const NewsModal: React.FC<{
         </ConfigProvider>
     );
 });
+
 export default NewsModal;
