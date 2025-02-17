@@ -13,8 +13,8 @@ import RelatedFigureItem from '@streetcode/RelatedFiguresBlock/RelatedFigureItem
 import ImagesApi from '@/app/api/media/images.api';
 import RelatedFigureApi from '@/app/api/streetcode/related-figure.api';
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
-import Streetcode from '@/models/streetcode/streetcode-types.model';
 import StreetcodeBlock from '@/models/streetcode/streetcode-blocks.model';
+import Streetcode from '@/models/streetcode/streetcode-types.model';
 
 interface Props {
     setActiveTagId: React.Dispatch<React.SetStateAction<number>>,
@@ -114,7 +114,7 @@ const RelatedFiguresComponent = ({ setActiveTagId, setShowAllTags, streetcode }:
 
     return getRelatedFiguresArray.length > 0 ? (
         <div
-            className={`relatedFiguresWrapper container ${
+            className={`relatedFiguresWrapper ${
                 (!isDesktop && !isMobile)
                     ? 'smallWrapper'
                     : (getRelatedFiguresArray.length > 4 ? 'bigWrapper' : 'smallWrapper')

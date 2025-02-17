@@ -113,7 +113,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
     return (
         <>
             <Modal
-                title={isEditing ? 'Редагувати тег' : 'Додати новий тег'}
+                title={isEditing ? 'Редагувати тег' : 'Додати тег'}
                 open={isModalVisible}
                 onCancel={closeModal}
                 className="modalContainer"

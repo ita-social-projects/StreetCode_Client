@@ -74,7 +74,7 @@ describe('TeamPositionsMainPage', () => {
         const addButton = screen.getByText(BUTTON_LABELS.ADD_POSITION);
         userEvent.click(addButton);
         const button = screen.getByText(BUTTON_LABELS.SAVE);
-        const title = screen.getByRole('heading', {name: /додати нову позицію/i});
+        const title = screen.getByRole('heading', { name: /додати позицію/i });
         const label = screen.getByText(/назва:/i);
         expect(button).toBeInTheDocument();
         expect(title).toBeInTheDocument();
