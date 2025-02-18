@@ -47,20 +47,20 @@ export default class AuthService {
             });
     }
 
-    public static sendForgotPassword(email: string) {
-        UsersApi.forgotPassword({ email }).catch((error) => {
+    public static async sendForgotPassword(email: string) {
+        await UsersApi.forgotPassword({ email }).catch((error) => {
             console.error(error);
             return Promise.reject(error);
         });
     }
 
-    public static sendForgotPasswordUpdate(
+    public static async sendForgotPasswordUpdate(
         password: string,
         confirmPassword: string,
         username: string | null,
         token: string | null,
     ) {
-        UsersApi.updateForgotPassword({ password, confirmPassword, username, token }).catch((error) => {
+        await UsersApi.updateForgotPassword({ password, confirmPassword, username, token }).catch((error) => {
             console.error(error);
             return Promise.reject(error);
         });
