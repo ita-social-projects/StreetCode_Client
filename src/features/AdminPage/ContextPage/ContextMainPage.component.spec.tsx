@@ -4,6 +4,7 @@ import ContextMainPage from '@features/AdminPage/ContextPage/ContextMainPage.com
 import React from 'react';
 import userEvent from '@testing-library/user-event';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import BUTTON_LABELS from '@constants/buttonLabels';
 
 jest.mock('antd', () => {
     const antd = jest.requireActual('antd');
@@ -74,11 +75,11 @@ describe('ContextMainPage', () => {
                 <ContextMainPage/>
             </QueryClientProvider>,
         );
-        const addButton = screen.getByText(/додати новий контекст/i);
+        const addButton = screen.getByText(BUTTON_LABELS.ADD_CONTEXT);
         userEvent.click(addButton);
-        const button = screen.getByText(/зберегти/i);
-        const title = screen.getByRole('heading', { name: /додати контекст/i });
+        const button = screen.getByText(BUTTON_LABELS.SAVE);
         const label = screen.getByText(/назва:/i);
+        const title = screen.getByRole('heading', { name: /додати контекст/i });
         expect(button).toBeInTheDocument();
         expect(title).toBeInTheDocument();
         expect(label).toBeInTheDocument();
@@ -90,7 +91,7 @@ describe('ContextMainPage', () => {
                 <ContextMainPage/>
             </QueryClientProvider>,
         );
-        const addButton = screen.getByText(/додати новий контекст/i);
+        const addButton = screen.getByText(BUTTON_LABELS.ADD_CONTEXT);
         userEvent.click(addButton);
         const row = screen.getByRole('row', { name: /революція гідності/i });
         const button = within(row).getByRole('img', { name: /edit/i });

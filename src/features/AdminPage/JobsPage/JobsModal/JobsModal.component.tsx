@@ -17,6 +17,7 @@ import {
 import Editor from '@/app/common/components/Editor/QEditor.component';
 
 import POPOVER_CONTENT from './constants/popoverContent';
+import BUTTON_LABELS from '@constants/buttonLabels';
 
 interface Props {
   open: boolean;
@@ -217,7 +218,7 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
                         }}
                         disabled={isSaveButtonDisabled}
                     >
-                      Зберегти
+                      {BUTTON_LABELS.SAVE}
                     </Button>
                 </div>
             </Form>

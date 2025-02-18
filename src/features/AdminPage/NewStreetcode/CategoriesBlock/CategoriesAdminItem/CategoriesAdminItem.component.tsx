@@ -1,9 +1,8 @@
 import { observer } from 'mobx-react-lite';
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import useMobx from '@stores/root-store';
-
-import { Modal } from 'antd';
+import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
+import useMobx, { useModalContext } from '@stores/root-store';
 
 const CategoriesAdminItem: React.FC<{
     index:number,
@@ -11,14 +10,16 @@ const CategoriesAdminItem: React.FC<{
     onEditClick: () => void
 }> = ({ index, categoryName, onEditClick }) => {
     const { sourceCreateUpdateStreetcode } = useMobx();
-    const [visibleModal, setVisibleModal] = useState(false);
+    const { modalStore } = useModalContext();
 
     const handleRemove = useCallback(() => {
-        setVisibleModal(true);
-    }, []);
-
-    const handleCancelModalRemove = useCallback(() => {
-        setVisibleModal(false);
+        modalStore.setConfirmationModal(
+            'confirmation',
+            () => {
+                sourceCreateUpdateStreetcode.removeSourceCategoryContent(index);
+            },
+            CONFIRMATION_MESSAGES.DELETE_CATEGORY,
+        );
     }, []);
 
     return (
@@ -33,14 +34,6 @@ const CategoriesAdminItem: React.FC<{
                 <div className="blockItem">
                     <DeleteOutlined onClick={() => handleRemove()} />
                 </div>
-                <Modal
-                    title="Ви впевнені, що хочете видалити дану категорію?"
-                    open={visibleModal}
-                    onOk={(e) => {
-                        sourceCreateUpdateStreetcode.removeSourceCategoryContent(index); setVisibleModal(false);
-                    }}
-                    onCancel={handleCancelModalRemove}
-                />
             </div>
         </div>
     );
