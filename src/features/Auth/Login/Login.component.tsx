@@ -48,7 +48,10 @@ const Login: React.FC = () => {
             try {
                 const token = recaptchaRef?.current?.getValue();
                 await AuthService.loginAsync(login, password, token)
-                    .then(() => navigate(location.state.previousUrl))
+                    .then(() => {
+                        message.success('Ви успішно увійшли в систему.');
+                        navigate(location.state.previousUrl);
+                    })
                     .catch((ex) => {
                         if (ex.response?.data) {
                             Object.keys(ex.response.data.message).forEach((key) => {
