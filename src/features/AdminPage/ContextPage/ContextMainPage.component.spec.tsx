@@ -4,7 +4,7 @@ import ContextMainPage from '@features/AdminPage/ContextPage/ContextMainPage.com
 import React from 'react';
 import userEvent from '@testing-library/user-event';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import BUTTON_LABELS from "@constants/buttonLabels";
+import BUTTON_LABELS from '@constants/buttonLabels';
 
 jest.mock('antd', () => {
     const antd = jest.requireActual('antd');
@@ -79,6 +79,7 @@ describe('ContextMainPage', () => {
         userEvent.click(addButton);
         const button = screen.getByText(BUTTON_LABELS.SAVE);
         const label = screen.getByText(/назва:/i);
+        const title = screen.getByRole('heading', { name: /додати контекст/i });
         expect(button).toBeInTheDocument();
         expect(title).toBeInTheDocument();
         expect(label).toBeInTheDocument();

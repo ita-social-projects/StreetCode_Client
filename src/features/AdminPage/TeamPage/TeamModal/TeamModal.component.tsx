@@ -32,11 +32,7 @@ import Image from '@/models/media/image.model';
 
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 
-import { UploadChangeParam } from 'antd/es/upload';
-
 import BUTTON_LABELS from '@constants/buttonLabels';
-
-import combinedImageValidator, { checkFile } from '@components/modals/validators/combinedImageValidator';
 
 const TeamModal: React.FC<{
     teamMember?: TeamMember, open: boolean,
