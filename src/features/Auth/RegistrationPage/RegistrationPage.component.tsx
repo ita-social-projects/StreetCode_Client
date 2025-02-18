@@ -15,6 +15,7 @@ import { Button, Form, Input, message } from 'antd';
 const RegistrationPage: React.FC = () => {
     const navigate = useNavigate();
     const [form] = Form.useForm();
+    const [isValid, setIsValid] = React.useState(false);
 
     const navigateToLogin = () => {
         navigate(FRONTEND_ROUTES.AUTH.LOGIN);
@@ -77,13 +78,17 @@ const RegistrationPage: React.FC = () => {
                     wrapperCol={{ span: 24 }}
                     name="email"
                     rules={[
-                        { required: true, message: 'Введіть електронну пошту' },
-                        { validator: validateEmail },
+                        {
+                            required: true, message: 'Введіть електронну пошту',
+                        },
+                        {
+                            validator: validateEmail,
+                        },
                     ]}
                 >
                     <Input placeholder="Електронна пошта" maxLength={254} className="registerInputField" />
                 </Form.Item>
-                <Password />
+                <Password onPasswordValid={setIsValid} />
                 <Button htmlType="submit" className="registerButton streetcode-custom-button">
                     <p>Зареєструватися</p>
                 </Button>
