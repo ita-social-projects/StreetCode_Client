@@ -80,7 +80,7 @@ const TeamModal: React.FC<{
     const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         const inputValue = (event.target as HTMLInputElement).value;
 
-        if (inputValue.length >= MAX_POSITION_LENGTH && event.key !== 'Backspace') {
+        if (inputValue.length > MAX_POSITION_LENGTH && event.key !== 'Backspace') {
             event.preventDefault();
 
             if (warningTimeout.current) return;
