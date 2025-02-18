@@ -78,7 +78,13 @@ const Login: React.FC = () => {
                 <Form.Item
                     wrapperCol={{ span: 24 }}
                     name="login"
-                    rules={[{ required: true, message: 'Введіть логін' }, { validator: validateEmail }]}
+                    rules={[
+                        {
+                            required: true, message: 'Введіть логін',
+                        },
+                        {
+                            validator: validateEmail,
+                        }]}
                 >
                     <Input className="loginInput" maxLength={128} placeholder="Електронна пошта" />
                 </Form.Item>
@@ -86,7 +92,10 @@ const Login: React.FC = () => {
                 <Form.Item
                     wrapperCol={{ span: 24 }}
                     name="password"
-                    rules={[{ required: true, message: 'Введіть пароль' }]}
+                    rules={[
+                        {
+                            required: true, message: 'Введіть пароль',
+                        }]}
                 >
                     <Input.Password className="passwordInput" placeholder="Пароль" />
                 </Form.Item>
