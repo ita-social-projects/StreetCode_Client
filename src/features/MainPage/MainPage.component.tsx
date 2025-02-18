@@ -1,5 +1,8 @@
+/* eslint-disable max-len */
+/* eslint-disable no-restricted-imports */
 import './MainPage.styles.scss';
 
+import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 
 import ScrollToTopBtn from '../../app/common/components/ScrollToTopBtn/ScrollToTopBtn.component';
@@ -11,8 +14,9 @@ import StreetcodeSliderComponent from './StreetcodeSlider/StreetcodeSlider.compo
 import TeamComponent from './TeamSlider/TeamComponent.component';
 import TopCarouselComponent from './TopCarousel/TopCarousel.component';
 
-const mainPageContent = () => {
+const MainPageContent = () => {
     const navigate = useNavigate();
+    const isMobile = useMediaQuery({ query: '(max-width: 480px)' });
 
     return (
         <>
@@ -22,8 +26,11 @@ const mainPageContent = () => {
                 <StaticBanner
                     id="catalog"
                     blockName="Хочеш більше history-кодів?"
-                    blockContent="Не обмежуй знання про минуле нудними підручниками з минулого.
-                    Переходь на сторінку history-кодів про постаті та події, читай або слухай історичне та захоплююче."
+                    blockContent={
+                        isMobile
+                            ? 'Досить обмежувати свої знання про минуле нудними підручниками! Переходь на сторінку всіх історичних постатей та подій і дізнавайся про минуле у захоплюючій формі.'
+                            : 'Не обмежуй знання про минуле нудними підручниками з минулого. Переходь на сторінку history-кодів про постаті та події, читай або слухай історичне та захоплююче.'
+                    }
                     buttonName="До history-кодів"
                     setActionOnClick={() => {
                         navigate('../catalog');
@@ -54,4 +61,4 @@ const mainPageContent = () => {
     );
 };
 
-export default mainPageContent;
+export default MainPageContent;
