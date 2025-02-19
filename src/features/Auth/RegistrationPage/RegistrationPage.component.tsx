@@ -7,15 +7,18 @@ import Password from '@components/Auth/Password.component';
 import { SOMETHING_IS_WRONG } from '@constants/error-messages.constants';
 import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
 import { UserRegisterRequest } from '@models/user/user.model';
+import removeSpacesFromField from '@utils/removeSpacesFromField';
 import validateEmail from '@utils/userValidators/validateEmail';
 import validateLength from '@utils/userValidators/validateLength';
+import validatePatternNameSurname from '@utils/userValidators/validatePatternNameSurname';
 
 import { Button, Form, Input, message } from 'antd';
 
 const RegistrationPage: React.FC = () => {
     const navigate = useNavigate();
     const [form] = Form.useForm();
-    const [isValid, setIsValid] = React.useState(false);
+    const [isPasswordValid, setIsPasswordValid] = React.useState<boolean>(false);
+    const [isValid, setIsValid] = React.useState<boolean>(false);
 
     const navigateToLogin = () => {
         navigate(FRONTEND_ROUTES.AUTH.LOGIN);
@@ -35,18 +38,27 @@ const RegistrationPage: React.FC = () => {
         }
     };
 
+    const validateFields = async () => {
+        await form.validateFields().then(() => {
+            setIsValid(true);
+        }).catch(() => {
+            setIsValid(false);
+        });
+    };
+
     if (AuthService.isLoggedIn()) {
         return <Navigate to={FRONTEND_ROUTES.OTHER_PAGES.PROFILE} />;
     }
 
     return (
         <div className="registerFormWrapper">
-            <Form form={form} className="register-form" onFinish={handleRegister}>
+            <Form form={form} className="register-form" onFinish={handleRegister} onChange={validateFields}>
                 <div className="registerTitleWrapper">
                     <p className="registerTitle">Реєстрація</p>
                     <p className="registerSubTitle">Створіть свій обліковий запис</p>
                 </div>
                 <Form.Item
+                    normalize={removeSpacesFromField}
                     wrapperCol={{ span: 24 }}
                     name="name"
                     rules={[
@@ -54,13 +66,17 @@ const RegistrationPage: React.FC = () => {
                             required: true, message: 'Введіть імʼя',
                         },
                         {
-                            validator: validateLength("Ім'я", 2, 128),
+                            validator: validateLength("Ім'я", 2, 50),
+                        },
+                        {
+                            validator: validatePatternNameSurname("Ім'я"),
                         },
                     ]}
                 >
-                    <Input placeholder="Ім'я" minLength={2} maxLength={128} showCount className="registerInputField" />
+                    <Input placeholder="Ім'я" minLength={2} maxLength={50} showCount className="registerInputField" />
                 </Form.Item>
                 <Form.Item
+                    normalize={removeSpacesFromField}
                     wrapperCol={{ span: 24 }}
                     name="surname"
                     rules={[
@@ -68,7 +84,10 @@ const RegistrationPage: React.FC = () => {
                             required: true, message: 'Введіть прізвище',
                         },
                         {
-                            validator: validateLength('Прізвище', 2, 128),
+                            validator: validateLength('Прізвище', 2, 50),
+                        },
+                        {
+                            validator: validatePatternNameSurname('Прізвище'),
                         },
                     ]}
                 >
@@ -84,12 +103,19 @@ const RegistrationPage: React.FC = () => {
                         {
                             validator: validateEmail,
                         },
+                        {
+                            validator: validateLength('Пошта', 2, 254),
+                        },
                     ]}
                 >
                     <Input placeholder="Електронна пошта" maxLength={254} className="registerInputField" />
                 </Form.Item>
-                <Password onPasswordValid={setIsValid} />
-                <Button htmlType="submit" className="registerButton streetcode-custom-button">
+                <Password onPasswordValid={setIsPasswordValid} />
+                <Button
+                    disabled={!isValid || !isPasswordValid}
+                    htmlType="submit"
+                    className="registerButton streetcode-custom-button"
+                >
                     <p>Зареєструватися</p>
                 </Button>
                 <p className="loginNav">

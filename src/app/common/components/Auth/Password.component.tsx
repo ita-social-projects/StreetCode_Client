@@ -36,7 +36,7 @@ const Password = ({ onPasswordValid } : Props) => {
                         required: true, message: 'Введіть пароль',
                     },
                     {
-                        validator: validatePatternPassword('Пароль'),
+                        validator: validatePatternPassword(),
                     },
                 ]}
             >
@@ -70,7 +70,7 @@ const Password = ({ onPasswordValid } : Props) => {
                         required: true, message: 'Введіть пароль підтведження',
                     },
                     {
-                        validator: validatePatternPassword('Пароль'),
+                        validator: validatePatternPassword(),
                     },
                 ]}
             >
