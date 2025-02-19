@@ -695,28 +695,30 @@ const NewStreetcode = () => {
                             <ARBlock onChange={handleFieldChange} />
                         </Form>
                     </div>
-                    <Button
-                        className="streetcode-custom-button submit-button"
-                        onClick={onFinish}
-                        name={draft}
-                        htmlType="submit"
-                    >
-                        {draft}
-                    </Button>
-                    <Modal
-                        title="Ви впевнені, що хочете опублікувати цей history-код?"
-                        open={visibleModal}
-                        onOk={handleModalOk}
-                        onCancel={handleCancelModalRemove}
-                    />
-                    <Button
-                        htmlType="submit"
-                        className="streetcode-custom-button submit-button"
-                        onClick={handleRemove}
-                        name={publish}
-                    >
-                        {publish}
-                    </Button>
+                    <div className="submit-button-row">
+                        <Button
+                            className="streetcode-custom-button submit-button"
+                            onClick={onFinish}
+                            name={draft}
+                            htmlType="submit"
+                        >
+                            {draft}
+                        </Button>
+                        <Modal
+                            title="Ви впевнені, що хочете опублікувати цей history-код?"
+                            open={visibleModal}
+                            onOk={handleModalOk}
+                            onCancel={handleCancelModalRemove}
+                        />
+                        <Button
+                            htmlType="submit"
+                            className="streetcode-custom-button submit-button"
+                            onClick={handleRemove}
+                            name={publish}
+                        >
+                            {publish}
+                        </Button>
+                    </div>
                 </div>
             </ConfigProvider>
         </div>
