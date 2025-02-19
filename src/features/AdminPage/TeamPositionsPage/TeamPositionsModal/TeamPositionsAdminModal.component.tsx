@@ -10,6 +10,7 @@ import {parseJsonNumber} from "ajv/dist/runtime/parseJson";
 import position = parseJsonNumber.position;
 import normaliseWhitespaces from '@/app/common/utils/normaliseWhitespaces';
 import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
+import BUTTON_LABELS from "@constants/buttonLabels";
 
 interface TeamPositionsAdminProps {
     setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -134,7 +135,7 @@ const TeamPositionsAdminModalComponent: React.FC<TeamPositionsAdminProps> = obse
                             className="streetcode-custom-button"
                             onClick={() => handleOk()}
                         >
-                            Зберегти
+                            {BUTTON_LABELS.SAVE}
                         </Button>
                     </div>
                 </Form>

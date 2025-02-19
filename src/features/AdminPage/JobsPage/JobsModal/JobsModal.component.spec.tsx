@@ -2,6 +2,7 @@ import { fireEvent, render, screen, waitFor, within } from "@testing-library/rea
 import user from "@testing-library/user-event";
 import JobApi from "@/app/api/job/Job.api";
 import JobsModalComponent from "./JobsModal.component";
+import BUTTON_LABELS from "@constants/buttonLabels";
 
 const mockJob: Job = {
   description: "descriptionMock",
@@ -95,7 +96,7 @@ describe("JobsModal test", () => {
     const inputSalary = screen.getByRole("textbox", {
       name: /заробітня плата/i,
     });
-    const buttonSave = screen.getByRole("button", { name: /зберегти/i });
+    const buttonSave = screen.getByRole("button", { name: BUTTON_LABELS.SAVE });
 
     // Assert
     expect(inputTitle).toBeInTheDocument;
@@ -126,7 +127,7 @@ describe("JobsModal test", () => {
       name: /заробітня плата/i,
     });
 
-    const buttonSave = screen.getByRole("button", { name: /зберегти/i });
+    const buttonSave = screen.getByRole("button", { name: BUTTON_LABELS.SAVE });
 
     const createJobWithRequiredOnly: Job = {
       description: "",
@@ -177,7 +178,7 @@ describe("JobsModal test", () => {
       name: /заробітня плата/i,
     });
 
-    const buttonSave = screen.getByRole("button", { name: /зберегти/i });
+    const buttonSave = screen.getByRole("button", { name: BUTTON_LABELS.SAVE });
 
     const createJobWithAllFields: Job = {
       description: "description",
@@ -231,7 +232,7 @@ describe("JobsModal test", () => {
       name: /заробітня плата/i,
     });
 
-    const buttonSave = screen.getByRole("button", { name: /зберегти/i });
+    const buttonSave = screen.getByRole("button", { name: BUTTON_LABELS.SAVE });
 
     const editedJob: Job = {
       description: "edited description",
@@ -284,7 +285,7 @@ describe("JobsModal test", () => {
       name: /заробітня плата/i,
     });
 
-    const buttonSave = screen.getByRole("button", { name: /зберегти/i });
+    const buttonSave = screen.getByRole("button", { name: BUTTON_LABELS.SAVE });
 
     const sameRequiredFieldsJob: Job = {
       description: "",

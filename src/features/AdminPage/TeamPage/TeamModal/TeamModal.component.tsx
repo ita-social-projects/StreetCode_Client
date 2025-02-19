@@ -32,6 +32,8 @@ import Image from '@/models/media/image.model';
 
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 
+import BUTTON_LABELS from '@constants/buttonLabels';
+
 const TeamModal: React.FC<{
     teamMember?: TeamMember, open: boolean,
     setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>, afterSubmit?: (team: TeamCreateUpdate) => void
@@ -418,7 +420,7 @@ const TeamModal: React.FC<{
                         className="streetcode-custom-button"
                         onClick={handleOk}
                     >
-                        Зберегти
+                        {BUTTON_LABELS.SAVE}
                     </Button>
                 </div>
             </Form>
