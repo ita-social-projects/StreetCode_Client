@@ -19,6 +19,7 @@ import { UpdateUser } from '@models/user/user.model';
 import useMobx from '@stores/root-store';
 import base64ToUrl from '@utils/base64ToUrl.utility';
 import parsePhoneNumber from '@utils/parsePhoneNumber';
+import removeSpacesFromField from '@utils/removeSpacesFromField';
 import validateLength from '@utils/userValidators/validateLength';
 import validatePatternNameSurname from '@utils/userValidators/validatePatternNameSurname';
 import validatePatternUserName from '@utils/userValidators/validatePatternUserName';
@@ -241,6 +242,7 @@ const EditUserModal = ({ isOpen, onClose, image } : Props) => {
                     <div className="editFormUserInfoWrapper">
                         <div className="formItemFirst">
                             <Form.Item
+                                normalize={removeSpacesFromField}
                                 className="formItem"
                                 label="Нікнейм"
                                 name="userName"
@@ -274,6 +276,7 @@ const EditUserModal = ({ isOpen, onClose, image } : Props) => {
                             </Form.Item>
                         </div>
                         <Form.Item
+                            normalize={removeSpacesFromField}
                             className="formItem"
                             label="Ім'я"
                             name="name"
@@ -290,6 +293,7 @@ const EditUserModal = ({ isOpen, onClose, image } : Props) => {
                             <Input minLength={2} maxLength={128} showCount />
                         </Form.Item>
                         <Form.Item
+                            normalize={removeSpacesFromField}
                             className="formItem"
                             label="Прізвище"
                             name="surname"
@@ -330,6 +334,7 @@ const EditUserModal = ({ isOpen, onClose, image } : Props) => {
                                     preferredCountries={['ua']}
                                 />
                             </Form.Item>
+                            <p className="phoneExample">Приклад: +380 50 567 45 45</p>
                         </ConfigProvider>
                         <Form.Item
                             className="formItem"
