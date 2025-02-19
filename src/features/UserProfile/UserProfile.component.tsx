@@ -1,7 +1,7 @@
 ﻿import './UserProfile.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import defaultAvatar from '@assets/images/user-profile/default-avatar.webp';
 import Calendar from '@assets/images/utils/calendar-regular.svg';
 import Pencil from '@assets/images/utils/pencil-solid.svg';
@@ -17,13 +17,28 @@ import { Button } from 'antd';
 const UserProfile = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [activeButton, setActiveButton] = useState<number>(0);
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+    const [isUserFieldsChanged, setIsUserFieldsChanged] = useState(false);
+    const [isDiscardConfirmed, setIsDiscardConfirmed] = useState(false);
+    const [isDiscardModalOpen, setIsDiscardModalOpen] = useState(false);
+
     const { userStore, imagesStore } = useMobx();
     const { user } = userStore;
+
     const buttonConfigs = [
         { label: 'Календар', icon: Calendar },
         { label: 'Панель', icon: Pencil },
     ];
+
+    useEffect(() => {
+        if (isDiscardConfirmed) {
+            setIsEditModalOpen(false);
+            setIsDiscardModalOpen(false);
+            setIsDiscardConfirmed(false);
+            setIsUserFieldsChanged(false);
+        }
+    }, [isDiscardConfirmed]);
 
     useAsync(async () => {
         setIsLoading(true);
@@ -44,11 +59,24 @@ const UserProfile = () => {
     };
 
     const handleEditProfile = () => {
-        setIsModalOpen(true);
+        setIsEditModalOpen(true);
     };
 
-    const handleCloseModal = () => {
-        setIsModalOpen(false);
+    const handleCloseEditModal = () => {
+        if (isUserFieldsChanged && !isDiscardConfirmed) {
+            setIsDiscardModalOpen(true);
+            return;
+        }
+
+        setIsEditModalOpen(false);
+    };
+
+    const handleCloseEditModalWithoutChanges = () => {
+        setIsEditModalOpen(false);
+    };
+
+    const handleUserFieldsChanged = async () => {
+        setIsUserFieldsChanged(true);
     };
 
     return (
@@ -141,12 +169,17 @@ const UserProfile = () => {
                         </div>
                     </div>
                 </div>
-                {isModalOpen
+                {isEditModalOpen
                 && (
                     <EditUserModal
-                        isOpen={isModalOpen}
-                        onClose={handleCloseModal}
+                        isOpen={isEditModalOpen}
+                        onClose={handleCloseEditModal}
                         image={user?.avatarId ? imagesStore.getImage(user.avatarId) : undefined}
+                        onChange={handleUserFieldsChanged}
+                        onCloseWithoutChanges={handleCloseEditModalWithoutChanges}
+                        onDiscard={setIsDiscardConfirmed}
+                        openDiscardModal={isDiscardModalOpen}
+                        setOpenDiscardModal={setIsDiscardModalOpen}
                     />
                 )}
             </div>

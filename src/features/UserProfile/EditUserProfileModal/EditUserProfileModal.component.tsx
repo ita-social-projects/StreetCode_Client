@@ -11,6 +11,7 @@ import SelectWithCustomSuffix from '@components/SelectWithCustomSuffix';
 import PreviewFileModal from '@features/AdminPage/NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
 import DeleteModal from '@features/UserProfile/DeleteModal/DeleteModal.component';
 import DeleteModalConfirm from '@features/UserProfile/DeleteModalConfirm/DeleteModalConfirm.component';
+import DiscardChangesModal from '@features/UserProfile/DiscardChangesModal/DiscardChangesModal.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import Audio from '@models/media/audio.model';
 import Image from '@models/media/image.model';
@@ -35,16 +36,18 @@ import PhoneInput, { locale } from 'antd-phone-input';
 interface Props {
     isOpen: boolean
     onClose: () => void
+    onCloseWithoutChanges: () => void
     image: Image | undefined
+    onChange: () => Promise<void>
+    onDiscard: (confirm: boolean) => void
+    openDiscardModal: boolean
+    setOpenDiscardModal: (open: boolean) => void
 }
-const EditUserModal = ({ isOpen, onClose, image } : Props) => {
+const EditUserModal = ({
+    isOpen, onClose, onCloseWithoutChanges, image, onChange, onDiscard, openDiscardModal, setOpenDiscardModal,
+} : Props) => {
     const { userStore, imagesStore } = useMobx();
-    const [fileList, setFileList] = useState<UploadFile[]>(image ? [{
-        name: '',
-        thumbUrl: base64ToUrl(image.base64, image.mimeType),
-        uid: image.id ? image.id.toString() : '-1',
-        status: 'done',
-    }] : []);
+
     const [form] = Form.useForm();
     const [emailForDeletion, setEmailForDeletion] = useState('');
     const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -54,6 +57,12 @@ const EditUserModal = ({ isOpen, onClose, image } : Props) => {
     const [avatarId, setAvatarId] = useState<number | null>(image ? image.id : null);
     const [expertises, setExpertises] = useState<Expertise[]>([]);
     const [selectedExpertises, setSelectedExpertises] = useState(userStore.user?.expertises || []);
+    const [fileList, setFileList] = useState<UploadFile[]>(image ? [{
+        name: '',
+        thumbUrl: base64ToUrl(image.base64, image.mimeType),
+        uid: image.id ? image.id.toString() : '-1',
+        status: 'done',
+    }] : []);
 
     useAsync(async () => {
         const fetchExpertises = async () => {
@@ -102,7 +111,7 @@ const EditUserModal = ({ isOpen, onClose, image } : Props) => {
             };
             await userStore.updateUser(updatedData);
             message.success('Профіль успішно оновлено');
-            onClose();
+            onCloseWithoutChanges();
         } catch (info) {
             console.error('Validation Failed:', info);
         }
@@ -174,6 +183,7 @@ const EditUserModal = ({ isOpen, onClose, image } : Props) => {
                         ...userStore.user,
                         expertises: userStore.user?.expertises.map((x) => x.title),
                     }}
+                    onChange={onChange}
                 >
                     <div className="editFormImageWrapper">
                         <Form.Item
@@ -420,6 +430,11 @@ const EditUserModal = ({ isOpen, onClose, image } : Props) => {
             <DeleteModalConfirm
                 emailForDeletion={emailForDeletion}
                 showDeleteConfirmedModal={showDeleteConfirmedModal}
+            />
+            <DiscardChangesModal
+                onDiscardConfirm={onDiscard}
+                isOpen={openDiscardModal}
+                setIsOpen={setOpenDiscardModal}
             />
             <PreviewFileModal file={filePreview} opened={previewOpen} setOpened={setPreviewOpen} />
         </>

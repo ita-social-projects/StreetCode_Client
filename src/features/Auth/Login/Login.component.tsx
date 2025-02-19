@@ -134,11 +134,11 @@ const Login: React.FC = () => {
                             message.success('Успішна авторизація через Google!');
                             navigate(FRONTEND_ROUTES.BASE);
                         } catch (error) {
-                            message.error('Помилка входу через Google');
+                            message.error('Помилка входу через Google. Будь ласка, спробуйте ще раз.');
                         }
                     }}
                     onError={() => {
-                        message.error('Не вдалося увійти через Google');
+                        message.error('Помилка входу через Google. Будь ласка, спробуйте ще раз.');
                     }}
                     useOneTap
                 />
