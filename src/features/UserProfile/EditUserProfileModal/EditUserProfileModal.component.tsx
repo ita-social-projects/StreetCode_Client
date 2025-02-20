@@ -27,7 +27,7 @@ import validatePatternUserName from '@utils/userValidators/validatePatternUserNa
 import validateRequired from '@utils/userValidators/validateRequired';
 
 import {
-    Button, ConfigProvider, Form, Input, message, Modal, Select,
+    Button, ConfigProvider, Form, FormInstance, Input, message, Modal, Select,
 } from 'antd';
 import { UploadFile } from 'antd/es/upload';
 import { UploadChangeParam } from 'antd/es/upload/interface';
@@ -42,13 +42,23 @@ interface Props {
     onDiscard: (confirm: boolean) => void
     openDiscardModal: boolean
     setOpenDiscardModal: (open: boolean) => void
+    form: FormInstance
+    valid: boolean
 }
 const EditUserModal = ({
-    isOpen, onClose, onCloseWithoutChanges, image, onChange, onDiscard, openDiscardModal, setOpenDiscardModal,
+    isOpen,
+    onClose,
+    onCloseWithoutChanges,
+    image,
+    onChange,
+    onDiscard,
+    openDiscardModal,
+    setOpenDiscardModal,
+    form,
+    valid,
 } : Props) => {
     const { userStore, imagesStore } = useMobx();
 
-    const [form] = Form.useForm();
     const [emailForDeletion, setEmailForDeletion] = useState('');
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [showDeleteConfirmedModal, setShowDeleteConfirmedModal] = useState(false);
@@ -382,7 +392,7 @@ const EditUserModal = ({
                     </div>
                 </Form>
                 <div className="saveButton">
-                    <Button onClick={handleSubmit}>
+                    <Button disabled={!valid} onClick={handleSubmit}>
                     Зберегти зміни профілю
                     </Button>
                 </div>

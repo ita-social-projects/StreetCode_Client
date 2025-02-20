@@ -12,16 +12,19 @@ import { useAsync } from '@hooks/stateful/useAsync.hook';
 import useMobx from '@stores/root-store';
 import base64ToUrl from '@utils/base64ToUrl.utility';
 
-import { Button } from 'antd';
+import { Button, Form } from 'antd';
 
 const UserProfile = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [activeButton, setActiveButton] = useState<number>(0);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [isValid, setIsValid] = useState<boolean>(false);
 
     const [isUserFieldsChanged, setIsUserFieldsChanged] = useState(false);
     const [isDiscardConfirmed, setIsDiscardConfirmed] = useState(false);
     const [isDiscardModalOpen, setIsDiscardModalOpen] = useState(false);
+
+    const [editForm] = Form.useForm();
 
     const { userStore, imagesStore } = useMobx();
     const { user } = userStore;
@@ -77,6 +80,11 @@ const UserProfile = () => {
 
     const handleUserFieldsChanged = async () => {
         setIsUserFieldsChanged(true);
+        await editForm.validateFields().then(() => {
+            setIsValid(true);
+        }).catch(() => {
+            setIsValid(false);
+        });
     };
 
     return (
@@ -180,6 +188,8 @@ const UserProfile = () => {
                         onDiscard={setIsDiscardConfirmed}
                         openDiscardModal={isDiscardModalOpen}
                         setOpenDiscardModal={setIsDiscardModalOpen}
+                        form={editForm}
+                        valid={isValid}
                     />
                 )}
             </div>

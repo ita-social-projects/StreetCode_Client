@@ -281,6 +281,14 @@
             $font-weight: 500,
             $font-size: 20px
           );
+
+          &[disabled]{
+            pointer-events: none;
+          }
+          &:disabled{
+            background-color: c.$lighter-gray-color;
+            border-color: c.$lighter-gray-color;
+          }
         }
       }
 
