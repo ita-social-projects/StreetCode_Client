@@ -39,16 +39,12 @@ const TextEditor = ({
     const MAX_CHARS = character_limit || 25000;
     const [isTitleEmpty, setIsTitleEmpty] = useState(true);
 
-    const invokeMessage = (context: string, success: boolean) => {
-        const config = {
-            content: context,
-            style: { marginTop: '190vh' },
-        };
-        if (success) {
-            message.success(config);
-        } else {
-            message.error(config);
-        }
+    const successMessage = (context: string) => {
+        message.success(context);
+    };
+
+    const errorMessage = (error: string) => {
+        message.error(error);
     };
 
     useEffect(() => {
@@ -58,32 +54,28 @@ const TextEditor = ({
     const handleAddRelatedWord = async () => {
         if (term !== null && selected !== null) {
             const result = await createRelatedTerm(selected, term?.id as number);
-            const resultMessage = result
-                ? "Слово було успішно прив`язано до терміну"
-                : "Слово вже було пов`язано";
-            invokeMessage(resultMessage, result);
+            result
+                ? successMessage("Слово було успішно прив`язано до терміну")
+                : errorMessage("Слово вже було пов`язано");
         }
     };
 
     const handleDeleteRelatedWord = async () => {
-        const errorMessage = "Слово не було пов`язано";
         try {
             if (selected == null || selected === undefined) {
-                invokeMessage("Будь ласка виділіть слово для видалення", false);
+                errorMessage("Будь ласка виділіть слово для видалення");
                 return;
             }
             await relatedTermApi
                 .delete(selected)
                 .then((response) => {
-                    const resultMessage =
-                response != null
-                    ? "Слово було успішно відв`язано від терміну"
-                    : errorMessage;
-                    invokeMessage(resultMessage, response != null);
+                    response != null
+                    ? successMessage("Слово було успішно відв`язано від терміну")
+                    : errorMessage("Слово не було пов`язано");
                 })
-                .catch(() => invokeMessage(errorMessage, false));
+                .catch(() => errorMessage("Слово не було пов`язано"));
         } catch {
-            invokeMessage(errorMessage, false);
+            errorMessage("Слово не було пов`язано");
         }
     };
 
@@ -94,11 +86,9 @@ const TextEditor = ({
             description: term?.description,
         };
         const result = await termsStore.createTerm(newTerm);
-        const resultMessage =
             result != null
-                ? "Термін успішно додано"
-                : "Термін не було додано, спробуйте ще.";
-        invokeMessage(resultMessage, result != null);
+                ? successMessage("Термін успішно додано")
+                : errorMessage("Термін не було додано, спробуйте ще.");
     };
 
     useAsync(fetchTerms, []);
