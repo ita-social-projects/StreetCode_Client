@@ -6,6 +6,7 @@ import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import Loader from '@components/Loader/Loader.component';
 import ScrollToTopBtn from '@components/ScrollToTopBtn/ScrollToTopBtn.component';
 import ProgressBar from '@features/ProgressBar/ProgressBar.component';
 import { useModalContext, useStreecodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
@@ -18,27 +19,26 @@ import TickerBlock from '@streetcode/TickerBlock/Ticker.component';
 import { toStreetcodeRedirectClickEvent } from '@utils/googleAnalytics.unility';
 import { clearWindowHistoryState } from '@utils/window.utility';
 
-import Loader from "@components/Loader/Loader.component";
 import StatisticRecordApi from '@/app/api/analytics/statistic-record.api';
-import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import ArtGallery from '@/app/common/components/ArtGallery/ArtGalleryBlock.component';
 import TagsModalComponent from '@/app/common/components/modals/Tags/TagsModal.component';
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import { useRouteUrl } from '@/app/common/hooks/stateful/useRouter.hook';
 import AuthService from '@/app/common/services/auth-service/AuthService';
+import StreetcodeBlock from '@/models/streetcode/streetcode-blocks.model';
 import Streetcode from '@/models/streetcode/streetcode-types.model';
 
 import InterestingFactsComponent from './InterestingFactsBlock/InterestingFacts.component';
+import MapBlockComponent from './MapBlock/MapBlock.component';
 import PartnersComponent from './PartnersBlock/Partners.component';
 import RelatedFiguresComponent from './RelatedFiguresBlock/RelatedFigures.component';
 import TimelineBlockComponent from './TimelineBlock/TimelineBlock.component';
-import MapBlockComponent from './MapBlock/MapBlock.component';
 
 const StreetcodeContent = () => {
     const { streetcodeStore } = useStreetcodeDataContext();
+    const streecodePageLoaderContext = useStreecodePageLoaderContext();
     const { setCurrentStreetcodeId } = streetcodeStore;
-    const pageLoadercontext = useStreecodePageLoaderContext();
     const streetcodeUrl = useRef<string>(useRouteUrl());
     const [streetcodeUrlState, setStreetcodeUrlState] = useState(streetcodeUrl.current);
 
@@ -64,6 +64,7 @@ const StreetcodeContent = () => {
             showModalOnScroll.current = false;
         }
     };
+
     setTimeout(handleSurveyModalOpen, 500);
 
     useAsync(async () => {
@@ -89,6 +90,7 @@ const StreetcodeContent = () => {
         setCurrentStreetcodeId(streetcodeUrl.current).then((val) => {
             if ((val?.status === 0 && AuthService.isAdmin()) || val?.status !== 0) {
                 setStreetcode(val);
+                streecodePageLoaderContext.addBlockFetched(StreetcodeBlock.MainStreetcode);
             } else {
                 navigate(`${FRONTEND_ROUTES.OTHER_PAGES.ERROR404}`, { replace: true });
             }
@@ -101,7 +103,10 @@ const StreetcodeContent = () => {
             clearWindowHistoryState();
         }
 
-        return () => pageLoadercontext.resetLoadedBlocks();
+        return () => {
+            streecodePageLoaderContext.resetLoader();
+            streetcodeStore.clearStore();
+        };
     }, [streetcodeUrlState]);
 
     useEffect(() => {
@@ -112,8 +117,8 @@ const StreetcodeContent = () => {
     }, [location.pathname, id]);
 
     return (
-        <div className={`streetcodeContainer ${!pageLoadercontext.isPageLoaded ? 'no-scroll' : ''}`}>
-            {!pageLoadercontext.isPageLoaded && <Loader />}
+        <div className={`streetcodeContainer ${!streecodePageLoaderContext.isPageLoaded ? 'no-scroll' : ''}`}>
+            {!streecodePageLoaderContext.isPageLoaded && <Loader />}
             <ProgressBar>
                 <MainBlock
                     streetcode={streetcode}
@@ -123,8 +128,8 @@ const StreetcodeContent = () => {
                 <TextBlockComponent />
                 <InterestingFactsComponent />
                 <TimelineBlockComponent />
-                <MapBlockComponent/>
-                {pageLoadercontext.isPageLoaded ? (
+                <MapBlockComponent />
+                {streecodePageLoaderContext.isPageLoaded ? (
                     <ArtGallery isFillArtsStore />
                 ) : (
                     <></>

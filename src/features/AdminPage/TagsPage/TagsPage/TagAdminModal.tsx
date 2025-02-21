@@ -16,6 +16,7 @@ import Tag from '@/models/additional-content/tag.model';
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 import normaliseWhitespaces from '@/app/common/utils/normaliseWhitespaces';
 import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
+import BUTTON_LABELS from "@constants/buttonLabels";
 
 interface SourceModalProps {
     isModalVisible: boolean;
@@ -112,7 +113,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
     return (
         <>
             <Modal
-                title={isEditing ? 'Редагувати тег' : 'Додати новий тег'}
+                title={isEditing ? 'Редагувати тег' : 'Додати тег'}
                 open={isModalVisible}
                 onCancel={closeModal}
                 className="modalContainer"
@@ -146,7 +147,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                             disabled={isSaveButtonDisabled}
                             onClick={() => handleOk()}
                         >
-                            Зберегти
+                            {BUTTON_LABELS.SAVE}
                         </Button>
                     </div>
                 </Form>

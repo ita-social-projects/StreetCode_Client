@@ -46,7 +46,6 @@ const StreetcodeCatalogItem = ({ streetcode, isLast, handleNextScreen }: Props) 
                     (image) => image.imageDetails?.alt === ImageAssigment.blackandwhite.toString()
                 );
                 setImagesForSlider(imagesForSlider);
-                streecodePageLoaderContext.addBlockFetched();
             } catch (error) {
                 try {
                     const x = await TransactionLinksApi.getByStreetcodeId(id);

@@ -14,10 +14,10 @@ import { useAudioContext, useModalContext, useStreecodePageLoaderContext } from 
 import { Button } from 'antd';
 
 import ImagesApi from '@/app/api/media/images.api';
-import TransactionLinksApi from '@/app/api/transactions/transactLinks.api';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import { audioClickEvent } from '@/app/common/utils/googleAnalytics.unility';
 import Image, { ImageAssigment } from '@/models/media/image.model';
+import StreetcodeBlock from '@/models/streetcode/streetcode-blocks.model';
 
 interface Props {
     streetcode?: Streetcode;
@@ -31,9 +31,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setShowAllTags }: Props) =
     const audioState = modalsState.audio;
     const streecodePageLoaderContext = useStreecodePageLoaderContext();
     const { fetchAudioByStreetcodeId, audio } = useAudioContext();
-    const [arlink, setArlink] = useState('');
     const [audioIsLoaded, setAudioIsLoaded] = useState<boolean>(false);
-    const [images, setImages] = useState<Image[]>([]);
     const [imagesForSlider, setImagesForSlider] = useState<Image[]>([]);
     const navigate = useNavigate();
 
@@ -49,15 +47,13 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setShowAllTags }: Props) =
         if (id && id > 0) {
             ImagesApi.getByStreetcodeId(id ?? 1)
                 .then((imgs) => {
-                    setImages(imgs);
                     setImagesForSlider(imgs.filter(
                         (image) => image.imageDetails?.alt === ImageAssigment.blackandwhite.toString()
                         || image.imageDetails?.alt === ImageAssigment.animation.toString(),
                     ));
-                    streecodePageLoaderContext.addBlockFetched();
+                    streecodePageLoaderContext.addBlockFetched(StreetcodeBlock.StreetcodeImage);
                 })
                 .catch((e) => { });
-            TransactionLinksApi.getByStreetcodeId(id).then((x) => setArlink(x.url));
         }
     }, [streetcode]);
 
@@ -73,10 +69,10 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setShowAllTags }: Props) =
     };
 
     return (
-        streecodePageLoaderContext.isPageLoaded ? (
-            <div className="card">
-                <div className="leftSider">
-                    <div className="leftSiderContent">
+        <div className="card">
+            <div className="leftSider">
+                <div className="leftSiderContent">
+                    {streecodePageLoaderContext.isPageLoaded ? (
                         <BlockSlider
                             arrows={false}
                             slidesToShow={1}
@@ -86,7 +82,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setShowAllTags }: Props) =
                             {imagesForSlider.map((image, index) => {
                                 if (imagesForSlider.length > 1 && index === 0) {
                                     return (
-                                        <div>
+                                        <div key={image.id}>
                                             <img
                                                 key={imagesForSlider[0].id}
                                                 src={
@@ -127,74 +123,74 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setShowAllTags }: Props) =
                                 );
                             })}
                         </BlockSlider>
-                    </div>
-                </div>
-                <div className="rightSider">
-                    <div className="streetcodeIndex">
-                            History-код #
-                        {streetcode?.index ?? 0 <= 9999 ? `000${streetcode?.index}`.slice(-4)
-                            : streetcode?.index}
-                    </div>
-                    <h2 className="streetcodeTitle">
-                        {streetcode?.title}
-                    </h2>
-                    <div className="streetcodeDate">
-                        {streetcode?.dateString}
-                    </div>
-                    <div className="tagListWrapper">
-                        <TagList
-                            tags={streetcode?.tags.filter((tag: StreetcodeTag) => tag.isVisible)}
-                            setActiveTagId={setActiveTagId}
-                            setShowAllTags={setShowAllTags}
-
-                        />
-                    </div>
-                    <div className="blurTop" />
-
-                    <p className="teaserBlock">
-                        {streetcode?.teaser}
-                    </p>
-
-                    <div className="blurBottom" />
-                    <div className="cardFooter">
-                        {audio?.base64 && audioIsLoaded
-                            ? (
-                                <Button
-                                    type="primary"
-                                    className="cardFooterButton audioBtnActive"
-                                    onClick={() => {
-                                        if (audioState.isOpen) {
-                                            setModal('audio', undefined, true);
-                                        } else {
-                                            setModal('audio');
-                                        }
-
-                                        audioClickEvent(streetcode?.id ?? 0);
-                                    }}
-                                >
-                                    <PlayCircleFilled className="playCircle" />
-                                    <span>Прослухати текст</span>
-                                </Button>
-                            )
-                            : (
-                                <Button
-                                    disabled
-                                    type="primary"
-                                    className="cardFooterButton audioBtn"
-                                >
-                                    <span>Аудіо на підході</span>
-                                </Button>
-                            )}
-                        <Button
-                            className="cardFooterButton pdfButton"
-                            onClick={handlePreviewClick}
-                        >
-                            <span>Переглянути PDF</span>
-                        </Button>
-                    </div>
+                    ) : <></>}
                 </div>
             </div>
-        ) : <></>
+            <div className="rightSider">
+                <div className="streetcodeIndex">
+                            History-код #
+                    {streetcode?.index ?? 0 <= 9999 ? `000${streetcode?.index}`.slice(-4)
+                        : streetcode?.index}
+                </div>
+                <h2 className="streetcodeTitle">
+                    {streetcode?.title}
+                </h2>
+                <div className="streetcodeDate">
+                    {streetcode?.dateString}
+                </div>
+                <div className="tagListWrapper">
+                    <TagList
+                        tags={streetcode?.tags.filter((tag: StreetcodeTag) => tag.isVisible)}
+                        setActiveTagId={setActiveTagId}
+                        setShowAllTags={setShowAllTags}
+
+                    />
+                </div>
+                <div className="blurTop" />
+
+                <p className="teaserBlock">
+                    {streetcode?.teaser}
+                </p>
+
+                <div className="blurBottom" />
+                <div className="cardFooter">
+                    {audio?.base64 && audioIsLoaded
+                        ? (
+                            <Button
+                                type="primary"
+                                className="cardFooterButton audioBtnActive"
+                                onClick={() => {
+                                    if (audioState.isOpen) {
+                                        setModal('audio', undefined, true);
+                                    } else {
+                                        setModal('audio');
+                                    }
+
+                                    audioClickEvent(streetcode?.id ?? 0);
+                                }}
+                            >
+                                <PlayCircleFilled className="playCircle" />
+                                <span>Прослухати текст</span>
+                            </Button>
+                        )
+                        : (
+                            <Button
+                                disabled
+                                type="primary"
+                                className="cardFooterButton audioBtn"
+                            >
+                                <span>Аудіо на підході</span>
+                            </Button>
+                        )}
+                    <Button
+                        className="cardFooterButton pdfButton"
+                        onClick={handlePreviewClick}
+                    >
+                        <span>Переглянути PDF</span>
+                    </Button>
+                </div>
+            </div>
+        </div>
     );
 };
 

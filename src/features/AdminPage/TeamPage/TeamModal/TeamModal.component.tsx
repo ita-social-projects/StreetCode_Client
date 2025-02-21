@@ -6,6 +6,8 @@ import CancelBtn from '@images/utils/Cancel_btn.svg';
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import FileUploader from '@components/FileUploader/FileUploader.component';
+import combinedImageValidator, { checkFile } from '@components/modals/validators/combinedImageValidator';
 import PreviewFileModal from '@features/AdminPage/NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
 import SOCIAL_OPTIONS from '@features/AdminPage/TeamPage/TeamModal/constants/socialOptions';
 import TeamMember, {
@@ -19,20 +21,18 @@ import {
     Checkbox,
     Form, Input, message, Modal, Popover, Select, UploadFile,
 } from 'antd';
-
+import { UploadChangeParam } from 'antd/es/upload';
 
 import PositionsApi from '@/app/api/team/teampositions.api';
-import FileUploader from '@components/FileUploader/FileUploader.component';
-
-import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import validateSocialLink from '@/app/common/components/modals/validators/socialLinkValidator';
+import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import TeamLink from '@/features/AdminPage/TeamPage/TeamLink.component';
 import Audio from '@/models/media/audio.model';
 import Image from '@/models/media/image.model';
 
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
-import { UploadChangeParam } from 'antd/es/upload';
-import imageValidator, { checkImageFileType } from '@/app/common/components/modals/validators/imageValidator';
+
+import BUTTON_LABELS from '@constants/buttonLabels';
 
 const TeamModal: React.FC<{
     teamMember?: TeamMember, open: boolean,
@@ -164,22 +164,23 @@ const TeamModal: React.FC<{
         }]);
     };
 
-    const removeImage = () => {
+    const handleRemove = () => {
         imageId.current = 0;
+        setFileList([]);
     };
 
     const handleOk = async () => {
         try {
             await form.validateFields();
             setWaitingForApiResponse(true);
-            await form.submit();
+            form.submit();
             setIsSaveButtonDisabled(true);
         } catch (error) {
             message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
         }
     };
 
-    const onSuccesfulSubmitPosition = async (formValues: any) => {
+    const onSuccessfulSubmitPosition = async (formValues: any) => {
         message.loading('Зберігання...');
         teamSourceLinks.forEach((el, index) => {
             if (el.id < 0) {
@@ -224,18 +225,17 @@ const TeamModal: React.FC<{
         }
     };
 
+    const handleInputChange = () => {
+        setIsSaveButtonDisabled(false);
+    };
+
     const handleCheckboxChange = (e: { target: { checked: boolean | ((prevState: boolean) => boolean); }; }) => {
         setIsMain(e.target.checked);
         handleInputChange();
     };
 
-	  const handleInputChange = () => {
-	  	setIsSaveButtonDisabled(false);
-  	}
-    const checkFile = (file: UploadFile) => checkImageFileType(file.type);
-
-    const handleFileChange = (param: UploadChangeParam<UploadFile<unknown>>) => {
-        if (checkFile(param.file)) {
+    const handleFileChange = async (param: UploadChangeParam<UploadFile<unknown>>) => {
+        if (await checkFile(param.file)) {
             setFileList(param.fileList);
         }
         handleInputChange();
@@ -257,13 +257,13 @@ const TeamModal: React.FC<{
                 <Form
                     form={form}
                     layout="vertical"
-                    onFinish={onSuccesfulSubmitPosition}
+                    onFinish={onSuccessfulSubmitPosition}
                 >
                     <div className="center">
                         <h2>
                             {teamMember ? 'Редагувати' : 'Додати'}
                             {' '}
-                            нового члена команди
+                            члена команди
                         </h2>
                     </div>
                     <div className="checkbox-container">
@@ -285,7 +285,7 @@ const TeamModal: React.FC<{
                     <Form.Item label="Позиції">
                         <div className="tags-block-positionitems">
                             <Select
-                                aria-label='Позиції'
+                                aria-label="Позиції"
                                 className="positions-select-input"
                                 onSelect={onPositionSelect}
                                 mode="tags"
@@ -311,7 +311,7 @@ const TeamModal: React.FC<{
                                 required: true,
                                 message: 'Будь ласка, завантажте фото',
                             },
-                            { validator: imageValidator },
+                            { validator: combinedImageValidator(false) },
                         ]}
                     >
                         <FileUploader
@@ -325,7 +325,7 @@ const TeamModal: React.FC<{
                             onPreview={(e) => {
                                 setFilePreview(e); setPreviewOpen(true);
                             }}
-                            onRemove={removeImage}
+                            onRemove={handleRemove}
                             uploadTo="image"
                             onSuccessUpload={(file: Image | Audio) => {
                                 const image: Image = file as Image;
@@ -359,10 +359,9 @@ const TeamModal: React.FC<{
                             <DeleteOutlined
                                 onClick={() => {
                                     setTeamSourceLinks(teamSourceLinks
-                                        .filter((l) => l.id !== link.id))
+                                        .filter((l) => l.id !== link.id));
                                     handleInputChange();
-                                }
-                                }
+                                }}
                             />
                         </div>
                     ))}
@@ -375,7 +374,7 @@ const TeamModal: React.FC<{
                         style={{ minWidth: '135px' }}
                     >
                         <Select
-                            aria-label='Соціальна мережа'
+                            aria-label="Соціальна мережа"
                             data-testid="logotype-select"
                             options={SOCIAL_OPTIONS}
                             onChange={() => teamLinksForm.validateFields(['url'])}
@@ -417,15 +416,16 @@ const TeamModal: React.FC<{
 
                 <div className="center">
                     <Button
-                        disabled={isSaveButtonDisabled || fileList.length === 0} 
+                        disabled={isSaveButtonDisabled || fileList.length === 0}
                         className="streetcode-custom-button"
                         onClick={handleOk}
                     >
-                        Зберегти
+                        {BUTTON_LABELS.SAVE}
                     </Button>
                 </div>
             </Form>
         </Modal>
     );
 });
+
 export default TeamModal;

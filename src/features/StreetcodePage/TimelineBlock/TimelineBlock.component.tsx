@@ -3,7 +3,7 @@ import './TimelineBlock.styles.scss';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
-import useMobx, { useStreetcodeDataContext } from '@stores/root-store';
+import useMobx, { useStreecodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import TimelineSlideCard from '@streetcode/TimelineBlock/TimelineItem/TimelineItem.component';
 import TimelineReelOutline from '@streetcode/TimelineBlock/TimelineReelOutline/TimelineReelOutline.component';
@@ -11,9 +11,11 @@ import TimelineSlider from '@streetcode/TimelineBlock/TimelineSlider.component';
 import TimelineTimespan from '@streetcode/TimelineBlock/Timespan/Timespan.component';
 
 import getUrlHash from '@/app/common/utils/getUrlHash.utility';
+import StreetcodeBlock from '@/models/streetcode/streetcode-blocks.model';
 
 const TimelineBlock = () => {
     const { timelineItemStore } = useMobx();
+    const streecodePageLoaderContext = useStreecodePageLoaderContext();
     const { fetchTimelineItemsByStreetcodeId, getTimelineItemArray } = timelineItemStore;
     const { streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useStreetcodeDataContext();
     const [isScrolled, setIsScrolled] = useState<boolean>(false);
@@ -24,6 +26,7 @@ const TimelineBlock = () => {
                 fetchTimelineItemsByStreetcodeId(getStreetCodeId).then(() => {
                     const years = timelineItemStore.getYearsArray;
                     timelineItemStore.setActiveYear(years[Math.floor(years.length / 2)]);
+                    streecodePageLoaderContext.addBlockFetched(StreetcodeBlock.TimelineItems);
                 });
             }
         },
@@ -50,7 +53,7 @@ const TimelineBlock = () => {
                 ? (
                     <div
                         id="timeline"
-                        className="timelineContainer container"
+                        className="timelineContainer"
                     >
                         <BlockHeading headingText="Хронологія" />
                         <TimelineTimespan />
