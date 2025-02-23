@@ -3,6 +3,8 @@ import './CategoriesPage.style.scss';
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import BUTTON_LABELS from '@constants/buttonLabels';
+import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
 import ImageStore from '@stores/image-store';
 import useMobx, { useModalContext } from '@stores/root-store';
 import { useQuery } from '@tanstack/react-query';
@@ -51,6 +53,25 @@ const CategoriesMainPage: React.FC = observer(() => {
         updatedCategories();
     }, [modalAddOpened, modalEditOpened]);
 
+    const handleDeleteCategory = (categoryId: number | undefined) => {
+        modalStore.setConfirmationModal(
+            'confirmation',
+            () => {
+                if (categoryId !== undefined) {
+                    sourcesStore.deleteSourceCategory(categoryId).then(() => {
+                        if (categoryId !== undefined) {
+                            sourcesStore.srcCategoriesMap.delete(categoryId);
+                        }
+                    }).catch((e) => {
+                        console.error(e);
+                    });
+                    modalStore.setConfirmationModal('confirmation');
+                }
+            },
+            CONFIRMATION_MESSAGES.DELETE_CATEGORY,
+        );
+    };
+
     const columns: ColumnsType<SourceCategoryAdmin> = [
         {
             title: 'Назва',
@@ -90,24 +111,7 @@ const CategoriesMainPage: React.FC = observer(() => {
                     <DeleteOutlined
                         key={`${srcCategory.id}${index}`}
                         className="actionButton"
-                        onClick={() => {
-                            modalStore.setConfirmationModal(
-                                'confirmation',
-                                () => {
-                                    if (srcCategory.id != undefined) {
-                                        sourcesStore.deleteSourceCategory(srcCategory.id).then(() => {
-                                            if (srcCategory.id != undefined) {
-                                                sourcesStore.srcCategoriesMap.delete(srcCategory.id);
-                                            }
-                                        }).catch((e) => {
-                                            console.error(e);
-                                        });
-                                        modalStore.setConfirmationModal('confirmation');
-                                    }
-                                },
-                                'Ви впевнені, що хочете видалити цю категорію?',
-                            );
-                        }}
+                        onClick={() => handleDeleteCategory(srcCategory.id)}
                     />
                     <EditOutlined
                         key={`${srcCategory.id}${index}2`}
@@ -130,7 +134,7 @@ const CategoriesMainPage: React.FC = observer(() => {
                         className="streetcode-custom-button categories-page-add-button"
                         onClick={() => setModalAddOpened(true)}
                     >
-                        Додати нову категорію
+                        {BUTTON_LABELS.ADD_CATEGORY}
                     </Button>
                 </div>
                 <Table
@@ -166,8 +170,15 @@ const CategoriesMainPage: React.FC = observer(() => {
                     </div>
                 </div>
             </div>
-            <CategoryAdminModal isModalVisible={modalAddOpened} setIsModalOpen={setModalAddOpened} />
-            <CategoryAdminModal isModalVisible={modalEditOpened} setIsModalOpen={setModalEditOpened} initialData={categoryToEdit} />
+            <CategoryAdminModal
+                isModalVisible={modalAddOpened}
+                setIsModalOpen={setModalAddOpened}
+            />
+            <CategoryAdminModal
+                isModalVisible={modalEditOpened}
+                setIsModalOpen={setModalEditOpened}
+                initialData={categoryToEdit}
+            />
         </div>
 
     );

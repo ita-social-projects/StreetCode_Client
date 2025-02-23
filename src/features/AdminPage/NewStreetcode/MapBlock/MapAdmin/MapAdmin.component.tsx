@@ -1,15 +1,17 @@
 import './MapAdmin.styles.scss';
+// eslint-disable-next-line no-restricted-imports
 import '../StatisticsStreetcodeAdmin/StatisticsAdmin.styles.scss';
 
 import StreetcodeMarker from '@images/footer/streetcode-marker.webp';
 
 import { Autocomplete, GoogleMap, Marker } from '@react-google-maps/api';
 import { observer } from 'mobx-react-lite';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { DeleteOutlined, EnvironmentOutlined } from '@ant-design/icons';
 import StatisticRecordApi from '@app/api/analytics/statistic-record.api';
 import getNewMinNegativeId from '@app/common/utils/newIdForStore';
 import useMobx from '@app/stores/root-store';
+import BUTTON_LABELS from '@constants/buttonLabels';
 import { ModelState } from '@models/enums/model-state';
 
 import {
@@ -293,7 +295,7 @@ const MapOSMAdmin = () => {
 
                     {(streetcodeCoordinates.length > 0) && (!isExist) && (!isInvalidInput) && (showButton) && (
                         <Button className="onMapbtn" onClick={handleSaveButtonClick}>
-                            <a>Зберегти history-код</a>
+                            <a>{BUTTON_LABELS.SAVE_STREETCODE}</a>
                         </Button>
                     )}
 
