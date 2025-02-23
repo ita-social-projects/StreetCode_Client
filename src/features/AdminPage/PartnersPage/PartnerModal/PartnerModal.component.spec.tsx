@@ -9,6 +9,7 @@ import Partner, { PartnerCreateUpdate } from "@/models/partners/partners.model";
 import { act } from "react-dom/test-utils";
 import ImageStore from "@/app/stores/image-store";
 import { useState } from "react";
+import BUTTON_LABELS from "@constants/buttonLabels";
 
 global.URL.createObjectURL = jest.fn();
 
@@ -163,7 +164,7 @@ describe("PartnerModal", () => {
   test("rendering component", () => {
     render(<PartnerModal open={true} setIsModalOpen={() => { }} />);
 
-    expect(screen.getByRole("button", { name: /зберегти/i })).toBeDisabled();
+    expect(screen.getByRole("button", { name: BUTTON_LABELS.SAVE })).toBeDisabled();
   });
 
   test("closing modal", () => {
@@ -182,7 +183,7 @@ describe("PartnerModal", () => {
     const afterSubmit = jest.fn();
     render(<PartnerModal open={true} setIsModalOpen={() => { }} afterSubmit={afterSubmit} />);
 
-    const button = screen.getByRole("button", { name: /зберегти/i });
+    const button = screen.getByRole("button", { name: BUTTON_LABELS.SAVE });
     const nameInput = screen.getByRole("textbox", { name: /назва:/i });
 
     const fileInput = screen.getByTestId("fileuploader");
@@ -217,7 +218,7 @@ describe("PartnerModal", () => {
   test("creating partner with all possible fields", async () => {
     render(<PartnerModal open={true} setIsModalOpen={() => { }} isStreetcodeVisible={true} />);
 
-    const button = screen.getByRole("button", { name: /зберегти/i });
+    const button = screen.getByRole("button", { name: BUTTON_LABELS.SAVE });
     const nameInput = screen.getByRole("textbox", { name: /назва:/i });
     const linkInput = screen.getByRole("textbox", { name: /Посилання:/ });
     const description = screen.getByTestId("text-area-description");
@@ -307,7 +308,7 @@ describe("PartnerModal", () => {
   test("check when required fields are the same then existing partner should be updated instead of created", async () => {
     render(<PartnerModal partnerItem={partner} open={true} setIsModalOpen={() => { }} />);
 
-    const button = screen.getByRole("button", { name: /зберегти/i });
+    const button = screen.getByRole("button", { name: BUTTON_LABELS.SAVE });
     const buttonElement = button as HTMLButtonElement;
 
     const nameInput = screen.getByRole("textbox", { name: /назва:/i });
@@ -350,7 +351,7 @@ describe("PartnerModal", () => {
   test("submiting social link", async () => {
     const dom = render(<PartnerModal open={true} setIsModalOpen={() => { }} />);
 
-    userEvent.click(screen.getByRole("button", { name: /Додати соціальну мережу/ }));
+    userEvent.click(screen.getByRole("button", { name: BUTTON_LABELS.ADD_SOCIAL_NETWORK }));
     const form = dom.baseElement.getElementsByTagName("form").item(1) as HTMLElement;
     const linkInput = within(form).getByRole("textbox");
     const socialSelect = within(form).getByRole("combobox");
@@ -370,7 +371,7 @@ describe("PartnerModal", () => {
   test("hiding social link form", async () => {
     const dom = render(<PartnerModal open={true} setIsModalOpen={() => { }} />);
 
-    userEvent.click(screen.getByRole("button", { name: /Додати соціальну мережу/ }));
+    userEvent.click(screen.getByRole("button", { name: BUTTON_LABELS.ADD_SOCIAL_NETWORK }));
     const form = dom.baseElement.getElementsByTagName("form").item(1) as HTMLElement;
     const linkInput = within(form).getByRole("textbox");
     const socialSelect = within(form).getByRole("combobox");

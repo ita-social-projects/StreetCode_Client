@@ -43,6 +43,7 @@ import Image from '@/models/media/image.model';
 import News from '@/models/news/news.model';
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
+import BUTTON_LABELS from "@constants/buttonLabels";
 
 const NewsModal: React.FC<{
     newsItem?: News;
@@ -309,7 +310,7 @@ const NewsModal: React.FC<{
                             <h2>
                                 {newsItem ? 'Редагувати' : 'Додати'}
                                 {' '}
-                                Новину
+                                новину
                             </h2>
                         </div>
                         <Form.Item
@@ -425,7 +426,7 @@ const NewsModal: React.FC<{
                                 onClick={() => handleOk()}
                                 disabled={isSaveButtonDisabled}
                             >
-                                Зберегти
+                                {BUTTON_LABELS.SAVE}
                             </Button>
                         </div>
                     </Form>
@@ -434,4 +435,5 @@ const NewsModal: React.FC<{
         </ConfigProvider>
     );
 });
+
 export default NewsModal;

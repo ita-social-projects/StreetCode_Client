@@ -9,18 +9,14 @@
     @include mut.rem-padded($top: 0px, $right: 0px, $bottom: 0px, $left: 0px);
     @include mut.sized(1200px, 697px);
     @include mut.full-rounded(50px);
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
     line-height: f.pxToRem(19px);
     background-color: c.$pure-white-color;
-
-    .slick-initialized .slick-slide {
-        @include mut.flexed(row, center, center, wrap);
-        @include mut.rem-margined($top: 0px, $right: 0px, $bottom: 10px, $left: 0px);
-    }
 
     .slick-track {
         margin: 0;
     }
+
     .slick-initialized .slick-slide {
       @include mut.flexed($justify-content: center, $gap: 0px);
       @include mut.rem-margined($top: 20px, $right: 0px, $bottom: 10px, $left: 0px);
@@ -65,6 +61,7 @@
 }
 .tagContainer{
   @include mut.rem-margined(13px, 0, 13px, 0);
+  @include mut.flexed($align-items: flex-start, $justify-content: flex-start, $wrap: wrap, $gap: 5px);
 }
 .blurTop{
   @include mut.blur($edge: 0deg, $top: 9px, $height: 16px, $z-index: 3);
@@ -167,7 +164,7 @@
     .cardFooter {
         gap: f.pxToRem(10px);
 
-        .audioBtn, .pdfButton {
+        .audioBtn, .audioBtnActive, .pdfButton {
             @include mut.sized(255px, 73px);
             @include mut.flex-centered();
         }
@@ -217,7 +214,7 @@
       .leftSider {
         @include mut.sized(360px, 489px);
         flex: 0 0 f.pxToRem(360px);
-        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
         .leftSiderContent {
           background-color: c.$accented-gray-color;
           @include mut.border(c.$pure-white-color,10px,solid);
@@ -244,7 +241,7 @@
         width: 98%;
         @include mut.rem-padded(10px, 0px, 0px, 0px);
 
-        .audioBtn, .pdfButton {
+        .audioBtn, .audioBtnActive, .pdfButton {
           @include mut.full-rounded(8px);
           @include mut.with-font($font-weight: 400, $font-size: 14px);
           @include mut.sized(340px, 46px);
@@ -286,7 +283,7 @@
         margin-top: f.pxToRem(39px) !important;
         @include mut.rem-padded(0px, 0px, 0px, 0px);
         width: 100%;
-        .audioBtn, .pdfButton{
+        .audioBtn, .audioBtnActive, .pdfButton{
           width: f.pxToRem(340px);
           margin: auto;
         }

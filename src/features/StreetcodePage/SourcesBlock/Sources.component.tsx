@@ -8,9 +8,9 @@ import useMobx, { useStreecodePageLoaderContext, useStreetcodeDataContext } from
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
+import StreetcodeBlock from '@/models/streetcode/streetcode-blocks.model';
 
 import SourceItem from './SourceItem/SourceItem.component';
-import StreetcodeBlock from '@/models/streetcode/streetcode-blocks.model';
 
 const SourcesComponent = () => {
     const { sourcesStore } = useMobx();
@@ -49,7 +49,7 @@ const SourcesComponent = () => {
     ));
 
     return sourcesStore.getSrcCategoriesArray.length > 0 ? (
-        <div className="sourcesWrapper container">
+        <div className="sourcesWrapper">
             <div className="sourcesContainer">
                 <BlockHeading headingText="Для фанатів" />
                 <div className="sourceContentContainer">
