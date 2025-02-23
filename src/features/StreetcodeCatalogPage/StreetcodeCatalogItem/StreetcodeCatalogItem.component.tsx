@@ -56,7 +56,7 @@ const StreetcodeCatalogItem = ({ streetcode, isLast, handleNextScreen }: Props) 
         to: `../${streetcode.url}`,
     };
 
-    const windowsize = useWindowSize();
+    const windowSize = useWindowSize();
 
     const handleClickRedirect = () => {
         toStreetcodeRedirectClickEvent(streetcode.url.toString(), 'catalog');
@@ -100,7 +100,7 @@ const StreetcodeCatalogItem = ({ streetcode, isLast, handleNextScreen }: Props) 
 
     return (
         <>
-            {windowsize.width > 1024 && (
+            {windowSize.width > 1024 && (
                 <Link {...LinkProps} to={`/${streetcode.url}`} onClick={() => toStreetcodeRedirectClickEvent(streetcode.url, 'catalog')}>
                     <div ref={elementRef} className="catalogItemText">
                         <div className="heading">
@@ -118,7 +118,7 @@ const StreetcodeCatalogItem = ({ streetcode, isLast, handleNextScreen }: Props) 
                     </div>
                 </Link>
             )}
-            {windowsize.width <= 1024 && (
+            {windowSize.width <= 1024 && (
                 <div>
                     <Link {...LinkProps} to={`/${streetcode.url}`} onTouchStart={() => toStreetcodeRedirectClickEvent(streetcode.url, 'catalog')} />
                     <div ref={elementRef} className="catalogItemText mobile">
