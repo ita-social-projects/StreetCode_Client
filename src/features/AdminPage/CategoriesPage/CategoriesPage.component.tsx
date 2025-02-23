@@ -77,7 +77,7 @@ const CategoriesMainPage: React.FC = observer(() => {
             title: 'Назва',
             dataIndex: 'title',
             key: 'title',
-            render(value, record) {
+            render(value) {
                 return (
                     <div>
                         {value}
@@ -86,7 +86,7 @@ const CategoriesMainPage: React.FC = observer(() => {
             },
         },
         {
-            title: 'Картинка',
+            title: 'Зображення',
             dataIndex: 'image',
             key: 'image',
             onCell: () => ({
@@ -98,6 +98,7 @@ const CategoriesMainPage: React.FC = observer(() => {
                     className="categories-table-logo"
                     src={base64ToUrl(image?.base64, image?.mimeType ?? '')}
                     style={{ filter: 'grayscale(100%)' }}
+                    alt="Category"
                 />
             ),
         },
@@ -183,4 +184,5 @@ const CategoriesMainPage: React.FC = observer(() => {
 
     );
 });
+
 export default CategoriesMainPage;

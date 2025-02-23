@@ -203,7 +203,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                     </Form.Item>
                     <Form.Item
                         name="image"
-                        label="Картинка: "
+                        label="Зображення: "
                         rules={[
                             { required: true, message: 'Додайте зображення' },
                             { validator: combinedImageValidator(true) },
