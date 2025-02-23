@@ -83,7 +83,9 @@ const TeamModal: React.FC<{
         if (inputValue.length > MAX_POSITION_LENGTH && event.key !== 'Backspace') {
             event.preventDefault();
 
-            if (warningTimeout.current) return;
+            if (warningTimeout.current) {
+                return;
+            }
 
             warningTimeout.current = setTimeout(() => {
                 message.warning(`Максимальна довжина — ${MAX_POSITION_LENGTH} символів`);
