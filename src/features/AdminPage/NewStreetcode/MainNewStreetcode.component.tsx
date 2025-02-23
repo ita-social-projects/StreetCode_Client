@@ -694,30 +694,33 @@ const NewStreetcode = () => {
                             <ARBlock onChange={handleFieldChange} />
                         </Form>
                     </div>
-                    <Button
+
+                    <div className="submit-button-row">
+                      <Button
                         className="streetcode-custom-button submit-button"
                         onClick={onFinish}
                         name={BUTTON_LABELS.DRAFT}
                         htmlType="submit"
-                    >
+                      >
                         {BUTTON_LABELS.DRAFT}
-                    </Button>
-                    <Modal
+                      </Button>
+                      <Modal
                         title="Ви впевнені, що хочете опублікувати цей history-код?"
                         open={visibleModal}
                         onOk={handleModalOk}
                         onCancel={handleCancelModalRemove}
                         okText={BUTTON_LABELS.SUBMIT}
                         cancelText={BUTTON_LABELS.CANCEL}
-                    />
-                    <Button
+                      />
+                      <Button
                         htmlType="submit"
                         className="streetcode-custom-button submit-button"
                         onClick={handleRemove}
                         name={BUTTON_LABELS.PUBLISH}
-                    >
+                      >
                         {BUTTON_LABELS.PUBLISH}
-                    </Button>
+                      </Button>    
+                    </div>
                 </div>
             </ConfigProvider>
         </div>
