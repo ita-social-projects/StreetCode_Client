@@ -44,6 +44,7 @@ interface Props {
     setOpenDiscardModal: (open: boolean) => void
     form: FormInstance
     valid: boolean
+    userFieldsChanged: boolean
 }
 const EditUserModal = ({
     isOpen,
@@ -56,6 +57,7 @@ const EditUserModal = ({
     setOpenDiscardModal,
     form,
     valid,
+    userFieldsChanged,
 } : Props) => {
     const { userStore, imagesStore } = useMobx();
 
@@ -119,8 +121,13 @@ const EditUserModal = ({
                 avatarId,
                 expertises: selectedExpertises,
             };
-            await userStore.updateUser(updatedData);
-            message.success('Профіль успішно оновлено');
+            await userStore.updateUser(updatedData)
+                .then(() => {
+                    message.success('Профіль успішно оновлено');
+                })
+                .catch(() => {
+                    message.error('Сталася помилка при оновленні профілю');
+                });
             onCloseWithoutChanges();
         } catch (info) {
             console.error('Validation Failed:', info);
@@ -354,7 +361,7 @@ const EditUserModal = ({
                                     preferredCountries={['ua']}
                                 />
                             </Form.Item>
-                            <p className="phoneExample">Приклад: +380 50 567 45 45</p>
+                            <p className="phoneExample">Приклад: +380 90 567 45 45</p>
                         </ConfigProvider>
                         <Form.Item
                             className="formItem"
@@ -392,7 +399,7 @@ const EditUserModal = ({
                     </div>
                 </Form>
                 <div className="saveButton">
-                    <Button disabled={!valid} onClick={handleSubmit}>
+                    <Button disabled={!valid || !userFieldsChanged} onClick={handleSubmit}>
                     Зберегти зміни профілю
                     </Button>
                 </div>

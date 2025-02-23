@@ -31,6 +31,7 @@ const DiscardChangesModal = ({ onDiscardConfirm, isOpen, setIsOpen }: Props) => 
             onCancel={handleOnCancel}
             cancelButtonProps={{ style: { display: 'none' } }}
             okText="Продовжити"
+            centered
         />
     );
 };

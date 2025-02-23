@@ -15,14 +15,14 @@ import base64ToUrl from '@utils/base64ToUrl.utility';
 import { Button, Form } from 'antd';
 
 const UserProfile = () => {
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [activeButton, setActiveButton] = useState<number>(0);
-    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
     const [isValid, setIsValid] = useState<boolean>(false);
 
-    const [isUserFieldsChanged, setIsUserFieldsChanged] = useState(false);
-    const [isDiscardConfirmed, setIsDiscardConfirmed] = useState(false);
-    const [isDiscardModalOpen, setIsDiscardModalOpen] = useState(false);
+    const [isUserFieldsChanged, setIsUserFieldsChanged] = useState<boolean>(false);
+    const [isDiscardConfirmed, setIsDiscardConfirmed] = useState<boolean>(false);
+    const [isDiscardModalOpen, setIsDiscardModalOpen] = useState<boolean>(false);
 
     const [editForm] = Form.useForm();
 
@@ -40,8 +40,21 @@ const UserProfile = () => {
             setIsDiscardModalOpen(false);
             setIsDiscardConfirmed(false);
             setIsUserFieldsChanged(false);
+            editForm.resetFields();
         }
-    }, [isDiscardConfirmed]);
+    }, [isDiscardConfirmed, editForm]);
+
+    useEffect(() => {
+        if (isUserFieldsChanged && !isDiscardConfirmed) {
+            window.onbeforeunload = () => true;
+        } else {
+            window.onbeforeunload = null;
+        }
+
+        return () => {
+            window.onbeforeunload = null;
+        };
+    }, [isUserFieldsChanged, isDiscardConfirmed]);
 
     useAsync(async () => {
         setIsLoading(true);
@@ -72,10 +85,13 @@ const UserProfile = () => {
         }
 
         setIsEditModalOpen(false);
+        editForm.resetFields();
     };
 
     const handleCloseEditModalWithoutChanges = () => {
         setIsEditModalOpen(false);
+        setIsUserFieldsChanged(false);
+        editForm.resetFields();
     };
 
     const handleUserFieldsChanged = async () => {
@@ -190,6 +206,7 @@ const UserProfile = () => {
                         setOpenDiscardModal={setIsDiscardModalOpen}
                         form={editForm}
                         valid={isValid}
+                        userFieldsChanged={isUserFieldsChanged}
                     />
                 )}
             </div>
