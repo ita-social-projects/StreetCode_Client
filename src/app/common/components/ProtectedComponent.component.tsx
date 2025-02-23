@@ -12,7 +12,7 @@ import AuthService from '../services/auth-service/AuthService';
 type PropsWithChildren = { children: ReactNode, allowedRoles: UserRole[] | null };
 const ProtectedComponent:FC<PropsWithChildren> = ({ children, allowedRoles = null }) => {
     const navigate = useNavigate();
-    const [isAllowed, setIsAllowed] = useState(false);
+    const [isAllowed, setIsAllowed] = useState<boolean>(false);
 
     useEffect(() => {
         if (!AuthService.isLoggedIn()) {

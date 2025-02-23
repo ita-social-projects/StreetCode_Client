@@ -29,14 +29,14 @@ export default class AuthService {
 
     public static async refreshOnTokenExpiry(): Promise<boolean> {
         if (!AuthService.isLoggedIn()) {
-            try {
-                await AuthService.refreshTokenAsync();
-                return true;
-            } catch (err) {
-                return false;
-            }
-        } else {
             return true;
+        }
+
+        try {
+            await AuthService.refreshTokenAsync();
+            return true;
+        } catch (err) {
+            return false;
         }
     }
 
