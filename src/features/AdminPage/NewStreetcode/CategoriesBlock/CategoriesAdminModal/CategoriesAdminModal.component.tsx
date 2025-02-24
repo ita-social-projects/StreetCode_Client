@@ -24,7 +24,10 @@ import {
     StreetcodeCategoryContent,
     StreetcodeCategoryContentUpdate,
 } from '@/models/sources/sources.model';
-import POPOVER_CONTENT from '@/features/AdminPage/JobsPage/JobsModal/constants/popoverContent';
+import SUCCESS_MESSAGES from '@/app/common/constants/success-messages.constants';
+import REQUIRED_FIELD_MESSAGES from '@/app/common/constants/required_field_messages.constrants';
+import VALIDATION_MESSAGES from '@/app/common/constants/validation-messages.constants';
+import MODAL_MESSAGES from '@/app/common/constants/modal-messages.constants';
 
 interface Props {
     character_limit?: number;
@@ -228,13 +231,13 @@ const CategoriesModal = ({
             checkQuillEditorTextLength(editorCharacterCount, maxLength);
             if (validateTextChange()) {
                 form.submit();
-                message.success('Категорію для фанатів успішно додано!');
+                message.success(SUCCESS_MESSAGES.CATEGORY_FAN_ADDED);
                 setIsSaveButtonDisabled(true);
             } else {
                 throw new Error();
             }
         } catch (error) {
-            message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
+            message.error(VALIDATION_MESSAGES.INVALID_VALIDATION);
         }
     };
 
@@ -274,7 +277,7 @@ const CategoriesModal = ({
             maskClosable
             centered
             closeIcon={(
-                <Popover content={POPOVER_CONTENT.CANCEL} trigger="hover">
+                <Popover content={MODAL_MESSAGES.REMINDER_TO_SAVE} trigger="hover">
                     <CancelBtn className="iconSize" onClick={clearModal} />
                 </Popover>
             )}
@@ -290,7 +293,7 @@ const CategoriesModal = ({
                 <Form.Item
                     label="Категорія:"
                     name="category"
-                    rules={[{ required: true, message: 'Введіть Категорію' }]}
+                    rules={[{ required: true, message: REQUIRED_FIELD_MESSAGES.ENTER_CATEGORY }]}
                 >
                     <Select
                         key="selectForFansCategory"
