@@ -1,7 +1,7 @@
 import { RuleObject } from 'rc-field-form/lib/interface';
 
 import { SUPPORTED_IMAGE_FILE_TYPES } from '@/app/common/constants/file-types.constants';
-import { MESSAGES } from '@/app/common/constants/messages/messages';
+import VALIDATION_MESSAGES from '@/app/common/constants/validation-messages.constants';
 
 const imageExtensionValidator = (_: RuleObject, file: any): Promise<void> => {
     if (file) {
@@ -18,7 +18,7 @@ const imageExtensionValidator = (_: RuleObject, file: any): Promise<void> => {
             return Promise.resolve();
         }
 
-        return Promise.reject(new Error(MESSAGES.VALIDATION.FILE_FORMAT(allowedExtensions)));
+        return Promise.reject(new Error(VALIDATION_MESSAGES.INVALID_IMAGE_FORMAT));
     }
 
     return Promise.reject();

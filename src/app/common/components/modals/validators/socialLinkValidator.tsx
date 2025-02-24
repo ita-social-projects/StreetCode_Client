@@ -1,6 +1,6 @@
 /* eslint-disable import/extensions */
 
-import { MESSAGES } from '@/app/common/constants/messages/messages';
+import VALIDATION_MESSAGES from '@/app/common/constants/validation-messages.constants';
 import { doesUrlContainSiteName, isInvalidUrl } from '@/app/common/utils/checkUrl';
 import SocialItem from '@/models/social-link/socialItem';
 
@@ -13,7 +13,7 @@ export default function validateSocialLink<T>(
 ): Promise<unknown> {
     if (!link || isInvalidUrl(link)) {
         return Promise.reject(new Error(
-            MESSAGES.VALIDATION.INVALID_LINK,
+            VALIDATION_MESSAGES.INVALID_LINK_FORMAT, 
         ));
     }
 
@@ -22,14 +22,14 @@ export default function validateSocialLink<T>(
         || logotype === null
         || (!doesUrlContainSiteName(link, logoTypes[Number(logotype)]))) {
         return Promise.reject(new Error(
-           MESSAGES.VALIDATION.SOCIAL_NETWORK_NOT_MATCH,
+           VALIDATION_MESSAGES.INVALID_SOCIAL_LINK,
         ));
     }
 
     const doesLinkWithLogoTypeAlreadyExist = sourceLinks.some((obj) => obj.logoType === Number(logotype));
     if (doesLinkWithLogoTypeAlreadyExist) {
         return Promise.reject(new Error(
-            MESSAGES.VALIDATION.SOCIAL_NETWORK_ALREADY_EXISTS,
+            VALIDATION_MESSAGES.DUPLICATE_SOCIAL_NETWORK,
         ));
     }
 
