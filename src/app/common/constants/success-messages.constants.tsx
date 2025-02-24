@@ -7,6 +7,9 @@ const SUCCESS_MESSAGES = {
   TAG_SAVED: 'Тег успішно додано/оновлено',
   CONTEXT_SAVED: 'Контекст успішно додано/оновлено',
   POSITION_SAVED: 'Позицію успішно додано/оновлено',
+  WOW_FACT_SAVED: 'Факт успішно додано/оновлено',
+  CATEGORY_FAN_ADDED: 'Категорію для фанатів успішно додано',
+  HISTORYCODE_UPDATED: 'History-код успішно оновлений',
 };
 
 export default SUCCESS_MESSAGES;
