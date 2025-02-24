@@ -10,6 +10,7 @@ import { message } from 'antd';
 import { UploadFile } from 'antd/es/upload';
 import Image from '@/models/media/image.model';
 import Uploader from '../../../../app/common/components/FileUploader/FileUploader.component';
+import BUTTON_LABELS from "@constants/buttonLabels";
 
 export default function overrideMatchMedia() {
     Object.defineProperty(window, 'matchMedia', {
@@ -114,7 +115,7 @@ describe('CategoryAdminModal', () => {
         });
 
         await waitFor(() => {
-            expect(screen.getByRole('button', { name: /Зберегти/i })).toBeDisabled();
+            expect(screen.getByRole('button', { name: BUTTON_LABELS.SAVE })).toBeDisabled();
         });
     });
 
@@ -124,7 +125,7 @@ describe('CategoryAdminModal', () => {
             render(<CategoryAdminModal {...defaultProps} isNewCategory={isNewCategory} />);
         });
 
-        const saveButton = screen.getByRole('button', { name: /Зберегти/i });
+        const saveButton = screen.getByRole('button', { name: BUTTON_LABELS.SAVE });
         const uploader = screen.getByTestId('fileuploader');
 
         await waitFor(() => {
@@ -147,7 +148,7 @@ describe('CategoryAdminModal', () => {
             render(<CategoryAdminModal {...defaultProps} isNewCategory={isNewCategory} />);
         });
 
-        const saveButton = screen.getByRole('button', { name: /Зберегти/i });
+        const saveButton = screen.getByRole('button', { name: BUTTON_LABELS.SAVE });
         const uploader = screen.getByTestId('fileuploader');
 
         await waitFor(() => {
@@ -176,7 +177,7 @@ describe('CategoryAdminModal', () => {
             render(<CategoryAdminModal {...defaultProps} initialData={initialData} />);
         });
         const nameInput = screen.getByRole('textbox', { name: /Назва/i });
-        const saveButton = screen.getByRole('button', { name: /Зберегти/i });
+        const saveButton = screen.getByRole('button', { name: BUTTON_LABELS.SAVE });
         const fileuploader = screen.getByTestId('fileuploader');
 
         await waitFor(() => {
@@ -208,7 +209,7 @@ describe('CategoryAdminModal', () => {
         });
 
         const nameInput = screen.getByRole('textbox', { name: /Назва/i });
-        const saveButton = screen.getByRole('button', { name: /Зберегти/i });
+        const saveButton = screen.getByRole('button', { name: BUTTON_LABELS.SAVE });
         const fileuploader = screen.getByTestId('fileuploader');
 
         await waitFor(() => {
@@ -233,7 +234,7 @@ describe('CategoryAdminModal', () => {
             render(<CategoryAdminModal {...defaultProps} />);
         });
 
-        const saveButton = screen.getByRole('button', { name: /Зберегти/i });
+        const saveButton = screen.getByRole('button', { name: BUTTON_LABELS.SAVE });
 
         act(() => {
             userEvent.type(screen.getByRole('textbox', { name: /Назва/i }), '  ');

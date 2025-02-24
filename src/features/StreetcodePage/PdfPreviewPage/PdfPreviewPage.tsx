@@ -10,6 +10,7 @@ import StreetcodeDocument from '@streetcode/PdfPreviewPage/PdfDocument/Streetcod
 import blobStream from 'blob-stream';
 
 import { Button } from 'antd';
+import BUTTON_LABELS from '@constants/buttonLabels';
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
     'pdfjs-dist/build/pdf.worker.min.mjs',
@@ -100,7 +101,7 @@ const PDFPreviewPage = () => {
                                         className="redButton"
                                         disabled
                                     >
-                                        Додати в кабінет
+                                        {BUTTON_LABELS.ADD_PDF}
                                     </Button>
                                 </div>
                             </div>
@@ -133,7 +134,7 @@ const PDFPreviewPage = () => {
                                         className="redButton"
                                         disabled
                                     >
-                                        Додати в кабінет
+                                        {BUTTON_LABELS.ADD}
                                     </Button>
                                 </div>
                             </div>

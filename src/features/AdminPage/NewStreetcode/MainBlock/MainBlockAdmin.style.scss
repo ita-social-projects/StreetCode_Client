@@ -18,9 +18,9 @@
     }
 
     .p-margin {
-        gap:5px;
+        gap: 5px;
 
-        p{
+        p {
             font-size: 18px;
         }
     }
@@ -56,7 +56,6 @@
 
             .streetcode-first-formitem-datepicker {
                 .ant-row {
-                    //flex-direction: column;
                     flex-flow: row nowrap;
                 }
             }
@@ -67,53 +66,55 @@
 .tags-block {
     display: flex;
     flex-direction: column;
-
+    
      .ant-select-selector {
         box-shadow: none !important;
      }
-
+    
     .label-tags-block {
         @include mut.flexed( $direction: row,
         $align-items: center,
         $justify-content: center,
         $wrap: nowrap,
         $gap: 10px);
-
+    
         .ant-popover-content, .ant-popover {
             width: f.pxToRem(500px);
         }
-
+    
         .info-icon {
             @include mut.sized(40px,40px);
         }
     }
-
+    
     .tags-block-tagitems {
         width: 100%;
-
+    
         .tags-select-input {
             width: 100%;
         }
     }
+
     .device-sizes-list {
-        p {
+        .device-size {
             margin-bottom: 2px;
+        
+            &:hover {
+                color: c.$dark-red-color;
+                font-weight: 600;
+            } 
         }
 
         display: flex;
         flex-direction: column;
         justify-content: left;
-
-        p:hover {
-            color: c.$dark-red-color;
-            font-weight: 600;
-         }
     }
 }
 
 .textarea-teaser {
     height: f.pxToRem(80px);
 }
+
 .ant-input-textarea > textarea {
     resize: none;
 }
@@ -122,6 +123,7 @@
     .textarea-teaser {
         resize: none;
     }
+
     .amount-left-char-textarea-teaser {
         display: flex;
         justify-content: flex-end;
@@ -146,6 +148,17 @@
 .photo-uploader-items-container {
     display: flex;
     justify-content: space-between;
+}
+
+.display-flex-row {
+    .audioUploader{
+        @include mut.sized(auto, 100px);
+    }
+
+    .error-text{
+        @include mut.sized(100px, 100px);
+        @include mut.colored(c.$ant-menu-text-color)
+    }
 }
 
 .tagInput-counter {

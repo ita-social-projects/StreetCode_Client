@@ -7,6 +7,7 @@ import CancelBtn from '@images/utils/Cancel_btn.svg';
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import BUTTON_LABELS from '@constants/buttonLabels';
 import PreviewFileModal from '@features/AdminPage/NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
 import SOCIAL_OPTIONS from '@features/AdminPage/PartnersPage/PartnerModal/constants/socialOptions';
 import useMobx from '@stores/root-store';
@@ -140,6 +141,8 @@ const PartnerModal: React.FC< {
             setPreviewOpen(true);
         };
 
+        const handleInputChange = () => setIsSaved(false);
+
         const onStreetcodeSelect = (value: string) => {
             const index = streetcodeShortStore.streetcodes.findIndex(
                 (c) => c.title === value,
@@ -180,8 +183,6 @@ const PartnerModal: React.FC< {
                 setFileList([]);
             }
         };
-
-        const handleInputChange = () => setIsSaved(false);
 
         const closeModal = () => {
             if (!waitingForApiResponse) {
@@ -474,7 +475,7 @@ const PartnerModal: React.FC< {
                         onClick={handleShowSecondForm}
                         className="add-social-media-button"
                     >
-                        Додати соціальну мережу
+                        {BUTTON_LABELS.ADD_SOCIAL_NETWORK}
                     </Button>
                 )}
                 <Form
@@ -486,7 +487,7 @@ const PartnerModal: React.FC< {
                         <div>
                             <div className="button-container">
                                 <Button onClick={handleHideSecondForm} className="close-button">
-                                    Закрити
+                                    {BUTTON_LABELS.CLOSE}
                                 </Button>
                             </div>
                             <div className="link-container">
@@ -544,7 +545,7 @@ const PartnerModal: React.FC< {
                         <Popover content="Завершіть додавання соціальної мережі" trigger="hover">
                             <span>
                                 <Button disabled className="streetcode-custom-button save">
-                                    Зберегти
+                                    {BUTTON_LABELS.SAVE}
                                 </Button>
                             </span>
                         </Popover>
@@ -554,7 +555,7 @@ const PartnerModal: React.FC< {
                             className="streetcode-custom-button save"
                             onClick={handleOk}
                         >
-                            Зберегти
+                            {BUTTON_LABELS.SAVE}
                         </Button>
                     )}
                 </div>

@@ -350,6 +350,7 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                     ]}
                 >
                     <FileUploader
+                        className="audioUploader"
                         multiple={false}
                         accept=".mp3"
                         maxCount={1}
