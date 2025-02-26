@@ -11,13 +11,14 @@ pipeline {
         label 'stage' 
     }
     environment {
-        GITHUB_TOKEN = credentials('GH_TOKEN')     
+        GITHUB_TOKEN = credentials('GH_TOKEN')
+        DISCORD_WEBHOOK_URL = credentials('WEBHOOK_URL')     
     }
     options {
             skipDefaultCheckout true
     }
     stages {
-         stage('Checkout') {
+        stage('Checkout') {
             steps {
                 checkout([
                     $class: 'GitSCM',
@@ -69,7 +70,7 @@ pipeline {
                 }
             }
         }
-         stage('Run tests') {
+        stage('Run tests') {
             steps {
                sh '''
                      export NVM_DIR="$HOME/.nvm"
@@ -82,8 +83,8 @@ pipeline {
                     npm run test:cover
                 '''
             }
-         }
-         stage('Sonar scan') {
+        }
+        stage('Sonar scan') {
             environment {
                 SONAR = credentials('sonar_token')
                 scannerHome = tool 'SonarQubeScanner'
@@ -176,10 +177,12 @@ pipeline {
                     sleep 10
                     docker compose --env-file /etc/environment up -d"""
 
+                    sendDiscordNotification('SUCCESS', 'Deployment to Stage completed successfully.')
+
                 }  
             }
-     }
-         stage('WHAT IS THE NEXT STEP') {
+    }
+    stage('WHAT IS THE NEXT STEP') {
        when {
                 expression { IS_IMAGE_PUSH == true }
             }  
@@ -209,6 +212,8 @@ pipeline {
                docker network prune -f
                sleep 10
                docker compose --env-file /etc/environment up -d"""
+
+               sendDiscordNotification('ABORTED', 'Deployment to Stage was aborted and rolled back.')
                
             }
             
@@ -217,8 +222,8 @@ pipeline {
                 script {
                     isSuccess = '1'
                 } 
-            }
-      }
+         }
+        }
     }
     /*
    stage('Deploy prod') {
@@ -315,6 +320,46 @@ pipeline {
             }    
         }
     */
-    }   
-    
+      
+    }
+    post { 
+        success {
+            script {
+                sendDiscordNotification('SUCCESS', 'Deployment pipeline completed successfully.')
+            }
+        }
+        failure {
+            script {
+                sendDiscordNotification('FAILED', 'Deployment pipeline failed.')
+            }
+        }
+        aborted {
+            script {
+                sendDiscordNotification('ABORTED', 'Deployment pipeline was aborted.')
+            }
+        }
+
+    }
+}
+
+def sendDiscordNotification(status, message) {
+    def jsonMessage = """
+    {
+        "content": "$status: $message",
+        "embeds": [
+            {
+                "title": "Deployment Status",
+                "fields": [
+                    {"name": "Environment", "value": "Stage", "inline": true},
+                    {"name": "Pipeline Name", "value": "$env.JOB_NAME", "inline": true},
+                    {"name": "Status", "value": "$status", "inline": true},
+                    {"name": "Deployment Tag", "value": "$env.CODE_VERSION", "inline": true},
+                    {"name": "Date and Time", "value": "${new Date().format('yyyy-MM-dd HH:mm:ss')}", "inline": true},
+                    {"name": "Pipeline Link", "value": "[Click here]($env.BUILD_URL)", "inline": true}
+                ]
+            }
+        ]
+    }
+    """
+    sh "curl -X POST -H 'Content-Type: application/json' -d '$jsonMessage' $DISCORD_WEBHOOK_URL"
 }
