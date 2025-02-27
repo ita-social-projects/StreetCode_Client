@@ -23,10 +23,13 @@ import { UploadChangeParam, UploadFileStatus } from 'antd/es/upload/interface';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 
 import PreviewFileModal from '../../NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
-import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
 import normaliseWhitespaces from '@/app/common/utils/normaliseWhitespaces';
 import combinedImageValidator, { checkFile } from '@components/modals/validators/combinedImageValidator';
+import VALIDATION_MESSAGES from '@/app/common/constants/validation-messages.constants';
+import SUCCESS_MESSAGES from '@/app/common/constants/success-messages.constants';
+import REQUIRED_FIELD_MESSAGES from '@/app/common/constants/required_field_messages.constrants';
+import MODAL_MESSAGES from '@/app/common/constants/modal-messages.constants';
 
 interface SourceModalProps {
     isModalVisible: boolean;
@@ -86,6 +89,13 @@ const SourceModal: React.FC<SourceModalProps> = ({
         }
     }, [initialData, isModalVisible, form]);
 
+    useEffect(() => {
+        if (fileList.length === 0) {
+          form.setFieldsValue({ image: undefined });
+          form.validateFields(['image']).catch(() => {});
+        }
+    }, [fileList]);
+
     const handleImageChange = (img: Image | Audio) => {
         imageId.current = img.id;
         setImage(img as Image);
@@ -99,7 +109,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
     const validateCategory = uniquenessValidator(
         () => (sourcesAdminStore.getSourcesAdmin.map((source) => source.title)),
         () => (initialData?.title),
-        'Категорія з такою назвою вже існує',
+        VALIDATION_MESSAGES.DUPLICATE_CATEGORY_TITLE,
     );
 
     const onSubmit = async (formData: any) => {
@@ -144,11 +154,11 @@ const SourceModal: React.FC<SourceModalProps> = ({
             const title = form.getFieldValue('title');
 
             if (!title.trim()) {
-                message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
+                message.error(VALIDATION_MESSAGES.INVALID_VALIDATION);
                 return;
             }
             form.submit();
-            message.success(`Категорію успішно ${isEditing ? "змінено" : "додано"}!`, 2);
+            message.success(SUCCESS_MESSAGES.CATEGORY_SAVED, 2);
             setIsSaveButtonDisabled(true);
         } catch (error) {
             message.config({
@@ -157,7 +167,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                 maxCount: 3,
                 prefixCls: 'my-message',
             });
-            message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
+            message.error(VALIDATION_MESSAGES.INVALID_VALIDATION);
         }
     };
 
@@ -183,7 +193,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                 onCancel={closeModal}
                 className="modalContainer categoryModal"
                 closeIcon={(
-                    <Popover content={POPOVER_CONTENT.CANCEL} trigger="hover">
+                    <Popover content={MODAL_MESSAGES.REMINDER_TO_SAVE} trigger="hover">
                         <CancelBtn className="iconSize" onClick={handleCancel} />
                     </Popover>
                 )}
@@ -193,18 +203,19 @@ const SourceModal: React.FC<SourceModalProps> = ({
                     <Form.Item
                         name="title"
                         label="Назва: "
-                        rules={[{ required: true, message: 'Введіть назву' },
-                        { validator: validateCategory }
+                        rules={[
+                            { required: true, message: REQUIRED_FIELD_MESSAGES.ENTER_TITLE },
+                            { validator: validateCategory }
                         ]}
                         getValueProps={(value) => ({ value: normaliseWhitespaces(value) })}
                     >
-                        <Input placeholder="Title" maxLength={23} showCount onChange={handleInputChange} />
+                        <Input maxLength={23} showCount onChange={handleInputChange} />
                     </Form.Item>
                     <Form.Item
                         name="image"
-                        label="Картинка: "
+                        label="Картинка:"
                         rules={[
-                            { required: true, message: 'Додайте зображення' },
+                            { required: true, message: REQUIRED_FIELD_MESSAGES.ADD_IMAGE },
                             { validator: combinedImageValidator(true) },
                         ]}
                     >

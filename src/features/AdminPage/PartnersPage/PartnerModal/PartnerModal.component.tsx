@@ -42,10 +42,12 @@ import Partner, {
 import { StreetcodeShort } from '@/models/streetcode/streetcode-types.model';
 
 // eslint-disable-next-line no-restricted-imports
-import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
-
-import { MESSAGES } from '@/app/common/constants/messages/messages';
+import SUCCESS_MESSAGES from '@/app/common/constants/success-messages.constants';
+import MODAL_MESSAGES from '@/app/common/constants/modal-messages.constants';
+import { ERROR_MESSAGES } from '@/app/common/constants/error-messages.constants';
+import VALIDATION_MESSAGES from '@/app/common/constants/validation-messages.constants';
+import REQUIRED_FIELD_MESSAGES from '@/app/common/constants/required_field_messages.constrants';
 
 const PartnerModal: React.FC<{
   partnerItem?: Partner;
@@ -102,7 +104,7 @@ const PartnerModal: React.FC<{
     useEffect(() => {
       setWaitingForApiResponse(false);
       if (actionSuccess) {
-        message.success(MESSAGES.SUCCESS.ITEM_ADDED_UPDATED('Партнера'));
+        message.success(SUCCESS_MESSAGES.PARTNER_SAVED);
         setActionSuccess(false);
       }
     }, [actionSuccess]);
@@ -156,6 +158,13 @@ const PartnerModal: React.FC<{
       }
     }, [partnerItem, open, form]);
 
+    useEffect(() => {
+      if (fileList.length === 0) {
+        form.setFieldsValue({ logo: undefined });
+        form.validateFields(['logo']).catch(() => {});
+      }
+    }, [fileList]);
+    
     const handlePreview = (file: UploadFile) => {
       setFilePreview(file);
       setPreviewOpen(true);
@@ -179,13 +188,11 @@ const PartnerModal: React.FC<{
         setWaitingForApiResponse(true);
         await form.validateFields();
         form.submit();
-        message.success(MESSAGES.SUCCESS.ITEM_ADDED('Партнера'));
+        message.success(SUCCESS_MESSAGES.PARTNER_SAVED);
         setIsSaved(true);
       } catch (error) {
         setWaitingForApiResponse(false);
-        message.error(
-          "Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних"
-        );
+        message.error(VALIDATION_MESSAGES.INVALID_VALIDATION); 
       }
     };
 
@@ -267,7 +274,7 @@ const PartnerModal: React.FC<{
     };
 
     const onSuccesfulSubmitPartner = async (formValues: any) => {
-      message.loading(MESSAGES.SAVING);
+      message.loading(MODAL_MESSAGES.SAVING);
 
       partnerSourceLinks.forEach((el, index) => {
         if (el.id < 0) {
@@ -318,7 +325,7 @@ const PartnerModal: React.FC<{
         }
         setActionSuccess(true);
       } catch (e: unknown) {
-        message.error(MESSAGES.ERROR.COULD_NOT_LOAD('партнера'));
+        message.error(ERROR_MESSAGES.PARTNER_COULD_NOT_LOAD);
         setWaitingForApiResponse(false);
       }
     };
@@ -340,7 +347,7 @@ const PartnerModal: React.FC<{
     const validateTitle = uniquenessValidator(
       () => partnersStore.getPartnerArray.map((partner) => partner.title),
       () => partnerItem?.title,
-      MESSAGES.VALIDATION.UNIQUE_TITLE('Партнер')
+      VALIDATION_MESSAGES.DUPLICATE_PARTNER_TITLE
     );
 
     return (
@@ -350,7 +357,7 @@ const PartnerModal: React.FC<{
         className='modalContainer'
         footer={null}
         closeIcon={
-          <Popover content={POPOVER_CONTENT.CANCEL} trigger='hover'>
+          <Popover content={MODAL_MESSAGES.REMINDER_TO_SAVE} trigger='hover'>
             <CancelBtn className='iconSize' onClick={closeAndCleanData} />
           </Popover>
         }
@@ -388,7 +395,7 @@ const PartnerModal: React.FC<{
               name='title'
               label='Назва: '
               rules={[
-                { required: true, message: MESSAGES.VALIDATION.ENTER_TITLE },
+                { required: true, message: REQUIRED_FIELD_MESSAGES.ENTER_TITLE },
                 { validator: validateTitle },
               ]}
             >
@@ -401,7 +408,7 @@ const PartnerModal: React.FC<{
               rules={[
                 {
                   pattern: URL_REGEX_VALIDATION_PATTERN,
-                  message: 'Введіть правильне посилання',
+                  message: REQUIRED_FIELD_MESSAGES.ENTER_RIGHT_LINK,
                 },
               ]}
             >
@@ -436,7 +443,7 @@ const PartnerModal: React.FC<{
               rules={[
                 {
                   required: true,
-                  message: 'Завантажте лого',
+                  message: REQUIRED_FIELD_MESSAGES.ADD_LOGO,
                 },
                 { validator: combinedImageValidator(true) },
               ]}
@@ -528,7 +535,7 @@ const PartnerModal: React.FC<{
                 <FormItem
                   name='logotype'
                   label='Соціальна мережа'
-                  rules={[{ required: true, message: MESSAGES.VALIDATION.CHOOSE_SOCIAL_NETWORK }]}
+                  rules={[{ required: true, message: REQUIRED_FIELD_MESSAGES.SELECT_SOCIAL_NETWORK }]}
                   className='social-media-form-item'
                 >
                   <Select
@@ -540,10 +547,10 @@ const PartnerModal: React.FC<{
                   label='Посилання'
                   name='url'
                   rules={[
-                    { required: true, message: MESSAGES.VALIDATION.ENTER_LINK },
+                    { required: true, message: REQUIRED_FIELD_MESSAGES.ENTER_LINK },
                     {
                       pattern: URL_REGEX_VALIDATION_PATTERN,
-                      message: MESSAGES.VALIDATION.ENTER_RIGHT_LINK,
+                      message: REQUIRED_FIELD_MESSAGES.ENTER_RIGHT_LINK,
                     },
                     {
                       validator: (_, value) => {

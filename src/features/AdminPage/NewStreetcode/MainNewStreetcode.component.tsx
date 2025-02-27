@@ -78,6 +78,9 @@ import SubtitleBlock from './SubtitileBlock/SubtitleBlock.component';
 import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
 import MapBlockAdmin from './MapBlock/MapBlockAdmin.component';
+import SUCCESS_MESSAGES from '@/app/common/constants/success-messages.constants';
+import { ERROR_MESSAGES } from '@/app/common/constants/error-messages.constants';
+import VALIDATION_MESSAGES from '@/app/common/constants/validation-messages.constants';
 
 dayjs.extend(utc);
 dayjs.extend(tz);
@@ -572,10 +575,10 @@ const NewStreetcode = () => {
                             window.location.reload();
                         })
                         .then(() => {
-                            alert('History-код успішно оновлений');
+                            alert(SUCCESS_MESSAGES.HISTORYCODE_UPDATED);
                         })
                         .catch((error) => {
-                            alert('Виникла помилка при оновленні history-коду');
+                            alert(ERROR_MESSAGES.FAILED_TO_UPDATE_HISTORYCODE);
                             console.error(error);
                         });
                 } else {
@@ -602,7 +605,7 @@ const NewStreetcode = () => {
                             }
                         })
                         .catch((error) => {
-                            alert('Виникла помилка при створенні history-коду');
+                            alert(ERROR_MESSAGES.FAILED_TO_CREATE_HISTORYCODE);
                             console.error(error);
                         });
                 }
@@ -614,7 +617,7 @@ const NewStreetcode = () => {
                 if (name) {
                     scrollToErrors();
                 } else {
-                    alert('Будь ласка, заповніть всі поля валідними даними');
+                    alert(VALIDATION_MESSAGES.INVALID_VALIDATION);
                     console.error(error);
                 }
             });

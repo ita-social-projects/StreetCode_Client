@@ -41,8 +41,12 @@ import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Audio from '@/models/media/audio.model';
 import Image from '@/models/media/image.model';
 import News from '@/models/news/news.model';
-import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
+import SUCCESS_MESSAGES from '@/app/common/constants/success-messages.constants';
+import VALIDATION_MESSAGES from '@/app/common/constants/validation-messages.constants';
+import MODAL_MESSAGES from '@/app/common/constants/modal-messages.constants';
+import { ERROR_MESSAGES } from '@/app/common/constants/error-messages.constants';
+import REQUIRED_FIELD_MESSAGES from '@/app/common/constants/required_field_messages.constrants';
 
 const NewsModal: React.FC<{
     newsItem?: News;
@@ -63,7 +67,6 @@ const NewsModal: React.FC<{
     const editorRef = useRef<ReactQuill | null>(null);
     const sizeLimit = limit ?? 15000;
     const [data, setData] = React.useState(initialValue ?? '');
-    const fillInAllFieldsMessage = "Будь ласка, заповніть всі обов'язкові поля правильно";
     const [actionSuccess, setActionSuccess] = useState(false);
     const [waitingForApiResponse, setWaitingForApiResponse] = useState(false);
     const [editorCharacterCount, setEditorCharacterCount] = useState<number>(0);
@@ -81,10 +84,17 @@ const NewsModal: React.FC<{
     useEffect(() => {
         setWaitingForApiResponse(false);
         if (actionSuccess) {
-            message.success('Новину успішно додано/оновлено!', 2);
+            message.success(SUCCESS_MESSAGES.NEWS_SAVED, 2);
             setActionSuccess(false);
         }
     }, [actionSuccess]);
+
+    useEffect(() => {
+        if (fileList.length === 0) {
+          form.setFieldsValue({ image: undefined });
+          form.validateFields(['image']).catch(() => {});
+        }
+    }, [fileList]);
 
     const createFileListData = (img: Image) => {
         if (!newsItem || !img) {
@@ -118,7 +128,7 @@ const NewsModal: React.FC<{
     const validateTitle = uniquenessValidator(
         () => newsStore.NewsArray.map((news: News) => news.title.trim()),
         () => newsItem?.title?.trim(),
-        'Заголовок вже існує',
+        VALIDATION_MESSAGES.DUPLICATE_NEWS_TITLE, 
     );
 
     useEffect(() => {
@@ -157,12 +167,12 @@ const NewsModal: React.FC<{
             if (isEditorEmpty) {
                 form.setFields([{ name: 'editor', errors: [] }]);
             } else {
-                form.setFields([{ name: 'editor', errors: ['Введіть текст'] }]);
+                form.setFields([{ name: 'editor', errors: [REQUIRED_FIELD_MESSAGES.ENTER_TEXT] }]);
             }
         }
     }, [open]);
 
-    const removeImage = () => {
+    const removeImage = async () => {
         setRemovedImage(image.current);
         imageId.current = undefined;
         image.current = undefined;
@@ -210,12 +220,12 @@ const NewsModal: React.FC<{
             form.submit();
             setIsSaveButtonDisabled(true);
         } catch {
-            message.error(fillInAllFieldsMessage);
+            message.error(VALIDATION_MESSAGES.INVALID_VALIDATION);
         }
     };
 
     const onSuccessfulSubmitNews = async (formValues: any) => {
-        const hideLoadingMessage = message.loading('Зберігання...', 0);
+        const hideLoadingMessage = message.loading(MODAL_MESSAGES.SAVING, 0);
 
         const news: News = {
             id: 0,
@@ -248,7 +258,7 @@ const NewsModal: React.FC<{
             setActionSuccess(true);
             setRemovedImage(undefined);
         } catch (e: unknown) {
-            message.error('Не вдалось оновити/створити новину. Спробуйте ще раз.');
+            message.error(ERROR_MESSAGES.NEWS_COULD_NOT_LOAD);
             setWaitingForApiResponse(false);
         } finally {
             hideLoadingMessage();
@@ -288,7 +298,7 @@ const NewsModal: React.FC<{
                 className="modalContainer"
                 footer={null}
                 closeIcon={(
-                    <Popover content={POPOVER_CONTENT.CANCEL} trigger="hover">
+                    <Popover content={MODAL_MESSAGES.REMINDER_TO_SAVE} trigger="hover">
                         <CancelBtn className="iconSize" onClick={closeAndCleanData} />
                     </Popover>
                 )}
@@ -316,7 +326,7 @@ const NewsModal: React.FC<{
                             name="title"
                             label="Заголовок:"
                             rules={[
-                                { required: true, message: 'Введіть заголовок' },
+                                { required: true, message: REQUIRED_FIELD_MESSAGES.ENTER_HEADER },
                                 {
                                     validator: validateTitle,
                                 },
@@ -329,11 +339,11 @@ const NewsModal: React.FC<{
                             name="url"
                             label="Транслітерація для URL: "
                             rules={[
-                                { required: true, message: 'Введіть транслітерацію' },
+                                { required: true, message: REQUIRED_FIELD_MESSAGES.ENTER_TRANSLITERATION },
                                 {
                                     pattern: /^[0-9a-z-]+$/,
                                     message:
-                                        'Транслітерація має містити лише малі латинські літери, цифри та дефіс',
+                                        VALIDATION_MESSAGES.INVALID_TRANSLITARATION,
                                 },
                                 {
                                     validator: async (_, value) => {
@@ -342,7 +352,7 @@ const NewsModal: React.FC<{
                                         if (await isUnique) {
                                             return Promise.resolve();
                                         }
-                                        return Promise.reject(new Error('Транслітерація вже існує'));
+                                        return Promise.reject(new Error(VALIDATION_MESSAGES.DUPLICATE_TRANSLITERATION));
                                     },
 
                                 },
@@ -357,10 +367,10 @@ const NewsModal: React.FC<{
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Введіть текст',
+                                    message: REQUIRED_FIELD_MESSAGES.ENTER_TEXT,
                                     validator: () => {
                                         if (!data) {
-                                            return Promise.reject(new Error('Введіть текст'));
+                                            return Promise.reject(new Error(REQUIRED_FIELD_MESSAGES.ENTER_TEXT));
                                         }
                                         return Promise.resolve();
                                     },
@@ -381,7 +391,10 @@ const NewsModal: React.FC<{
                             label="Зображення: "
                             className="image-form-item"
                             rules={[
-                                { required: true, message: 'Додайте зображення' },
+                                { 
+                                    required: true,
+                                    message: REQUIRED_FIELD_MESSAGES.ADD_IMAGE,
+                                },
                                 { validator: combinedImageValidator(true) },
                             ]}
                         >
@@ -400,7 +413,6 @@ const NewsModal: React.FC<{
                                     newsItem?.image ? createFileListData(newsItem.image) : []
                                 }
                                 onChange={handleFileChange}
-
                             >
                                 <p>Виберіть чи перетягніть файл</p>
                             </FileUploader>
@@ -409,7 +421,7 @@ const NewsModal: React.FC<{
                         <Form.Item
                             name="creationDate"
                             label="Дата створення: "
-                            rules={[{ required: true, message: 'Введіть дату' }]}
+                            rules={[{ required: true, message: REQUIRED_FIELD_MESSAGES.ENTER_DATE }]}
                         >
                             <DatePicker showTime allowClear={false} onChange={handleInputChange} />
                         </Form.Item>

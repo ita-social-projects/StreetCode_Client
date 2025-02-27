@@ -23,9 +23,12 @@ import { FactCreate, FactUpdate } from '@/models/streetcode/text-contents.model'
 
 import PreviewFileModal from '../../MainBlock/PreviewFileModal/PreviewFileModal.component';
 import { UploadChangeParam } from 'antd/es/upload';
-import POPOVER_CONTENT from '@/features/AdminPage/JobsPage/JobsModal/constants/popoverContent';
 import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
 import combinedImageValidator, { checkFile } from '@components/modals/validators/combinedImageValidator';
+import VALIDATION_MESSAGES from '@/app/common/constants/validation-messages.constants';
+import SUCCESS_MESSAGES from '@/app/common/constants/success-messages.constants';
+import REQUIRED_FIELD_MESSAGES from '@/app/common/constants/required_field_messages.constrants';
+import MODAL_MESSAGES from '@/app/common/constants/modal-messages.constants';
 
 interface Props {
     fact?: FactCreate,
@@ -63,7 +66,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
     const validateFact = uniquenessValidator(
         () => (factsStore.getFactArray.map( (fact) => fact.title)),
         () => (fact?.title),
-        'Факт з такою назвою вже існує',
+        VALIDATION_MESSAGES.DUPLICATE_FACT_TITLE,
     );
 
     useEffect(() => {
@@ -99,6 +102,13 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                 });
         }
     }, [fact, open, form]);
+
+    useEffect(() => {
+        if (fileList.length === 0) {
+          form.setFieldsValue({ image: undefined });
+          form.validateFields(['image']).catch(() => {});
+        }
+    }, [fileList]);
 
     const fillFactWithFormData = (formValues: any, fact?: FactCreate | FactUpdate) => {
         if (!fact) {
@@ -144,10 +154,14 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
         try {
             await form.validateFields();
             form.submit();
-            message.success('Wow-факт успішно додано/оновлено!');
+            message.success(SUCCESS_MESSAGES.WOW_FACT_SAVED);
         } catch (error) {
-            message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
+            message.error(VALIDATION_MESSAGES.INVALID_VALIDATION);
         }
+    };
+    
+    const handleRemove = () => {
+        setHasUploadedPhoto(false);
     };
 
     return (
@@ -162,7 +176,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                 maskClosable
                 centered
                 closeIcon={(
-                    <Popover content={POPOVER_CONTENT.CANCEL} trigger="hover">
+                    <Popover content={MODAL_MESSAGES.REMINDER_TO_SAVE} trigger="hover">
                         <CancelBtn className="iconSize" onClick={clearModal} />
                     </Popover>
                 )}
@@ -179,7 +193,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                         <Form.Item
                             name="title"
                             label="Заголовок: "
-                            rules={[{ required: true, message: 'Введіть заголовок, будь ласка' },
+                            rules={[{ required: true, message: REQUIRED_FIELD_MESSAGES.ENTER_HEADER },
                                 { validator: validateFact}
                             ]}
                         >
@@ -189,7 +203,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                         <Form.Item
                             name="factContent"
                             label="Основний текст: "
-                            rules={[{ required: true, message: 'Введіть oсновний текст, будь ласка' }]}
+                            rules={[{ required: true, message: REQUIRED_FIELD_MESSAGES.ENTER_MAIN_TEXT }]}
                         >
                             <TextArea
                                 value="Type"
@@ -202,7 +216,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                             label="Зображення"
                             name="image"
                             rules={[
-                                { required: true, message: 'Завантажте фото, будь ласка' },
+                                { required: true, message: REQUIRED_FIELD_MESSAGES.ADD_IMAGE },
                                 { validator: combinedImageValidator(true) },
                             ]}
                         >
@@ -219,9 +233,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                                     imageId.current = image.id;
                                     setHasUploadedPhoto(true);
                                 }}
-                                onRemove={() => {
-                                    setHasUploadedPhoto(false);
-                                }}
+                                onRemove={handleRemove}
                                 onPreview={() => {
                                     setPreviewOpen(true);
                                 }}

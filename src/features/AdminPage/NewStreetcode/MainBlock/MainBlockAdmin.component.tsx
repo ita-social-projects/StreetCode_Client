@@ -24,6 +24,8 @@ import PopoverForTagContent from './PopoverForTagContent/PopoverForTagContent.co
 import DatePickerPart from './DatePickerPart.component';
 import FileInputsPart from './FileInputsPart.component';
 import SelectWithCustomSuffix from '@/app/common/components/SelectWithCustomSuffix';
+import REQUIRED_FIELD_MESSAGES from '@/app/common/constants/required_field_messages.constrants';
+import VALIDATION_MESSAGES from '@/app/common/constants/validation-messages.constants';
 
 interface TagPreviewProps {
     width: number;
@@ -190,7 +192,7 @@ const MainBlockAdmin = React.memo(({
                         type: 'number',
                         min: 1,
                         max: 9999,
-                        message: 'Введіть номер history-коду від 1 до 9999, будь ласка',
+                        message: REQUIRED_FIELD_MESSAGES.ENTER_HISTORY_CODE_NUMBER,
                     },
                     {
                         validator: async (_, value) => {
@@ -206,7 +208,7 @@ const MainBlockAdmin = React.memo(({
                                 if (await isUnique) {
                                     return Promise.resolve();
                                 }
-                                return Promise.reject(new Error('Цей номер вже зайнятий'));
+                                return Promise.reject(new Error(VALIDATION_MESSAGES.DUPLICATE_NUMBER));
                             }
                         },
                     },
@@ -233,8 +235,8 @@ const MainBlockAdmin = React.memo(({
                 name="mainTitle"
                 label="Назва history-коду"
                 className="maincard-item"
-                rules={[{ required: true, message: 'Введіть назву history-коду, будь ласка' },
-                    { max: 100, message: 'Назва history-коду не може містити більше 100 символів' }]}
+                rules={[{ required: true, message: REQUIRED_FIELD_MESSAGES.ENTER_HISTORY_CODE_TITLE },
+                    { max: 100, message: VALIDATION_MESSAGES.MAX_HISTORYCODE_TITLE_SIZE }]}
             >
                 <Input
                     maxLength={100}
@@ -251,7 +253,7 @@ const MainBlockAdmin = React.memo(({
                         label="Ім'я"
                         name="name"
                         className="people-title-input"
-                        rules={[{ max: 50, message: "Ім'я не може містити більше 50 символів" }]}
+                        rules={[{ max: 50, message: VALIDATION_MESSAGES.MAX_NAME_SIZE }]}
                     >
                         <Input
                             ref={name}
@@ -266,7 +268,7 @@ const MainBlockAdmin = React.memo(({
                         label="Прізвище"
                         className="people-title-input"
                         rules={[
-                            { max: 50, message: 'Прізвище не може містити більше 50 символів ' },
+                            { max: 50, message: VALIDATION_MESSAGES.MAX_SURNAME_SIZE },
                         ]}
                     >
                         <Input
@@ -291,10 +293,10 @@ const MainBlockAdmin = React.memo(({
                 name="streetcodeUrlName"
                 className="maincard-item"
                 rules={[
-                    { required: true, message: 'Введіть транслітерацію', max: 100 },
+                    { required: true, message: REQUIRED_FIELD_MESSAGES.ENTER_TRANSLITERATION, max: 100 },
                     {
                         pattern: /^[a-z0-9-]+$/,
-                        message: 'Транслітерація має містити лише малі латинські літери, цифри та дефіс',
+                        message: VALIDATION_MESSAGES.INVALID_TRANSLITARATION,
                     },
                     {
                         validator: async (_, value) => {
@@ -310,7 +312,7 @@ const MainBlockAdmin = React.memo(({
                                 if (await isUnique) {
                                     return Promise.resolve();
                                 }
-                                return Promise.reject(new Error('Посилання вже існує'));
+                                return Promise.reject(new Error(VALIDATION_MESSAGES.DUPLICATE_TRANSLITERATION));
                             }
                         },
                     },
@@ -426,7 +428,7 @@ const MainBlockAdmin = React.memo(({
                     label="Тизер"
                     name="teaser"
                     className="maincard-item teaser-form-item"
-                    rules={[{ required: true, message: 'Введіть тизер'}]}
+                    rules={[{ required: true, message: REQUIRED_FIELD_MESSAGES.ENTER_TEASER }]}
                 >
                     <Input.TextArea
                         value={teaserValue || ""}

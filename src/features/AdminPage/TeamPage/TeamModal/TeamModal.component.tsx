@@ -20,6 +20,7 @@ import {
     Form, Input, message, Modal, Popover, Select, UploadFile,
 } from 'antd';
 
+import SUCCESS_MESSAGES from '@/app/common/constants/success-messages.constants';
 
 import PositionsApi from '@/app/api/team/teampositions.api';
 import FileUploader from '@components/FileUploader/FileUploader.component';
@@ -30,10 +31,12 @@ import TeamLink from '@/features/AdminPage/TeamPage/TeamLink.component';
 import Audio from '@/models/media/audio.model';
 import Image from '@/models/media/image.model';
 
-import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 import { UploadChangeParam } from 'antd/es/upload';
 import combinedImageValidator, { checkFile } from '@components/modals/validators/combinedImageValidator';
-import { MESSAGES } from '@/app/common/constants/messages/messages';
+import MODAL_MESSAGES from '@/app/common/constants/modal-messages.constants';
+import REQUIRED_FIELD_MESSAGES from '@/app/common/constants/required_field_messages.constrants';
+import { ERROR_MESSAGES } from '@/app/common/constants/error-messages.constants';
+import VALIDATION_MESSAGES from '@/app/common/constants/validation-messages.constants';
 
 const TeamModal: React.FC<{
     teamMember?: TeamMember, open: boolean,
@@ -83,7 +86,7 @@ const TeamModal: React.FC<{
     useEffect(() => {
         setWaitingForApiResponse(false);
         if (actionSuccess) {
-            message.success(MESSAGES.SUCCESS.ITEM_ADDED_UPDATED('Члена команди'));
+            message.success(SUCCESS_MESSAGES.TEAM_MEMBER_SAVED);
             setActionSuccess(false);
         }
     }, [actionSuccess]);
@@ -103,6 +106,13 @@ const TeamModal: React.FC<{
             imageId.current = 0;
         }
     }, [teamMember, open, form]);
+
+    useEffect(() => {
+        if (fileList.length === 0) {
+          form.setFieldsValue({ image: undefined });
+          form.validateFields(['image']).catch(() => {});
+        }
+    }, [fileList]);
 
     const getNewId = (objects: Array<{ id: number }>) => {
         let minId = Math.min(...objects.map((t) => t.id));
@@ -177,12 +187,12 @@ const TeamModal: React.FC<{
             await form.submit();
             setIsSaveButtonDisabled(true);
         } catch (error) {
-            message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");//here
+            message.error(VALIDATION_MESSAGES.INVALID_VALIDATION);
         }
     };
 
     const onSuccesfulSubmitPosition = async (formValues: any) => {
-        message.loading(MESSAGES.SAVING);
+        message.loading(MODAL_MESSAGES.SAVING);
         teamSourceLinks.forEach((el, index) => {
             if (el.id < 0) {
                 teamSourceLinks[index].id = 0;
@@ -221,7 +231,7 @@ const TeamModal: React.FC<{
             }
             setActionSuccess(true);
         } catch (error: unknown) {
-            message.error(MESSAGES.ERROR.COULD_NOT_LOAD('члена команди')); 
+            message.error(ERROR_MESSAGES.TEAM_MEMBER_COULD_NOT_LOAD); 
             setWaitingForApiResponse(false);
         }
     };
@@ -239,6 +249,7 @@ const TeamModal: React.FC<{
         if (await checkFile(param.file)) {
             setFileList(param.fileList);
         }
+
         handleInputChange();
     };
 
@@ -249,7 +260,7 @@ const TeamModal: React.FC<{
             className="modalContainer"
             footer={null}
             closeIcon={(
-                <Popover content={POPOVER_CONTENT.CANCEL} trigger="hover">
+                <Popover content={MODAL_MESSAGES.REMINDER_TO_SAVE} trigger="hover">
                     <CancelBtn className="iconSize" onClick={closeAndCleanData} />
                 </Popover>
             )}
@@ -278,7 +289,7 @@ const TeamModal: React.FC<{
                     <Form.Item
                         name="name"
                         label="Прізвище та ім'я: "
-                        rules={[{ required: true, message: MESSAGES.VALIDATION.ENTER_SURNAME_NAME }]}
+                        rules={[{ required: true, message: REQUIRED_FIELD_MESSAGES.ENTER_SURNAME_NAME }]}
                     >
                         <Input maxLength={41} showCount onChange={handleInputChange} />
                     </Form.Item>
@@ -310,7 +321,7 @@ const TeamModal: React.FC<{
                         rules={[
                             {
                                 required: true,
-                                message: MESSAGES.VALIDATION.ADD_IMAGE,
+                                message: REQUIRED_FIELD_MESSAGES.ADD_PHOTO,
                             },
                             { validator: combinedImageValidator(false) },
                         ]}
@@ -324,7 +335,8 @@ const TeamModal: React.FC<{
                             beforeUpload={checkFile}
                             onChange={handleFileChange}
                             onPreview={(e) => {
-                                setFilePreview(e); setPreviewOpen(true);
+                                setFilePreview(e);
+                                setPreviewOpen(true);
                             }}
                             onRemove={handleRemove}
                             uploadTo="image"
@@ -372,7 +384,7 @@ const TeamModal: React.FC<{
                     <Form.Item
                         name="logotype"
                         label="Соціальна мережа"
-                        rules={[{ required: true, message: MESSAGES.VALIDATION.CHOOSE_SOCIAL_NETWORK }]}
+                        rules={[{ required: true, message: REQUIRED_FIELD_MESSAGES.SELECT_SOCIAL_NETWORK }]}
                         style={{ minWidth: '135px' }}
                     >
                         <Select
@@ -387,7 +399,7 @@ const TeamModal: React.FC<{
                         className="url-input"
                         name="url"
                         rules={[
-                            { required: true, message: MESSAGES.VALIDATION.ENTER_LINK },
+                            { required: true, message: REQUIRED_FIELD_MESSAGES.ENTER_TEXT },
                             {
                                 validator: (_, value) => {
                                     const socialName = teamLinksForm.getFieldValue('logotype');
