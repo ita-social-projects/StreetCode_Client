@@ -6,6 +6,7 @@ import { Button, Input } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextInputInfo from '@/features/AdminPage/NewStreetcode/TextBlock/InputType/TextInputInfo.model';
 import { Text } from '@/models/streetcode/text-contents.model';
+import REQUIRED_FIELD_MESSAGES from '@/app/common/constants/required_field_messages.constrants';
 
 interface Props {
     inputInfo: Partial<Text> | undefined;
@@ -83,7 +84,7 @@ const LinkEditor = ({
         <FormItem
             name="video"
             label="Відео"
-            rules={[{ pattern: youtubeRegex, message: 'Вставте, будь ласка, тільки youtube.com посилання. Це поле не підтримує інші формати URL' }]}
+            rules={[{ pattern: youtubeRegex, message: REQUIRED_FIELD_MESSAGES.ENTER_YOUTUBE_LINK }]}
         >   
             <div className="youtube-block">
                 <Input

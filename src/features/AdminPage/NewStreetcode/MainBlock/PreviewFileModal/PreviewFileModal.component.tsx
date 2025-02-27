@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 
 import { message, Modal, UploadFile } from 'antd';
 import { RcFile } from 'antd/es/upload';
+import { ERROR_MESSAGES } from '@/app/common/constants/error-messages.constants';
 
 export const getBase64 = (file: RcFile): Promise<string> => new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -37,7 +38,7 @@ const PreviewFileModal = ({ opened, setOpened, file, greyFilterForImage = false 
                         const result = await getBase64(originFileObj);
                         imageToPreview = result;
                     } catch (error) {
-                        message.error('Помилка при перегляді фото');
+                        message.error(ERROR_MESSAGES.ERROR_PHOTO_VIEW);
                         setPreviewImage(undefined);
                         return;
                     }

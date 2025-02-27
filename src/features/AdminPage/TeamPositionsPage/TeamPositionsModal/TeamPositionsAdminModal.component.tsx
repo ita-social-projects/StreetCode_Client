@@ -10,6 +10,10 @@ import {parseJsonNumber} from "ajv/dist/runtime/parseJson";
 import position = parseJsonNumber.position;
 import normaliseWhitespaces from '@/app/common/utils/normaliseWhitespaces';
 import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
+import VALIDATION_MESSAGES from '@/app/common/constants/validation-messages.constants';
+import SUCCESS_MESSAGES from '@/app/common/constants/success-messages.constants';
+import REQUIRED_FIELD_MESSAGES from '@/app/common/constants/required_field_messages.constrants';
+import MODAL_MESSAGES from '@/app/common/constants/modal-messages.constants';
 
 interface TeamPositionsAdminProps {
     setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -44,7 +48,7 @@ const TeamPositionsAdminModalComponent: React.FC<TeamPositionsAdminProps> = obse
     const validatePosition = uniquenessValidator(
         ()=>(teamPositionsStore.getPositionsArray.map((position) => position.position)), 
         ()=>(initialData?.position), 
-        'Позиція з такою назвою вже існує'
+        VALIDATION_MESSAGES.DUPLICATE_POSITION_TITLE
     );
 
     const onSubmit = async (formData: any) => {
@@ -77,7 +81,7 @@ const TeamPositionsAdminModalComponent: React.FC<TeamPositionsAdminProps> = obse
         try {
             await form.validateFields();
             form.submit();
-            message.success(`Позицію успішно ${isEditing ? 'змінено' : 'додано'}!`);
+            message.success(SUCCESS_MESSAGES.POSITION_SAVED);
         } catch (error) {
             message.config({
                 top: 100,
@@ -85,7 +89,7 @@ const TeamPositionsAdminModalComponent: React.FC<TeamPositionsAdminProps> = obse
                 maxCount: 3,
                 prefixCls: 'my-message',
             });
-            message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
+            message.error(VALIDATION_MESSAGES.INVALID_VALIDATION);
         }
     };
 
@@ -102,7 +106,7 @@ const TeamPositionsAdminModalComponent: React.FC<TeamPositionsAdminProps> = obse
             maskClosable
             centered
             closeIcon={(
-                <Popover content="Зберіг? Тоді виходь!" trigger="hover">
+                <Popover content={MODAL_MESSAGES.REMINDER_TO_SAVE} trigger="hover">
                     <CancelBtn className="iconSize" onClick={handleCancel} />
                 </Popover>
             )}
@@ -121,7 +125,7 @@ const TeamPositionsAdminModalComponent: React.FC<TeamPositionsAdminProps> = obse
                     <Form.Item
                         name="position"
                         label="Назва: "
-                        rules={[{required: true, message: 'Введіть назву', max: MAX_LENGTH.title},
+                        rules={[{required: true, message: REQUIRED_FIELD_MESSAGES.ENTER_TITLE, max: MAX_LENGTH.title},
                             {validator: validatePosition}
                         ]}
                         getValueProps={(value) => ({ value: normaliseWhitespaces(value) })}

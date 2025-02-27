@@ -13,6 +13,7 @@ import AdditionalTextBlockAdminForm from './AdditionTextBlock/AdditionalTextBloc
 import LinkEditor from './Editors/LinkEditor.component';
 import TextEditor from './Editors/TextEditor.component';
 import TextPreview from './TextPreview/TextPreview.component';
+import REQUIRED_FIELD_MESSAGES from '@/app/common/constants/required_field_messages.constrants';
 
 const isQuillEmpty = (text: string | undefined) => {
     return !text || text.replace(/<(.|\n)*?>/g, '').trim().length === 0;
@@ -51,10 +52,10 @@ const TextForm = ({
                 label="Заголовок"
                 name="title"
                 rules={[{
-                    message: 'Введіть заголовок до тексту',
+                    message: REQUIRED_FIELD_MESSAGES.ENTER_HEADER,
                     validator(_, value) {
                         if (!value && !isQuillEmpty(inputInfo?.textContent)) {
-                            return Promise.reject(new Error('Введіть заголовок до тексту'));
+                            return Promise.reject(new Error(REQUIRED_FIELD_MESSAGES.ENTER_HEADER));
                         }
                         return Promise.resolve();
                     },
