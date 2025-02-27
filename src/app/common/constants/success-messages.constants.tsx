@@ -9,6 +9,7 @@ const SUCCESS_MESSAGES = {
   POSITION_SAVED: 'Позицію успішно додано/оновлено',
   WOW_FACT_SAVED: 'Факт успішно додано/оновлено',
   CATEGORY_FAN_ADDED: 'Категорію для фанатів успішно додано',
+  TIMELINE_ADDED: 'Хронологію успішно додано',
   HISTORYCODE_UPDATED: 'History-код успішно оновлений',
 };
 

@@ -21,8 +21,10 @@ import TimelineItem, {
     DateViewPatternToDatePickerType,
     HistoricalContext, HistoricalContextUpdate, selectDateOptionsforTimeline,
 } from '@/models/timeline/chronology.model';
-import POPOVER_CONTENT from '@/features/AdminPage/JobsPage/JobsModal/constants/popoverContent';
 import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
+import VALIDATION_MESSAGES from '@/app/common/constants/validation-messages.constants';
+import SUCCESS_MESSAGES from '@/app/common/constants/success-messages.constants';
+import MODAL_MESSAGES from '@/app/common/constants/modal-messages.constants';
 
 interface NewTimelineModalProps {
     timelineItem?: TimelineItem;
@@ -120,7 +122,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
     const validateTimelineItem = uniquenessValidator(
         () => (timelineItemStore.getTimelineItemArray.map((item) => item.title)),
         () => (timelineItem?.title),
-        'Хронологія з такою назвою вже існує',
+        VALIDATION_MESSAGES.DUPLICATE_TIMELINE_TITLE,
     );
 
     const onSuccesfulSubmit = (formValues: any) => {
@@ -206,7 +208,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
         try {
             await form.validateFields();
             form.submit();
-            message.success('Хронологію успішно додано!', 2);
+            message.success(SUCCESS_MESSAGES.TIMELINE_ADDED, 2);
             setIsSaveButtonDisabled(true);
         } catch (error) {
             message.config({
@@ -215,7 +217,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                 maxCount: 3,
                 prefixCls: 'my-message',
             });
-            message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
+            message.error(VALIDATION_MESSAGES.INVALID_VALIDATION);
         }
     };
 
@@ -236,7 +238,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
             maskClosable
             centered
             closeIcon={(
-                <Popover content={POPOVER_CONTENT.CANCEL} trigger="hover">
+                <Popover content={MODAL_MESSAGES.REMINDER_TO_SAVE} trigger="hover">
                     <CancelBtn className="iconSize" onClick={clearModal} />
                 </Popover>
             )}

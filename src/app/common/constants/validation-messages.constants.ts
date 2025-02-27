@@ -18,6 +18,7 @@ const VALIDATION_MESSAGES = {
   DUPLICATE_TAG_TITLE: 'Тег з такою назвою вже існує',
   DUPLICATE_CONTEXT_TITLE: 'Контекст з такою назвою вже існує',
   DUPLICATE_POSITION_TITLE: 'Позиція з такою назвою вже існує',
+  DUPLICATE_TIMELINE_TITLE: 'Хронологія з такою назвою вже існує',
   DUPLICATE_SOCIAL_NETWORK: 'Таке посилання вже існує',
   DUPLICATE_NUMBER: 'Цей номер вже існує',
   DUPLICATE_FACT_TITLE: 'Факт з такою назвою вже існує',
