@@ -343,23 +343,25 @@ pipeline {
 }
 
 def sendDiscordNotification(status, message) {
-    def jsonMessage = """
-    {
-        "content": "$status: $message",
-        "embeds": [
-            {
-                "title": "Deployment Status",
-                "fields": [
-                    {"name": "Environment", "value": "Stage", "inline": true},
-                    {"name": "Pipeline Name", "value": "$env.JOB_NAME", "inline": true},
-                    {"name": "Status", "value": "$status", "inline": true},
-                    {"name": "Deployment Tag", "value": "$env.CODE_VERSION", "inline": true},
-                    {"name": "Date and Time", "value": "${new Date().format('yyyy-MM-dd HH:mm:ss')}", "inline": true},
-                    {"name": "Pipeline Link", "value": "[Click here]($env.BUILD_URL)", "inline": true}
-                ]
-            }
-        ]
-    }
-    """
-    sh "curl -X POST -H 'Content-Type: application/json' -d '$jsonMessage' $DISCORD_WEBHOOK_URL"
+    withCredentials([string(credentialsId: 'WEBHOOK_URL', variable: 'DISCORD_WEBHOOK_URL')]) {
+        def jsonMessage = """
+        {
+            "content": "$status: $message",
+            "embeds": [
+                {
+                    "title": "Deployment Status",
+                    "fields": [
+                        {"name": "Environment", "value": "Stage", "inline": true},
+                        {"name": "Pipeline Name", "value": "$env.JOB_NAME", "inline": true},
+                        {"name": "Status", "value": "$status", "inline": true},
+                        {"name": "Deployment Tag", "value": "$env.CODE_VERSION", "inline": true},
+                        {"name": "Date and Time", "value": "${new Date().format('yyyy-MM-dd HH:mm:ss')}", "inline": true},
+                        {"name": "Pipeline Link", "value": "[Click here]($env.BUILD_URL)", "inline": true}
+                    ]
+                }
+            ]
+        }
+        """
+        sh """curl -X POST -H 'Content-Type: application/json' -d '$jsonMessage' "\$DISCORD_WEBHOOK_URL" """
+}
 }
