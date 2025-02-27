@@ -549,11 +549,9 @@ const PartnerModal: React.FC<{
                   rules={[
                     { required: true, message: REQUIRED_FIELD_MESSAGES.ENTER_LINK },
                     {
-                      pattern: URL_REGEX_VALIDATION_PATTERN,
-                      message: REQUIRED_FIELD_MESSAGES.ENTER_RIGHT_LINK,
-                    },
-                    {
                       validator: (_, value) => {
+                        if (!value) return Promise.resolve();
+                        
                         const socialName =
                           partnerLinksForm.getFieldValue('logotype');
                         return validateSocialLink<LogoType>(

@@ -399,9 +399,11 @@ const TeamModal: React.FC<{
                         className="url-input"
                         name="url"
                         rules={[
-                            { required: true, message: REQUIRED_FIELD_MESSAGES.ENTER_TEXT },
+                            { required: true, message: REQUIRED_FIELD_MESSAGES.ENTER_LINK },
                             {
                                 validator: (_, value) => {
+                                    if (!value) return Promise.resolve();
+
                                     const socialName = teamLinksForm.getFieldValue('logotype');
                                     return validateSocialLink<LogoType>(
                                         value,

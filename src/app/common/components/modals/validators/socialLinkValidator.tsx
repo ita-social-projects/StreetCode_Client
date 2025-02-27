@@ -11,12 +11,7 @@ export default function validateSocialLink<T>(
     sourceLinks: { logoType: T }[],
     socialName: string,
 ): Promise<unknown> {
-    if (!link || isInvalidUrl(link)) {
-        return Promise.reject(new Error(
-            VALIDATION_MESSAGES.INVALID_LINK_FORMAT, 
-        ));
-    }
-
+    
     const logotype = socialOptions.find((opt) => opt.value === socialName)?.logo;
     if (logotype === undefined // we need this explicit check because it can pass when logotype is 0
         || logotype === null
