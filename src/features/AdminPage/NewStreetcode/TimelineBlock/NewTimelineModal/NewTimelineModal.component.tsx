@@ -22,9 +22,12 @@ import TimelineItem, {
     HistoricalContext, HistoricalContextUpdate, selectDateOptionsforTimeline,
 } from '@/models/timeline/chronology.model';
 import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
+
 import VALIDATION_MESSAGES from '@/app/common/constants/validation-messages.constants';
 import SUCCESS_MESSAGES from '@/app/common/constants/success-messages.constants';
 import MODAL_MESSAGES from '@/app/common/constants/modal-messages.constants';
+import BUTTON_LABELS from "@constants/buttonLabels";
+
 
 interface NewTimelineModalProps {
     timelineItem?: TimelineItem;
@@ -375,7 +378,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                             onClick={() => handleOk()}
                             data-testid="button-save"
                         >
-                            Зберегти
+                            {BUTTON_LABELS.SAVE}
                         </Button>
                     </div>
                 </Form>

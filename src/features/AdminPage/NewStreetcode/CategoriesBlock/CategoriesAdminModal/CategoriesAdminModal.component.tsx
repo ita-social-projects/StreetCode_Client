@@ -24,10 +24,13 @@ import {
     StreetcodeCategoryContent,
     StreetcodeCategoryContentUpdate,
 } from '@/models/sources/sources.model';
+
 import SUCCESS_MESSAGES from '@/app/common/constants/success-messages.constants';
 import REQUIRED_FIELD_MESSAGES from '@/app/common/constants/required_field_messages.constrants';
 import VALIDATION_MESSAGES from '@/app/common/constants/validation-messages.constants';
 import MODAL_MESSAGES from '@/app/common/constants/modal-messages.constants';
+import BUTTON_LABELS from "@constants/buttonLabels";
+
 
 interface Props {
     character_limit?: number;
@@ -341,7 +344,7 @@ const CategoriesModal = ({
                         onClick={() => handleOk()}
                         disabled={isSaveButtonDisabled}
                     >
-                        Зберегти
+                        {BUTTON_LABELS.SAVE}
                     </Button>
                 </div>
             </Form>

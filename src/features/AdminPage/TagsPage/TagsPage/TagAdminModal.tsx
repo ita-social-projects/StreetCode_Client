@@ -2,23 +2,24 @@ import '@features/AdminPage/AdminModal.styles.scss';
 
 import CancelBtn from '@images/utils/Cancel_btn.svg';
 
-import React, {
-    Dispatch, SetStateAction, useEffect, useState
-} from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import BUTTON_LABELS from '@constants/buttonLabels';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import useMobx from '@stores/root-store';
 
 import {
-    Button, Form, Input, message, Modal, Popover
+    Button, Form, Input, message, Modal, Popover,
 } from 'antd';
 
 import Tag from '@/models/additional-content/tag.model';
 import normaliseWhitespaces from '@/app/common/utils/normaliseWhitespaces';
 import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
+
 import VALIDATION_MESSAGES from '@/app/common/constants/validation-messages.constants';
 import SUCCESS_MESSAGES from '@/app/common/constants/success-messages.constants';
 import REQUIRED_FIELD_MESSAGES from '@/app/common/constants/required_field_messages.constrants';
 import MODAL_MESSAGES from '@/app/common/constants/modal-messages.constants';
+
 
 interface SourceModalProps {
     isModalVisible: boolean;
@@ -36,7 +37,16 @@ const SourceModal: React.FC<SourceModalProps> = ({
     const { tagsStore } = useMobx();
     const [form] = Form.useForm();
     const isEditing = !!initialData;
-	const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
+    const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
+
+    const updateSaveButtonState = () => {
+        const title = form.getFieldValue('title')?.trim();
+        const isChanged = initialData ? initialData.title !== title : true;
+        const isEmpty = !title;
+        const isExisting = isEmpty ? false : tagsStore.getTagArray.some((tag) => tag.title === title);
+
+        setIsSaveButtonDisabled(!isChanged || isExisting || isEmpty);
+    };
 
     useAsync(() => tagsStore.fetchAllTags(), []);
 
@@ -49,18 +59,9 @@ const SourceModal: React.FC<SourceModalProps> = ({
         updateSaveButtonState();
     }, [initialData, isModalVisible, form]);
 
-    const updateSaveButtonState = () => {
-        const title = form.getFieldValue("title")?.trim();
-        const isChanged = initialData ? initialData.title !== title : true;
-        const isEmpty = !title;
-        const isExisting = isEmpty ? false : tagsStore.getTagArray.some(tag => tag.title === title);
-
-        setIsSaveButtonDisabled(!isChanged || isExisting || isEmpty);
-    }
-
     const closeModal = () => {
         setIsModalOpen(false);
-		setIsSaveButtonDisabled(true);
+        setIsSaveButtonDisabled(true);
     };
 
     const validateTag = uniquenessValidator(
@@ -100,7 +101,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
             await form.validateFields();
             form.submit();
             message.success(SUCCESS_MESSAGES.TAG_SAVED, 2);
-			setIsSaveButtonDisabled(true);
+			      setIsSaveButtonDisabled(true);
         } catch (error) {
             message.config({
                 top: 100,
@@ -115,7 +116,6 @@ const SourceModal: React.FC<SourceModalProps> = ({
     return (
         <>
             <Modal
-                title={isEditing ? 'Редагувати тег' : 'Додати новий тег'}
                 open={isModalVisible}
                 onCancel={closeModal}
                 className="modalContainer"
@@ -132,7 +132,11 @@ const SourceModal: React.FC<SourceModalProps> = ({
                     onFinish={onSubmit}
                     initialValues={initialData}
                     onKeyDown={(e) => e.key == "Enter" ? e.preventDefault() : ''}
-                    onValuesChange={updateSaveButtonState}>
+                    onValuesChange={updateSaveButtonState}
+                >
+                    <div className="center">
+                        <h2>{isEditing ? 'Редагувати тег' : 'Додати тег'}</h2>
+                    </div>
                     <Form.Item
                         name="title"
                         label="Назва: "
@@ -149,7 +153,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                             disabled={isSaveButtonDisabled}
                             onClick={() => handleOk()}
                         >
-                            Зберегти
+                            {BUTTON_LABELS.SAVE}
                         </Button>
                     </div>
                 </Form>

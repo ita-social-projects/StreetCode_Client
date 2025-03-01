@@ -24,6 +24,7 @@ import { FactCreate, FactUpdate } from '@/models/streetcode/text-contents.model'
 import PreviewFileModal from '../../MainBlock/PreviewFileModal/PreviewFileModal.component';
 import { UploadChangeParam } from 'antd/es/upload';
 import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
+import BUTTON_LABELS from "@constants/buttonLabels";
 import combinedImageValidator, { checkFile } from '@components/modals/validators/combinedImageValidator';
 import VALIDATION_MESSAGES from '@/app/common/constants/validation-messages.constants';
 import SUCCESS_MESSAGES from '@/app/common/constants/success-messages.constants';
@@ -261,7 +262,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                                 className="streetcode-custom-button"
                                 onClick={() => handleOk()}
                             >
-                                Зберегти
+                                {BUTTON_LABELS.SAVE}
                             </Button>
                         </div>
                     </Form>

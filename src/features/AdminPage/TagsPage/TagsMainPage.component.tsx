@@ -3,6 +3,8 @@ import './TagsMainPage.style.scss';
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import BUTTON_LABELS from '@constants/buttonLabels';
+import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
 import useMobx, { useModalContext } from '@stores/root-store';
 import { useQuery } from '@tanstack/react-query';
 
@@ -33,6 +35,22 @@ const TagsMainPage: React.FC = observer(() => {
         updatedTags();
     }, [modalAddOpened, modalEditOpened]);
 
+    const handleDeleteTag = (tagId: number) => {
+        modalStore.setConfirmationModal(
+            'confirmation',
+            () => {
+                if (tagId !== undefined) {
+                    tagsStore.deleteTag(tagId)
+                        .catch((e) => {
+                            console.error(e);
+                        });
+                    modalStore.setConfirmationModal('confirmation');
+                }
+            },
+            CONFIRMATION_MESSAGES.DELETE_TAGS,
+        );
+    };
+
     const columns: ColumnsType<Tag> = [
         {
             title: 'Назва',
@@ -56,21 +74,7 @@ const TagsMainPage: React.FC = observer(() => {
                     <DeleteOutlined
                         key={`${tag.id}${index}`}
                         className="actionButton"
-                        onClick={() => {
-                            modalStore.setConfirmationModal(
-                                'confirmation',
-                                () => {
-                                    if (tag.id != undefined) {
-                                        tagsStore.deleteTag(tag.id)
-                                        .catch((e) => {
-                                            console.error(e);
-                                        });
-                                        modalStore.setConfirmationModal('confirmation');
-                                    }
-                                },
-                                'Ви впевнені, що хочете видалити цей тег?',
-                            );
-                        }}
+                        onClick={() => handleDeleteTag(tag.id)}
                     />
                     <EditOutlined
                         key={`${tag.id}${index}2`}
@@ -93,7 +97,7 @@ const TagsMainPage: React.FC = observer(() => {
                         className="streetcode-custom-button tags-page-add-button"
                         onClick={() => setModalAddOpened(true)}
                     >
-                        Додати новий тег
+                        {BUTTON_LABELS.ADD_TAG}
                     </Button>
                 </div>
                 <Table
@@ -129,8 +133,15 @@ const TagsMainPage: React.FC = observer(() => {
                     </div>
                 </div>
             </div>
-            <TagAdminModal isModalVisible={modalAddOpened} setIsModalOpen={setModalAddOpened} />
-            <TagAdminModal isModalVisible={modalEditOpened} setIsModalOpen={setModalEditOpened} initialData={tagToEdit} />
+            <TagAdminModal
+                isModalVisible={modalAddOpened}
+                setIsModalOpen={setModalAddOpened}
+            />
+            <TagAdminModal
+                isModalVisible={modalEditOpened}
+                setIsModalOpen={setModalEditOpened}
+                initialData={tagToEdit}
+            />
         </div>
 
     );

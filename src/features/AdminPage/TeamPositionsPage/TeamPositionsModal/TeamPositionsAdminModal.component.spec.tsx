@@ -8,6 +8,7 @@ import overrideMatchMedia from '@features/AdminPage/TeamPositionsPage/TeamPositi
 import TeamPositionsAdminModalComponent from '@features/AdminPage/TeamPositionsPage/TeamPositionsModal/TeamPositionsAdminModal.component';
 import TeampositionsApi from '@api/team/teampositions.api';
 import Position from '@models/additional-content/teampositions.model';
+import BUTTON_LABELS from "@constants/buttonLabels";
 
 overrideMatchMedia();
 
@@ -70,8 +71,8 @@ describe('TeamPositionsAdminModal', () => {
         render(<TeamPositionsAdminModalComponent isModalVisible={true} setIsModalOpen={() => {
         }}/>);
 
-        const nameInput = screen.getByRole('textbox', {name: /назва:/i});
-        const button = screen.getByRole('button', {name: /зберегти/i});
+        const nameInput = screen.getByRole('textbox', { name: /назва:/i });
+        const button = screen.getByRole('button', { name: BUTTON_LABELS.SAVE });
 
         act(() => {
             userEvent.type(nameInput, 'New Position');
@@ -91,8 +92,8 @@ describe('TeamPositionsAdminModal', () => {
         render(<TeamPositionsAdminModalComponent isModalVisible={true} setIsModalOpen={() => {
         }} initialData={{id: 1, position: 'Old Position'} as Position}/>);
 
-        const nameInput = screen.getByRole('textbox', {name: /назва:/i});
-        const button = screen.getByRole('button', {name: /зберегти/i});
+        const nameInput = screen.getByRole('textbox', { name: /назва:/i });
+        const button = screen.getByRole('button', { name: BUTTON_LABELS.SAVE });
 
         await waitFor(() => {
             expect(nameInput).toHaveValue('Old Position');
@@ -116,8 +117,8 @@ describe('TeamPositionsAdminModal', () => {
         render(<TeamPositionsAdminModalComponent isModalVisible={true} setIsModalOpen={() => {
         }}/>);
 
-        const nameInput = screen.getByRole('textbox', {name: /назва:/i}) as HTMLInputElement;
-        const button = screen.getByRole('button', {name: /зберегти/i});
+        const nameInput = screen.getByRole('textbox', { name: /назва:/i }) as HTMLInputElement;
+        const button = screen.getByRole('button', { name: BUTTON_LABELS.SAVE });
 
         nameInput.value = '';
 

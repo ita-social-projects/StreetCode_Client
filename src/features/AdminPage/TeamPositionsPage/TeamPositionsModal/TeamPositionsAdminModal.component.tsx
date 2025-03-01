@@ -10,11 +10,13 @@ import {parseJsonNumber} from "ajv/dist/runtime/parseJson";
 import position = parseJsonNumber.position;
 import normaliseWhitespaces from '@/app/common/utils/normaliseWhitespaces';
 import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
+
 import VALIDATION_MESSAGES from '@/app/common/constants/validation-messages.constants';
 import SUCCESS_MESSAGES from '@/app/common/constants/success-messages.constants';
 import REQUIRED_FIELD_MESSAGES from '@/app/common/constants/required_field_messages.constrants';
 import MODAL_MESSAGES from '@/app/common/constants/modal-messages.constants';
-
+import BUTTON_LABELS from "@constants/buttonLabels";
+ц
 interface TeamPositionsAdminProps {
     setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
     isModalVisible: boolean;
@@ -120,7 +122,7 @@ const TeamPositionsAdminModalComponent: React.FC<TeamPositionsAdminProps> = obse
                     onKeyDown={(e) => e.key === 'Enter' ? e.preventDefault() : ''}
                 >
                     <div className="center">
-                        <h2>{isEditing ? 'Редагувати позицію' : 'Додати нову позицію'}</h2>
+                        <h2>{isEditing ? 'Редагувати позицію' : 'Додати позицію'}</h2>
                     </div>
                     <Form.Item
                         name="position"
@@ -138,7 +140,7 @@ const TeamPositionsAdminModalComponent: React.FC<TeamPositionsAdminProps> = obse
                             className="streetcode-custom-button"
                             onClick={() => handleOk()}
                         >
-                            Зберегти
+                            {BUTTON_LABELS.SAVE}
                         </Button>
                     </div>
                 </Form>

@@ -78,9 +78,12 @@ import SubtitleBlock from './SubtitileBlock/SubtitleBlock.component';
 import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
 import MapBlockAdmin from './MapBlock/MapBlockAdmin.component';
+
 import SUCCESS_MESSAGES from '@/app/common/constants/success-messages.constants';
 import { ERROR_MESSAGES } from '@/app/common/constants/error-messages.constants';
 import VALIDATION_MESSAGES from '@/app/common/constants/validation-messages.constants';
+import BUTTON_LABELS from "@constants/buttonLabels";
+
 
 dayjs.extend(utc);
 dayjs.extend(tz);
@@ -96,8 +99,6 @@ function reindex<T extends { index?: number }>(list: T[]): T[] {
 }
 
 const NewStreetcode = () => {
-    const publish = 'Опублікувати';
-    const draft = 'Зберегти як чернетку';
     const [form] = useForm();
     const {
         factsStore,
@@ -362,7 +363,7 @@ const NewStreetcode = () => {
         let tempStatus = 1;
         const buttonName = data.target.innerText;
         if (buttonName) {
-            if (buttonName.includes(draft)) {
+            if (buttonName.includes(BUTTON_LABELS.DRAFT)) {
                 tempStatus = 0;
                 setSavedChanges(true);
             }
@@ -698,28 +699,33 @@ const NewStreetcode = () => {
                             <ARBlock onChange={handleFieldChange} />
                         </Form>
                     </div>
-                    <Button
+
+                    <div className="submit-button-row">
+                      <Button
                         className="streetcode-custom-button submit-button"
                         onClick={onFinish}
-                        name={draft}
+                        name={BUTTON_LABELS.DRAFT}
                         htmlType="submit"
-                    >
-                        {draft}
-                    </Button>
-                    <Modal
+                      >
+                        {BUTTON_LABELS.DRAFT}
+                      </Button>
+                      <Modal
                         title="Ви впевнені, що хочете опублікувати цей history-код?"
                         open={visibleModal}
                         onOk={handleModalOk}
                         onCancel={handleCancelModalRemove}
-                    />
-                    <Button
+                        okText={BUTTON_LABELS.SUBMIT}
+                        cancelText={BUTTON_LABELS.CANCEL}
+                      />
+                      <Button
                         htmlType="submit"
                         className="streetcode-custom-button submit-button"
                         onClick={handleRemove}
-                        name={publish}
-                    >
-                        {publish}
-                    </Button>
+                        name={BUTTON_LABELS.PUBLISH}
+                      >
+                        {BUTTON_LABELS.PUBLISH}
+                      </Button>    
+                    </div>
                 </div>
             </ConfigProvider>
         </div>

@@ -4,6 +4,9 @@ import PartnersStore from '@stores/partners-store';
 
 import { Button, Select } from 'antd';
 
+import BUTTON_LABELS from '@constants/buttonLabels';
+import { useModalContext } from '@stores/root-store';
+// eslint-disable-next-line import/extensions
 import SelectWithCustomSuffix from '@/app/common/components/SelectWithCustomSuffix';
 import PartnerModal from '@/features/AdminPage/PartnersPage/PartnerModal/PartnerModal.component';
 import Partner, { PartnerCreateUpdateShort, PartnerShort } from '@/models/partners/partners.model';
@@ -100,7 +103,7 @@ const PartnerBlockAdmin = ({ partners, setPartners, onChange }: Props) => {
                     className="streetcode-custom-button button-margin-left"
                     onClick={() => setModalAddOpened(true)}
                 >
-                    Додати
+                    {BUTTON_LABELS.ADD}
                 </Button>
             </div>
             <PartnerModal

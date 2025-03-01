@@ -8,6 +8,8 @@ import React, {
 } from 'react';
 import ImagesApi from '@api/media/images.api';
 import FileUploader from '@components/FileUploader/FileUploader.component';
+import combinedImageValidator, { checkFile } from '@components/modals/validators/combinedImageValidator';
+import BUTTON_LABELS from '@constants/buttonLabels';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import Audio from '@models/media/audio.model';
 import Image from '@models/media/image.model';
@@ -21,6 +23,8 @@ import {
 import { UploadChangeParam, UploadFileStatus } from 'antd/es/upload/interface';
 
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
+import normaliseWhitespaces from '@/app/common/utils/normaliseWhitespaces';
+import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
 
 import PreviewFileModal from '../../NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
 import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
@@ -30,6 +34,7 @@ import VALIDATION_MESSAGES from '@/app/common/constants/validation-messages.cons
 import SUCCESS_MESSAGES from '@/app/common/constants/success-messages.constants';
 import REQUIRED_FIELD_MESSAGES from '@/app/common/constants/required_field_messages.constrants';
 import MODAL_MESSAGES from '@/app/common/constants/modal-messages.constants';
+
 
 interface SourceModalProps {
     isModalVisible: boolean;
@@ -122,7 +127,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
             image,
         };
         sourcesAdminStore.getSourcesAdmin.map((t) => t).forEach((t) => {
-            if (formData.title == t.title || imageId.current == t.imageId) currentSource.id = t.id;
+            if (formData.title === t.title || imageId.current === t.imageId) currentSource.id = t.id;
         });
 
         if (currentSource.id) {
@@ -158,7 +163,9 @@ const SourceModal: React.FC<SourceModalProps> = ({
                 return;
             }
             form.submit();
+
             message.success(SUCCESS_MESSAGES.CATEGORY_SAVED, 2);
+
             setIsSaveButtonDisabled(true);
         } catch (error) {
             message.config({
@@ -180,7 +187,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
         handleInputChange();
     };
 
-    const handleRemove = (file: UploadFile) => {
+    const handleRemove = () => {
         setFileList([]);
         setImage(null!);
     };
@@ -188,10 +195,10 @@ const SourceModal: React.FC<SourceModalProps> = ({
     return (
         <>
             <Modal
-                title={isEditing ? 'Редагувати категорію' : 'Додати нову категорію'}
                 open={isModalVisible}
                 onCancel={closeModal}
                 className="modalContainer categoryModal"
+                centered
                 closeIcon={(
                     <Popover content={MODAL_MESSAGES.REMINDER_TO_SAVE} trigger="hover">
                         <CancelBtn className="iconSize" onClick={handleCancel} />
@@ -199,7 +206,15 @@ const SourceModal: React.FC<SourceModalProps> = ({
                 )}
                 footer={null}
             >
-                <Form form={form} layout="vertical" onFinish={onSubmit} initialValues={initialData}>
+                <Form
+                    form={form}
+                    layout="vertical"
+                    onFinish={onSubmit}
+                    initialValues={initialData}
+                >
+                    <div className="center">
+                        <h2>{isEditing ? 'Редагувати категорію' : 'Додати категорію'}</h2>
+                    </div>
                     <Form.Item
                         name="title"
                         label="Назва: "
@@ -213,7 +228,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                     </Form.Item>
                     <Form.Item
                         name="image"
-                        label="Картинка:"
+                        label="Зображення: "
                         rules={[
                             { required: true, message: REQUIRED_FIELD_MESSAGES.ADD_IMAGE },
                             { validator: combinedImageValidator(true) },
@@ -250,7 +265,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                             className="streetcode-custom-button"
                             onClick={() => handleOk()}
                         >
-                            Зберегти
+                            {BUTTON_LABELS.SAVE}
                         </Button>
                     </div>
                 </Form>

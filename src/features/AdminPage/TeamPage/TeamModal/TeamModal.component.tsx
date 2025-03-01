@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions,no-restricted-imports */
 import './TeamModal.styles.scss';
 import '@features/AdminPage/AdminModal.styles.scss';
 
@@ -6,6 +7,9 @@ import CancelBtn from '@images/utils/Cancel_btn.svg';
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import FileUploader from '@components/FileUploader/FileUploader.component';
+import combinedImageValidator, { checkFile } from '@components/modals/validators/combinedImageValidator';
+import BUTTON_LABELS from '@constants/buttonLabels';
 import PreviewFileModal from '@features/AdminPage/NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
 import SOCIAL_OPTIONS from '@features/AdminPage/TeamPage/TeamModal/constants/socialOptions';
 import TeamMember, {
@@ -20,19 +24,17 @@ import {
     Form, Input, message, Modal, Popover, Select, UploadFile,
 } from 'antd';
 
-import SUCCESS_MESSAGES from '@/app/common/constants/success-messages.constants';
-
 import PositionsApi from '@/app/api/team/teampositions.api';
-import FileUploader from '@components/FileUploader/FileUploader.component';
-
-import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import validateSocialLink from '@/app/common/components/modals/validators/socialLinkValidator';
+import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import TeamLink from '@/features/AdminPage/TeamPage/TeamLink.component';
 import Audio from '@/models/media/audio.model';
 import Image from '@/models/media/image.model';
 
 import { UploadChangeParam } from 'antd/es/upload';
 import combinedImageValidator, { checkFile } from '@components/modals/validators/combinedImageValidator';
+        
+import SUCCESS_MESSAGES from '@/app/common/constants/success-messages.constants';
 import MODAL_MESSAGES from '@/app/common/constants/modal-messages.constants';
 import REQUIRED_FIELD_MESSAGES from '@/app/common/constants/required_field_messages.constrants';
 import { ERROR_MESSAGES } from '@/app/common/constants/error-messages.constants';
@@ -57,6 +59,8 @@ const TeamModal: React.FC<{
     const [waitingForApiResponse, setWaitingForApiResponse] = useState(false);
     const imageId = useRef<number>(0);
     const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
+    const warningTimeout = useRef<NodeJS.Timeout | null>(null);
+    const MAX_POSITION_LENGTH = 50;
 
     message.config({
         top: 100,
@@ -78,6 +82,23 @@ const TeamModal: React.FC<{
             PositionsApi.getAll().then((resp) => setPositions(resp.positions));
         }
     }, [open]);
+
+    const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        const inputValue = (event.target as HTMLInputElement).value;
+
+        if (inputValue.length > MAX_POSITION_LENGTH && event.key !== 'Backspace') {
+            event.preventDefault();
+
+            if (warningTimeout.current) {
+                return;
+            }
+
+            warningTimeout.current = setTimeout(() => {
+                message.warning(`Максимальна довжина — ${MAX_POSITION_LENGTH} символів`);
+                warningTimeout.current = null;
+            }, 500);
+        }
+    };
 
     useEffect(() => {
         setIsMain(teamMember ? teamMember.isMain : false);
@@ -162,7 +183,7 @@ const TeamModal: React.FC<{
         }
     };
 
-    const onSuccesfulSubmitLinks = (formValues: any) => {
+    const onSuccessfulSubmitLinks = (formValues: any) => {
         const url = formValues.url as string;
         const socialName = teamLinksForm.getFieldValue('logotype');
         const logotype = SOCIAL_OPTIONS.find((opt) => opt.value === socialName)?.logo;
@@ -184,7 +205,7 @@ const TeamModal: React.FC<{
         try {
             await form.validateFields();
             setWaitingForApiResponse(true);
-            await form.submit();
+            form.submit();
             setIsSaveButtonDisabled(true);
         } catch (error) {
             message.error(VALIDATION_MESSAGES.INVALID_VALIDATION);
@@ -236,14 +257,14 @@ const TeamModal: React.FC<{
         }
     };
 
+    const handleInputChange = () => {
+        setIsSaveButtonDisabled(false);
+    };
+
     const handleCheckboxChange = (e: { target: { checked: boolean | ((prevState: boolean) => boolean); }; }) => {
         setIsMain(e.target.checked);
         handleInputChange();
     };
-
-	  const handleInputChange = () => {
-	  	setIsSaveButtonDisabled(false);
-  	}
 
     const handleFileChange = async (param: UploadChangeParam<UploadFile<unknown>>) => {
         if (await checkFile(param.file)) {
@@ -269,13 +290,13 @@ const TeamModal: React.FC<{
                 <Form
                     form={form}
                     layout="vertical"
-                    onFinish={onSuccesfulSubmitPosition}
+                    onFinish={onSuccessfulSubmitPosition}
                 >
                     <div className="center">
                         <h2>
                             {teamMember ? 'Редагувати' : 'Додати'}
                             {' '}
-                            нового члена команди
+                            члена команди
                         </h2>
                     </div>
                     <div className="checkbox-container">
@@ -297,7 +318,7 @@ const TeamModal: React.FC<{
                     <Form.Item label="Позиції">
                         <div className="tags-block-positionitems">
                             <Select
-                                aria-label='Позиції'
+                                aria-label="Позиції"
                                 className="positions-select-input"
                                 onSelect={onPositionSelect}
                                 mode="tags"
@@ -305,6 +326,7 @@ const TeamModal: React.FC<{
                                 value={selectedPositions.map((x) => x.position)}
                                 onChange={handleInputChange}
                                 options={positions.map((t) => ({ value: t.position, label: t.position }))}
+                                onInputKeyDown={handleInputKeyDown}
                             />
                         </div>
                     </Form.Item>
@@ -357,7 +379,7 @@ const TeamModal: React.FC<{
             <Form
                 layout="vertical"
                 form={teamLinksForm}
-                onFinish={onSuccesfulSubmitLinks}
+                onFinish={onSuccessfulSubmitLinks}
                 data-testid="link-form"
             >
                 <div className="team-source-list">
@@ -372,10 +394,9 @@ const TeamModal: React.FC<{
                             <DeleteOutlined
                                 onClick={() => {
                                     setTeamSourceLinks(teamSourceLinks
-                                        .filter((l) => l.id !== link.id))
+                                        .filter((l) => l.id !== link.id));
                                     handleInputChange();
-                                }
-                                }
+                                }}
                             />
                         </div>
                     ))}
@@ -388,7 +409,7 @@ const TeamModal: React.FC<{
                         style={{ minWidth: '135px' }}
                     >
                         <Select
-                            aria-label='Соціальна мережа'
+                            aria-label="Соціальна мережа"
                             data-testid="logotype-select"
                             options={SOCIAL_OPTIONS}
                             onChange={() => teamLinksForm.validateFields(['url'])}
@@ -432,15 +453,16 @@ const TeamModal: React.FC<{
 
                 <div className="center">
                     <Button
-                        disabled={isSaveButtonDisabled || fileList.length === 0} 
+                        disabled={isSaveButtonDisabled || fileList.length === 0}
                         className="streetcode-custom-button"
                         onClick={handleOk}
                     >
-                        Зберегти
+                        {BUTTON_LABELS.SAVE}
                     </Button>
                 </div>
             </Form>
         </Modal>
     );
 });
+
 export default TeamModal;

@@ -8,10 +8,12 @@ import useMobx from '@stores/root-store';
 import { Button, Form, Input, message, Modal, Popover, UploadFile } from 'antd';
 import normaliseWhitespaces from '@/app/common/utils/normaliseWhitespaces';
 import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
+
 import VALIDATION_MESSAGES from '@/app/common/constants/validation-messages.constants';
 import SUCCESS_MESSAGES from '@/app/common/constants/success-messages.constants';
 import REQUIRED_FIELD_MESSAGES from '@/app/common/constants/required_field_messages.constrants';
 import MODAL_MESSAGES from '@/app/common/constants/modal-messages.constants';
+import BUTTON_LABELS from "@constants/buttonLabels";
 
 interface ContextAdminProps {
     setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -124,7 +126,7 @@ const ContextAdminModalComponent: React.FC<ContextAdminProps> = observer(({
                     onKeyDown={(e) => e.key === 'Enter' ? e.preventDefault() : ''}
                 >
                     <div className="center">
-                        <h2>{isEditing ? 'Редагувати контекст' : 'Додати новий контекст'}</h2>
+                        <h2>{isEditing ? 'Редагувати контекст' : 'Додати контекст'}</h2>
                     </div>
                     <Form.Item
                         name="title"
@@ -139,11 +141,11 @@ const ContextAdminModalComponent: React.FC<ContextAdminProps> = observer(({
 
                     <div className="center">
                         <Button
-								            disabled={isSaveButtonDisabled}
+							disabled={isSaveButtonDisabled}
                             className="streetcode-custom-button"
                             onClick={() => handleOk()}
                         >
-                            Зберегти
+                            {BUTTON_LABELS.SAVE}
                         </Button>
                     </div>
                 </Form>
