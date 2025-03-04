@@ -27,20 +27,6 @@ const NewsApi = {
 
         return Agent.get<{ totalAmount: number, news: News[] }>(`${API_ROUTES.NEWS.GET_ALL}`, searchParams);
     },
-
-    getAllPublished: (page?: number, pageSize?: number) => {
-        const params = Object.entries({
-            page: page?.toString() ?? '',
-            pageSize: pageSize?.toString() ?? '',
-        });
-
-        const queryParams = params.filter(p => !!p[1]);
-
-        const searchParams = new URLSearchParams(queryParams);
-
-        return Agent.get<{totalAmount: number, news: News[]}>(
-            `${API_ROUTES.NEWS.GET_ALL_PUBLISHED}`, searchParams)
-    },
       
     create: (news: NewsCreate) => (
         Agent.post<News>(`${API_ROUTES.NEWS.CREATE}`, news)
