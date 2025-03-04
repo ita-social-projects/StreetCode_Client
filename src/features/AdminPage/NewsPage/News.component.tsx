@@ -75,7 +75,7 @@ const Newss: React.FC = observer(() => {
                     <p>{value ? dayjs(value).format('YYYY-MM-DD') : ''}</p>
                     {value && dayjs(value).isAfter(dayjs()) && 
                      <Popover content={"Заплановано"} trigger="hover">
-                        <InfoCircleOutlined style={{ width: '0.8em', height: '0.8em' }} />
+                        <InfoCircleOutlined className='info-circle-for-planed-content'/>
                     </Popover>
                     }
                 </div>
