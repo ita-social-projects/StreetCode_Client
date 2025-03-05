@@ -8,7 +8,7 @@ import StreetcodesTable from './StreetcodesTable/StreetcodesTable.component';
 const AdminPage = () => (
     <div className="adminPageContainer">
         <Helmet>
-            <title>Панель адміна | Streetcode</title>
+            <title>Панель адміна | Historycode</title>
             <meta name="description" content="Це сторінка адміна, де ти можеш керувати та налаштовувати інформацію на сайті." />
         </Helmet>
         <PageBar />

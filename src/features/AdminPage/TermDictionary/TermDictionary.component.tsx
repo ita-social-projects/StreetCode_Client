@@ -119,7 +119,7 @@ const TermDictionary = () => {
     return (
         <div className="termDictionaryCover">
             <div className="wrapper">
-                <PageBar />
+            <PageBar />
                 <div className="termDictionaryContainer">
                     <div className="dictionaryHeader">
                         <h1>Словник термінів</h1>
