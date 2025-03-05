@@ -31,7 +31,6 @@ const UserProfile = () => {
 
     const [editForm] = Form.useForm();
 
-    const { userStore, imagesStore } = useMobx();
     const { user } = userStore;
 
     const buttonConfigs = [

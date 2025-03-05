@@ -9,8 +9,7 @@ import { useLocation, useNavigate, useParams, useSearchParams } from 'react-rout
 import Loader from '@components/Loader/Loader.component';
 import ScrollToTopBtn from '@components/ScrollToTopBtn/ScrollToTopBtn.component';
 import ProgressBar from '@features/ProgressBar/ProgressBar.component';
-import { streetcodeDataStore, useModalContext, useStreetcodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
-import { useModalContext, useStreecodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
+import { useModalContext, useStreetcodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
 import DonateBtn from '@streetcode/DonateBtn/DonateBtn.component';
 import MainBlock from '@streetcode/MainBlock/MainBlock.component';
 import QRBlock from '@streetcode/QRBlock/QR.component';

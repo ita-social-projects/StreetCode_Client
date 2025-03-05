@@ -6,7 +6,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import useMobx from '@stores/root-store';
-import { useAudioContext, useModalContext, useStreetcodePageLoaderContext } from '@stores/root-store';
+import { useModalContext } from '@stores/root-store';
 
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
@@ -23,7 +23,6 @@ interface Props {
 const StreetcodeCatalogItem = ({ streetcode, isLast, handleNextScreen }: Props) => {
     const id = streetcode?.id;
     const { modalStore: { setModal } } = useModalContext();
-    const streecodePageLoaderContext = useStreetcodePageLoaderContext();
     const { imagesStore } = useMobx();
     const [imagesForSlider, setImagesForSlider] = useState<Image>();
     const elementRef = useRef<HTMLDivElement>(null);
