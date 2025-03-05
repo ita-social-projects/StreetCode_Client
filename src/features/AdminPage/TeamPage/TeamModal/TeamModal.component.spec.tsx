@@ -7,6 +7,7 @@ import Position from '@/models/additional-content/teampositions.model';
 import { message } from 'antd';
 import 'jest-canvas-mock';
 import Image, { ImageCreate } from '@/models/media/image.model';
+import BUTTON_LABELS from "@constants/buttonLabels";
 
 export default function overrideMatchMedia() {
     Object.defineProperty(window, 'matchMedia', {
@@ -170,7 +171,7 @@ describe('TeamModal', () => {
 
         const nameInput = screen.getByRole('textbox', { name: /Прізвище та ім'я:/i });
         const photoInput = screen.getByTestId('fileuploader');
-        const createButton = screen.getByRole('button', { name: /Зберегти/i });
+        const createButton = screen.getByRole('button', { name: BUTTON_LABELS.SAVE });
 
         act(() => {
             userEvent.type(nameInput, 'Test Name');
@@ -216,7 +217,7 @@ describe('TeamModal', () => {
         const checkbox = screen.getByRole('checkbox', { name: /Ключовий член команди/i });
         const descriptionInput = screen.getByRole('textbox', { name: /Опис:/i });
         const photoInput = screen.getByTestId('fileuploader');
-        const createButton = screen.getByRole('button', { name: /Зберегти/i });
+        const createButton = screen.getByRole('button', { name: BUTTON_LABELS.SAVE });
 
         act(() => {
             userEvent.click(checkbox);
@@ -247,7 +248,7 @@ describe('TeamModal', () => {
         const checkbox = screen.getByRole('checkbox', { name: /Ключовий член команди/i });
         const nameInput = screen.getByRole('textbox', { name: /Прізвище та ім'я:/i });
         const descriptionInput = screen.getByRole('textbox', { name: /Опис:/i });
-        const createButton = screen.getByRole('button', { name: /Зберегти/i });
+        const createButton = screen.getByRole('button', { name: BUTTON_LABELS.SAVE });
 
         act(() => {
             userEvent.click(checkbox);
@@ -275,7 +276,7 @@ describe('TeamModal', () => {
         const socialInput = screen.getByRole('combobox', { name: /Соціальна мережа/i });
         const linkInput = screen.getByRole('textbox', { name: /Посилання/i });
         const linkAddButton = screen.getByRole('button', { name: /plus/i });
-        const createButton = screen.getByRole('button', { name: /Зберегти/i });
+        const createButton = screen.getByRole('button', { name: BUTTON_LABELS.SAVE });
 
         await waitFor(() => {
             userEvent.selectOptions(positionInput, 'pos1');

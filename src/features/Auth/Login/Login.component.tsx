@@ -84,7 +84,8 @@ const Login: React.FC = () => {
                         },
                         {
                             validator: validateEmail,
-                        }]}
+                        },
+                    ]}
                 >
                     <Input className="loginInput" maxLength={128} placeholder="Електронна пошта" />
                 </Form.Item>
@@ -95,7 +96,8 @@ const Login: React.FC = () => {
                     rules={[
                         {
                             required: true, message: 'Введіть пароль',
-                        }]}
+                        },
+                    ]}
                 >
                     <Input.Password className="passwordInput" placeholder="Пароль" />
                 </Form.Item>

@@ -7,6 +7,7 @@ import ContextsApi from '@api/additional-content/contexts.api';
 import ContextAdminModalComponent from '@features/AdminPage/ContextPage/ContextModal/ContextAdminModal.component';
 import { message } from 'antd';
 import overrideMatchMedia from '@features/AdminPage/ContextPage/ContextMainPage.component.spec';
+import BUTTON_LABELS from "@constants/buttonLabels";
 
 overrideMatchMedia();
 
@@ -69,8 +70,8 @@ describe('ContextAdminModal', () => {
         render(<ContextAdminModalComponent isModalVisible={true} setIsModalOpen={() => {
         }}/>);
 
-        const nameInput = screen.getByRole('textbox', {name: /назва:/i});
-        const button = screen.getByRole('button', {name: /зберегти/i});
+        const nameInput = screen.getByRole('textbox', { name: /назва:/i });
+        const button = screen.getByRole('button', { name: BUTTON_LABELS.SAVE });
 
         act(() => {
             userEvent.type(nameInput, 'New Context');
@@ -90,8 +91,8 @@ describe('ContextAdminModal', () => {
         render(<ContextAdminModalComponent isModalVisible={true} setIsModalOpen={() => {
         }} initialData={{id: 1, title: 'Old Context'} as Context}/>);
 
-        const nameInput = screen.getByRole('textbox', {name: /назва:/i});
-        const button = screen.getByRole('button', {name: /зберегти/i});
+        const nameInput = screen.getByRole('textbox', { name: /назва:/i });
+        const button = screen.getByRole('button', { name: BUTTON_LABELS.SAVE });
 
         await waitFor(() => {
             expect(nameInput).toHaveValue('Old Context');
@@ -115,8 +116,8 @@ describe('ContextAdminModal', () => {
         render(<ContextAdminModalComponent isModalVisible={true} setIsModalOpen={() => {
         }}/>);
 
-        const nameInput = screen.getByRole('textbox', {name: /назва:/i}) as HTMLInputElement;
-        const button = screen.getByRole('button', {name: /зберегти/i});
+        const nameInput = screen.getByRole('textbox', { name: /назва:/i }) as HTMLInputElement;
+        const button = screen.getByRole('button', { name: BUTTON_LABELS.SAVE });
 
         act(() => {
             userEvent.type(nameInput, '   ');
