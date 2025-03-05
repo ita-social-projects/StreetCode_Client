@@ -2,10 +2,15 @@
 
 import React, { useState } from 'react';
 import PasswordChecklist from 'react-password-checklist';
+import validatePatternPassword from '@utils/userValidators/validatePassword';
 
 import { Form, Input } from 'antd';
 
-const Password = () => {
+interface Props {
+    onPasswordValid: (field: boolean) => void;
+}
+
+const Password = ({ onPasswordValid } : Props) => {
     const [password, setPassword] = useState('');
     const [passwordRepeat, setPasswordRepeat] = useState('');
 
@@ -17,6 +22,10 @@ const Password = () => {
         setPasswordRepeat(event.target.value);
     };
 
+    const validatePassword = (isValid: boolean) => {
+        onPasswordValid(isValid);
+    };
+
     return (
         <>
             <Form.Item
@@ -25,6 +34,9 @@ const Password = () => {
                 rules={[
                     {
                         required: true, message: 'Введіть пароль',
+                    },
+                    {
+                        validator: validatePatternPassword(),
                     },
                 ]}
             >
@@ -48,6 +60,7 @@ const Password = () => {
                     specialChar: 'Пароль повинен містити принаймні один неалфавітно-цифровий символ',
                     match: 'Пароль співпадає',
                 }}
+                onChange={(isValid) => validatePassword(isValid)}
             />
             <Form.Item
                 wrapperCol={{ span: 24 }}
@@ -55,6 +68,9 @@ const Password = () => {
                 rules={[
                     {
                         required: true, message: 'Введіть пароль підтведження',
+                    },
+                    {
+                        validator: validatePatternPassword(),
                     },
                 ]}
             >

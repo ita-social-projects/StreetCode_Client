@@ -11,6 +11,7 @@ import SelectWithCustomSuffix from '@components/SelectWithCustomSuffix';
 import PreviewFileModal from '@features/AdminPage/NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
 import DeleteModal from '@features/UserProfile/DeleteModal/DeleteModal.component';
 import DeleteModalConfirm from '@features/UserProfile/DeleteModalConfirm/DeleteModalConfirm.component';
+import DiscardChangesModal from '@features/UserProfile/DiscardChangesModal/DiscardChangesModal.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import Audio from '@models/media/audio.model';
 import Image from '@models/media/image.model';
@@ -19,13 +20,14 @@ import { UpdateUser } from '@models/user/user.model';
 import useMobx from '@stores/root-store';
 import base64ToUrl from '@utils/base64ToUrl.utility';
 import parsePhoneNumber from '@utils/parsePhoneNumber';
+import removeSpacesFromField from '@utils/removeSpacesFromField';
 import validateLength from '@utils/userValidators/validateLength';
 import validatePatternNameSurname from '@utils/userValidators/validatePatternNameSurname';
 import validatePatternUserName from '@utils/userValidators/validatePatternUserName';
 import validateRequired from '@utils/userValidators/validateRequired';
 
 import {
-    Button, ConfigProvider, Form, Input, message, Modal, Select,
+    Button, ConfigProvider, Form, FormInstance, Input, message, Modal, Select,
 } from 'antd';
 import { UploadFile } from 'antd/es/upload';
 import { UploadChangeParam } from 'antd/es/upload/interface';
@@ -34,17 +36,31 @@ import PhoneInput, { locale } from 'antd-phone-input';
 interface Props {
     isOpen: boolean
     onClose: () => void
+    onCloseWithoutChanges: () => void
     image: Image | undefined
+    onChange: () => Promise<void>
+    onDiscard: (confirm: boolean) => void
+    openDiscardModal: boolean
+    setOpenDiscardModal: (open: boolean) => void
+    form: FormInstance
+    valid: boolean
+    userFieldsChanged: boolean
 }
-const EditUserModal = ({ isOpen, onClose, image } : Props) => {
+const EditUserModal = ({
+    isOpen,
+    onClose,
+    onCloseWithoutChanges,
+    image,
+    onChange,
+    onDiscard,
+    openDiscardModal,
+    setOpenDiscardModal,
+    form,
+    valid,
+    userFieldsChanged,
+} : Props) => {
     const { userStore, imagesStore } = useMobx();
-    const [fileList, setFileList] = useState<UploadFile[]>(image ? [{
-        name: '',
-        thumbUrl: base64ToUrl(image.base64, image.mimeType),
-        uid: image.id ? image.id.toString() : '-1',
-        status: 'done',
-    }] : []);
-    const [form] = Form.useForm();
+
     const [emailForDeletion, setEmailForDeletion] = useState('');
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [showDeleteConfirmedModal, setShowDeleteConfirmedModal] = useState(false);
@@ -53,6 +69,12 @@ const EditUserModal = ({ isOpen, onClose, image } : Props) => {
     const [avatarId, setAvatarId] = useState<number | null>(image ? image.id : null);
     const [expertises, setExpertises] = useState<Expertise[]>([]);
     const [selectedExpertises, setSelectedExpertises] = useState(userStore.user?.expertises || []);
+    const [fileList, setFileList] = useState<UploadFile[]>(image ? [{
+        name: '',
+        thumbUrl: base64ToUrl(image.base64, image.mimeType),
+        uid: image.id ? image.id.toString() : '-1',
+        status: 'done',
+    }] : []);
 
     useAsync(async () => {
         const fetchExpertises = async () => {
@@ -99,9 +121,14 @@ const EditUserModal = ({ isOpen, onClose, image } : Props) => {
                 avatarId,
                 expertises: selectedExpertises,
             };
-            await userStore.updateUser(updatedData);
-            message.success('Профіль успішно оновлено');
-            onClose();
+            await userStore.updateUser(updatedData)
+                .then(() => {
+                    message.success('Профіль успішно оновлено');
+                })
+                .catch(() => {
+                    message.error('Сталася помилка при оновленні профілю');
+                });
+            onCloseWithoutChanges();
         } catch (info) {
             console.error('Validation Failed:', info);
         }
@@ -173,6 +200,7 @@ const EditUserModal = ({ isOpen, onClose, image } : Props) => {
                         ...userStore.user,
                         expertises: userStore.user?.expertises.map((x) => x.title),
                     }}
+                    onChange={onChange}
                 >
                     <div className="editFormImageWrapper">
                         <Form.Item
@@ -241,6 +269,7 @@ const EditUserModal = ({ isOpen, onClose, image } : Props) => {
                     <div className="editFormUserInfoWrapper">
                         <div className="formItemFirst">
                             <Form.Item
+                                normalize={removeSpacesFromField}
                                 className="formItem"
                                 label="Нікнейм"
                                 name="userName"
@@ -274,6 +303,7 @@ const EditUserModal = ({ isOpen, onClose, image } : Props) => {
                             </Form.Item>
                         </div>
                         <Form.Item
+                            normalize={removeSpacesFromField}
                             className="formItem"
                             label="Ім'я"
                             name="name"
@@ -290,6 +320,7 @@ const EditUserModal = ({ isOpen, onClose, image } : Props) => {
                             <Input minLength={2} maxLength={50} showCount />
                         </Form.Item>
                         <Form.Item
+                            normalize={removeSpacesFromField}
                             className="formItem"
                             label="Прізвище"
                             name="surname"
@@ -330,6 +361,7 @@ const EditUserModal = ({ isOpen, onClose, image } : Props) => {
                                     preferredCountries={['ua']}
                                 />
                             </Form.Item>
+                            <p className="phoneExample">Приклад: +380 90 567 45 45</p>
                         </ConfigProvider>
                         <Form.Item
                             className="formItem"
@@ -367,7 +399,7 @@ const EditUserModal = ({ isOpen, onClose, image } : Props) => {
                     </div>
                 </Form>
                 <div className="saveButton">
-                    <Button onClick={handleSubmit}>
+                    <Button disabled={!valid || !userFieldsChanged} onClick={handleSubmit}>
                     Зберегти зміни профілю
                     </Button>
                 </div>
@@ -415,6 +447,11 @@ const EditUserModal = ({ isOpen, onClose, image } : Props) => {
             <DeleteModalConfirm
                 emailForDeletion={emailForDeletion}
                 showDeleteConfirmedModal={showDeleteConfirmedModal}
+            />
+            <DiscardChangesModal
+                onDiscardConfirm={onDiscard}
+                isOpen={openDiscardModal}
+                setIsOpen={setOpenDiscardModal}
             />
             <PreviewFileModal file={filePreview} opened={previewOpen} setOpened={setPreviewOpen} />
         </>
