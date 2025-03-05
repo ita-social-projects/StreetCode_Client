@@ -2,21 +2,20 @@ import '@features/AdminPage/AdminModal.styles.scss';
 
 import CancelBtn from '@images/utils/Cancel_btn.svg';
 
-import React, {
-    Dispatch, SetStateAction, useEffect, useState
-} from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import BUTTON_LABELS from '@constants/buttonLabels';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import useMobx from '@stores/root-store';
 
 import {
-    Button, Form, Input, message, Modal, Popover
+    Button, Form, Input, message, Modal, Popover,
 } from 'antd';
 
-import Tag from '@/models/additional-content/tag.model';
-import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 import normaliseWhitespaces from '@/app/common/utils/normaliseWhitespaces';
 import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
-import BUTTON_LABELS from "@constants/buttonLabels";
+import Tag from '@/models/additional-content/tag.model';
+
+import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 
 interface SourceModalProps {
     isModalVisible: boolean;
@@ -34,7 +33,16 @@ const SourceModal: React.FC<SourceModalProps> = ({
     const { tagsStore } = useMobx();
     const [form] = Form.useForm();
     const isEditing = !!initialData;
-	const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
+    const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
+
+    const updateSaveButtonState = () => {
+        const title = form.getFieldValue('title')?.trim();
+        const isChanged = initialData ? initialData.title !== title : true;
+        const isEmpty = !title;
+        const isExisting = isEmpty ? false : tagsStore.getTagArray.some((tag) => tag.title === title);
+
+        setIsSaveButtonDisabled(!isChanged || isExisting || isEmpty);
+    };
 
     useAsync(() => tagsStore.fetchAllTags(), []);
 
@@ -47,24 +55,15 @@ const SourceModal: React.FC<SourceModalProps> = ({
         updateSaveButtonState();
     }, [initialData, isModalVisible, form]);
 
-    const updateSaveButtonState = () => {
-        const title = form.getFieldValue("title")?.trim();
-        const isChanged = initialData ? initialData.title !== title : true;
-        const isEmpty = !title;
-        const isExisting = isEmpty ? false : tagsStore.getTagArray.some(tag => tag.title === title);
-
-        setIsSaveButtonDisabled(!isChanged || isExisting || isEmpty);
-    }
-
     const closeModal = () => {
         setIsModalOpen(false);
-		setIsSaveButtonDisabled(true);
+        setIsSaveButtonDisabled(true);
     };
 
     const validateTag = uniquenessValidator(
-        ()=>(tagsStore.getTagArray.map((tag) => tag.title)), 
-        ()=>(initialData?.title), 
-        'Тег з такою назвою вже існує'
+        () => (tagsStore.getTagArray.map((tag) => tag.title)),
+        () => (initialData?.title),
+        'Тег з такою назвою вже існує',
     );
 
     const onSubmit = async (formData: any) => {
@@ -98,7 +97,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
             await form.validateFields();
             form.submit();
             message.success(`Тег успішно ${isEditing ? 'змінено' : 'додано'}!`, 2);
-			setIsSaveButtonDisabled(true);
+            setIsSaveButtonDisabled(true);
         } catch (error) {
             message.config({
                 top: 100,
@@ -111,48 +110,50 @@ const SourceModal: React.FC<SourceModalProps> = ({
     };
 
     return (
-        <>
-            <Modal
-                title={isEditing ? 'Редагувати тег' : 'Додати тег'}
-                open={isModalVisible}
-                onCancel={closeModal}
-                className="modalContainer"
-                closeIcon={(
-                    <Popover content={POPOVER_CONTENT.CANCEL} trigger="hover">
-                        <CancelBtn className="iconSize" onClick={handleCancel} />
-                    </Popover>
-                )}
-                footer={null}
+        <Modal
+            open={isModalVisible}
+            onCancel={closeModal}
+            className="modalContainer"
+            centered
+            closeIcon={(
+                <Popover content={POPOVER_CONTENT.CANCEL} trigger="hover">
+                    <CancelBtn className="iconSize" onClick={handleCancel} />
+                </Popover>
+            )}
+            footer={null}
+        >
+            <Form
+                form={form}
+                layout="vertical"
+                onFinish={onSubmit}
+                initialValues={initialData}
+                onKeyDown={(e) => (e.key === 'Enter' ? e.preventDefault() : '')}
+                onValuesChange={updateSaveButtonState}
             >
-                <Form
-                    form={form}
-                    layout="vertical"
-                    onFinish={onSubmit}
-                    initialValues={initialData}
-                    onKeyDown={(e) => e.key == "Enter" ? e.preventDefault() : ''}
-                    onValuesChange={updateSaveButtonState}>
-                    <Form.Item
-                        name="title"
-                        label="Назва: "
-                        rules={[{ required: true, message: 'Введіть назву' },
-                        { validator: validateTag }
-                        ]}
-                        getValueProps={(value: string) => ({ value: normaliseWhitespaces(value) })}
+                <div className="center">
+                    <h2>{isEditing ? 'Редагувати тег' : 'Додати тег'}</h2>
+                </div>
+                <Form.Item
+                    name="title"
+                    label="Назва: "
+                    rules={[{ required: true, message: 'Введіть назву' },
+                        { validator: validateTag },
+                    ]}
+                    getValueProps={(value: string) => ({ value: normaliseWhitespaces(value) })}
+                >
+                    <Input placeholder="Title" maxLength={50} showCount />
+                </Form.Item>
+                <div className="center">
+                    <Button
+                        className="streetcode-custom-button"
+                        disabled={isSaveButtonDisabled}
+                        onClick={() => handleOk()}
                     >
-                        <Input placeholder="Title" maxLength={50} showCount/>
-                    </Form.Item>
-                    <div className="center">
-                        <Button
-                            className="streetcode-custom-button"
-                            disabled={isSaveButtonDisabled}
-                            onClick={() => handleOk()}
-                        >
-                            {BUTTON_LABELS.SAVE}
-                        </Button>
-                    </div>
-                </Form>
-            </Modal>
-        </>
+                        {BUTTON_LABELS.SAVE}
+                    </Button>
+                </div>
+            </Form>
+        </Modal>
     );
 };
 
