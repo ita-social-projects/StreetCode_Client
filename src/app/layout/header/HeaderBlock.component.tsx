@@ -41,6 +41,7 @@ const HeaderBlock = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const navigator = useNavigate();
     const location = useLocation();
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     const isDesktop = useMediaQuery({
         query: '(min-width: 1025px)',
@@ -146,6 +147,16 @@ const HeaderBlock = () => {
         });
     };
 
+    useEffect(
+        () => {
+            const refreshToken = async () => {
+                setIsLoggedIn(await AuthService.refreshOnTokenExpiry());
+            };
+
+            refreshToken();
+        },
+    );
+
     return (
         <div className="HeaderBlock" ref={dimWrapperRef}>
             <div className={`navBarContainer ${isHeaderHidden ? 'hiddenNavBar' : ''} ${isPageDimmed ? 'dim' : ''}`}>
@@ -222,7 +233,7 @@ const HeaderBlock = () => {
                                 style={isPageDimmed ? { zIndex: '-1' } : undefined}
                             />
                         )}
-                        {AuthService.isLoggedIn() ? <UserMenu /> : (
+                        {isLoggedIn ? <UserMenu /> : (
                             <Button className="loginButton" onClick={navigateToLogin}>
                                 Вхід
                             </Button>

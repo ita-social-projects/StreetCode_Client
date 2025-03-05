@@ -82,7 +82,14 @@ const Login: React.FC = () => {
                 <Form.Item
                     wrapperCol={{ span: 24 }}
                     name="login"
-                    rules={[{ required: true, message: 'Введіть логін' }, { validator: validateEmail }]}
+                    rules={[
+                        {
+                            required: true, message: 'Введіть логін',
+                        },
+                        {
+                            validator: validateEmail,
+                        },
+                    ]}
                 >
                     <Input className="loginInput" maxLength={128} placeholder="Електронна пошта" />
                 </Form.Item>
@@ -90,7 +97,11 @@ const Login: React.FC = () => {
                 <Form.Item
                     wrapperCol={{ span: 24 }}
                     name="password"
-                    rules={[{ required: true, message: 'Введіть пароль' }]}
+                    rules={[
+                        {
+                            required: true, message: 'Введіть пароль',
+                        },
+                    ]}
                 >
                     <Input.Password className="passwordInput" placeholder="Пароль" />
                 </Form.Item>
@@ -129,11 +140,11 @@ const Login: React.FC = () => {
                             message.success('Успішна авторизація через Google!');
                             navigate(FRONTEND_ROUTES.BASE);
                         } catch (error) {
-                            message.error('Помилка входу через Google');
+                            message.error('Помилка входу через Google. Будь ласка, спробуйте ще раз.');
                         }
                     }}
                     onError={() => {
-                        message.error('Не вдалося увійти через Google');
+                        message.error('Помилка входу через Google. Будь ласка, спробуйте ще раз.');
                     }}
                     useOneTap
                 />
