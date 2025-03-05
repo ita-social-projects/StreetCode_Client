@@ -3,7 +3,7 @@ import './TimelineBlock.styles.scss';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
-import useMobx, { useStreecodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
+import useMobx, { useStreetcodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import TimelineSlideCard from '@streetcode/TimelineBlock/TimelineItem/TimelineItem.component';
 import TimelineReelOutline from '@streetcode/TimelineBlock/TimelineReelOutline/TimelineReelOutline.component';
@@ -15,7 +15,7 @@ import StreetcodeBlock from '@/models/streetcode/streetcode-blocks.model';
 
 const TimelineBlock = () => {
     const { timelineItemStore } = useMobx();
-    const streecodePageLoaderContext = useStreecodePageLoaderContext();
+    const streecodePageLoaderContext = useStreetcodePageLoaderContext();
     const { fetchTimelineItemsByStreetcodeId, getTimelineItemArray } = timelineItemStore;
     const { streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useStreetcodeDataContext();
     const [isScrolled, setIsScrolled] = useState<boolean>(false);

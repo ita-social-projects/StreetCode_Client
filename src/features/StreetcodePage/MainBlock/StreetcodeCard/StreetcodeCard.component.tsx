@@ -10,7 +10,7 @@ import BlockSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import { StreetcodeTag } from '@models/additional-content/tag.model';
 import Streetcode from '@models/streetcode/streetcode-types.model';
-import { useAudioContext, useModalContext, useStreecodePageLoaderContext, useStreetcodeDataContext }
+import { useAudioContext, useModalContext, useStreetcodePageLoaderContext, useStreetcodeDataContext }
     from '@stores/root-store';
 
 import { Button, Popover } from 'antd';
@@ -32,7 +32,7 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setShowAllTags }: Props) =
     const id = streetcode?.id;
     const { modalStore: { setModal, modalsState } } = useModalContext();
     const audioState = modalsState.audio;
-    const streecodePageLoaderContext = useStreecodePageLoaderContext();
+    const streecodePageLoaderContext = useStreetcodePageLoaderContext();
     const { fetchAudioByStreetcodeId, audio } = useAudioContext();
     const [arlink, setArlink] = useState('');
     const [audioIsLoaded, setAudioIsLoaded] = useState<boolean>(false);

@@ -66,7 +66,7 @@ const StreetcodesApi = {
         .post<StreetcodeCreate>(`${API_ROUTES.STREETCODES.CREATE}`, streetcode),
 
     createFavourite: (streetcodeId: number) => Agent
-        .post<number>(`${API_ROUTES.STREETCODES.CREATE_FAVOURITE}/${streetcodeId}`, Object),
+        .post<number>(`${API_ROUTES.STREETCODES.CREATE_FAVOURITE}/${streetcodeId}`, {}),
 
     update: (streetcode: StreetcodeUpdate) => Agent
         .put<StreetcodeUpdate>(`${API_ROUTES.STREETCODES.UPDATE}`, streetcode),

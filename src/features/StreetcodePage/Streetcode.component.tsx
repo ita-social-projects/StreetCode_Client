@@ -8,7 +8,7 @@ import { useInView } from 'react-intersection-observer';
 import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import ScrollToTopBtn from '@components/ScrollToTopBtn/ScrollToTopBtn.component';
 import ProgressBar from '@features/ProgressBar/ProgressBar.component';
-import { streetcodeDataStore, useModalContext, useStreecodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
+import { streetcodeDataStore, useModalContext, useStreetcodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
 import DonateBtn from '@streetcode/DonateBtn/DonateBtn.component';
 import MainBlock from '@streetcode/MainBlock/MainBlock.component';
 import QRBlock from '@streetcode/QRBlock/QR.component';
@@ -38,7 +38,7 @@ import StreetcodeBlock from '@/models/streetcode/streetcode-blocks.model';
 
 const StreetcodeContent = () => {
     const { streetcodeStore } = useStreetcodeDataContext();
-    const streecodePageLoaderContext = useStreecodePageLoaderContext();
+    const streecodePageLoaderContext = useStreetcodePageLoaderContext();
     const { setCurrentStreetcodeId } = streetcodeStore;
     const streetcodeUrl = useRef<string>(useRouteUrl());
     const [streetcodeUrlState, setStreetcodeUrlState] = useState(streetcodeUrl.current);

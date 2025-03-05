@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 import BlockSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import RelatedFigure from '@models/streetcode/related-figure.model';
-import useMobx, { useModalContext, useStreecodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
+import useMobx, { useModalContext, useStreetcodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import RelatedFigureItem from '@streetcode/RelatedFiguresBlock/RelatedFigureItem/RelatedFigureItem.component';
 
@@ -24,7 +24,7 @@ interface Props {
 
 const RelatedFiguresComponent = ({ setActiveTagId, setShowAllTags, streetcode }: Props) => {
     const { modalStore: { setModal } } = useModalContext();
-    const streecodePageLoaderContext = useStreecodePageLoaderContext();
+    const streecodePageLoaderContext = useStreetcodePageLoaderContext();
     const { relatedFiguresStore } = useMobx();
     const { getRelatedFiguresArray } = relatedFiguresStore;
     const { streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useStreetcodeDataContext();
