@@ -10,7 +10,7 @@ import BlockSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import { StreetcodeTag } from '@models/additional-content/tag.model';
 import Streetcode from '@models/streetcode/streetcode-types.model';
-import { useAudioContext, useModalContext, useStreetcodePageLoaderContext, useStreetcodeDataContext }
+import { useAudioContext, useModalContext, useStreetcodeDataContext, useStreetcodePageLoaderContext }
     from '@stores/root-store';
 
 import { Button, Popover } from 'antd';
@@ -137,18 +137,22 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setShowAllTags }: Props) =
                 {
                     isFavourite !== undefined ? (
                         isFavourite
-                            ? (<Popover
-                                content="Видалити з улюблених"
-                                trigger={'hover'}
-                            >
-                                <FaBookmark className="bookmark" onClick={deleteFromFavourites} />
-                            </Popover>)
-                            : (<Popover 
-                                content="Додати до улюблених"
-                                trigger={'hover'}
-                            >
-                                <FaRegBookmark className="bookmark" onClick={addToFavourites} />
-                            </Popover>)
+                            ? (
+                                <Popover
+                                    content="Видалити з улюблених"
+                                    trigger="hover"
+                                >
+                                    <FaBookmark className="bookmark" onClick={deleteFromFavourites} />
+                                </Popover>
+                            )
+                            : (
+                                <Popover
+                                    content="Додати до улюблених"
+                                    trigger="hover"
+                                >
+                                    <FaRegBookmark className="bookmark" onClick={addToFavourites} />
+                                </Popover>
+                            )
                     ) : null
                 }
                 <div className="streetcodeIndex">
