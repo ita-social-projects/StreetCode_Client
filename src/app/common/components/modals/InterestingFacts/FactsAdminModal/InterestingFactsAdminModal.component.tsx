@@ -6,12 +6,8 @@ import { InboxOutlined } from '@ant-design/icons';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import useMobx, { useModalContext } from '@stores/root-store';
 
-import { Button, Form, Modal, Upload } from 'antd';
+import { Form, Modal, Upload } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
-import { UploadFile } from 'antd/lib/upload/interface';
-
-import Image, { ImageCreate } from '@/models/media/image.model';
-import { Fact, FactCreate } from '@/models/streetcode/text-contents.model';
 
 const InterestingFactsModal = () => {
     const { modalStore } = useModalContext();
@@ -62,7 +58,6 @@ const InterestingFactsModal = () => {
                         </div>
                     </Upload>
                 </FormItem>
-                <Button className="saveButton" htmlType="submit">Зберегти</Button>
             </Form>
         </Modal>
     );

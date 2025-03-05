@@ -1,6 +1,7 @@
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/_utils.functions.scss" as f;
 @use "@sass/variables/_variables.colors.scss" as c;
+@use "@assets/sass/variables/_variables.fonts.scss" as ft;
 
 $bgImg: '@assets/images/streetcode-card/background.webp';
 
@@ -52,7 +53,7 @@ $bgImg: '@assets/images/streetcode-card/background.webp';
     }
 
     @media (min-width: 768px) and (max-width: 1024px) {
-        height: 100%;
+        height: auto;
     }
 
     @media screen and (max-width: 1300px) {
@@ -102,11 +103,6 @@ $bgImg: '@assets/images/streetcode-card/background.webp';
         margin-bottom: f.pxToRem(30px);
     }
 
-    .slick-initialized .slick-slide {
-        @include mut.flexed(row, center, center, wrap);
-        @include mut.rem-margined($top: 0px, $right: 20px, $bottom: 10px, $left: 0px);
-    }
-
     .slick-track {
         display: flex !important;
         flex-wrap: nowrap !important;
@@ -133,10 +129,11 @@ $bgImg: '@assets/images/streetcode-card/background.webp';
         cursor: pointer;
         background-color: c.$accented-red-color;
         color: c.$pure-white-color;
-        font-family: Roboto;
-        font-size: 14px;
-        font-style: normal;
-        font-weight: 500;
+        @include mut.with-font(
+            $font-family: ft.$roboto-font,
+            $font-weight: 500,
+            $font-size: 14px,
+            $font-style: normal);
         line-height: normal;
 
         &:hover {

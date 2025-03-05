@@ -14,6 +14,7 @@ import { Form } from 'antd';
 import { mockCreateNews, mockUpdateNews } from '../../../../../__mocks__/@stores/root-store';
 import News from '@/models/news/news.model';
 import React from 'react';
+import BUTTON_LABELS from "@constants/buttonLabels";
 
 Object.defineProperty(window, 'matchMedia', {
     writable: true,
@@ -100,7 +101,7 @@ describe('NewsModal', () => {
         const setIsModalOpen = jest.fn();
         render(<NewsModal open setIsModalOpen={setIsModalOpen} />);
 
-        expect(screen.getByRole('button', { name: /Зберегти/i })).toBeDisabled();
+        expect(screen.getByRole('button', { name: BUTTON_LABELS.SAVE })).toBeDisabled();
     });
 
     it('should close when clicked on close button', () => {
@@ -129,7 +130,7 @@ describe('NewsModal', () => {
         const urlInput = screen.getByLabelText('Транслітерація для URL:') as HTMLInputElement;
         const textInput = screen.getByTestId('mockEditor') as HTMLTextAreaElement;
         const fileUpload = screen.getByTestId('fileuploader') as HTMLInputElement;
-        const button = screen.getByRole('button', { name: 'Зберегти' });
+        const button = screen.getByRole('button', { name: BUTTON_LABELS.SAVE });
 
         const file = new File(['test'], 'test.png', { type: 'image/png' });
 
@@ -242,7 +243,7 @@ describe('NewsModal', () => {
         const titleInput = screen.getByLabelText('Заголовок:') as HTMLInputElement;
         const urlInput = screen.getByLabelText('Транслітерація для URL:') as HTMLInputElement;
         const dateInput = screen.getByRole('textbox', { name: "date" }) as HTMLInputElement;
-        const button = screen.getByRole('button', { name: 'Зберегти' });
+        const button = screen.getByRole('button', { name: BUTTON_LABELS.SAVE });
 
         userEvent.clear(titleInput);
         userEvent.type(titleInput, 'Test Title');

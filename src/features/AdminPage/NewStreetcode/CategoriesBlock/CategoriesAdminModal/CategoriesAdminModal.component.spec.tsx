@@ -7,6 +7,7 @@ import { act } from 'react-dom/test-utils';
 import { Form, message } from 'antd';
 import { store } from '../../../../../../__mocks__/@stores/root-store';
 import { useEffect, useState } from 'react';
+import BUTTON_LABELS from "@constants/buttonLabels";
 
 export default function overrideMatchMedia() {
     Object.defineProperty(window, 'matchMedia', {
@@ -139,7 +140,7 @@ describe('CategoriesAdminModal', () => {
     it('should disable save button before input', () => {
         render(<CategoriesModal {...defaultProps} />);
 
-        expect(screen.getByRole('button', { name: 'Зберегти' })).toBeDisabled();
+        expect(screen.getByRole('button', { name: BUTTON_LABELS.SAVE })).toBeDisabled();
     });
 
     it('should close the modal', async () => {
@@ -172,7 +173,7 @@ describe('CategoriesAdminModal', () => {
         const character_limit = 100;
         render(<CategoriesModal {...defaultProps} character_limit={character_limit} />);
 
-        const saveButton = screen.getByRole('button', { name: 'Зберегти' });
+        const saveButton = screen.getByRole('button', { name: BUTTON_LABELS.SAVE });
 
         act(() => {
             fireEvent.change(screen.getByRole('combobox'), { target: { value: "first" } });
@@ -194,7 +195,7 @@ describe('CategoriesAdminModal', () => {
     it('should reject empty input', async () => {
         render(<CategoriesModal {...defaultProps} />);
 
-        const saveButton = screen.getByRole('button', { name: 'Зберегти' });
+        const saveButton = screen.getByRole('button', { name: BUTTON_LABELS.SAVE });
 
         act(() => {
             fireEvent.change(screen.getByRole('combobox'), { target: { value: "first" } });
@@ -216,7 +217,7 @@ describe('CategoriesAdminModal', () => {
     it('should create new category', async () => {
         render(<CategoriesModal {...defaultProps} />);
 
-        const saveButton = screen.getByRole('button', { name: 'Зберегти' });
+        const saveButton = screen.getByRole('button', { name: BUTTON_LABELS.SAVE });
 
         act(() => {
             fireEvent.change(screen.getByRole('combobox'), { target: { value: "1" } });

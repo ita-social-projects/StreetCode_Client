@@ -3,11 +3,11 @@ import './InterestingFactsAdminItem.style.scss';
 import { observer } from 'mobx-react-lite';
 import { useCallback, useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
 import { Fact } from '@models/streetcode/text-contents.model';
-import useMobx from '@stores/root-store';
+import useMobx, { useModalContext } from '@stores/root-store';
 
-import { Modal } from 'antd';
-
+// eslint-disable-next-line no-restricted-imports
 import InterestingFactsAdminModal from '../FactsAdminModal/InterestingFactsAdminModal.component';
 
 interface Props {
@@ -16,15 +16,19 @@ interface Props {
 }
 const InterestingFactAdminItem = ({ fact, onChange }: Props) => {
     const { factsStore } = useMobx();
+    const { modalStore } = useModalContext();
     const [openModal, setModalOpen] = useState<boolean>(false);
-    const [visibleModal, setVisibleModal] = useState(false);
 
     const handleRemove = useCallback(() => {
-        setVisibleModal(true);
-    }, []);
-
-    const handleCancelModalRemove = useCallback(() => {
-        setVisibleModal(false);
+        modalStore.setConfirmationModal(
+            'confirmation',
+            () => {
+                factsStore.deleteFactFromMap(fact.id);
+                onChange('fact', fact);
+                modalStore.setConfirmationModal('confirmation');
+            },
+            CONFIRMATION_MESSAGES.DELETE_WOW_FACT,
+        );
     }, []);
 
     return (
@@ -47,15 +51,6 @@ const InterestingFactAdminItem = ({ fact, onChange }: Props) => {
                         onChange={onChange}
                     />
                 </div>
-                <Modal
-                    title="Ви впевнені, що хочете видалити даний Wow-факт?"
-                    open={visibleModal}
-                    onOk={(e) => {
-                        factsStore.deleteFactFromMap(fact.id); setVisibleModal(false);
-                        onChange('fact', fact);
-                    }}
-                    onCancel={handleCancelModalRemove}
-                />
             </div>
         </div>
     );

@@ -10,6 +10,7 @@ import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { store, timelineExample } from '../../../../../../__mocks__/@stores/root-store';
 import TimelineItem, { DateViewPattern, HistoricalContextUpdate } from '@/models/timeline/chronology.model';
+import BUTTON_LABELS from "@constants/buttonLabels";
 
 export default function overrideMatchMedia() {
     Object.defineProperty(window, 'matchMedia', {
@@ -165,7 +166,7 @@ describe('NewTimelineModal', () => {
         });
 
         await waitFor(() => {
-            expect(screen.getByRole('button', { name: /Зберегти/i })).toBeDisabled();
+            expect(screen.getByRole('button', { name: BUTTON_LABELS.SAVE })).toBeDisabled();
         });
     });
 
@@ -206,7 +207,7 @@ describe('NewTimelineModal', () => {
             historicalContexts: [],
         };
 
-        const saveButton = screen.getByRole('button', { name: /Зберегти/i });
+        const saveButton = screen.getByRole('button', { name: BUTTON_LABELS.SAVE });
 
         // Act
         await waitFor(() => {
