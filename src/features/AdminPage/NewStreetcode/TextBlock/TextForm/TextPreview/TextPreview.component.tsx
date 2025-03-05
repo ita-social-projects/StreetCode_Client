@@ -21,12 +21,15 @@ const TextPreview = ({ inputInfo }: Props) => {
         setText(undefined);
         if (!disabled) {
             setLoading(true);
-            const buffer = inputInfo?.textContent?.replaceAll('\n', '').replaceAll('"', '`');
+            let buffer = inputInfo?.textContent?.replaceAll('\n', '').replaceAll('"', '`');
             const content: TextPreviewContent = {
                 textContent: buffer ?? '',
             };
-            setText(buffer);
-            setLoading(false);
+            TextsApi.updateParsed(content).then((x) => {
+                buffer = x?.replaceAll('`', '"').toString();
+                setText(buffer);
+            }).catch()
+                .finally(() => setLoading(false));
         }
     }, [disabled]);
 

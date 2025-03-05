@@ -1,7 +1,7 @@
 ﻿import './UserProfile.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import defaultAvatar from '@assets/images/user-profile/default-avatar.webp';
 import Bookmark from '@assets/images/utils/bookmark.svg';
 import Calendar from '@assets/images/utils/calendar-regular.svg';
@@ -13,21 +13,54 @@ import { useAsync } from '@hooks/stateful/useAsync.hook';
 import useMobx from '@stores/root-store';
 import base64ToUrl from '@utils/base64ToUrl.utility';
 
-import { Button } from 'antd';
+import { Button, Form } from 'antd';
 
 import FavouritesCatalog from './FavouritesCatalog/FavouritesCatalog.component';
 
 const UserProfile = () => {
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [activeButton, setActiveButton] = useState<number>(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { userStore, imagesStore, favouritesCatalogStore } = useMobx();
+    const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
+    const [isValid, setIsValid] = useState<boolean>(false);
+
+    const [isUserFieldsChanged, setIsUserFieldsChanged] = useState<boolean>(false);
+    const [isDiscardConfirmed, setIsDiscardConfirmed] = useState<boolean>(false);
+    const [isDiscardModalOpen, setIsDiscardModalOpen] = useState<boolean>(false);
+
+    const [editForm] = Form.useForm();
+
+    const { userStore, imagesStore } = useMobx();
     const { user } = userStore;
+
     const buttonConfigs = [
         { label: 'Календар', icon: Calendar, component: '' },
         { label: 'Панель', icon: Pencil, component: '' },
         { label: 'Улюблені', icon: Bookmark, component: <FavouritesCatalog /> },
     ];
+
+    useEffect(() => {
+        if (isDiscardConfirmed) {
+            setIsEditModalOpen(false);
+            setIsDiscardModalOpen(false);
+            setIsDiscardConfirmed(false);
+            setIsUserFieldsChanged(false);
+            editForm.resetFields();
+        }
+    }, [isDiscardConfirmed, editForm]);
+
+    useEffect(() => {
+        if (isUserFieldsChanged && !isDiscardConfirmed) {
+            window.onbeforeunload = () => true;
+        } else {
+            window.onbeforeunload = null;
+        }
+
+        return () => {
+            window.onbeforeunload = null;
+        };
+    }, [isUserFieldsChanged, isDiscardConfirmed]);
 
     useAsync(async () => {
         setIsLoading(true);
@@ -51,11 +84,32 @@ const UserProfile = () => {
     };
 
     const handleEditProfile = () => {
-        setIsModalOpen(true);
+        setIsEditModalOpen(true);
     };
 
-    const handleCloseModal = () => {
-        setIsModalOpen(false);
+    const handleCloseEditModal = () => {
+        if (isUserFieldsChanged && !isDiscardConfirmed) {
+            setIsDiscardModalOpen(true);
+            return;
+        }
+
+        setIsEditModalOpen(false);
+        editForm.resetFields();
+    };
+
+    const handleCloseEditModalWithoutChanges = () => {
+        setIsEditModalOpen(false);
+        setIsUserFieldsChanged(false);
+        editForm.resetFields();
+    };
+
+    const handleUserFieldsChanged = async () => {
+        setIsUserFieldsChanged(true);
+        await editForm.validateFields().then(() => {
+            setIsValid(true);
+        }).catch(() => {
+            setIsValid(false);
+        });
     };
 
     return (
@@ -148,12 +202,20 @@ const UserProfile = () => {
                         </div>
                     </div>
                 </div>
-                {isModalOpen
+                {isEditModalOpen
                 && (
                     <EditUserModal
-                        isOpen={isModalOpen}
-                        onClose={handleCloseModal}
+                        isOpen={isEditModalOpen}
+                        onClose={handleCloseEditModal}
                         image={user?.avatarId ? imagesStore.getImage(user.avatarId) : undefined}
+                        onChange={handleUserFieldsChanged}
+                        onCloseWithoutChanges={handleCloseEditModalWithoutChanges}
+                        onDiscard={setIsDiscardConfirmed}
+                        openDiscardModal={isDiscardModalOpen}
+                        setOpenDiscardModal={setIsDiscardModalOpen}
+                        form={editForm}
+                        valid={isValid}
+                        userFieldsChanged={isUserFieldsChanged}
                     />
                 )}
             </div>
