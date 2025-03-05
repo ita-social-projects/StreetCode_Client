@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import BlockSlider from '@features/SlickSlider/InterestingFactSliderSlickSlider.component';
 import Image from '@models/media/image.model';
-import useMobx, { useModalContext, useStreecodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
+import useMobx, { useModalContext, useStreetcodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import InterestingFactItem from '@streetcode/InterestingFactsBlock/InterestingFactItem/InterestingFactItem.component';
 
@@ -17,7 +17,7 @@ import { Fact } from '@/models/streetcode/text-contents.model';
 
 const InterestingFactsComponent = () => {
     const { streetcodeStore } = useStreetcodeDataContext();
-    const streecodePageLoaderContext = useStreecodePageLoaderContext();
+    const streecodePageLoaderContext = useStreetcodePageLoaderContext();
     const { factsStore } = useMobx();
     const { getStreetCodeId, errorStreetCodeId } = streetcodeStore;
     const [sliderArray, setSliderArray] = useState<Fact[]>([]);
