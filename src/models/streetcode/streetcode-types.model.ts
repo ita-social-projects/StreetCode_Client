@@ -5,12 +5,12 @@ import Audio, { AudioUpdate } from '@models/media/audio.model';
 import Image, { ImageCreateUpdate, ImageDetails } from '@models/media/image.model';
 import { StreetcodeArtSlideCreateUpdate } from '@models/media/streetcode-art-slide.model';
 import Video, { VideoCreate } from '@models/media/video.model';
-import StreetcodePartner, { PartnerShort, PartnerUpdate } from '@models/partners/partners.model';
+import StreetcodePartner, { PartnerUpdate } from '@models/partners/partners.model';
 import { SourceLink, StreetcodeCategoryContent, StreetcodeCategoryContentUpdate } from '@models/sources/sources.model';
 import RelatedFigure, { RelatedFigureCreateUpdate, RelatedFigureUpdate } from '@models/streetcode/related-figure.model';
 import TimelineItem, { TimelineItemUpdate } from '@models/timeline/chronology.model';
 import Toponym, { ToponymCreateUpdate } from '@models/toponyms/toponym.model';
-import { TransactionLink, TransactionLinkUpdate } from '@models/transactions/transaction-link.model';
+import { TransactionLink } from '@models/transactions/transaction-link.model';
 
 import StreetcodeCoordinate from '../additional-content/coordinate.model';
 import StatisticRecord, { StatisticRecordUpdate } from '../analytics/statisticrecord.model';
@@ -47,6 +47,15 @@ export default interface Streetcode extends EventStreetcode, PersonStreetcode {
     observers: RelatedFigure[];
     targets: RelatedFigure[];
     streetcodePartners: StreetcodePartner[];
+}
+
+export interface StreetcodeFavourite {
+    id: number;
+    title: string;
+    alias: string | undefined;
+    imageId: number;
+    transliterationUrl: string;
+    type: StreetcodeType;
 }
 
 export interface EventStreetcode {
