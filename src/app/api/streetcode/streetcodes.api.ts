@@ -14,24 +14,9 @@ const StreetcodesApi = {
         Agent.get<Streetcode>(`${API_ROUTES.STREETCODES.GET}/${id}`)
     ),
 
-    getByName: (name: string) => (
-        Agent.get<Streetcode>(`${API_ROUTES.STREETCODES.GET_BY_NAME}/${name}`)
-    ),
-
-    getByTagId: (id: number) => (
-        Agent.get<Streetcode[]>(`${API_ROUTES.STREETCODES.GET_BY_TAG_ID}/${id}`)
-    ),
-
-    getByIndex: (index: string) => (
-        Agent.get<Streetcode>(`${API_ROUTES.STREETCODES.GET_BY_INDEX}/${index}`)
-    ),
-
     getByUrl: (url: string) => (
         Agent.get<Streetcode>(`${API_ROUTES.STREETCODES.GET_BY_URL}/${url}`)
     ),
-
-    getFavouriteById: (streetcodeId: number) => Agent
-        .get<StreetcodeFavourite>(`${API_ROUTES.STREETCODES.GET_FAVOURITE_BY_ID}/${streetcodeId}`),
 
     getFavouriteStatus: (streetcodeId: number) => Agent
         .get<boolean>(`${API_ROUTES.STREETCODES.GET_FAVOURITE_STATUS}/${streetcodeId}`),
@@ -45,10 +30,6 @@ const StreetcodesApi = {
 
     getAllPublished: () => (
         Agent.get<StreetcodeShort[]>(`${API_ROUTES.STREETCODES.GET_ALL_PUBLISHED}`)
-    ),
-
-    getAllMainPage: () => (
-        Agent.get<StreetcodeMainPage[]>(`${API_ROUTES.STREETCODES.GET_ALL_MAINPAGE}`)
     ),
 
     getPageMainPage: (page: number, pageSize: number) => Agent
@@ -80,12 +61,6 @@ const StreetcodesApi = {
     getAllShort: () => (
         Agent.get<Streetcode[]>(`${API_ROUTES.STREETCODES.GET_ALL_SHORT}`)
     ),
-
-    getEvents: () => Agent.get<EventStreetcode[]>(`${API_ROUTES.STREETCODES.GET_EVENTS}`),
-
-    getPersons: () => Agent.get<PersonStreetcode[]>(`${API_ROUTES.STREETCODES.GET_PERSONS}`),
-
-    getUrlByQrId: (id: number) => Agent.get<string>(`${API_ROUTES.STREETCODES.GET_URL_BY_QR_ID}/${id}`),
 
     create: (streetcode: StreetcodeCreate) => Agent
         .post<StreetcodeCreate>(`${API_ROUTES.STREETCODES.CREATE}`, streetcode),
