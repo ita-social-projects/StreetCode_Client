@@ -25,6 +25,7 @@ import PreviewFileModal from '../../MainBlock/PreviewFileModal/PreviewFileModal.
 import { UploadChangeParam } from 'antd/es/upload';
 import POPOVER_CONTENT from '@/features/AdminPage/JobsPage/JobsModal/constants/popoverContent';
 import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
+import BUTTON_LABELS from "@constants/buttonLabels";
 import combinedImageValidator, { checkFile } from '@components/modals/validators/combinedImageValidator';
 
 interface Props {
@@ -249,7 +250,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                                 className="streetcode-custom-button"
                                 onClick={() => handleOk()}
                             >
-                                Зберегти
+                                {BUTTON_LABELS.SAVE}
                             </Button>
                         </div>
                     </Form>

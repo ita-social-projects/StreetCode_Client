@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions,no-restricted-imports */
 import './TeamModal.styles.scss';
 import '@features/AdminPage/AdminModal.styles.scss';
 
@@ -8,6 +9,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import FileUploader from '@components/FileUploader/FileUploader.component';
 import combinedImageValidator, { checkFile } from '@components/modals/validators/combinedImageValidator';
+import BUTTON_LABELS from '@constants/buttonLabels';
 import PreviewFileModal from '@features/AdminPage/NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
 import SOCIAL_OPTIONS from '@features/AdminPage/TeamPage/TeamModal/constants/socialOptions';
 import TeamMember, {
@@ -51,6 +53,8 @@ const TeamModal: React.FC<{
     const [waitingForApiResponse, setWaitingForApiResponse] = useState(false);
     const imageId = useRef<number>(0);
     const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
+    const warningTimeout = useRef<NodeJS.Timeout | null>(null);
+    const MAX_POSITION_LENGTH = 50;
 
     message.config({
         top: 100,
@@ -72,6 +76,23 @@ const TeamModal: React.FC<{
             PositionsApi.getAll().then((resp) => setPositions(resp.positions));
         }
     }, [open]);
+
+    const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        const inputValue = (event.target as HTMLInputElement).value;
+
+        if (inputValue.length > MAX_POSITION_LENGTH && event.key !== 'Backspace') {
+            event.preventDefault();
+
+            if (warningTimeout.current) {
+                return;
+            }
+
+            warningTimeout.current = setTimeout(() => {
+                message.warning(`Максимальна довжина — ${MAX_POSITION_LENGTH} символів`);
+                warningTimeout.current = null;
+            }, 500);
+        }
+    };
 
     useEffect(() => {
         setIsMain(teamMember ? teamMember.isMain : false);
@@ -149,7 +170,7 @@ const TeamModal: React.FC<{
         }
     };
 
-    const onSuccesfulSubmitLinks = (formValues: any) => {
+    const onSuccessfulSubmitLinks = (formValues: any) => {
         const url = formValues.url as string;
         const socialName = teamLinksForm.getFieldValue('logotype');
         const logotype = SOCIAL_OPTIONS.find((opt) => opt.value === socialName)?.logo;
@@ -291,6 +312,7 @@ const TeamModal: React.FC<{
                                 value={selectedPositions.map((x) => x.position)}
                                 onChange={handleInputChange}
                                 options={positions.map((t) => ({ value: t.position, label: t.position }))}
+                                onInputKeyDown={handleInputKeyDown}
                             />
                         </div>
                     </Form.Item>
@@ -342,7 +364,7 @@ const TeamModal: React.FC<{
             <Form
                 layout="vertical"
                 form={teamLinksForm}
-                onFinish={onSuccesfulSubmitLinks}
+                onFinish={onSuccessfulSubmitLinks}
                 data-testid="link-form"
             >
                 <div className="team-source-list">
@@ -418,7 +440,7 @@ const TeamModal: React.FC<{
                         className="streetcode-custom-button"
                         onClick={handleOk}
                     >
-                        Зберегти
+                        {BUTTON_LABELS.SAVE}
                     </Button>
                 </div>
             </Form>
