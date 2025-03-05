@@ -28,7 +28,7 @@ const AuthApi = {
         instance.post<UserLoginResponse>(API_ROUTES.AUTH.LOGIN, loginParams)
             .then((response) => response.data)
     ),
-    loginGoogle: (googleLoginRequest: GoogleLoginRequest) => (
+    loginGoogle: (googleLoginRequest: { idToken: string | undefined }) => (
         instance.post<UserLoginResponse>(
             API_ROUTES.AUTH.LOGIN_GOOGLE,
             googleLoginRequest,
