@@ -1,14 +1,15 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { MemoryRouter } from 'react-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from '@testing-library/react';
 
-import * as analyticsUtils from '@/app/common/utils/googleAnalytics.unility'; 
-import Image from "@/models/media/image.model";
-import { StreetcodeType } from "@/models/streetcode/streetcode-types.model";
+import * as analyticsUtils from '@/app/common/utils/googleAnalytics.unility';
+import Image from '@/models/media/image.model';
+import { StreetcodeType } from '@/models/streetcode/streetcode-types.model';
 
 import '@testing-library/jest-dom';
 
-import FavouritesCatalogItem from "./FavouritesCatalogItem.component";
+import FavouritesCatalogItem from './FavouritesCatalogItem.component';
 
 jest.mock('@/app/common/utils/googleAnalytics.unility', () => ({
     toStreetcodeRedirectClickEvent: jest.fn(),

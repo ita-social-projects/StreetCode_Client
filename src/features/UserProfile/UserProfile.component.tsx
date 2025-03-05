@@ -58,8 +58,6 @@ const UserProfile = () => {
         setIsModalOpen(false);
     };
 
-    
-
     return (
         !isLoading ? (
             <div className="userContainer">

@@ -16,7 +16,7 @@ const FavouritesCatalogItem = ({ streetcode, image }: Props) => {
     const LinkProps = {
         className: 'favouriteItem',
         style: {
-            backgroundImage: `url(${base64ToUrl(image?.base64, image?.mimeType)})`
+            backgroundImage: `url(${base64ToUrl(image?.base64, image?.mimeType)})`,
         },
     };
 
@@ -24,7 +24,8 @@ const FavouritesCatalogItem = ({ streetcode, image }: Props) => {
         <Link
             {...LinkProps}
             to={`/${streetcode.transliterationUrl}`}
-            onClick={() => toStreetcodeRedirectClickEvent(streetcode.transliterationUrl, 'profile')}>
+            onClick={() => toStreetcodeRedirectClickEvent(streetcode.transliterationUrl, 'profile')}
+        >
             <div className="favouritesItemText">
                 <div className="heading">
                     <p>{streetcode.title}</p>

@@ -19,7 +19,7 @@ const FavouritesCatalog = () => {
 
     const types: MenuProps['items'] = [
         {
-            icon: selectedType === undefined ? <Badge color='#D12F1F' /> : undefined,
+            icon: selectedType === undefined ? <Badge color="#D12F1F" /> : undefined,
             label: FAVOURITE_STREETCODE_TYPES.ALL.label,
             key: FAVOURITE_STREETCODE_TYPES.ALL.key,
         },
@@ -65,22 +65,17 @@ const FavouritesCatalog = () => {
         }
     };
 
-    const menuProps = {
-        items: types.filter((t) => 'label' in t! && t.label !== filter),
-        onClick: handleMenuClick,
-    };
-
     return (
         <div className="favourites">
             <Menu
                 onClick={handleMenuClick}
                 style={{ width: 256 }}
                 defaultSelectedKeys={[FAVOURITE_STREETCODE_TYPES.ALL.key.toString()]}
-                mode='inline'
+                mode="inline"
                 items={types}
             />
             <div className="favouritesContainer">
-                {getFavouritesArray.map((streetcode, index) => (
+                {getFavouritesArray.map((streetcode) => (
                     selectedType === streetcode.type || selectedType === undefined) && (
                     <FavouritesCatalogItemComponent
                         key={streetcode.id}
