@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import videosApi from '@api/media/videos.api';
 import textsApi from '@api/streetcode/text-content/texts.api';
 import VideoPlayer from '@components/Video/Video.component';
-import useMobx, { useStreecodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
+import useMobx, { useStreetcodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import htmpReactParser from 'html-react-parser';
 
@@ -20,7 +20,7 @@ import StreetcodeBlock from '@/models/streetcode/streetcode-blocks.model';
 const TextComponent = () => {
     const { streetcodeStore: { getStreetCodeId } } = useStreetcodeDataContext();
     const { textVideoStore } = useMobx();
-    const streecodePageLoaderContext = useStreecodePageLoaderContext();
+    const streecodePageLoaderContext = useStreetcodePageLoaderContext();
     const [text, setText] = useState<Text>();
     const [video, setVideo] = useState<Video>();
     const [isScrolled, setIsScrolled] = useState<boolean>(false);
