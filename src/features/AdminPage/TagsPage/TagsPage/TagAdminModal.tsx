@@ -2,13 +2,15 @@ import '@features/AdminPage/AdminModal.styles.scss';
 
 import CancelBtn from '@images/utils/Cancel_btn.svg';
 
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect } from 'react';
+import SubmitButton from '@components/SubmitButton.component';
 import BUTTON_LABELS from '@constants/buttonLabels';
+import { COMMON_TITLE } from '@constants/regex.constants';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import useMobx from '@stores/root-store';
 
 import {
-    Button, Form, Input, message, Modal, Popover,
+    Form, Input, message, Modal, Popover,
 } from 'antd';
 
 import normaliseWhitespaces from '@/app/common/utils/normaliseWhitespaces';
@@ -33,16 +35,6 @@ const SourceModal: React.FC<SourceModalProps> = ({
     const { tagsStore } = useMobx();
     const [form] = Form.useForm();
     const isEditing = !!initialData;
-    const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
-
-    const updateSaveButtonState = () => {
-        const title = form.getFieldValue('title')?.trim();
-        const isChanged = initialData ? initialData.title !== title : true;
-        const isEmpty = !title;
-        const isExisting = isEmpty ? false : tagsStore.getTagArray.some((tag) => tag.title === title);
-
-        setIsSaveButtonDisabled(!isChanged || isExisting || isEmpty);
-    };
 
     useAsync(() => tagsStore.fetchAllTags(), []);
 
@@ -52,12 +44,10 @@ const SourceModal: React.FC<SourceModalProps> = ({
                 title: initialData.title,
             });
         }
-        updateSaveButtonState();
     }, [initialData, isModalVisible, form]);
 
     const closeModal = () => {
         setIsModalOpen(false);
-        setIsSaveButtonDisabled(true);
     };
 
     const validateTag = uniquenessValidator(
@@ -74,7 +64,9 @@ const SourceModal: React.FC<SourceModalProps> = ({
             title: (formData.title as string).trim(),
         };
 
-        if (currentTag.title === initialData?.title) return;
+        if (currentTag.title === initialData?.title) {
+            return;
+        }
 
         if (currentTag.id) {
             await tagsStore.updateTag(currentTag as Tag);
@@ -97,7 +89,6 @@ const SourceModal: React.FC<SourceModalProps> = ({
             await form.validateFields();
             form.submit();
             message.success(`Тег успішно ${isEditing ? 'змінено' : 'додано'}!`, 2);
-            setIsSaveButtonDisabled(true);
         } catch (error) {
             message.config({
                 top: 100,
@@ -128,29 +119,34 @@ const SourceModal: React.FC<SourceModalProps> = ({
                 onFinish={onSubmit}
                 initialValues={initialData}
                 onKeyDown={(e) => (e.key === 'Enter' ? e.preventDefault() : '')}
-                onValuesChange={updateSaveButtonState}
             >
                 <div className="center">
                     <h2>{isEditing ? 'Редагувати тег' : 'Додати тег'}</h2>
                 </div>
                 <Form.Item
                     name="title"
-                    label="Назва: "
-                    rules={[{ required: true, message: 'Введіть назву' },
+                    label="Назва:"
+                    rules={[
+                        { required: true, message: 'Введіть назву' },
                         { validator: validateTag },
+                        {
+                            pattern: COMMON_TITLE,
+                            message: 'Назва не повинна містити спеціальних символів або цифр',
+                        },
                     ]}
                     getValueProps={(value: string) => ({ value: normaliseWhitespaces(value) })}
                 >
                     <Input placeholder="Title" maxLength={50} showCount />
                 </Form.Item>
                 <div className="center">
-                    <Button
+                    <SubmitButton
+                        form={form}
+                        initialData={initialData}
                         className="streetcode-custom-button"
-                        disabled={isSaveButtonDisabled}
                         onClick={() => handleOk()}
                     >
                         {BUTTON_LABELS.SAVE}
-                    </Button>
+                    </SubmitButton>
                 </div>
             </Form>
         </Modal>

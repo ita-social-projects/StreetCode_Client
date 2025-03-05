@@ -9,7 +9,9 @@ import React, {
 import ImagesApi from '@api/media/images.api';
 import FileUploader from '@components/FileUploader/FileUploader.component';
 import combinedImageValidator, { checkFile } from '@components/modals/validators/combinedImageValidator';
+import SubmitButton from '@components/SubmitButton.component';
 import BUTTON_LABELS from '@constants/buttonLabels';
+import { COMMON_TITLE } from '@constants/regex.constants';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import Audio from '@models/media/audio.model';
 import Image from '@models/media/image.model';
@@ -17,7 +19,7 @@ import { SourceCategoryAdmin } from '@models/sources/sources.model';
 import useMobx from '@stores/root-store';
 
 import {
-    Button, Form, Input, message, Modal, Popover,
+    Form, Input, message, Modal, Popover,
     UploadFile,
 } from 'antd';
 import { UploadChangeParam, UploadFileStatus } from 'antd/es/upload/interface';
@@ -50,7 +52,6 @@ const SourceModal: React.FC<SourceModalProps> = ({
     const [filePreview, setFilePreview] = useState<UploadFile | null>(null);
     const isEditing = !!initialData;
     const [fileList, setFileList] = useState<UploadFile[]>([]);
-    const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
 
     useAsync(() => sourcesAdminStore.fetchSourceCategories(), []);
 
@@ -94,7 +95,6 @@ const SourceModal: React.FC<SourceModalProps> = ({
 
     const closeModal = () => {
         setIsModalOpen(false);
-        setIsSaveButtonDisabled(true);
     };
 
     const validateCategory = uniquenessValidator(
@@ -113,7 +113,9 @@ const SourceModal: React.FC<SourceModalProps> = ({
             image,
         };
         sourcesAdminStore.getSourcesAdmin.map((t) => t).forEach((t) => {
-            if (formData.title === t.title || imageId.current === t.imageId) currentSource.id = t.id;
+            if (formData.title === t.title || imageId.current === t.imageId) {
+                currentSource.id = t.id;
+            }
         });
 
         if (currentSource.id) {
@@ -141,16 +143,8 @@ const SourceModal: React.FC<SourceModalProps> = ({
     const handleOk = async () => {
         try {
             await form.validateFields();
-
-            const title = form.getFieldValue('title');
-
-            if (!title.trim()) {
-                message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
-                return;
-            }
             form.submit();
             message.success(`Категорію успішно ${isEditing ? 'змінено' : 'додано'}!`, 2);
-            setIsSaveButtonDisabled(true);
         } catch (error) {
             message.config({
                 top: 100,
@@ -162,13 +156,10 @@ const SourceModal: React.FC<SourceModalProps> = ({
         }
     };
 
-    const handleInputChange = () => setIsSaveButtonDisabled(false);
-
     const handleFileChange = async (param: UploadChangeParam<UploadFile<unknown>>) => {
         if (await checkFile(param.file)) {
             setFileList(param.fileList);
         }
-        handleInputChange();
     };
 
     const handleRemove = () => {
@@ -201,17 +192,22 @@ const SourceModal: React.FC<SourceModalProps> = ({
                     </div>
                     <Form.Item
                         name="title"
-                        label="Назва: "
-                        rules={[{ required: true, message: 'Введіть назву' },
+                        label="Назва:"
+                        rules={[
+                            { required: true, message: 'Введіть назву' },
                             { validator: validateCategory },
+                            {
+                                pattern: COMMON_TITLE,
+                                message: 'Назва не повинна містити спеціальних символів або цифр',
+                            },
                         ]}
                         getValueProps={(value) => ({ value: normaliseWhitespaces(value) })}
                     >
-                        <Input placeholder="Title" maxLength={23} showCount onChange={handleInputChange} />
+                        <Input placeholder="Title" maxLength={23} showCount />
                     </Form.Item>
                     <Form.Item
                         name="image"
-                        label="Зображення: "
+                        label="Зображення:"
                         rules={[
                             { required: true, message: 'Додайте зображення' },
                             { validator: combinedImageValidator(true) },
@@ -243,13 +239,14 @@ const SourceModal: React.FC<SourceModalProps> = ({
                         </FileUploader>
                     </Form.Item>
                     <div className="center">
-                        <Button
-                            disabled={fileList?.length === 0 || isSaveButtonDisabled}
+                        <SubmitButton
+                            form={form}
+                            initialData={initialData}
                             className="streetcode-custom-button"
                             onClick={() => handleOk()}
                         >
                             {BUTTON_LABELS.SAVE}
-                        </Button>
+                        </SubmitButton>
                     </div>
                 </Form>
             </Modal>

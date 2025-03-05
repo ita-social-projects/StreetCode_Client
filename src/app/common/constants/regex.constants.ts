@@ -3,3 +3,6 @@ export const EMAIL_REGEX = /^(?!.*\.\.)[a-zA-Z0-9_%+-]+(?:\.[a-zA-Z0-9_%+-]+)*@[
 export const NAME_SURNAME_REGEX = /^[a-zA-Zа-яА-ЯґҐєЄіІїЇ'-]+$/;
 export const USERNAME_REGEX = /^[a-z0-9\-'_]+$/;
 export const PASSWORD_REGEX = /^[^А-Яа-яЁёЇїІіЄєҐґ]*$/;
+export const COMMON_TITLE = /^[a-zA-Zа-яА-ЯґҐєЄіІїЇ'\s]+$/;
+export const NEWS_TRANSLITERATION = /^[a-z0-9-]+$/;
+export const JOB_SALARY = /^[0-9]*$/;
