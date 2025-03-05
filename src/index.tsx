@@ -6,7 +6,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import ReactGA from 'react-ga4';
 import { RouterProvider } from 'react-router-dom';
-import router from '@app/router/Routes';
+import createRoutes from '@app/router/Routes';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
@@ -43,11 +43,18 @@ const root = ReactDOM.createRoot(
 const queryClient = new QueryClient();
 
 const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
-
 if (!clientId) {
     console.error('REACT_APP_GOOGLE_CLIENT_ID is not defined');
     throw new Error('Google Client ID is required');
 }
+
+const recaptchaKey = process.env.RECAPTCHA_SITE_KEY;
+if (!recaptchaKey) {
+    console.error('RECAPTCHA_SITE_KEY_V3 is not defined');
+    throw new Error('ReCaptcha Key is required');
+}
+
+const router = createRoutes(recaptchaKey);
 
 root.render(
     <GoogleOAuthProvider clientId={clientId}>

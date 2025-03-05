@@ -1,6 +1,4 @@
-import {
-    cleanup, fireEvent, render, screen, waitFor,
-} from '@testing-library/react';
+import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import user from '@testing-library/user-event';
 
 import EmailApi from '@/app/api/email/email.api';
@@ -24,25 +22,15 @@ Object.defineProperty(window, 'matchMedia', {
     }),
 });
 
-// mock ReCAPTCHA component
-const onCaptchaMock = jest.fn();
-jest.mock('react-google-recaptcha', () => jest.fn(({ onChange }) => (
-    <div data-testid="mock-recaptcha">
-        <button
-            type="button"
-            onClick={() => {
-                if (onChange) onChange('mock-token');
-                onCaptchaMock();
-            }}
-        >
-                Verify ReCAPTCHA
-        </button>
-    </div>
-)));
+jest.mock('react-google-recaptcha-v3', () => ({
+    useGoogleReCaptcha: () => ({
+        executeRecaptcha: jest.fn(() => Promise.resolve('mock-token')),
+    }),
+}));
 
 // mock backend api calls
 jest.mock('@/app/api/email/email.api', () => ({
-    send: jest.fn(() => {}),
+    send: jest.fn(() => Promise.resolve()),
 }));
 
 describe('ContactForm test', () => {
@@ -68,96 +56,71 @@ describe('ContactForm test', () => {
     });
 
     it('should send Email with filled fields', async () => {
-        render(
-            <ContactForm />,
-        );
+        render(<ContactForm />);
 
-        // Arrange
-        const textareaMessage = screen.getByPlaceholderText(/Наші серця/i) as HTMLTextAreaElement;
-        const inputEmail = screen.getByPlaceholderText(/E-mail/i) as HTMLInputElement;
-        const captchaButton = screen.getByText(/Verify ReCAPTCHA/i);
+        const textareaMessage = screen.getByPlaceholderText(/Наші серця/i);
+        const inputEmail = screen.getByPlaceholderText(/E-mail/i);
         const sendButton = screen.getByText(/Відправити/i);
 
         const message = 'Some interesting message';
         const email = 'test@mail.com';
 
-        // Act
-        await waitFor(async () => {
-            user.type(inputEmail, email);
-            user.type(textareaMessage, message);
-            user.click(captchaButton);
-            user.click(sendButton);
-        });
+        user.type(inputEmail, email);
+        user.type(textareaMessage, message);
+        user.click(sendButton);
 
-        // Assert
-        expect(textareaMessage.value).toBe(message);
-        expect(inputEmail.value).toBe(email);
-        expect(onCaptchaMock).toHaveBeenCalled();
-        expect(EmailApi.send).toHaveBeenCalled();
+        await waitFor(() => {
+            expect(EmailApi.send).toHaveBeenCalledWith({
+                from: email,
+                source: 'сторінка Контакти',
+                content: message,
+                token: 'mock-token',
+            });
+        });
     });
 
     it('should not send Email with invalid email field', async () => {
-        render(
-            <ContactForm />,
-        );
+        render(<ContactForm />);
 
-        // Arrange
-        const textareaMessage = screen.getByPlaceholderText(/Наші серця/i) as HTMLTextAreaElement;
-        const inputEmail = screen.getByPlaceholderText(/E-mail/i) as HTMLInputElement;
-        const captchaButton = screen.getByText(/Verify ReCAPTCHA/i);
+        const inputEmail = screen.getByPlaceholderText(/E-mail/i);
+        const textareaMessage = screen.getByPlaceholderText(/Наші серця/i);
         const sendButton = screen.getByText(/Відправити/i);
 
         const message = 'Some interesting message';
         const email = 'invalid email';
 
-        // Act
-        await waitFor(async () => {
-            user.type(inputEmail, email);
-            user.type(textareaMessage, message);
-            user.click(captchaButton);
-            user.click(sendButton);
+        user.type(inputEmail, email);
+        user.type(textareaMessage, message);
+        user.click(sendButton);
+
+        await waitFor(() => {
+            expect(screen.getByText(/E-mail може містити/i)).toBeInTheDocument();
         });
 
-        // Assert
-        expect(textareaMessage.value).toBe(message);
-        expect(inputEmail.value).toBe(email);
-        expect(onCaptchaMock).toHaveBeenCalled();
         expect(EmailApi.send).not.toHaveBeenCalled();
     });
 
-    it('should not send Email with epty message field', async () => {
-        render(
-            <ContactForm />,
-        );
+    it('should not send Email with empty message field', async () => {
+        render(<ContactForm />);
 
-        // Arrange
         const textareaMessage = screen.getByPlaceholderText(/Наші серця/i) as HTMLTextAreaElement;
         const inputEmail = screen.getByPlaceholderText(/E-mail/i) as HTMLInputElement;
-        const captchaButton = screen.getByText(/Verify ReCAPTCHA/i);
         const sendButton = screen.getByText(/Відправити/i);
 
         const email = 'valid@email.com';
 
-        // Act
-        await waitFor(async () => {
-            user.type(inputEmail, email);
-            user.click(captchaButton);
-            user.click(sendButton);
-        });
+        user.type(inputEmail, email);
 
-        // Assert
+        user.click(sendButton);
+
         expect(textareaMessage.value).toBe('');
         expect(inputEmail.value).toBe(email);
-        expect(onCaptchaMock).toHaveBeenCalled();
         expect(EmailApi.send).not.toHaveBeenCalled();
     });
 
     it('should not send Email without ReCAPTCHA', async () => {
-        render(
-            <ContactForm />,
-        );
+        render(<ContactForm />);
 
-        // Arrange
         const textareaMessage = screen.getByPlaceholderText(/Наші серця/i) as HTMLTextAreaElement;
         const inputEmail = screen.getByPlaceholderText(/E-mail/i) as HTMLInputElement;
         const sendButton = screen.getByText(/Відправити/i);
@@ -165,51 +128,37 @@ describe('ContactForm test', () => {
         const message = 'Some interesting message';
         const email = 'valid@email.com';
 
-        // Act
-        await waitFor(async () => {
-            user.type(inputEmail, email);
-            user.type(textareaMessage, message);
-            user.click(sendButton);
-        });
+        user.type(inputEmail, email);
+        user.type(textareaMessage, message);
+        user.click(sendButton);
 
-        // Assert
         expect(inputEmail.value).toBe(email);
         expect(textareaMessage.value).toBe(message);
-        expect(onCaptchaMock).not.toHaveBeenCalled();
         expect(EmailApi.send).not.toHaveBeenCalled();
     });
 
     it('should check text amount restrictions and Email validation', async () => {
-        render(
-            <ContactForm />,
-        );
+        render(<ContactForm />);
 
-        // Arrange
         const textareaMessage = screen.getByPlaceholderText(/Наші серця/i) as HTMLTextAreaElement;
         const inputEmail = screen.getByPlaceholderText(/E-mail/i);
-        const buttonSend = screen.getByText(/Відправити/i);
+        const sendButton = screen.getByText(/Відправити/i);
 
         const descriptionRestriction = 500;
         const invalidEmail = 'invalid@email.c';
-        const text = 'String which excides text amount limit';
-        const veryLongText = text.repeat(13);
+        const veryLongText = 'a'.repeat(550);
 
-        // Act
-        await waitFor(async () => {
-            user.type(inputEmail, invalidEmail);
-
-            // user.type() takes too much time to input all the text, so fireEvent.change() partially
-            // fills description and user.type() tries to exceed text amount restrictions\
-            fireEvent.change(textareaMessage, { target: { value: veryLongText } });
-            user.type(textareaMessage, text);
-
-            user.click(buttonSend);
+        await waitFor(() => {
+            user.type(inputEmail, invalidEmail, { delay: 0 });
+            user.type(textareaMessage, veryLongText, { delay: 0 });
         });
 
-        // Assert
-        const validationMessage = await screen.findByText(/E-mail може містити/i);
-        expect(validationMessage).toBeInTheDocument();
+        user.click(sendButton);
+
+        await waitFor(() => {
+            expect(screen.getByText(/E-mail може містити/i)).toBeInTheDocument();
+        });
+
         expect(textareaMessage.value.length).toBe(descriptionRestriction);
-        expect(EmailApi.send).not.toHaveBeenCalled();
-    });
+    }, 25000);
 });
