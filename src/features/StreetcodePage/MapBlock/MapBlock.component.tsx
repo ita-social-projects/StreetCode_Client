@@ -33,8 +33,12 @@ const MapBlock = () => {
                 if (!toponymContext.loaded) {
                     toponymPromise = toponymContext.fetchToponymByStreetcodeId(streetcodeId);
                 }
+
                 const statisticPromise = StatisticRecordApi.getAllByStreetcodeId(streetcodeId)
-                    .then((resp) => setStatisticRecord(resp));
+                    .then((resp) => {
+                        setStatisticRecord(resp);
+                    })
+                    .catch(() => {});
 
                 Promise.all([statisticPromise, toponymPromise])
                     .then(() => streecodePageLoaderContext.addBlockFetched(StreetcodeBlock.Map));
