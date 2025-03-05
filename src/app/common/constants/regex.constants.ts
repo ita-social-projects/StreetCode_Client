@@ -2,3 +2,6 @@
 export const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 export const NAME_SURNAME_REGEX = /^[a-zA-Zа-яА-ЯґҐєЄіІїЇ'-]+$/;
 export const USERNAME_REGEX = /^[a-z0-9\-'_]+$/;
+export const COMMON_TITLE = /^[a-zA-Zа-яА-ЯґҐєЄіІїЇ'\s]+$/;
+export const NEWS_TRANSLITERATION = /^[a-z0-9-]+$/;
+export const JOB_SALARY = /^[0-9]*$/;

@@ -12,12 +12,14 @@ import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
 import ReactQuill from 'react-quill';
 import combinedImageValidator, { checkFile } from '@components/modals/validators/combinedImageValidator';
+import SubmitButton from '@components/SubmitButton.component';
+import BUTTON_LABELS from '@constants/buttonLabels';
+import { NEWS_TRANSLITERATION } from '@constants/regex.constants';
 import PreviewFileModal from '@features/AdminPage/NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
 import useMobx from '@stores/root-store';
 import dayjs from 'dayjs';
 
 import {
-    Button,
     ConfigProvider,
     DatePicker,
     Form,
@@ -38,12 +40,12 @@ import {
 import Editor from '@/app/common/components/Editor/QEditor.component';
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
+import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
 import Audio from '@/models/media/audio.model';
 import Image from '@/models/media/image.model';
 import News from '@/models/news/news.model';
+
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
-import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
-import BUTTON_LABELS from "@constants/buttonLabels";
 
 const NewsModal: React.FC<{
     newsItem?: News;
@@ -69,7 +71,6 @@ const NewsModal: React.FC<{
     const [waitingForApiResponse, setWaitingForApiResponse] = useState(false);
     const [editorCharacterCount, setEditorCharacterCount] = useState<number>(0);
     const [removedImage, setRemovedImage] = useState<Image | undefined>(undefined);
-    const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
     const [fileList, setFileList] = useState<UploadFile[]>([]);
 
     message.config({
@@ -186,7 +187,6 @@ const NewsModal: React.FC<{
     const closeModal = () => {
         if (!waitingForApiResponse) {
             setIsModalOpen(false);
-            setIsSaveButtonDisabled(true);
             if (removedImage) {
                 imageId.current = removedImage.id;
                 image.current = removedImage;
@@ -209,7 +209,6 @@ const NewsModal: React.FC<{
             checkQuillEditorTextLength(editorCharacterCount, sizeLimit);
             setWaitingForApiResponse(true);
             form.submit();
-            setIsSaveButtonDisabled(true);
         } catch {
             message.error(fillInAllFieldsMessage);
         }
@@ -255,11 +254,9 @@ const NewsModal: React.FC<{
             hideLoadingMessage();
         }
     };
-    const handleInputChange = () => setIsSaveButtonDisabled(false);
 
     const handleUpdate = async (value: any) => {
         setData(value);
-        handleInputChange();
     };
 
     const handleFileChange = async (param: UploadChangeParam<UploadFile<unknown>>) => {
@@ -267,7 +264,6 @@ const NewsModal: React.FC<{
             setFileList(param.fileList);
             form.setFieldsValue({ image: fileList });
         }
-        handleInputChange();
     };
 
     const onSuccessFileUpload = async (img: Image | Audio) => {
@@ -323,7 +319,7 @@ const NewsModal: React.FC<{
                                 },
                             ]}
                         >
-                            <Input maxLength={100} showCount onChange={handleInputChange} />
+                            <Input maxLength={100} showCount />
                         </Form.Item>
 
                         <Form.Item
@@ -332,9 +328,8 @@ const NewsModal: React.FC<{
                             rules={[
                                 { required: true, message: 'Введіть транслітерацію' },
                                 {
-                                    pattern: /^[0-9a-z-]+$/,
-                                    message:
-                                        'Транслітерація має містити лише малі латинські літери, цифри та дефіс',
+                                    pattern: NEWS_TRANSLITERATION,
+                                    message: 'Транслітерація має містити лише малі латинські літери, цифри та дефіс',
                                 },
                                 {
                                     validator: async (_, value) => {
@@ -349,7 +344,7 @@ const NewsModal: React.FC<{
                                 },
                             ]}
                         >
-                            <Input maxLength={200} showCount onChange={handleInputChange} />
+                            <Input maxLength={200} showCount />
                         </Form.Item>
 
                         <Form.Item
@@ -412,7 +407,7 @@ const NewsModal: React.FC<{
                             label="Дата створення: "
                             rules={[{ required: true, message: 'Введіть дату' }]}
                         >
-                            <DatePicker showTime allowClear={false} onChange={handleInputChange} />
+                            <DatePicker showTime allowClear={false} />
                         </Form.Item>
                         <PreviewFileModal
                             opened={previewOpen}
@@ -421,13 +416,14 @@ const NewsModal: React.FC<{
                         />
 
                         <div className="center">
-                            <Button
+                            <SubmitButton
+                                form={form}
+                                initialData={newsItem}
                                 className="streetcode-custom-button"
                                 onClick={() => handleOk()}
-                                disabled={isSaveButtonDisabled}
                             >
                                 {BUTTON_LABELS.SAVE}
-                            </Button>
+                            </SubmitButton>
                         </div>
                     </Form>
                 </div>

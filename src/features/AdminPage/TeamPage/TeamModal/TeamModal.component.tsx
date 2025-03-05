@@ -9,6 +9,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import FileUploader from '@components/FileUploader/FileUploader.component';
 import combinedImageValidator, { checkFile } from '@components/modals/validators/combinedImageValidator';
+import SubmitButton from '@components/SubmitButton.component';
 import BUTTON_LABELS from '@constants/buttonLabels';
 import PreviewFileModal from '@features/AdminPage/NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
 import SOCIAL_OPTIONS from '@features/AdminPage/TeamPage/TeamModal/constants/socialOptions';
@@ -52,7 +53,6 @@ const TeamModal: React.FC<{
     const [actionSuccess, setActionSuccess] = useState(false);
     const [waitingForApiResponse, setWaitingForApiResponse] = useState(false);
     const imageId = useRef<number>(0);
-    const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
     const warningTimeout = useRef<NodeJS.Timeout | null>(null);
     const MAX_POSITION_LENGTH = 50;
 
@@ -166,7 +166,6 @@ const TeamModal: React.FC<{
     const closeModal = () => {
         if (!waitingForApiResponse) {
             setIsModalOpen(false);
-            setIsSaveButtonDisabled(true);
         }
     };
 
@@ -193,7 +192,6 @@ const TeamModal: React.FC<{
             await form.validateFields();
             setWaitingForApiResponse(true);
             form.submit();
-            setIsSaveButtonDisabled(true);
         } catch (error) {
             message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
         }
@@ -244,20 +242,14 @@ const TeamModal: React.FC<{
         }
     };
 
-    const handleInputChange = () => {
-        setIsSaveButtonDisabled(false);
-    };
-
     const handleCheckboxChange = (e: { target: { checked: boolean | ((prevState: boolean) => boolean); }; }) => {
         setIsMain(e.target.checked);
-        handleInputChange();
     };
 
     const handleFileChange = async (param: UploadChangeParam<UploadFile<unknown>>) => {
         if (await checkFile(param.file)) {
             setFileList(param.fileList);
         }
-        handleInputChange();
     };
 
     return (
@@ -298,7 +290,7 @@ const TeamModal: React.FC<{
                         label="Прізвище та ім'я: "
                         rules={[{ required: true, message: "Введіть прізвище та ім'я" }]}
                     >
-                        <Input maxLength={41} showCount onChange={handleInputChange} />
+                        <Input maxLength={41} showCount />
                     </Form.Item>
 
                     <Form.Item label="Позиції">
@@ -310,7 +302,6 @@ const TeamModal: React.FC<{
                                 mode="tags"
                                 onDeselect={onPositionDeselect}
                                 value={selectedPositions.map((x) => x.position)}
-                                onChange={handleInputChange}
                                 options={positions.map((t) => ({ value: t.position, label: t.position }))}
                                 onInputKeyDown={handleInputKeyDown}
                             />
@@ -320,7 +311,7 @@ const TeamModal: React.FC<{
                         name="description"
                         label="Опис: "
                     >
-                        <Input.TextArea showCount maxLength={70} onChange={handleInputChange} />
+                        <Input.TextArea showCount maxLength={70} />
                     </Form.Item>
 
                     <Form.Item
@@ -380,7 +371,6 @@ const TeamModal: React.FC<{
                                 onClick={() => {
                                     setTeamSourceLinks(teamSourceLinks
                                         .filter((l) => l.id !== link.id));
-                                    handleInputChange();
                                 }}
                             />
                         </div>
@@ -428,20 +418,21 @@ const TeamModal: React.FC<{
                     >
                         <Popover content="Додати" trigger="hover">
                             <Button htmlType="submit" className="plus-button" data-testid="add-button">
-                                <PlusOutlined onClick={handleInputChange} />
+                                <PlusOutlined />
                             </Button>
                         </Popover>
                     </Form.Item>
                 </div>
 
                 <div className="center">
-                    <Button
-                        disabled={isSaveButtonDisabled || fileList.length === 0}
+                    <SubmitButton
+                        form={form}
+                        initialData={teamMember}
                         className="streetcode-custom-button"
                         onClick={handleOk}
                     >
                         {BUTTON_LABELS.SAVE}
-                    </Button>
+                    </SubmitButton>
                 </div>
             </Form>
         </Modal>

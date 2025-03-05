@@ -1,15 +1,17 @@
 import '@features/AdminPage/AdminModal.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ReactQuill from 'react-quill';
 import getNewMinNegativeId from '@app/common/utils/newIdForStore';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
+import SubmitButton from '@components/SubmitButton.component';
+import BUTTON_LABELS from '@constants/buttonLabels';
 import { ModelState } from '@models/enums/model-state';
 import useMobx from '@stores/root-store';
 
 import {
-    Button, Form, message, Modal, Popover, Select,
+    Form, message, Modal, Popover, Select,
 } from 'antd';
 
 import SourcesApi from '@/app/api/sources/sources.api';
@@ -19,13 +21,12 @@ import {
 } from '@/app/common/components/Editor/EditorUtilities/quillUtils.utility';
 import Editor from '@/app/common/components/Editor/QEditor.component';
 import SourceModal from '@/features/AdminPage/CategoriesPage/CategoriesPage/CategoryAdminModal.component';
+import POPOVER_CONTENT from '@/features/AdminPage/JobsPage/JobsModal/constants/popoverContent';
 import {
     SourceCategoryName,
     StreetcodeCategoryContent,
     StreetcodeCategoryContentUpdate,
 } from '@/models/sources/sources.model';
-import POPOVER_CONTENT from '@/features/AdminPage/JobsPage/JobsModal/constants/popoverContent';
-import BUTTON_LABELS from "@constants/buttonLabels";
 
 interface Props {
     character_limit?: number;
@@ -58,7 +59,6 @@ const CategoriesModal = ({
     const [textIsChanged, setTextIsChanged] = useState<boolean>(false);
     const [editorCharacterCount, setEditorCharacterCount] = useState<number>(0);
     const maxLength = character_limit || 10000;
-    const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
 
     message.config({
         top: 100,
@@ -68,7 +68,7 @@ const CategoriesModal = ({
 
     const getAvailableCategories = async (isNewCat: boolean): Promise<SourceCategoryName[] | undefined> => {
         try {
-            const categories = await SourcesApi.getAllCategories().then(resp => resp.categories);
+            const categories = await SourcesApi.getAllCategories().then((resp) => resp.categories);
             sourcesAdminStore.setInternalSourceCategories(categories);
 
             const selected = sourceCreateUpdateStreetcode.streetcodeCategoryContents
@@ -127,7 +127,6 @@ const CategoriesModal = ({
         if (allPersistedSourcesAreSet) {
             fetchData();
         }
-        setIsSaveButtonDisabled(true);
     }, [open, sourceCreateUpdateStreetcode]);
 
     useEffect(() => {
@@ -147,8 +146,8 @@ const CategoriesModal = ({
         indexOfPersistedCategory: number,
         isEditedCategoryPersisted: boolean,
     ) => {
-        let ids: (number | undefined)[] = sourceCreateUpdateStreetcode.streetcodeCategoryContents.map((x) => x.id);
-        let filteredIds: number[] = ids.filter((id): id is number => id !== undefined);
+        const ids: (number | undefined)[] = sourceCreateUpdateStreetcode.streetcodeCategoryContents.map((x) => x.id);
+        const filteredIds: number[] = ids.filter((id): id is number => id !== undefined);
         if (!isEditedCategoryPersisted) {
             sourceCreateUpdateStreetcode
                 .addSourceCategoryContent({
@@ -230,7 +229,6 @@ const CategoriesModal = ({
             if (validateTextChange()) {
                 form.submit();
                 message.success('Категорію для фанатів успішно додано!');
-                setIsSaveButtonDisabled(true);
             } else {
                 throw new Error();
             }
@@ -240,7 +238,7 @@ const CategoriesModal = ({
     };
 
     const onUpdateStates = async (isNewCatAdded: boolean) => {
-        if (isNewCatAdded === true) {
+        if (isNewCatAdded) {
             const categories = await SourcesApi.getAllNames();
             setCategories(categories.sort((a, b) => a.title.localeCompare(b.title)));
             const AvailableCats = await getAvailableCategories(true);
@@ -255,19 +253,15 @@ const CategoriesModal = ({
             setIsAddModalVisible(true);
             form.resetFields(['category']);
         }
-        handleInputChange();
     };
 
     const handleDisabled = (categoryId: number) => !availableCategories.some((c) => c.id === categoryId);
-
-    const handleInputChange = () => setIsSaveButtonDisabled(false);
 
     return (
         <Modal
             className="modalContainer"
             open={open}
             onCancel={() => {
-                setIsSaveButtonDisabled(true);
                 setOpen(false);
                 sourceCreateUpdateStreetcode.indexUpdate = -1;
             }}
@@ -324,7 +318,6 @@ const CategoriesModal = ({
                         value={editorContent}
                         onChange={(e) => {
                             setEditorContent(e);
-                            handleInputChange();
                         }}
                         maxChars={maxLength}
                         onCharacterCountChange={setEditorCharacterCount}
@@ -334,13 +327,13 @@ const CategoriesModal = ({
                     )}
                 </Form.Item>
                 <div className="center">
-                    <Button
+                    <SubmitButton
+                        form={form}
                         className="streetcode-custom-button"
                         onClick={() => handleOk()}
-                        disabled={isSaveButtonDisabled}
                     >
                         {BUTTON_LABELS.SAVE}
-                    </Button>
+                    </SubmitButton>
                 </div>
             </Form>
         </Modal>
