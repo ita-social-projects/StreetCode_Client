@@ -11,6 +11,8 @@ import removeSpacesFromField from '@utils/removeSpacesFromField';
 import validateEmail from '@utils/userValidators/validateEmail';
 import validateLength from '@utils/userValidators/validateLength';
 import validatePatternNameSurname from '@utils/userValidators/validatePatternNameSurname';
+import validateRequired from '@utils/userValidators/validateRequired';
+
 
 import { Button, Form, Input, message } from 'antd';
 
@@ -63,7 +65,7 @@ const RegistrationPage: React.FC = () => {
                     name="name"
                     rules={[
                         {
-                            required: true, message: 'Введіть імʼя',
+                            validator: validateRequired("Ім'я"),
                         },
                         {
                             validator: validateLength("Ім'я", 2, 50),
@@ -81,7 +83,7 @@ const RegistrationPage: React.FC = () => {
                     name="surname"
                     rules={[
                         {
-                            required: true, message: 'Введіть прізвище',
+                            validator: validateRequired('Прізвище'),
                         },
                         {
                             validator: validateLength('Прізвище', 2, 50),

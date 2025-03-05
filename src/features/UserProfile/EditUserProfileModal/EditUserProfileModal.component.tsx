@@ -293,13 +293,13 @@ const EditUserModal = ({
                                     validator: validateRequired('Нікнейм'),
                                 },
                                 {
-                                    validator: validateLength('Нікнейм', 2, 128),
+                                    validator: validateLength('Нікнейм', 2, 50),
                                 },
                                 {
-                                    validator: validatePatternUserName('Нікнейм'),
+                                    validator: validatePatternUserName(),
                                 }]}
                             >
-                                <Input minLength={2} maxLength={128} showCount placeholder="Нікнейм" />
+                                <Input minLength={2} maxLength={50} showCount placeholder="Нікнейм" />
                             </Form.Item>
                         </div>
                         <Form.Item
@@ -311,13 +311,13 @@ const EditUserModal = ({
                                 validator: validateRequired("Ім'я"),
                             },
                             {
-                                validator: validateLength("Ім'я", 2, 128),
+                                validator: validateLength("Ім'я", 2, 50),
                             },
                             {
                                 validator: validatePatternNameSurname("Ім'я"),
                             }]}
                         >
-                            <Input minLength={2} maxLength={128} showCount />
+                            <Input minLength={2} maxLength={50} showCount />
                         </Form.Item>
                         <Form.Item
                             normalize={removeSpacesFromField}
@@ -328,13 +328,13 @@ const EditUserModal = ({
                                 validator: validateRequired('Прізвище'),
                             },
                             {
-                                validator: validateLength('Прізвище', 2, 128),
+                                validator: validateLength('Прізвище', 2, 50),
                             },
                             {
                                 validator: validatePatternNameSurname('Прізвище'),
                             }]}
                         >
-                            <Input minLength={2} maxLength={128} showCount />
+                            <Input minLength={2} maxLength={50} showCount />
                         </Form.Item>
                         <Form.Item className="formItem" label="Електронна адреса" name="email">
                             <Input disabled type="email" />

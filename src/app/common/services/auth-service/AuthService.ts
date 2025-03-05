@@ -183,7 +183,7 @@ export default class AuthService {
 
     static async googleLoginAsync(idToken: string | undefined): Promise<void> {
         try {
-            const response = await AuthApi.loginGoogle(idToken);
+            const response = await AuthApi.loginGoogle({ idToken });
             const { accessToken, refreshToken } = response;
 
             localStorage.setItem(AuthService.accessTokenStorageName, accessToken);
