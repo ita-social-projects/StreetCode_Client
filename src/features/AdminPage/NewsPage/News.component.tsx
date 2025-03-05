@@ -18,6 +18,8 @@ import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Image from '@/models/media/image.model';
 import News from '@/models/news/news.model';
+import BUTTON_LABELS from "@constants/buttonLabels";
+import CONFIRMATION_MESSAGES from "@constants/confirmationMessages";
 
 const Newss: React.FC = observer(() => {
     const { modalStore } = useModalContext();
@@ -30,6 +32,21 @@ const Newss: React.FC = observer(() => {
         queryKey: ['news', newsStore.CurrentPage],
         queryFn: () => newsStore.getAll(),
     });
+
+    const handleDeleteNews = (news: News) => {
+        modalStore.setConfirmationModal(
+            'confirmation',
+            () => {
+                newsStore.deleteNews(news.id).then(() => {
+                    imagesStore.deleteImage(news.imageId);
+                }).catch((e) => {
+                    console.error(e);
+                });
+                modalStore.setConfirmationModal('confirmation');
+            },
+            CONFIRMATION_MESSAGES.DELETE_NEWS,
+        );
+    };
 
     const columns: ColumnsType<News> = [
         {
@@ -91,20 +108,7 @@ const Newss: React.FC = observer(() => {
                     <DeleteOutlined
                         key={`${news.id}${index}`}
                         className="actionButton"
-                        onClick={() => {
-                            modalStore.setConfirmationModal(
-                                'confirmation',
-                                () => {
-                                    newsStore.deleteNews(news.id).then(() => {
-                                        imagesStore.deleteImage(news.imageId);
-                                    }).catch((e) => {
-                                        console.error(e);
-                                    });
-                                    modalStore.setConfirmationModal('confirmation');
-                                },
-                                'Ви впевнені, що хочете видалити цю новину?',
-                            );
-                        }}
+                        onClick={() => handleDeleteNews(news)}
                     />
                     <EditOutlined
                         key={`${news.id}${index}2`}
@@ -128,7 +132,7 @@ const Newss: React.FC = observer(() => {
                         className="streetcode-custom-button partners-page-add-button"
                         onClick={() => setModalAddOpened(true)}
                     >
-                        Створити новину
+                        {BUTTON_LABELS.ADD_NEWS}
                     </Button>
                 </div>
                 <Table

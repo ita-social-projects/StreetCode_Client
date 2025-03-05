@@ -2,9 +2,9 @@ import './SearchMenu.styles.scss';
 
 import MagnifyingGlass from '@images/header/Magnifying_glass.svg';
 
-import {
-    Button, Input, InputNumber, Select, SelectProps,
-} from 'antd';
+import BUTTON_LABELS from '@constants/buttonLabels';
+
+import { Button, Input } from 'antd';
 
 interface IProps {
     setTitle: any
@@ -28,7 +28,12 @@ const SearchMenu = ({ setTitle, setRequest }: IProps) => {
                 />
             </div>
             <div className="searchMenuElement">
-                <Button className="streetcode-custom-button" onClick={() => setRequest()}>Пошук Топонімів</Button>
+                <Button
+                    className="streetcode-custom-button"
+                    onClick={() => setRequest()}
+                >
+                    {BUTTON_LABELS.SEARCH_TOPONYM}
+                </Button>
             </div>
         </div>
     );

@@ -25,6 +25,7 @@ import {
     StreetcodeCategoryContentUpdate,
 } from '@/models/sources/sources.model';
 import POPOVER_CONTENT from '@/features/AdminPage/JobsPage/JobsModal/constants/popoverContent';
+import BUTTON_LABELS from "@constants/buttonLabels";
 
 interface Props {
     character_limit?: number;
@@ -338,7 +339,7 @@ const CategoriesModal = ({
                         onClick={() => handleOk()}
                         disabled={isSaveButtonDisabled}
                     >
-                        Зберегти
+                        {BUTTON_LABELS.SAVE}
                     </Button>
                 </div>
             </Form>

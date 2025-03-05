@@ -167,9 +167,15 @@ $articlesImg: "@assets/images/sources/Articles.webp";
         }
 
         .submit-button{
-            min-height: f.pxToRem(100px);
-            min-width: 100%;
+            min-height: f.pxToRem(50px);
+            min-width: 49%;
             margin-bottom: f.pxToRem(20px);
+        }
+
+        .submit-button-row {
+            display: flex;
+            justify-content: space-between;
+            gap: f.pxToRem(10px);
         }
 
         .ant-checkbox-inner {

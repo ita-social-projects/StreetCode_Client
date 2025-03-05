@@ -22,10 +22,8 @@ $QRBgImg: "/src/assets/images/qr-block/QRbackground.webp";
         padding-left: pxToRem(31px);
     }
 
-    &.container{
-        margin-top: pxToRem(167px);
-        margin-bottom: pxToRem(31.5px);
-    }
+    margin-top: pxToRem(167px);
+    margin-bottom: pxToRem(31.5px);
 }
 
 .QRBlockText {

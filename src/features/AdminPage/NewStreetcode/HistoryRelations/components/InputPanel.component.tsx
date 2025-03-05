@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 
 import { AutoComplete, Button } from 'antd';
 
+import BUTTON_LABELS from '@constants/buttonLabels';
+// eslint-disable-next-line import/extensions
 import { ModelState } from '@/models/enums/model-state';
 import { RelatedFigureCreateUpdate, RelatedFigureShort } from '@/models/streetcode/related-figure.model';
 
@@ -63,7 +65,7 @@ const InputPanel = ({ figures, options, handleAdd, onChange }: Props) => {
                 value={relation}
             />
             <Button onClick={handleAddItem} className="streetcode-custom-button button-margin-left" type="primary">
-        Додати
+                {BUTTON_LABELS.ADD}
             </Button>
         </div>
     );
