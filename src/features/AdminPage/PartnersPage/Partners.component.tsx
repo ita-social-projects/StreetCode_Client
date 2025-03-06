@@ -59,6 +59,7 @@ const Partners: React.FC = observer(() => {
             partnersStore.setInternalMap(partnersStore.getPartnerArray);
         });
     };
+
     useEffect(() => {
         updatedPartners();
     }, [modalAddOpened, modalEditOpened]);

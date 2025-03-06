@@ -23,22 +23,19 @@ import {
     Checkbox,
     Form, Input, message, Modal, Popover, Select, UploadFile,
 } from 'antd';
+import { UploadChangeParam } from 'antd/es/upload';
 
 import PositionsApi from '@/app/api/team/teampositions.api';
 import validateSocialLink from '@/app/common/components/modals/validators/socialLinkValidator';
+import { ERROR_MESSAGES } from '@/app/common/constants/error-messages.constants';
+import MODAL_MESSAGES from '@/app/common/constants/modal-messages.constants';
+import REQUIRED_FIELD_MESSAGES from '@/app/common/constants/required_field_messages.constrants';
+import SUCCESS_MESSAGES from '@/app/common/constants/success-messages.constants';
+import VALIDATION_MESSAGES from '@/app/common/constants/validation-messages.constants';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import TeamLink from '@/features/AdminPage/TeamPage/TeamLink.component';
 import Audio from '@/models/media/audio.model';
 import Image from '@/models/media/image.model';
-
-import { UploadChangeParam } from 'antd/es/upload';
-import combinedImageValidator, { checkFile } from '@components/modals/validators/combinedImageValidator';
-        
-import SUCCESS_MESSAGES from '@/app/common/constants/success-messages.constants';
-import MODAL_MESSAGES from '@/app/common/constants/modal-messages.constants';
-import REQUIRED_FIELD_MESSAGES from '@/app/common/constants/required_field_messages.constrants';
-import { ERROR_MESSAGES } from '@/app/common/constants/error-messages.constants';
-import VALIDATION_MESSAGES from '@/app/common/constants/validation-messages.constants';
 
 const TeamModal: React.FC<{
     teamMember?: TeamMember, open: boolean,
@@ -130,8 +127,8 @@ const TeamModal: React.FC<{
 
     useEffect(() => {
         if (fileList.length === 0) {
-          form.setFieldsValue({ image: undefined });
-          form.validateFields(['image']).catch(() => {});
+            form.setFieldsValue({ image: undefined });
+            form.validateFields(['image']).catch(() => {});
         }
     }, [fileList]);
 
@@ -252,7 +249,7 @@ const TeamModal: React.FC<{
             }
             setActionSuccess(true);
         } catch (error: unknown) {
-            message.error(ERROR_MESSAGES.TEAM_MEMBER_COULD_NOT_LOAD); 
+            message.error(ERROR_MESSAGES.TEAM_MEMBER_COULD_NOT_LOAD);
             setWaitingForApiResponse(false);
         }
     };
@@ -290,7 +287,7 @@ const TeamModal: React.FC<{
                 <Form
                     form={form}
                     layout="vertical"
-                    onFinish={onSuccessfulSubmitPosition}
+                    onFinish={onSuccesfulSubmitPosition}
                 >
                     <div className="center">
                         <h2>

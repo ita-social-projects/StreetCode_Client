@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable max-len */
@@ -18,6 +19,7 @@ import TextsApi from '@app/api/streetcode/text-content/texts.api';
 import useMobx from '@app/stores/root-store';
 import ArtGallery from '@components/ArtGallery/ArtGalleryBlock.component';
 import ArtGalleryDndContext from '@components/ArtGallery/context/ArtGalleryDndContext';
+import BUTTON_LABELS from '@constants/buttonLabels';
 import StreetcodeArtsBlock from '@features/AdminPage/NewStreetcode/StreetcodeArtsBlock/StreetcodeArtsBlock.component';
 import PageBar from '@features/AdminPage/PageBar/PageBar.component';
 import StreetcodeCoordinate from '@models/additional-content/coordinate.model';
@@ -36,7 +38,10 @@ import ukUA from 'antd/locale/uk_UA';
 
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import TransactionLinksApi from '@/app/api/transactions/transactLinks.api';
+import { ERROR_MESSAGES } from '@/app/common/constants/error-messages.constants';
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
+import SUCCESS_MESSAGES from '@/app/common/constants/success-messages.constants';
+import VALIDATION_MESSAGES from '@/app/common/constants/validation-messages.constants';
 import { removeHtmlTags } from '@/app/common/utils/removeHtmlTags.utility';
 import QUILL_TEXTS_LENGTH from '@/features/AdminPage/NewStreetcode/TextBlock/TextLengthConstants/textMaxLength.constant';
 import Subtitle, { SubtitleCreate } from '@/models/additional-content/subtitles.model';
@@ -73,17 +78,11 @@ import CategoriesBlock from './CategoriesBlock/CategoriesBlock.component';
 import RelatedFiguresBlock from './HistoryRelations/HistoryRelations.component';
 import InterestingFactsBlock from './InterestingFactsBlock/InterestingFactsBlock.component';
 import MainBlockAdmin from './MainBlock/MainBlockAdmin.component';
+import MapBlockAdmin from './MapBlock/MapBlockAdmin.component';
 import PartnerBlockAdmin from './PartnerBlock/PartnerBlockAdmin.components';
 import SubtitleBlock from './SubtitileBlock/SubtitleBlock.component';
 import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
-import MapBlockAdmin from './MapBlock/MapBlockAdmin.component';
-
-import SUCCESS_MESSAGES from '@/app/common/constants/success-messages.constants';
-import { ERROR_MESSAGES } from '@/app/common/constants/error-messages.constants';
-import VALIDATION_MESSAGES from '@/app/common/constants/validation-messages.constants';
-import BUTTON_LABELS from "@constants/buttonLabels";
-
 
 dayjs.extend(utc);
 dayjs.extend(tz);
@@ -701,30 +700,30 @@ const NewStreetcode = () => {
                     </div>
 
                     <div className="submit-button-row">
-                      <Button
-                        className="streetcode-custom-button submit-button"
-                        onClick={onFinish}
-                        name={BUTTON_LABELS.DRAFT}
-                        htmlType="submit"
-                      >
-                        {BUTTON_LABELS.DRAFT}
-                      </Button>
-                      <Modal
-                        title="Ви впевнені, що хочете опублікувати цей history-код?"
-                        open={visibleModal}
-                        onOk={handleModalOk}
-                        onCancel={handleCancelModalRemove}
-                        okText={BUTTON_LABELS.SUBMIT}
-                        cancelText={BUTTON_LABELS.CANCEL}
-                      />
-                      <Button
-                        htmlType="submit"
-                        className="streetcode-custom-button submit-button"
-                        onClick={handleRemove}
-                        name={BUTTON_LABELS.PUBLISH}
-                      >
-                        {BUTTON_LABELS.PUBLISH}
-                      </Button>    
+                        <Button
+                            className="streetcode-custom-button submit-button"
+                            onClick={onFinish}
+                            name={BUTTON_LABELS.DRAFT}
+                            htmlType="submit"
+                        >
+                            {BUTTON_LABELS.DRAFT}
+                        </Button>
+                        <Modal
+                            title="Ви впевнені, що хочете опублікувати цей history-код?"
+                            open={visibleModal}
+                            onOk={handleModalOk}
+                            onCancel={handleCancelModalRemove}
+                            okText={BUTTON_LABELS.SUBMIT}
+                            cancelText={BUTTON_LABELS.CANCEL}
+                        />
+                        <Button
+                            htmlType="submit"
+                            className="streetcode-custom-button submit-button"
+                            onClick={handleRemove}
+                            name={BUTTON_LABELS.PUBLISH}
+                        >
+                            {BUTTON_LABELS.PUBLISH}
+                        </Button>
                     </div>
                 </div>
             </ConfigProvider>

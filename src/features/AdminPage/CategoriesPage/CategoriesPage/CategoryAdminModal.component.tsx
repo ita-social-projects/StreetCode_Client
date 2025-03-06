@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 import '@features/AdminPage/AdminModal.styles.scss';
 import '@features/AdminPage/CategoriesPage/CategoriesPage/CategoryAdminModal.styles.scss';
 
@@ -10,6 +11,7 @@ import ImagesApi from '@api/media/images.api';
 import FileUploader from '@components/FileUploader/FileUploader.component';
 import combinedImageValidator, { checkFile } from '@components/modals/validators/combinedImageValidator';
 import BUTTON_LABELS from '@constants/buttonLabels';
+import PreviewFileModal from '@features/AdminPage/NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import Audio from '@models/media/audio.model';
 import Image from '@models/media/image.model';
@@ -22,19 +24,13 @@ import {
 } from 'antd';
 import { UploadChangeParam, UploadFileStatus } from 'antd/es/upload/interface';
 
+import MODAL_MESSAGES from '@/app/common/constants/modal-messages.constants';
+import REQUIRED_FIELD_MESSAGES from '@/app/common/constants/required_field_messages.constrants';
+import SUCCESS_MESSAGES from '@/app/common/constants/success-messages.constants';
+import VALIDATION_MESSAGES from '@/app/common/constants/validation-messages.constants';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import normaliseWhitespaces from '@/app/common/utils/normaliseWhitespaces';
 import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
-
-import PreviewFileModal from '../../NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
-import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
-import normaliseWhitespaces from '@/app/common/utils/normaliseWhitespaces';
-import combinedImageValidator, { checkFile } from '@components/modals/validators/combinedImageValidator';
-import VALIDATION_MESSAGES from '@/app/common/constants/validation-messages.constants';
-import SUCCESS_MESSAGES from '@/app/common/constants/success-messages.constants';
-import REQUIRED_FIELD_MESSAGES from '@/app/common/constants/required_field_messages.constrants';
-import MODAL_MESSAGES from '@/app/common/constants/modal-messages.constants';
-
 
 interface SourceModalProps {
     isModalVisible: boolean;
@@ -84,20 +80,20 @@ const SourceModal: React.FC<SourceModalProps> = ({
             });
             ImagesApi.getById(initialData.imageId)
                 .then((img) => {
-                    initialData.image = img;
-                    setImage(img);
+                    const updatedData = { ...initialData, image: img };
+                    setImage(updatedData.image);
                     form.setFieldsValue({
-                        image: createFileListData(img),
+                        image: createFileListData(updatedData.image),
                     });
-                    setFileList(createFileListData(img));
+                    setFileList(createFileListData(updatedData.image));
                 });
         }
     }, [initialData, isModalVisible, form]);
 
     useEffect(() => {
         if (fileList.length === 0) {
-          form.setFieldsValue({ image: undefined });
-          form.validateFields(['image']).catch(() => {});
+            form.setFieldsValue({ image: undefined });
+            form.validateFields(['image']).catch(() => {});
         }
     }, [fileList]);
 
@@ -220,7 +216,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                         label="Назва: "
                         rules={[
                             { required: true, message: REQUIRED_FIELD_MESSAGES.ENTER_TITLE },
-                            { validator: validateCategory }
+                            { validator: validateCategory },
                         ]}
                         getValueProps={(value) => ({ value: normaliseWhitespaces(value) })}
                     >

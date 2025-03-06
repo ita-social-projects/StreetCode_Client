@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 import '@features/AdminPage/AdminModal.styles.scss';
 
 import CancelBtn from '@images/utils/Cancel_btn.svg';
@@ -11,15 +12,13 @@ import {
     Button, Form, Input, message, Modal, Popover,
 } from 'antd';
 
-import Tag from '@/models/additional-content/tag.model';
+import MODAL_MESSAGES from '@/app/common/constants/modal-messages.constants';
+import REQUIRED_FIELD_MESSAGES from '@/app/common/constants/required_field_messages.constrants';
+import SUCCESS_MESSAGES from '@/app/common/constants/success-messages.constants';
+import VALIDATION_MESSAGES from '@/app/common/constants/validation-messages.constants';
 import normaliseWhitespaces from '@/app/common/utils/normaliseWhitespaces';
 import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
-
-import VALIDATION_MESSAGES from '@/app/common/constants/validation-messages.constants';
-import SUCCESS_MESSAGES from '@/app/common/constants/success-messages.constants';
-import REQUIRED_FIELD_MESSAGES from '@/app/common/constants/required_field_messages.constrants';
-import MODAL_MESSAGES from '@/app/common/constants/modal-messages.constants';
-
+import Tag from '@/models/additional-content/tag.model';
 
 interface SourceModalProps {
     isModalVisible: boolean;
@@ -65,9 +64,9 @@ const SourceModal: React.FC<SourceModalProps> = ({
     };
 
     const validateTag = uniquenessValidator(
-        ()=>(tagsStore.getTagArray.map((tag) => tag.title)), 
-        ()=>(initialData?.title), 
-        VALIDATION_MESSAGES.DUPLICATE_TAG_TITLE
+        () => (tagsStore.getTagArray.map((tag) => tag.title)),
+        () => (initialData?.title),
+        VALIDATION_MESSAGES.DUPLICATE_TAG_TITLE,
     );
 
     const onSubmit = async (formData: any) => {
@@ -101,7 +100,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
             await form.validateFields();
             form.submit();
             message.success(SUCCESS_MESSAGES.TAG_SAVED, 2);
-			      setIsSaveButtonDisabled(true);
+            setIsSaveButtonDisabled(true);
         } catch (error) {
             message.config({
                 top: 100,
@@ -114,51 +113,49 @@ const SourceModal: React.FC<SourceModalProps> = ({
     };
 
     return (
-        <>
-            <Modal
-                open={isModalVisible}
-                onCancel={closeModal}
-                className="modalContainer"
-                closeIcon={(
-                    <Popover content={MODAL_MESSAGES.REMINDER_TO_SAVE} trigger="hover">
-                        <CancelBtn className="iconSize" onClick={handleCancel} />
-                    </Popover>
-                )}
-                footer={null}
+        <Modal
+            open={isModalVisible}
+            onCancel={closeModal}
+            className="modalContainer"
+            closeIcon={(
+                <Popover content={MODAL_MESSAGES.REMINDER_TO_SAVE} trigger="hover">
+                    <CancelBtn className="iconSize" onClick={handleCancel} />
+                </Popover>
+            )}
+            footer={null}
+        >
+            <Form
+                form={form}
+                layout="vertical"
+                onFinish={onSubmit}
+                initialValues={initialData}
+                onKeyDown={(e) => (e.key == 'Enter' ? e.preventDefault() : '')}
+                onValuesChange={updateSaveButtonState}
             >
-                <Form
-                    form={form}
-                    layout="vertical"
-                    onFinish={onSubmit}
-                    initialValues={initialData}
-                    onKeyDown={(e) => e.key == "Enter" ? e.preventDefault() : ''}
-                    onValuesChange={updateSaveButtonState}
+                <div className="center">
+                    <h2>{isEditing ? 'Редагувати тег' : 'Додати тег'}</h2>
+                </div>
+                <Form.Item
+                    name="title"
+                    label="Назва: "
+                    rules={[{ required: true, message: REQUIRED_FIELD_MESSAGES.ENTER_TITLE },
+                        { validator: validateTag },
+                    ]}
+                    getValueProps={(value: string) => ({ value: normaliseWhitespaces(value) })}
                 >
-                    <div className="center">
-                        <h2>{isEditing ? 'Редагувати тег' : 'Додати тег'}</h2>
-                    </div>
-                    <Form.Item
-                        name="title"
-                        label="Назва: "
-                        rules={[{ required: true, message: REQUIRED_FIELD_MESSAGES.ENTER_TITLE },
-                        { validator: validateTag }
-                        ]}
-                        getValueProps={(value: string) => ({ value: normaliseWhitespaces(value) })}
+                    <Input maxLength={50} showCount />
+                </Form.Item>
+                <div className="center">
+                    <Button
+                        className="streetcode-custom-button"
+                        disabled={isSaveButtonDisabled}
+                        onClick={() => handleOk()}
                     >
-                        <Input maxLength={50} showCount/>
-                    </Form.Item>
-                    <div className="center">
-                        <Button
-                            className="streetcode-custom-button"
-                            disabled={isSaveButtonDisabled}
-                            onClick={() => handleOk()}
-                        >
-                            {BUTTON_LABELS.SAVE}
-                        </Button>
-                    </div>
-                </Form>
-            </Modal>
-        </>
+                        {BUTTON_LABELS.SAVE}
+                    </Button>
+                </div>
+            </Form>
+        </Modal>
     );
 };
 

@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 
 import { Form, FormInstance, Input } from 'antd';
 
+import REQUIRED_FIELD_MESSAGES from '@/app/common/constants/required_field_messages.constrants';
 import QUILL_TEXTS_LENGTH from
     '@/features/AdminPage/NewStreetcode/TextBlock/TextLengthConstants/textMaxLength.constant';
 import Video from '@/models/media/video.model';
@@ -13,11 +14,8 @@ import AdditionalTextBlockAdminForm from './AdditionTextBlock/AdditionalTextBloc
 import LinkEditor from './Editors/LinkEditor.component';
 import TextEditor from './Editors/TextEditor.component';
 import TextPreview from './TextPreview/TextPreview.component';
-import REQUIRED_FIELD_MESSAGES from '@/app/common/constants/required_field_messages.constrants';
 
-const isQuillEmpty = (text: string | undefined) => {
-    return !text || text.replace(/<(.|\n)*?>/g, '').trim().length === 0;
-};
+const isQuillEmpty = (text: string | undefined) => !text || text.replace(/<(.|\n)*?>/g, '').trim().length === 0;
 
 interface Props {
     form: FormInstance<unknown>,

@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { ModelState } from '@models/enums/model-state';
 import { RelatedFigureCreateUpdate, RelatedFigureShort } from '@models/streetcode/related-figure.model';
 
-import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
-import { StreetcodeShort } from '@/models/streetcode/streetcode-types.model';
-
-import SelectWithCustomSuffix from '@/app/common/components/SelectWithCustomSuffix';
 import { Select } from 'antd';
+
+import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
+import SelectWithCustomSuffix from '@/app/common/components/SelectWithCustomSuffix';
+import { StreetcodeShort } from '@/models/streetcode/streetcode-types.model';
 
 interface Props {
     currentStreetcodeId: number | null;

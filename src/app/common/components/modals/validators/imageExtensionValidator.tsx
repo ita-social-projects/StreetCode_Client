@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { RuleObject } from 'rc-field-form/lib/interface';
 
 import { SUPPORTED_IMAGE_FILE_TYPES } from '@/app/common/constants/file-types.constants';

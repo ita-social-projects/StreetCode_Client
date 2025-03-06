@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
 import ReactQuill from 'react-quill';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
+import BUTTON_LABELS from '@constants/buttonLabels';
 
 import {
     Button, Form, Input, message, Modal, Popover, Select,
@@ -15,14 +16,10 @@ import {
     setQuillEditorContent,
 } from '@/app/common/components/Editor/EditorUtilities/quillUtils.utility';
 import Editor from '@/app/common/components/Editor/QEditor.component';
-
-import POPOVER_CONTENT from './constants/popoverContent';
-import BUTTON_LABELS from '@constants/buttonLabels';
-
-import SUCCESS_MESSAGES from "@/app/common/constants/success-messages.constants";
-import REQUIRED_FIELD_MESSAGES from "@/app/common/constants/required_field_messages.constrants";
-import VALIDATION_MESSAGES from "@/app/common/constants/validation-messages.constants";
-import MODAL_MESSAGES from "@/app/common/constants/modal-messages.constants";
+import MODAL_MESSAGES from '@/app/common/constants/modal-messages.constants';
+import REQUIRED_FIELD_MESSAGES from '@/app/common/constants/required_field_messages.constrants';
+import SUCCESS_MESSAGES from '@/app/common/constants/success-messages.constants';
+import VALIDATION_MESSAGES from '@/app/common/constants/validation-messages.constants';
 
 interface Props {
   open: boolean;
@@ -223,7 +220,7 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
                         }}
                         disabled={isSaveButtonDisabled}
                     >
-                      {BUTTON_LABELS.SAVE}
+                        {BUTTON_LABELS.SAVE}
                     </Button>
                 </div>
             </Form>

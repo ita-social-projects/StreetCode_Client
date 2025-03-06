@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 /* eslint-disable react/jsx-no-duplicate-props */
 /* eslint-disable complexity */
 /* eslint-disable eqeqeq */
@@ -12,6 +13,7 @@ import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
 import ReactQuill from 'react-quill';
 import combinedImageValidator, { checkFile } from '@components/modals/validators/combinedImageValidator';
+import BUTTON_LABELS from '@constants/buttonLabels';
 import PreviewFileModal from '@features/AdminPage/NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
 import useMobx from '@stores/root-store';
 import dayjs from 'dayjs';
@@ -37,18 +39,16 @@ import {
 } from '@/app/common/components/Editor/EditorUtilities/quillUtils.utility';
 import Editor from '@/app/common/components/Editor/QEditor.component';
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
+import { ERROR_MESSAGES } from '@/app/common/constants/error-messages.constants';
+import MODAL_MESSAGES from '@/app/common/constants/modal-messages.constants';
+import REQUIRED_FIELD_MESSAGES from '@/app/common/constants/required_field_messages.constrants';
+import SUCCESS_MESSAGES from '@/app/common/constants/success-messages.constants';
+import VALIDATION_MESSAGES from '@/app/common/constants/validation-messages.constants';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
+import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
 import Audio from '@/models/media/audio.model';
 import Image from '@/models/media/image.model';
 import News from '@/models/news/news.model';
-import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
-
-import SUCCESS_MESSAGES from '@/app/common/constants/success-messages.constants';
-import VALIDATION_MESSAGES from '@/app/common/constants/validation-messages.constants';
-import MODAL_MESSAGES from '@/app/common/constants/modal-messages.constants';
-import { ERROR_MESSAGES } from '@/app/common/constants/error-messages.constants';
-import REQUIRED_FIELD_MESSAGES from '@/app/common/constants/required_field_messages.constrants';
-import BUTTON_LABELS from "@constants/buttonLabels";
 
 const NewsModal: React.FC<{
     newsItem?: News;
@@ -93,8 +93,8 @@ const NewsModal: React.FC<{
 
     useEffect(() => {
         if (fileList.length === 0) {
-          form.setFieldsValue({ image: undefined });
-          form.validateFields(['image']).catch(() => {});
+            form.setFieldsValue({ image: undefined });
+            form.validateFields(['image']).catch(() => {});
         }
     }, [fileList]);
 
@@ -130,7 +130,7 @@ const NewsModal: React.FC<{
     const validateTitle = uniquenessValidator(
         () => newsStore.NewsArray.map((news: News) => news.title.trim()),
         () => newsItem?.title?.trim(),
-        VALIDATION_MESSAGES.DUPLICATE_NEWS_TITLE, 
+        VALIDATION_MESSAGES.DUPLICATE_NEWS_TITLE,
     );
 
     useEffect(() => {
@@ -393,7 +393,7 @@ const NewsModal: React.FC<{
                             label="Зображення: "
                             className="image-form-item"
                             rules={[
-                                { 
+                                {
                                     required: true,
                                     message: REQUIRED_FIELD_MESSAGES.ADD_IMAGE,
                                 },
