@@ -2,7 +2,7 @@ import './MapBlock.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
-import { useStreecodePageLoaderContext, useStreetcodeDataContext, useToponymContext } from '@stores/root-store';
+import { useStreetcodePageLoaderContext, useStreetcodeDataContext, useToponymContext } from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 
 import StreetcodeCoordinatesApi from '@/app/api/additional-content/streetcode-cooridnates.api';
@@ -20,7 +20,7 @@ import MapOSM from './Map/Map.component';
 const MapBlock = () => {
     const { streetcodeStore: { getStreetCodeId } } = useStreetcodeDataContext();
     const toponymContext = useToponymContext();
-    const streecodePageLoaderContext = useStreecodePageLoaderContext();
+    const streecodePageLoaderContext = useStreetcodePageLoaderContext();
 
     const [streetcodeCoordinates, setStreetcodeCoordinates] = useState<StreetcodeCoordinate[]>([]);
     const [statisticRecord, setStatisticRecord] = useState<StatisticRecord[]>([]);
@@ -33,8 +33,12 @@ const MapBlock = () => {
                 if (!toponymContext.loaded) {
                     toponymPromise = toponymContext.fetchToponymByStreetcodeId(streetcodeId);
                 }
+
                 const statisticPromise = StatisticRecordApi.getAllByStreetcodeId(streetcodeId)
-                    .then((resp) => setStatisticRecord(resp));
+                    .then((resp) => {
+                        setStatisticRecord(resp);
+                    })
+                    .catch(() => {});
 
                 Promise.all([statisticPromise, toponymPromise])
                     .then(() => streecodePageLoaderContext.addBlockFetched(StreetcodeBlock.Map));

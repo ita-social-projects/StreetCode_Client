@@ -1,7 +1,7 @@
 export const RECAPTCHA_CHECK = 'Підтвердьте, що ви не робот.';
 export const SOMETHING_IS_WRONG = 'Щось пішло не так...';
 export const MESSAGE_LIMIT = 'Ви перевищили ліміт повідомлень, повторіть через 5 хвилин!';
-export const INVALID_LOGIN_ATTEMPT = 'Неправильний логін чи пароль';
+export const INVALID_LOGIN_ATTEMPT = 'Електронна адреса або пароль невірні.';
 export const TEAM_MEMBER_COULD_NOT_LOAD = 'Не вдалось оновити/створити члена команди. Спробуйте ще раз.';
 export const PARTNER_COULD_NOT_LOAD = 'Не вдалось оновити/створити партнера. Спробуйте ще раз.';
 export const NEWS_COULD_NOT_LOAD = 'Не вдалось оновити/створити новину. Спробуйте ще раз.';

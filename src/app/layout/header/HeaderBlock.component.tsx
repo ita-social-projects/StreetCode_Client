@@ -9,7 +9,7 @@ import StreetcodeSvgMobile from '@images/header/Streetcode_logo_mobile.svg';
 import { observer } from 'mobx-react-lite';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import AuthService from '@app/common/services/auth-service/AuthService';
 import UserMenu from '@components/UserMenu/UserMenu.component';
 import useEventListener from '@hooks/external/useEventListener.hook';
@@ -40,6 +40,8 @@ const HeaderBlock = () => {
     const [searchResult, setSearchResult] = useState<StreetcodeFilterResultDTO[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const navigator = useNavigate();
+    const location = useLocation();
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     const isDesktop = useMediaQuery({
         query: '(min-width: 1025px)',
@@ -138,8 +140,22 @@ const HeaderBlock = () => {
     };
 
     const navigateToLogin = () => {
-        navigator(FRONTEND_ROUTES.AUTH.LOGIN);
+        navigator(FRONTEND_ROUTES.AUTH.LOGIN, {
+            state: {
+                previousUrl: location.pathname,
+            },
+        });
     };
+
+    useEffect(
+        () => {
+            const refreshToken = async () => {
+                setIsLoggedIn(await AuthService.refreshOnTokenExpiry());
+            };
+
+            refreshToken();
+        },
+    );
 
     return (
         <div className="HeaderBlock" ref={dimWrapperRef}>
@@ -217,7 +233,7 @@ const HeaderBlock = () => {
                                 style={isPageDimmed ? { zIndex: '-1' } : undefined}
                             />
                         )}
-                        {AuthService.isLoggedIn() ? <UserMenu /> : (
+                        {isLoggedIn ? <UserMenu /> : (
                             <Button className="loginButton" onClick={navigateToLogin}>
                                 Вхід
                             </Button>

@@ -1,15 +1,17 @@
 import './index.scss';
 import '@fonts/fonts.styles.scss';
 
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import ReactGA from 'react-ga4';
 import { RouterProvider } from 'react-router-dom';
 import router from '@app/router/Routes';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+
 import WithClearCache from './app/common/components/withClearCache';
-import { GoogleOAuthProvider } from '@react-oauth/google';
 
 declare global {
     interface Window {
@@ -27,12 +29,12 @@ ReactGA.initialize('G-2RHY04JKG0');
 
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/service-worker.js')
-          .catch((error) => {
-              console.error('SW registration failed:', error);
-          });
+        navigator.serviceWorker.register('/service-worker.js')
+            .catch((error) => {
+                console.error('SW registration failed:', error);
+            });
     });
-  }
+}
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement,
