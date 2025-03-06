@@ -150,7 +150,19 @@ const HeaderBlock = () => {
     useEffect(
         () => {
             const refreshToken = async () => {
-                setIsLoggedIn(await AuthService.refreshOnTokenExpiry());
+                const token = AuthService.getAccessToken();
+                if (!token) {
+                    setIsLoggedIn(false);
+                    return;
+                }
+
+                if (AuthService.isLoggedIn()) {
+                    setIsLoggedIn(true);
+                }
+
+                if (AuthService.isAccessTokenExpired(token)) {
+                    setIsLoggedIn(await AuthService.refreshOnTokenExpiry());
+                }
             };
 
             refreshToken();
