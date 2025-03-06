@@ -34,6 +34,10 @@ export interface UserLoginResponse {
     refreshToken: string;
 }
 
+export interface GoogleLoginRequest {
+    idToken: string;
+}
+
 export interface UserRegisterRequest {
     name:string;
     surname:string;
