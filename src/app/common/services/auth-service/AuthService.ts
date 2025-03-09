@@ -28,10 +28,6 @@ export default class AuthService {
     }
 
     public static async refreshOnTokenExpiry(): Promise<boolean> {
-        if (!AuthService.isLoggedIn()) {
-            return true;
-        }
-
         try {
             await AuthService.refreshTokenAsync();
             return true;
