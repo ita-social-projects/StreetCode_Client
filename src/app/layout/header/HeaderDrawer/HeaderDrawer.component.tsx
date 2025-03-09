@@ -11,18 +11,17 @@ import useToggle from '@hooks/stateful/useToggle.hook';
 
 import { Drawer } from 'antd';
 
-import { ContactUsModal } from '@/app/common/components/modals/ContactUsModal/ContactUsModal.component';
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import HeaderDrawerItem from '@/app/layout/header/HeaderDrawer/HeaderDrawerItem/HeaderDrawerItem.component';
 
 import SocialMediaLinks from './SocialMediaLinks/SocialMediaLinks.component';
 
-const mobileOptions = 8;
+const mobileOptions = 7;
 const desktopOptions = 6;
-const scaleDesktop = 1;
-const scaleMobile = 12;
+const scaleDesktop = 1.01;
+const scaleMobile = 7;
 const menuPositionsMobile = [
-    1 * scaleMobile,
+    scaleMobile,
     2 * scaleMobile,
     3 * scaleMobile - 1,
     4 * scaleMobile - 2,
@@ -57,7 +56,7 @@ const HeaderDrawer = () => {
     const { toggleState: drawerState, handlers: { toggle } } = useToggle();
     const [active, setActive] = useState(1);
     const [options, setOptions] = useState(desktopOptions);
-    const [scalingCooficient, setScalingCooficient] = useState(scaleDesktop);
+    const [scalingCoefficient, setScalingCoefficient] = useState(scaleDesktop);
     const location = useLocation();
 
     const isSmall = useMediaQuery({
@@ -90,11 +89,11 @@ const HeaderDrawer = () => {
         const optionId = getMenuOptionIdByCurrentPath(currentPath);
 
         if (isSmall) {
-            setScalingCooficient(scaleMobile);
+            setScalingCoefficient(scaleMobile);
             setOptions(mobileOptions);
             setActive(optionId + 1);
         } else {
-            setScalingCooficient(scaleDesktop);
+            setScalingCoefficient(scaleDesktop);
             setOptions(desktopOptions);
             setActive(optionId + 1);
         }
@@ -116,8 +115,8 @@ const HeaderDrawer = () => {
                         className="customSlider"
                         trackClassName="customSlider-track"
                         thumbClassName="thumb"
-                        min={scalingCooficient}
-                        max={options * scalingCooficient}
+                        min={scalingCoefficient}
+                        max={options * scalingCoefficient}
                         value={isSmall ? menuPositionsMobile[active - 1] : active}
                         renderTrack={(props) => <div {...props} />}
                         orientation="vertical"
@@ -178,10 +177,6 @@ const HeaderDrawer = () => {
                                             toggleState={toggle}
                                             text="Політика конфіденційності"
                                             link={FRONTEND_ROUTES.OTHER_PAGES.PRIVACY_POLICY}
-                                        />
-                                        <ContactUsModal
-                                            toggleState={toggle}
-                                            text="Зворотний зв'язок"
                                         />
                                     </div>
                                     <SocialMediaLinks />
