@@ -5,8 +5,6 @@
 @import "slick-carousel/slick/slick.css";
 @import "slick-carousel/slick/slick-theme.css";
 
-
-
 @mixin slick-arrow-pseudo($direction, $margin) {
     transition: .5s;
     margin-left: pxToRem($margin);
@@ -16,14 +14,15 @@
     opacity: 1;
 }
 
-
 .slick-next,
 .slick-prev {
     transition: .5s;
     pointer-events: none;
+
     &:hover:before {
         filter: c.$selected-arrow-filter-color;
     }
+
     &:before {
         filter: c.$active-arrow-filter-color;
         pointer-events: all;
@@ -44,11 +43,13 @@
 
 .slick-disabled {
     transition: .5s;
+
     &:before {
         filter: c.$base-arrow-filter-color;
         pointer-events: none;
     }
-    &:hover:before{
+
+    &:hover:before {
         filter: c.$base-arrow-filter-color;
     }
 }
@@ -60,21 +61,23 @@
     transition: .5s;
 }
 
-
 li.slick-active button:before {
     background: c.$dark-red-color;
 }
 
 .sliderClass {
     width: 100%;
+
     .slider-item-container {
         display: flex !important;
         position: relative;
         flex-direction: column;
+
         &:focus,
         &:focus-visible {
             outline: none;
         }
+
         .left {
             position: absolute;
             width: 35%;
@@ -82,6 +85,7 @@ li.slick-active button:before {
             left: 0;
             opacity: 0;
         }
+
         .right {
             position: absolute;
             width: 35%;
@@ -93,7 +97,6 @@ li.slick-active button:before {
 }
 
 .secondPreset{
-
     .slick-arrow {
         top: 43%;
         @include mut.sized(68px, 101px);
@@ -108,13 +111,12 @@ li.slick-active button:before {
         left: 20px !important;
 
         &::before {
-            content: url("@assets/images/utils/LeftSmallSliderArrow.svg");
-            opacity: 0.9;
+            content: url("@images/utils/LeftSmallSliderArrowBrighter.svg");
             filter: none;
         }
 
         &:hover::before {
-            opacity: 1.0;
+            content: url("@images/utils/LeftSmallSliderArrowDarker.svg");
             filter: none;
         }
     }
@@ -123,17 +125,15 @@ li.slick-active button:before {
         right: 20px !important;
 
         &::before {
-            content: url("@assets/images/utils/RightSmallSliderArrow.svg");
-            opacity: 0.9;
+            content: url("@images/utils/RightSmallSliderArrowBrighter.svg");
             filter: none;
         }
 
         &:hover::before {
-            opacity: 1.0;
+            content: url("@images/utils/RightSmallSliderArrowDarker.svg");
             filter: none;
         }
     }
-
 }
 
 @media screen and (max-width:1024px) {
