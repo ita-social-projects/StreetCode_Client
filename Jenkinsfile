@@ -123,7 +123,7 @@ pipeline {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'docker-login-streetcode', passwordVariable: 'password', usernameVariable: 'username')]){
-                        sh "docker build -t ${username}/streetcode_client:latest ."
+                        sh "docker build -t ${username}/streetcode_client:${env.CODE_VERSION} ."
                         IS_IMAGE_BUILDED = true
                     }
                 }
@@ -137,8 +137,6 @@ pipeline {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'docker-login-streetcode', passwordVariable: 'password', usernameVariable: 'username')]){
                         sh 'echo "${password}" | docker login -u "${username}" --password-stdin'
-                        sh "docker push ${username}/streetcode_client:latest"
-                        sh "docker tag  ${username}/streetcode_client:latest ${username}/streetcode_client:${env.CODE_VERSION}"
                         sh "docker push ${username}/streetcode_client:${env.CODE_VERSION}"
                         IS_IMAGE_PUSH = true
                     }
@@ -153,7 +151,7 @@ pipeline {
             input message: 'Do you want to approve Staging deployment?', ok: 'Yes', submitter: 'admin_1, ira_zavushchak , dev'
                 script {
                     checkout scmGit(
-                      branches: [[name: 'main']],
+                      branches: [[name: 'feature/add-init-container']],
                      userRemoteConfigs: [[credentialsId: 'StreetcodeGithubCreds', url: 'git@github.com:ita-social-projects/Streetcode-DevOps.git']])
                    
                     preDeployBackStage = sh(script: 'docker container inspect $(docker container ls -aq) --format "{{.Config.Image}}" | grep "streetcodeua/streetcode:" | perl -pe \'($_)=/([0-9]+([.][0-9]+)+)/\'', returnStdout: true).trim()
@@ -169,7 +167,7 @@ pipeline {
                     sh 'docker system prune --force --filter "until=72h"'
                     sh """ export DOCKER_TAG_BACKEND=${preDeployBackStage}
                     export DOCKER_TAG_FRONTEND=${env.CODE_VERSION}
-                    docker stop backend frontend nginx loki certbot
+                    docker stop backend frontend nginx loki certbot dbupdate
                     docker container prune -f                
                     docker volume prune -f
                     docker network prune -f
@@ -203,7 +201,7 @@ pipeline {
                sh """
                export DOCKER_TAG_BACKEND=${preDeployBackStage}
                export DOCKER_TAG_FRONTEND=${preDeployFrontStage}
-               docker stop backend frontend nginx loki certbot
+               docker stop backend frontend nginx loki certbot dbupdate
                docker container prune -f
                docker volume prune -f
                docker network prune -f
