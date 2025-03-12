@@ -193,7 +193,6 @@ const EditUserModal = ({
                 className="modalEditContainer"
             >
                 <Form
-                    className="editFormWrapper"
                     form={form}
                     layout="vertical"
                     initialValues={{
@@ -202,205 +201,209 @@ const EditUserModal = ({
                     }}
                     onChange={onChange}
                 >
-                    <div className="editFormImageWrapper">
-                        <Form.Item
-                            name="image"
-                            initialValue={
-                                image
-                                    ? [{
-                                        name: '',
-                                        thumbUrl: base64ToUrl(image.base64, image.mimeType),
-                                        uid: image.id ? image.id.toString() : '-1',
-                                        status: 'done',
-                                    }] : []
-                            }
-                            style={{ textAlign: 'center', fontWeight: 700 }}
-                            rules={[
-                                { validator: combinedImageValidator(false) },
-                            ]}
-                        >
-                            <div>
-
-                                <FileUploader
-                                    id="imageUpload"
-                                    className="editAvatar"
-                                    enableCrop
-                                    multiple={false}
-                                    accept=".jpeg,.png,.jpg,.webp"
-                                    uploadTo="image"
-                                    listType="picture-card"
-                                    maxCount={1}
-                                    beforeUpload={checkFile}
-                                    cropAspect={3 / 4}
-                                    onChange={handleFileChange}
-                                    fileList={fileList}
-                                    onPreview={handlePreview}
-                                    onSuccessUpload={handleUpload}
-                                    onRemove={handleRemove}
-                                    defaultFileList={image
+                    <div className="editFormWrapper">
+                        <div className="editFormImageWrapper">
+                            <Form.Item
+                                name="image"
+                                initialValue={
+                                    image
                                         ? [{
                                             name: '',
                                             thumbUrl: base64ToUrl(image.base64, image.mimeType),
                                             uid: image.id ? image.id.toString() : '-1',
                                             status: 'done',
-                                        }] : []}
+                                        }] : []
+                                }
+                                style={{ textAlign: 'center', fontWeight: 700 }}
+                                rules={[
+                                    { validator: combinedImageValidator(false) },
+                                ]}
+                            >
+                                <div>
+
+                                    <FileUploader
+                                        id="imageUpload"
+                                        className="editAvatar"
+                                        enableCrop
+                                        multiple={false}
+                                        accept=".jpeg,.png,.jpg,.webp"
+                                        uploadTo="image"
+                                        listType="picture-card"
+                                        maxCount={1}
+                                        beforeUpload={checkFile}
+                                        cropAspect={3 / 4}
+                                        onChange={handleFileChange}
+                                        fileList={fileList}
+                                        onPreview={handlePreview}
+                                        onSuccessUpload={handleUpload}
+                                        onRemove={handleRemove}
+                                        defaultFileList={image
+                                            ? [{
+                                                name: '',
+                                                thumbUrl: base64ToUrl(image.base64, image.mimeType),
+                                                uid: image.id ? image.id.toString() : '-1',
+                                                status: 'done',
+                                            }] : []}
+                                    >
+                                        <button type="button">Завантажити фото</button>
+                                    </FileUploader>
+                                </div>
+                            </Form.Item>
+                            <p className="formatText">Допустимий формат JPG, JPEG, PNG, WEBP, з розміром до 3 МБ.</p>
+                            <div className="imageButtonWrapper">
+                                <Button
+                                    className="editImageButton"
+                                    onClick={() => document.getElementById('imageUpload')?.click()}
                                 >
-                                    <button type="button">Завантажити фото</button>
-                                </FileUploader>
+                                    Змінити фото
+                                </Button>
+                                <Button
+                                    className="removeImageButton"
+                                    disabled={fileList.length === 0}
+                                    onClick={handleRemove}
+                                >
+                                    Видалити фото
+                                </Button>
                             </div>
-                        </Form.Item>
-                        <div className="imageButtonWrapper">
-                            <Button
-                                className="editImageButton"
-                                onClick={() => document.getElementById('imageUpload')?.click()}
-                            >
-                                Змінити фото
-                            </Button>
-                            <Button
-                                className="removeImageButton"
-                                disabled={fileList.length === 0}
-                                onClick={handleRemove}
-                            >
-                                Видалити фото
-                            </Button>
                         </div>
-                        <p className="formatText">Допустимий формат JPG, JPEG, PNG, WEBP, з розміром до 3 МБ.</p>
-                    </div>
-                    <div className="editFormUserInfoWrapper">
-                        <div className="formItemFirst">
+                        <div className="editFormUserInfoWrapper">
+                            <div className="formItemFirst">
+                                <Form.Item
+                                    normalize={removeSpacesFromField}
+                                    className="formItem"
+                                    label="Нікнейм*"
+                                    name="userName"
+                                    rules={[{
+                                        validator: async (_, value) => {
+                                            if (!value) {
+                                                return;
+                                            }
+                                            if (userStore.user?.userName === value) {
+                                                return Promise.resolve();
+                                            }
+                                            const isUnique = checkUniqueUserName(value);
+
+                                            if (await isUnique) {
+                                                return Promise.resolve();
+                                            }
+                                            return Promise.reject(new Error("Це ім'я користувача вже існує"));
+                                        },
+                                    },
+                                    {
+                                        validator: validateRequired('Нікнейм'),
+                                    },
+                                    {
+                                        validator: validateLength('Нікнейм', 2, 128),
+                                    },
+                                    {
+                                        validator: validatePatternUserName('Нікнейм'),
+                                    }]}
+                                >
+                                    <Input minLength={2} maxLength={128} showCount placeholder="Нікнейм" />
+                                </Form.Item>
+                            </div>
                             <Form.Item
                                 normalize={removeSpacesFromField}
                                 className="formItem"
-                                label="Нікнейм"
-                                name="userName"
+                                label="Ім'я*"
+                                name="name"
                                 rules={[{
-                                    validator: async (_, value) => {
-                                        if (!value) {
-                                            return;
-                                        }
-                                        if (userStore.user?.userName === value) {
-                                            return Promise.resolve();
-                                        }
-                                        const isUnique = checkUniqueUserName(value);
-
-                                        if (await isUnique) {
-                                            return Promise.resolve();
-                                        }
-                                        return Promise.reject(new Error("Це ім'я користувача вже існує"));
-                                    },
+                                    validator: validateRequired("Ім'я"),
                                 },
                                 {
-                                    validator: validateRequired('Нікнейм'),
+                                    validator: validateLength("Ім'я", 2, 128),
                                 },
                                 {
-                                    validator: validateLength('Нікнейм', 2, 128),
-                                },
-                                {
-                                    validator: validatePatternUserName('Нікнейм'),
+                                    validator: validatePatternNameSurname("Ім'я"),
                                 }]}
                             >
-                                <Input minLength={2} maxLength={128} showCount placeholder="Нікнейм" />
+                                <Input minLength={2} maxLength={128} showCount />
                             </Form.Item>
-                        </div>
-                        <Form.Item
-                            normalize={removeSpacesFromField}
-                            className="formItem"
-                            label="Ім'я"
-                            name="name"
-                            rules={[{
-                                validator: validateRequired("Ім'я"),
-                            },
-                            {
-                                validator: validateLength("Ім'я", 2, 128),
-                            },
-                            {
-                                validator: validatePatternNameSurname("Ім'я"),
-                            }]}
-                        >
-                            <Input minLength={2} maxLength={128} showCount />
-                        </Form.Item>
-                        <Form.Item
-                            normalize={removeSpacesFromField}
-                            className="formItem"
-                            label="Прізвище"
-                            name="surname"
-                            rules={[{
-                                validator: validateRequired('Прізвище'),
-                            },
-                            {
-                                validator: validateLength('Прізвище', 2, 128),
-                            },
-                            {
-                                validator: validatePatternNameSurname('Прізвище'),
-                            }]}
-                        >
-                            <Input minLength={2} maxLength={128} showCount />
-                        </Form.Item>
-                        <Form.Item className="formItem" label="Електронна адреса" name="email">
-                            <Input disabled type="email" />
-                        </Form.Item>
-                        {/* ignore */}
-                        <ConfigProvider locale={locale('ukUA')}>
+                            <Form.Item
+                                normalize={removeSpacesFromField}
+                                className="formItem"
+                                label="Прізвище*"
+                                name="surname"
+                                rules={[{
+                                    validator: validateRequired('Прізвище'),
+                                },
+                                {
+                                    validator: validateLength('Прізвище', 2, 128),
+                                },
+                                {
+                                    validator: validatePatternNameSurname('Прізвище'),
+                                }]}
+                            >
+                                <Input minLength={2} maxLength={128} showCount />
+                            </Form.Item>
+                            <Form.Item className="formItem" label="Електронна адреса" name="email">
+                                <Input disabled type="email" />
+                            </Form.Item>
+                            {/* ignore */}
+                            <ConfigProvider locale={locale('ukUA')}>
+                                <Form.Item
+                                    className="formItem"
+                                    label="Телефонний номер"
+                                    name="phoneNumber"
+                                    rules={[
+                                        {
+                                            validator: phoneNumberValidator,
+                                        },
+                                    ]}
+                                >
+                                    <PhoneInput
+                                        value=""
+                                        disableParentheses
+                                        placeholder="+XXX XX XXX XXXX"
+                                        enableSearch
+                                        country="380"
+                                        excludeCountries={['ru']}
+                                        preferredCountries={['ua']}
+                                    />
+                                </Form.Item>
+                                <p className="phoneExample">Приклад: +380 90 567 45 45</p>
+                            </ConfigProvider>
                             <Form.Item
                                 className="formItem"
-                                label="Телефонний номер"
-                                name="phoneNumber"
-                                rules={[
-                                    {
-                                        validator: phoneNumberValidator,
+                                label="Досвід"
+                                name="expertises"
+                                style={{ textAlign: 'start' }}
+                                rules={[{
+                                    validator: (_, value) => {
+                                        if (value?.length > 3) {
+                                            return Promise.reject(
+                                                new Error('Ви можете вибрати не більше трьох експертиз.'),
+                                            );
+                                        }
+                                        return Promise.resolve();
                                     },
-                                ]}
+                                }]}
                             >
-                                <PhoneInput
-                                    value=""
-                                    disableParentheses
-                                    placeholder="+XXX XX XXX XXXX"
-                                    enableSearch
-                                    country="380"
-                                    excludeCountries={['ru']}
-                                    preferredCountries={['ua']}
-                                />
+                                <SelectWithCustomSuffix
+                                    className="expertises-select-input"
+                                    mode="tags"
+                                    placeholder="Оберіть експертизу"
+                                    onSelect={handleSelectExpertise}
+                                    onDeselect={handleDeselectExpertise}
+                                >
+                                    {expertises.map((expertise) => (
+                                        <Select.Option key={expertise.id.toString()} value={expertise.title}>
+                                            {expertise.title}
+                                        </Select.Option>
+                                    ))}
+                                </SelectWithCustomSuffix>
                             </Form.Item>
-                            <p className="phoneExample">Приклад: +380 90 567 45 45</p>
-                        </ConfigProvider>
-                        <Form.Item
-                            className="formItem"
-                            label="Експертиза"
-                            name="expertises"
-                            style={{ textAlign: 'start' }}
-                            rules={[{
-                                validator: (_, value) => {
-                                    if (value?.length > 3) {
-                                        return Promise.reject(
-                                            new Error('Ви можете вибрати не більше трьох експертиз.'),
-                                        );
-                                    }
-                                    return Promise.resolve();
-                                },
-                            }]}
-                        >
-                            <SelectWithCustomSuffix
-                                className="expertises-select-input"
-                                mode="tags"
-                                placeholder="Оберіть експертизу"
-                                onSelect={handleSelectExpertise}
-                                onDeselect={handleDeselectExpertise}
-                            >
-                                {expertises.map((expertise) => (
-                                    <Select.Option key={expertise.id.toString()} value={expertise.title}>
-                                        {expertise.title}
-                                    </Select.Option>
-                                ))}
-                            </SelectWithCustomSuffix>
-                        </Form.Item>
+                        </div>
+                    </div>
+                    <div className="editAboutYourselfWrapper">
                         <Form.Item className="areaTextInput" label="Про себе" name="aboutYourself">
-                            <Input.TextArea rows={10} showCount maxLength={500} />
+                            <Input.TextArea rows={6} showCount maxLength={500} />
                         </Form.Item>
                     </div>
                 </Form>
                 <div className="saveButton">
                     <Button disabled={!valid || !userFieldsChanged} onClick={handleSubmit}>
-                    Зберегти зміни профілю
+                    Зберегти зміни
                     </Button>
                 </div>
                 <div className="lineSeparator" />
