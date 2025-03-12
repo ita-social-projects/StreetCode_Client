@@ -16,6 +16,8 @@ import FormItem from 'antd/es/form/FormItem';
 import AudiosApi from '@/app/api/media/audios.api';
 import ImagesApi from '@/app/api/media/images.api';
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
+import REQUIRED_FIELD_MESSAGES from '@/app/common/constants/required_field_messages.constrants';
+import VALIDATION_MESSAGES from '@/app/common/constants/validation-messages.constants';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Audio, { AudioUpdate } from '@/models/media/audio.model';
 
@@ -101,7 +103,8 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
             handleFileRemove('blackAndWhiteId', 'imagesUpdate');
             setBlackAndWhite((prev) => prev.filter((x) => x.uid !== fileHandle.uid));
             handleCancelModalRemove();
-            form.setFieldsValue({ pictureBlackWhite: [] });
+            form.setFieldsValue({ pictureBlackWhite: undefined });
+            form.validateFields(['pictureBlackWhite']).catch(() => {});
             break;
         }
         case 'relatedFigure': {
@@ -258,7 +261,7 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                         rules={[
                             {
                                 required: true,
-                                message: 'Додайте зображення',
+                                message: REQUIRED_FIELD_MESSAGES.ADD_IMAGE,
                             },
                             { validator: combinedImageValidator(true) },
                         ]}
@@ -317,7 +320,7 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                         </FileUploader>
                         {visibleErrorRelatedFigure && (
                             <p className="error-text">
-                                Тільки файли з розширенням webp, jpeg, png, jpg дозволені!
+                                {VALIDATION_MESSAGES.INVALID_IMAGE_FORMAT}
                             </p>
                         )}
                     </FormItem>
@@ -377,7 +380,7 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                     </FileUploader>
                     {visibleErrorAudio && (
                         <p className="error-text">
-                            Тільки файли з розширенням mp3 дозволені!
+                            {VALIDATION_MESSAGES.INVALID_AUDIO_FORMAT}
                         </p>
                     )}
                 </FormItem>

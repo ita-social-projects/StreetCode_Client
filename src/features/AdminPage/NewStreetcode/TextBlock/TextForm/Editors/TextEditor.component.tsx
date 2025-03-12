@@ -1,16 +1,16 @@
-import { observer } from "mobx-react-lite";
-import { useEffect, useRef, useState } from "react";
-import ReactQuill from "react-quill";
-import relatedTermApi from "@api/streetcode/text-content/related-terms.api";
-import useMobx, { useModalContext } from "@app/stores/root-store";
+import { observer } from 'mobx-react-lite';
+import { useEffect, useRef, useState } from 'react';
+import ReactQuill from 'react-quill';
+import relatedTermApi from '@api/streetcode/text-content/related-terms.api';
+import useMobx, { useModalContext } from '@app/stores/root-store';
 
-import { AutoComplete, Button, message, Select } from "antd";
-import FormItem from "antd/es/form/FormItem";
+import { AutoComplete, Button, message, Select } from 'antd';
+import FormItem from 'antd/es/form/FormItem';
 
-import Editor from "@/app/common/components/Editor/QEditor.component";
-import AddTermModal from "@/app/common/components/modals/Terms/AddTerm/AddTermModal.component";
-import { useAsync } from "@/app/common/hooks/stateful/useAsync.hook";
-import { Term, Text } from "@/models/streetcode/text-contents.model";
+import Editor from '@/app/common/components/Editor/QEditor.component';
+import AddTermModal from '@/app/common/components/modals/Terms/AddTerm/AddTermModal.component';
+import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
+import { Term, Text } from '@/models/streetcode/text-contents.model';
 
 interface Props {
   character_limit?: number;
@@ -28,13 +28,11 @@ const TextEditor = ({
     text,
 }: Props) => {
     const { relatedTermStore, termsStore } = useMobx();
-    const {
-        modalStore: { setModal },
-    } = useModalContext();
+    const { modalStore: { setModal } } = useModalContext();
     const { fetchTerms, getTermArray } = termsStore;
     const { createRelatedTerm } = relatedTermStore;
     const [term, setTerm] = useState<Partial<Term>>();
-    const [selected, setSelected] = useState("");
+    const [selected, setSelected] = useState('');
     const editorRef = useRef<ReactQuill | null>(null);
     const MAX_CHARS = character_limit || 25000;
     const [isTitleEmpty, setIsTitleEmpty] = useState(true);
@@ -48,34 +46,34 @@ const TextEditor = ({
     };
 
     useEffect(() => {
-        setIsTitleEmpty(!inputInfo?.title || inputInfo.title === "");
+        setIsTitleEmpty(!inputInfo?.title || inputInfo.title === '');
     }, [inputInfo?.title]);
 
     const handleAddRelatedWord = async () => {
         if (term !== null && selected !== null) {
             const result = await createRelatedTerm(selected, term?.id as number);
             result
-                ? successMessage("Слово було успішно прив`язано до терміну")
-                : errorMessage("Слово вже було пов`язано");
+                ? successMessage('Слово було успішно прив`язано до терміну')
+                : errorMessage('Слово вже було пов`язано');
         }
     };
 
     const handleDeleteRelatedWord = async () => {
         try {
             if (selected == null || selected === undefined) {
-                errorMessage("Будь ласка виділіть слово для видалення");
+                errorMessage('Будь ласка виділіть слово для видалення');
                 return;
             }
             await relatedTermApi
                 .delete(selected)
                 .then((response) => {
                     response != null
-                    ? successMessage("Слово було успішно відв`язано від терміну")
-                    : errorMessage("Слово не було пов`язано");
+                        ? successMessage('Слово було успішно відв`язано від терміну')
+                        : errorMessage('Слово не було пов`язано');
                 })
-                .catch(() => errorMessage("Слово не було пов`язано"));
+                .catch(() => errorMessage('Слово не було пов`язано'));
         } catch {
-            errorMessage("Слово не було пов`язано");
+            errorMessage('Слово не було пов`язано');
         }
     };
 
@@ -86,22 +84,22 @@ const TextEditor = ({
             description: term?.description,
         };
         const result = await termsStore.createTerm(newTerm);
-            result != null
-                ? successMessage("Термін успішно додано")
-                : errorMessage("Термін не було додано, спробуйте ще.");
+        result != null
+            ? successMessage('Термін успішно додано')
+            : errorMessage('Термін не було додано, спробуйте ще.');
     };
 
     useAsync(fetchTerms, []);
 
     return (
         <FormItem label="Основний текст">
-            <div className={isTitleEmpty ? "disabled" : ""}>
+            <div className={isTitleEmpty ? 'disabled' : ''}>
                 <Editor
                     qRef={editorRef}
-                    value={text ?? ""}
+                    value={text ?? ''}
                     onChange={(editor) => {
                         setInputInfo((prevState) => ({ ...prevState, textContent: editor }));
-                        onChange("textContent", editor);
+                        onChange('textContent', editor);
                     }}
                     maxChars={MAX_CHARS}
                     selectionChange={(selectedText: string) => {

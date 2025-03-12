@@ -7,22 +7,37 @@ import CancelBtn from '@images/utils/Cancel_btn.svg';
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import combinedImageValidator, { checkFile } from '@components/modals/validators/combinedImageValidator';
 import BUTTON_LABELS from '@constants/buttonLabels';
 import PreviewFileModal from '@features/AdminPage/NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
 import SOCIAL_OPTIONS from '@features/AdminPage/PartnersPage/PartnerModal/constants/socialOptions';
 import useMobx from '@stores/root-store';
 
 import {
-    Button, Checkbox, Form, Input, message,
-    Modal, Popover, Select, UploadFile,
+    Button,
+    Checkbox,
+    Form,
+    Input,
+    message,
+    Modal,
+    Popover,
+    Select,
+    UploadFile,
 } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
 import { UploadChangeParam } from 'antd/es/upload';
-import combinedImageValidator, { checkFile } from '@components/modals/validators/combinedImageValidator';
+
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 import validateSocialLink from '@/app/common/components/modals/validators/socialLinkValidator';
+import { ERROR_MESSAGES } from '@/app/common/constants/error-messages.constants';
+import MODAL_MESSAGES from '@/app/common/constants/modal-messages.constants';
+import REQUIRED_FIELD_MESSAGES from '@/app/common/constants/required_field_messages.constrants';
+import SUCCESS_MESSAGES from '@/app/common/constants/success-messages.constants';
+import VALIDATION_MESSAGES from '@/app/common/constants/validation-messages.constants';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
+// eslint-disable-next-line no-restricted-imports
+import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
 import PartnerLink from '@/features/AdminPage/PartnersPage/PartnerLink.component';
 import Audio from '@/models/media/audio.model';
 import Image from '@/models/media/image.model';
@@ -33,16 +48,12 @@ import Partner, {
 } from '@/models/partners/partners.model';
 import { StreetcodeShort } from '@/models/streetcode/streetcode-types.model';
 
-// eslint-disable-next-line no-restricted-imports
-import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
-import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
-
-const PartnerModal: React.FC< {
-    partnerItem?: Partner;
-    open: boolean;
-    isStreetcodeVisible?: boolean;
-    setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    afterSubmit?: (partner: Partner) => void;
+const PartnerModal: React.FC<{
+  partnerItem?: Partner;
+  open: boolean;
+  isStreetcodeVisible?: boolean;
+  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  afterSubmit?: (partner: Partner) => void;
 }> = observer(
     ({
         partnerItem,
@@ -51,7 +62,7 @@ const PartnerModal: React.FC< {
         isStreetcodeVisible = true,
         afterSubmit,
     }) => {
-        // eslint-disable-next-line max-len,no-useless-escape
+    // eslint-disable-next-line max-len,no-useless-escape
         const URL_REGEX_VALIDATION_PATTERN = /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,256}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
         const LOGO_TYPES = Object.keys(LogoType).filter((key) => Number.isNaN(Number(key)));
         const [form] = Form.useForm();
@@ -66,7 +77,9 @@ const PartnerModal: React.FC< {
         const [filePreview, setFilePreview] = useState<UploadFile | null>(null);
         const selectedStreetcodes = useRef<StreetcodeShort[]>([]);
         const [fileList, setFileList] = useState<UploadFile[]>([]);
-        const [partnerSourceLinks, setPartnersSourceLinks] = useState<PartnerSourceLinkCreateUpdate[]>([]);
+        const [partnerSourceLinks, setPartnersSourceLinks] = useState<
+      PartnerSourceLinkCreateUpdate[]
+    >([]);
         const imageId = useRef<number>(0);
         const [actionSuccess, setActionSuccess] = useState(false);
         const [waitingForApiResponse, setWaitingForApiResponse] = useState(false);
@@ -87,25 +100,25 @@ const PartnerModal: React.FC< {
         useEffect(() => {
             setWaitingForApiResponse(false);
             if (actionSuccess) {
-                message.success('Партнера успішно додано/оновлено!');
+                message.success(SUCCESS_MESSAGES.PARTNER_SAVED);
                 setActionSuccess(false);
             }
         }, [actionSuccess]);
 
         useEffect(() => {
-            const getImageAsFileInArray = (): UploadFile[] => (
-                partnerItem
-                    ? [
-                        {
-                            name: '',
-                            thumbUrl: base64ToUrl(
-                                partnerItem.logo?.base64,
-                                partnerItem.logo?.mimeType,
-                            ),
-                            uid: partnerItem.logoId.toString(),
-                            status: 'done',
-                        },
-                    ] : []);
+            const getImageAsFileInArray = (): UploadFile[] => (partnerItem
+                ? [
+                    {
+                        name: '',
+                        thumbUrl: base64ToUrl(
+                            partnerItem.logo?.base64,
+                            partnerItem.logo?.mimeType,
+                        ),
+                        uid: partnerItem.logoId.toString(),
+                        status: 'done',
+                    },
+                ]
+                : []);
 
             if (partnerItem && open) {
                 imageId.current = partnerItem.logoId;
@@ -117,7 +130,9 @@ const PartnerModal: React.FC< {
                     url: partnerItem.targetUrl?.href,
                     urlTitle: partnerItem.targetUrl?.title,
                     description: partnerItem.description,
-                    partnersStreetcodes: partnerItem.streetcodes.map((s: { title: string; }) => s.title),
+                    partnersStreetcodes: partnerItem.streetcodes.map(
+                        (s: { title: string }) => s.title,
+                    ),
                     isVisibleEverywhere: partnerItem.isVisibleEverywhere,
                     logo: getImageAsFileInArray(),
                 });
@@ -126,22 +141,29 @@ const PartnerModal: React.FC< {
 
                 selectedStreetcodes.current = partnerItem.streetcodes;
                 setPartnersSourceLinks(
-                    partnerItem.partnerSourceLinks.map((l: { id: any; logoType: any; targetUrl: { href: any; }; }) => ({
-                        ...l,
-                        targetUrl: l.targetUrl.href,
-                    })),
+                    partnerItem.partnerSourceLinks.map(
+                        (l: { id: any; logoType: any; targetUrl: { href: any } }) => ({
+                            ...l,
+                            targetUrl: l.targetUrl.href,
+                        }),
+                    ),
                 );
             } else {
                 imageId.current = 0;
             }
         }, [partnerItem, open, form]);
 
+        useEffect(() => {
+            if (fileList.length === 0) {
+                form.setFieldsValue({ logo: undefined });
+                form.validateFields(['logo']).catch(() => {});
+            }
+        }, [fileList]);
+
         const handlePreview = (file: UploadFile) => {
             setFilePreview(file);
             setPreviewOpen(true);
         };
-
-        const handleInputChange = () => setIsSaved(false);
 
         const onStreetcodeSelect = (value: string) => {
             const index = streetcodeShortStore.streetcodes.findIndex(
@@ -161,11 +183,11 @@ const PartnerModal: React.FC< {
                 setWaitingForApiResponse(true);
                 await form.validateFields();
                 form.submit();
-                message.success('Партнера успішно додано!');
+                message.success(SUCCESS_MESSAGES.PARTNER_SAVED);
                 setIsSaved(true);
             } catch (error) {
                 setWaitingForApiResponse(false);
-                message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
+                message.error(VALIDATION_MESSAGES.INVALID_VALIDATION);
             }
         };
 
@@ -183,6 +205,8 @@ const PartnerModal: React.FC< {
                 setFileList([]);
             }
         };
+
+        const handleInputChange = () => setIsSaved(false);
 
         const closeModal = () => {
             if (!waitingForApiResponse) {
@@ -245,7 +269,7 @@ const PartnerModal: React.FC< {
         };
 
         const onSuccesfulSubmitPartner = async (formValues: any) => {
-            message.loading('Зберігання...');
+            message.loading(MODAL_MESSAGES.SAVING);
 
             partnerSourceLinks.forEach((el, index) => {
                 if (el.id < 0) {
@@ -270,9 +294,11 @@ const PartnerModal: React.FC< {
                 isVisibleEverywhere: formValues.isVisibleEverywhere ?? false,
             };
 
-            partnersStore.getPartnerArray.map((t) => t).forEach((t) => {
-                if (formValues.title === t.title || imageId.current === t.logoId) partnerItem = t;
-            });
+            partnersStore.getPartnerArray
+                .map((t) => t)
+                .forEach((t) => {
+                    if (formValues.title === t.title || imageId.current === t.logoId) partnerItem = t;
+                });
 
             try {
                 if (!imageId.current) {
@@ -286,17 +312,21 @@ const PartnerModal: React.FC< {
                     partner.id = (await partnersStore.createPartner(partner)).id;
                 }
                 if (afterSubmit) {
-                    const partnerWithLogo = partnersStore.PartnerMap.get(partner.id) as Partner;
+                    const partnerWithLogo = partnersStore.PartnerMap.get(
+                        partner.id,
+                    ) as Partner;
                     afterSubmit(partnerWithLogo);
                 }
                 setActionSuccess(true);
             } catch (e: unknown) {
-                message.error('Не вдалось оновити/створити партнера. Спробуйте ще раз.');
+                message.error(ERROR_MESSAGES.PARTNER_COULD_NOT_LOAD);
                 setWaitingForApiResponse(false);
             }
         };
 
-        const handleFileChange = async (param: UploadChangeParam<UploadFile<unknown>>) => {
+        const handleFileChange = async (
+            param: UploadChangeParam<UploadFile<unknown>>,
+        ) => {
             if (await checkFile(param.file)) {
                 handleInputChange();
                 setFileList(param.fileList);
@@ -309,9 +339,9 @@ const PartnerModal: React.FC< {
         };
 
         const validateTitle = uniquenessValidator(
-            () => (partnersStore.getPartnerArray.map((partner) => partner.title)),
-            () => (partnerItem?.title),
-            'Партнер з такою назвою вже існує',
+            () => partnersStore.getPartnerArray.map((partner) => partner.title),
+            () => partnerItem?.title,
+            VALIDATION_MESSAGES.DUPLICATE_PARTNER_TITLE,
         );
 
         return (
@@ -321,7 +351,7 @@ const PartnerModal: React.FC< {
                 className="modalContainer"
                 footer={null}
                 closeIcon={(
-                    <Popover content={POPOVER_CONTENT.CANCEL} trigger="hover">
+                    <Popover content={MODAL_MESSAGES.REMINDER_TO_SAVE} trigger="hover">
                         <CancelBtn className="iconSize" onClick={closeAndCleanData} />
                     </Popover>
                 )}
@@ -362,7 +392,10 @@ const PartnerModal: React.FC< {
                         <Form.Item
                             name="title"
                             label="Назва: "
-                            rules={[{ required: true, message: 'Введіть назву' }, { validator: validateTitle }]}
+                            rules={[
+                                { required: true, message: REQUIRED_FIELD_MESSAGES.ENTER_TITLE },
+                                { validator: validateTitle },
+                            ]}
                         >
                             <Input maxLength={100} showCount onChange={handleInputChange} />
                         </Form.Item>
@@ -373,7 +406,7 @@ const PartnerModal: React.FC< {
                             rules={[
                                 {
                                     pattern: URL_REGEX_VALIDATION_PATTERN,
-                                    message: 'Введіть правильне посилання',
+                                    message: REQUIRED_FIELD_MESSAGES.ENTER_RIGHT_LINK,
                                 },
                             ]}
                         >
@@ -390,12 +423,16 @@ const PartnerModal: React.FC< {
                         </Form.Item>
                         {urlTitleEnabled === '' && urlTitleValue && (
                             <p className="error-text">
-                                Введіть правильне посилання для збереження назви посилання.
+                Введіть правильне посилання для збереження назви посилання.
                             </p>
                         )}
 
                         <Form.Item name="description" label="Опис: ">
-                            <TextArea showCount maxLength={450} onChange={handleInputChange} />
+                            <TextArea
+                                showCount
+                                maxLength={450}
+                                onChange={handleInputChange}
+                            />
                         </Form.Item>
 
                         <Form.Item
@@ -404,7 +441,7 @@ const PartnerModal: React.FC< {
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Завантажте лого',
+                                    message: REQUIRED_FIELD_MESSAGES.ADD_LOGO,
                                 },
                                 { validator: combinedImageValidator(true) },
                             ]}
@@ -494,7 +531,7 @@ const PartnerModal: React.FC< {
                                 <FormItem
                                     name="logotype"
                                     label="Соціальна мережа"
-                                    rules={[{ required: true, message: 'Виберіть соц. мережу' }]}
+                                    rules={[{ required: true, message: REQUIRED_FIELD_MESSAGES.SELECT_SOCIAL_NETWORK }]}
                                     className="social-media-form-item"
                                 >
                                     <Select
@@ -506,13 +543,11 @@ const PartnerModal: React.FC< {
                                     label="Посилання"
                                     name="url"
                                     rules={[
-                                        { required: true, message: 'Введіть Посилання' },
-                                        {
-                                            pattern: URL_REGEX_VALIDATION_PATTERN,
-                                            message: 'Введіть правильне посилання',
-                                        },
+                                        { required: true, message: REQUIRED_FIELD_MESSAGES.ENTER_LINK },
                                         {
                                             validator: (_, value) => {
+                                                if (!value) return Promise.resolve();
+
                                                 const socialName = partnerLinksForm.getFieldValue('logotype');
                                                 return validateSocialLink<LogoType>(
                                                     value,
@@ -542,7 +577,10 @@ const PartnerModal: React.FC< {
 
                 <div className="center">
                     {showSecondForm ? (
-                        <Popover content="Завершіть додавання соціальної мережі" trigger="hover">
+                        <Popover
+                            content="Завершіть додавання соціальної мережі"
+                            trigger="hover"
+                        >
                             <span>
                                 <Button disabled className="streetcode-custom-button save">
                                     {BUTTON_LABELS.SAVE}
