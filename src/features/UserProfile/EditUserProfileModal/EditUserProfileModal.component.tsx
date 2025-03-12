@@ -76,6 +76,10 @@ const EditUserModal = ({
         status: 'done',
     }] : []);
 
+    useEffect(() => {
+        form.resetFields();
+    }, [form]);
+
     useAsync(async () => {
         const fetchExpertises = async () => {
             const data = await expertisesApi.getAll();
@@ -121,6 +125,7 @@ const EditUserModal = ({
                 avatarId,
                 expertises: selectedExpertises,
             };
+
             await userStore.updateUser(updatedData)
                 .then(() => {
                     message.success('Профіль успішно оновлено');
@@ -139,7 +144,6 @@ const EditUserModal = ({
             message.error('Невірна електронна адреса. Cпробуйте ще раз.');
             return;
         }
-        console.log('before');
         try {
             await userStore.deleteUser(emailForDeletion);
             setShowDeleteModal(false);
@@ -367,7 +371,6 @@ const EditUserModal = ({
                                     preferredCountries={['ua']}
                                 />
                             </Form.Item>
-                            <p className="phoneExample">Приклад: +380 90 567 45 45</p>
                         </ConfigProvider>
                         <Form.Item
                             className="formItem"
