@@ -293,76 +293,53 @@ const EditUserModal = ({
                                         validator: validateRequired('Нікнейм'),
                                     },
                                     {
-                                        validator: validateLength('Нікнейм', 2, 128),
+                                        validator: validateLength('Нікнейм', 2, 50),
                                     },
                                     {
                                         validator: validatePatternUserName('Нікнейм'),
                                     }]}
                                 >
-                                    <Input minLength={2} maxLength={128} showCount placeholder="Нікнейм" />
+                                    <Input minLength={2} maxLength={50} showCount placeholder="Нікнейм" />
                                 </Form.Item>
                             </div>
-                            <Form.Item
-                                normalize={removeSpacesFromField}
-                                className="formItem"
-                                label="Ім'я*"
-                                name="name"
-                                rules={[{
-                                    validator: validateRequired("Ім'я"),
-                                },
-                                {
-                                    validator: validateLength("Ім'я", 2, 128),
-                                },
-                                {
-                                    validator: validatePatternNameSurname("Ім'я"),
-                                }]}
-                            >
-                                <Input minLength={2} maxLength={128} showCount />
-                            </Form.Item>
-                            <Form.Item
-                                normalize={removeSpacesFromField}
-                                className="formItem"
-                                label="Прізвище*"
-                                name="surname"
-                                rules={[{
-                                    validator: validateRequired('Прізвище'),
-                                },
-                                {
-                                    validator: validateLength('Прізвище', 2, 128),
-                                },
-                                {
-                                    validator: validatePatternNameSurname('Прізвище'),
-                                }]}
-                            >
-                                <Input minLength={2} maxLength={128} showCount />
-                            </Form.Item>
-                            <Form.Item className="formItem" label="Електронна адреса" name="email">
-                                <Input disabled type="email" />
-                            </Form.Item>
-                            {/* ignore */}
-                            <ConfigProvider locale={locale('ukUA')}>
-                                <Form.Item
-                                    className="formItem"
-                                    label="Телефонний номер"
-                                    name="phoneNumber"
-                                    rules={[
-                                        {
-                                            validator: phoneNumberValidator,
-                                        },
-                                    ]}
-                                >
-                                    <PhoneInput
-                                        value=""
-                                        disableParentheses
-                                        placeholder="+XXX XX XXX XXXX"
-                                        enableSearch
-                                        country="380"
-                                        excludeCountries={['ru']}
-                                        preferredCountries={['ua']}
-                                    />
-                                </Form.Item>
-                                <p className="phoneExample">Приклад: +380 90 567 45 45</p>
-                            </ConfigProvider>
+                        <Form.Item
+                            normalize={removeSpacesFromField}
+                            className="formItem"
+                            label="Ім'я"
+                            name="name"
+                            rules={[{
+                                validator: validateRequired("Ім'я"),
+                            },
+                            {
+                                validator: validateLength("Ім'я", 2, 50),
+                            },
+                            {
+                                validator: validatePatternNameSurname("Ім'я"),
+                            }]}
+                        >
+                            <Input minLength={2} maxLength={50} showCount />
+                        </Form.Item>
+                        <Form.Item
+                            normalize={removeSpacesFromField}
+                            className="formItem"
+                            label="Прізвище"
+                            name="surname"
+                            rules={[{
+                                validator: validateRequired('Прізвище'),
+                            },
+                            {
+                                validator: validateLength('Прізвище', 2, 50),
+                            },
+                            {
+                                validator: validatePatternNameSurname('Прізвище'),
+                            }]}
+                        >
+                            <Input minLength={2} maxLength={50} showCount />
+                        </Form.Item>
+                        <Form.Item className="formItem" label="Електронна адреса" name="email">
+                            <Input disabled type="email" />
+                        </Form.Item>
+                        <ConfigProvider locale={locale('ukUA')}>
                             <Form.Item
                                 className="formItem"
                                 label="Досвід"

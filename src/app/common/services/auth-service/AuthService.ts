@@ -28,10 +28,6 @@ export default class AuthService {
     }
 
     public static async refreshOnTokenExpiry(): Promise<boolean> {
-        if (!AuthService.isLoggedIn()) {
-            return true;
-        }
-
         try {
             await AuthService.refreshTokenAsync();
             return true;
@@ -183,7 +179,7 @@ export default class AuthService {
 
     static async googleLoginAsync(idToken: string | undefined): Promise<void> {
         try {
-            const response = await AuthApi.loginGoogle(idToken);
+            const response = await AuthApi.loginGoogle({ idToken });
             const { accessToken, refreshToken } = response;
 
             localStorage.setItem(AuthService.accessTokenStorageName, accessToken);
