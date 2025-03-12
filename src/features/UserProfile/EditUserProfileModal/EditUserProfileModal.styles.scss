@@ -141,6 +141,13 @@
                 @include mut.sized(100%, 44px)
               }
 
+              .expertises-select-input{
+                .ant-select-selector {
+                  @include mut.sized(100%, auto);
+                  min-height: f.pxToRem(44px);
+                }
+              }
+
               .ant-phone-input-wrapper{
                 .ant-input-group-wrapper{
                   .ant-input-wrapper{

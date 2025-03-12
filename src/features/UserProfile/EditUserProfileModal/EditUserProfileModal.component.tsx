@@ -134,13 +134,19 @@ const EditUserModal = ({
         }
     };
 
-    const handleDeleteAccount = () => {
+    const handleDeleteAccount = async () => {
         if (emailForDeletion !== userStore.user?.email) {
-            message.error('Адресу було введено неправильно');
+            message.error('Невірна електронна адреса. Cпробуйте ще раз.');
             return;
         }
-        setShowDeleteModal(false);
-        setShowDeleteConfirmedModal(true);
+        console.log('before');
+        try {
+            await userStore.deleteUser(emailForDeletion);
+            setShowDeleteModal(false);
+            setShowDeleteConfirmedModal(true);
+        } catch (error) {
+            message.error('Виникла помилка при видаленні користувача');
+        }
     };
     const checkFile = (file: UploadFile) => checkImageFileType(file.type);
 
@@ -293,7 +299,7 @@ const EditUserModal = ({
                                     validator: validateRequired('Нікнейм'),
                                 },
                                 {
-                                    validator: validateLength('Нікнейм', 2, 50),
+                                    validator: validateLength(2, 50),
                                 },
                                 {
                                     validator: validatePatternUserName(),
@@ -311,7 +317,7 @@ const EditUserModal = ({
                                 validator: validateRequired("Ім'я"),
                             },
                             {
-                                validator: validateLength("Ім'я", 2, 50),
+                                validator: validateLength(2, 50),
                             },
                             {
                                 validator: validatePatternNameSurname("Ім'я"),
@@ -328,7 +334,7 @@ const EditUserModal = ({
                                 validator: validateRequired('Прізвище'),
                             },
                             {
-                                validator: validateLength('Прізвище', 2, 50),
+                                validator: validateLength(2, 50),
                             },
                             {
                                 validator: validatePatternNameSurname('Прізвище'),
@@ -385,6 +391,7 @@ const EditUserModal = ({
                                 placeholder="Оберіть експертизу"
                                 onSelect={handleSelectExpertise}
                                 onDeselect={handleDeselectExpertise}
+                                onChange={onChange}
                             >
                                 {expertises.map((expertise) => (
                                     <Select.Option key={expertise.id.toString()} value={expertise.title}>
@@ -414,7 +421,7 @@ const EditUserModal = ({
                         <ul>
                             <li>
                                 Усі ваші персональні дані, включаючи інформацію профілю,
-                                збережений прогрес та улюблений контент, буде безповоротно видалено.
+                                збережений прогрес та улюблений контент, будуть безповоротно видалено.
                             </li>
                             <li>Ви втратите доступ до акаунта та всіх пов’язаних з ним даних.</li>
                             <li>Цю дію неможливо скасувати.</li>

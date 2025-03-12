@@ -15,36 +15,24 @@ export default class UserStore {
     }
 
     public async fetchCurrentUser() {
-        try {
-            const fetchedUser = await usersApi.getByUserName();
-            runInAction(() => {
-                this.setUser(fetchedUser);
-            });
-        } catch (error) {
-            console.error('Error fetching user:', error);
-        }
+        const fetchedUser = await usersApi.getByUserName();
+        runInAction(() => {
+            this.setUser(fetchedUser);
+        });
     }
 
     public async updateUser(updatedUser: UpdateUser) {
-        try {
-            const updatedData = await usersApi.update(updatedUser);
-            runInAction(() => {
-                this.setUser(updatedData);
-            });
-        } catch (error) {
-            console.error('Error updating user:', error);
-        }
+        const updatedData = await usersApi.update(updatedUser);
+        runInAction(() => {
+            this.setUser(updatedData);
+        });
     }
 
     public async deleteUser(email: string) {
-        try {
-            await usersApi.delete(email);
-            runInAction(() => {
-                this.setUser(null);
-            });
-            AuthService.logout();
-        } catch (error) {
-            console.error('Error deleting user:', error);
-        }
+        await usersApi.delete(email);
+        runInAction(() => {
+            this.setUser(null);
+        });
+        AuthService.logout();
     }
 }
