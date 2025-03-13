@@ -22,19 +22,7 @@
   background-color: white;
   z-index: 1000 !important;
 
-  td,
-  .ant-picker-calendar-date,
-  .ant-picker-cell-inner {
-    //height: 70px !important;
-  }
-
-  .ant-select-selection-item,
-  .ant-picker-calendar-header .ant-picker-calendar-mode-switch,
-  .ant-picker-calendar-header .ant-picker-calendar-year-select,
-  .ant-picker-calendar-header .ant-picker-calendar-month-select,
-  .ant-picker-calendar .ant-picker-calendar-date-panel .ant-picker-cell-inner,
-  .ant-picker-content th,
-  .ant-select-dropdown {
+  label, .ant-select-selection-item, .ant-select-item-option-content {
     text-transform: uppercase;
   }
 }

@@ -1,11 +1,9 @@
-const CalendarHeader = () => {
-  return (
+const CalendarHeader = () => (
     <>
-      <p>HistoryCode </p>
-      <div className='small-square'></div>
-      <p>КАЛЕНДАР</p>
+        <p>HistoryCode </p>
+        <div className="small-square" />
+        <p>КАЛЕНДАР</p>
     </>
-  );
-};
+);
 
 export default CalendarHeader;
