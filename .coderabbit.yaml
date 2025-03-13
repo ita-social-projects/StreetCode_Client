@@ -1,0 +1,86 @@
+language: en-US
+tone_instructions: "Refine reviews to be professional, constructive, and actionable. Provide clear feedback with practical suggestions. Encourage collaboration. Avoid vague or overly critical language; use examples to illustrate points and promote learning."
+early_access: false
+enable_free_tier: true
+reviews:
+  profile: chill
+  request_changes_workflow: false
+  high_level_summary: true
+  high_level_summary_placeholder: "@coderabbitai summary"
+  auto_title_placeholder: "@coderabbitai"
+  auto_title_instructions: ""
+  review_status: true
+  commit_status: true
+  collapse_walkthrough: false
+  changed_files_summary: true
+  sequence_diagrams: true
+  assess_linked_issues: true
+  related_issues: true
+  related_prs: true
+  suggested_labels: true
+  auto_apply_labels: false
+  suggested_reviewers: true
+  poem: true
+  path_filters:
+    # Version control and configuration
+    - "!**/.github/**"
+
+    # Generated files
+    - "!**/.scannerwork/**"
+    - "!**/.vs/**"
+    - "!**/__mocks__/**"
+    - "!**/config/**"
+    - "!**/loki/**"
+    - "!**/nginx/**"
+    - "!**/public/**"
+    - "!**/node_modules/**"
+    - "!**/templates/**"
+  path_instructions:
+    - path: /src/**/*.tsx
+      instructions: >-
+        For all React TypeScript (.tsx) files:
+        - Ensure functional components are used whenever possible.
+        - Validate the use of TypeScript interfaces or types for props.
+        - Ensure hooks (useState, useEffect, etc.) are used properly.
+        - Follow React best practices (e.g., split large components into smaller, reusable components).
+        - Avoid inline styles; use CSS or SCSS modules instead.
+        - Ensure proper handling of state and props immutability.
+        - Validate conditional rendering and error handling logic.
+        - Optimize for performance (e.g., React.memo, lazy loading, or proper dependency management in hooks).
+    - path: /src/**/*.ts
+      instructions: >-
+        For all TypeScript (.ts) files:
+        - Use clear and concise type definitions for functions, variables, and parameters.
+        - Ensure no use of the `any` type unless justified.
+        - Follow DRY principles and modularize reusable code.
+        - Avoid deep nesting in logic; split into helper functions if necessary.
+        - Validate code for proper error handling and strict null checks.
+        - Check for unused imports or variables and remove them.
+        - Ensure adherence to functional programming principles where applicable.
+    - path: /src/**/*.scss
+      instructions: >-
+        For SCSS files:
+        - Follow the BEM (Block-Element-Modifier) naming convention.
+        - Modularize styles and avoid global scope pollution.
+        - Use variables for colors, fonts, and spacing to ensure consistency.
+        - Nest styles only up to three levels to avoid complexity.
+        - Validate media queries for responsiveness.
+        - Use mixins for repeated styles to avoid duplication.
+        - Optimize CSS for performance by avoiding large selectors.
+    - path: /src/**/*.spec.tsx
+      instructions: >-
+        For React component test files (.spec.tsx):
+        - Ensure tests follow the Arrange-Act-Assert (AAA) structure.
+        - Use React Testing Library (or preferred library) for rendering components and interacting with the DOM.
+        - Mock external dependencies (e.g., API calls or services) to isolate the component under test.
+        - Test for both expected behavior and edge cases.
+        - Validate that meaningful assertions are present (e.g., checking rendered output, interactions, or props).
+        - Ensure tests are independent and do not rely on other tests for setup.
+        - Avoid testing implementation details; focus on user-facing behavior.
+        - Include cleanup logic where necessary (e.g., `cleanup` from React Testing Library).
+        - Use descriptive test names that explain what the test is verifying.
+  auto_review:
+    enabled: true
+    auto_incremental_review: true
+    drafts: true
+    base_branches: ["main", "develop", "^release\/.*", "^hotfix\/.*"]

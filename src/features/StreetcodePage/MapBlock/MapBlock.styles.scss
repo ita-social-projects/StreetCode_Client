@@ -3,6 +3,7 @@
 
 .mapBlockContainer{
    @include mut.positioned-as(relative);
+  margin-top: f.pxToRem(120px);
   .leaflet-container {
     z-index: 1;
   }

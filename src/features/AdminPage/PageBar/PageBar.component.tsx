@@ -13,6 +13,7 @@ const PageBar = () => (
             <NavLink className="Link" to={`${FRONTEND_ROUTES.ADMIN.TEAM}`} reloadDocument>Команда</NavLink>
             <NavLink className="Link" to={FRONTEND_ROUTES.ADMIN.NEWS} reloadDocument>Новини</NavLink>
             <NavLink className="Link" to={FRONTEND_ROUTES.ADMIN.JOBS} reloadDocument>Вакансії</NavLink>
+            <NavLink className="Link" to={FRONTEND_ROUTES.ADMIN.DICTIONARY} reloadDocument>Словник</NavLink>
         </div>
     </div>
 );

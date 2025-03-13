@@ -7,17 +7,16 @@ import StreetcodeSvg from '@images/header/Streetcode_logo.svg';
 import StreetcodeSvgMobile from '@images/header/Streetcode_logo_mobile.svg';
 
 import { observer } from 'mobx-react-lite';
-import {
-    RefObject, useCallback, useEffect, useRef, useState,
-} from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import AuthService from '@app/common/services/auth-service/AuthService';
+import UserMenu from '@components/UserMenu/UserMenu.component';
 import useEventListener from '@hooks/external/useEventListener.hook';
 import useOnClickOutside from '@hooks/stateful/useClickOutside.hook';
 import useToggle from '@hooks/stateful/useToggle.hook';
 import HeaderDrawer from '@layout/header/HeaderDrawer/HeaderDrawer.component';
-import HeaderSkeleton from '@layout/header/HeaderSkeleton/HeaderSkeleton.component';
-import useMobx, { useModalContext } from '@stores/root-store';
+import { useModalContext } from '@stores/root-store';
 
 import { Button, Input, Popover, PopoverProps } from 'antd';
 
@@ -40,6 +39,9 @@ const HeaderBlock = () => {
     const dimWrapperRef = useRef(null);
     const [searchResult, setSearchResult] = useState<StreetcodeFilterResultDTO[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const navigator = useNavigate();
+    const location = useLocation();
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     const isDesktop = useMediaQuery({
         query: '(min-width: 1025px)',
@@ -137,6 +139,36 @@ const HeaderBlock = () => {
         }
     };
 
+    const navigateToLogin = () => {
+        navigator(FRONTEND_ROUTES.AUTH.LOGIN, {
+            state: {
+                previousUrl: location.pathname,
+            },
+        });
+    };
+
+    useEffect(
+        () => {
+            const refreshToken = async () => {
+                const token = AuthService.getAccessToken();
+                if (!token) {
+                    setIsLoggedIn(false);
+                    return;
+                }
+
+                if (AuthService.isLoggedIn()) {
+                    setIsLoggedIn(true);
+                }
+
+                if (AuthService.isAccessTokenExpired(token)) {
+                    setIsLoggedIn(await AuthService.refreshOnTokenExpiry());
+                }
+            };
+
+            refreshToken();
+        },
+    );
+
     return (
         <div className="HeaderBlock" ref={dimWrapperRef}>
             <div className={`navBarContainer ${isHeaderHidden ? 'hiddenNavBar' : ''} ${isPageDimmed ? 'dim' : ''}`}>
@@ -161,8 +193,10 @@ const HeaderBlock = () => {
                                 value={inputValue}
                                 placeholder="Пошук..."
                                 ref={inputRef}
-                                className={`ant-input  
-                                        hiddenHeaderInput ${((isInputActive && isHeaderHidden && isDesktop) ? 'active' : '')}`}
+                                className={
+                                    `ant-input hiddenHeaderInput 
+                                        ${((isInputActive && isHeaderHidden && isDesktop) ? 'active' : '')}`
+                                }
                             />
                         </Popover>
                     )}
@@ -211,10 +245,14 @@ const HeaderBlock = () => {
                                 style={isPageDimmed ? { zIndex: '-1' } : undefined}
                             />
                         )}
-                        <HeaderDrawer />
+                        {isLoggedIn ? <UserMenu /> : (
+                            <Button className="loginButton" onClick={navigateToLogin}>
+                                Вхід
+                            </Button>
+                        ) }
                         <Button
                             type="primary"
-                            className="loginBtn"
+                            className="participateButton"
                             onClick={() => {
                                 setModal('login');
                                 joinToStreetcodeClickEvent();
@@ -223,6 +261,7 @@ const HeaderBlock = () => {
                         >
                             Долучитися
                         </Button>
+                        <HeaderDrawer />
                     </div>
                 </div>
             </div>

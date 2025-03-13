@@ -2264,6 +2264,18 @@
     "@react-hook/latest" "^1.0.2"
     "@react-hook/passive-layout-effect" "^1.2.0"
 
+"@react-input/core@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.npmjs.org/@react-input/core/-/core-2.0.2.tgz"
+  integrity sha512-xLLBueYFbant9308uv3cIJQz5NYSixeGspjP3Nt6jogRHTcHYMRmlVFUuSzQiP8Z8/5BdnPkudRSsN0/AJ1fbw==
+
+"@react-input/mask@^2.0.4":
+  version "2.0.4"
+  resolved "https://registry.npmjs.org/@react-input/mask/-/mask-2.0.4.tgz"
+  integrity sha512-NOielvQSBOlGLVuEcxtkjaGneC0GJFXjC7KOF99ed9H9XSDruWnQirjht5uSbWqLeeiOup0VD2YjM+6FH+aWBg==
+  dependencies:
+    "@react-input/core" "^2.0.2"
+
 "@react-leaflet/core@^2.1.0":
   version "2.1.0"
   resolved "https://registry.npmjs.org/@react-leaflet/core/-/core-2.1.0.tgz"
@@ -3257,7 +3269,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^16.8.0 || ^17.0.0 || ^18.0.0", "@types/react@^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0", "@types/react@^16.9.0 || ^17.0.0 || ^18.0.0", "@types/react@^18.0.26":
+"@types/react@*", "@types/react@^16.8.0 || ^17.0.0 || ^18.0.0", "@types/react@^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0", "@types/react@^16.9.0 || ^17.0.0 || ^18.0.0", "@types/react@^18.0.26", "@types/react@>=16.8":
   version "18.2.8"
   resolved "https://registry.npmjs.org/@types/react/-/react-18.2.8.tgz"
   integrity sha512-lTyWUNrd8ntVkqycEEplasWy2OxNlShj3zqS0LuB1ENUGis5HodmhM7DtCoUGbxj3VW/WsGA0DUhpG6XrM7gPA==
@@ -3862,7 +3874,14 @@ antd-img-crop@^4.9.0:
     react-easy-crop "^4.7.4"
     tslib "^2.5.0"
 
-antd@^5.2.2, antd@>=4.0.0:
+antd-phone-input@^0.3.12:
+  version "0.3.12"
+  resolved "https://registry.npmjs.org/antd-phone-input/-/antd-phone-input-0.3.12.tgz"
+  integrity sha512-aOb+EOLeU5W0M1lzPJXAFOjxGP5RyYTMUMgKGOYOodx9AZVkrdY0YfOQ2eWNXJrNaUL0CA7qpqjaByjrjm4UwQ==
+  dependencies:
+    react-phone-hooks "^0.1.12"
+
+antd@^5.2.2, antd@>=4, antd@>=4.0.0:
   version "5.5.2"
   resolved "https://registry.npmjs.org/antd/-/antd-5.5.2.tgz"
   integrity sha512-qILOJj7QPLy/PHQIyPHEW6kto6okw+epumlcC01jL+Sph0HBX109MWaLDXAsgc3+WEH1haEffqw9vyZ4KYfk0Q==
@@ -12177,7 +12196,7 @@ react-dnd-html5-backend@^16.0.1:
   dependencies:
     dnd-core "^16.0.1"
 
-react-dom@*, "react-dom@^0.14.0 || ^15.0.1 || ^16.0.0 || ^17.0.0 || ^18.0.0", "react-dom@^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0", "react-dom@^16 || ^17 || ^18", "react-dom@^16.0.0 || ^17.0.0 || ^18.0.0", "react-dom@^16.8 || ^17 || ^18", "react-dom@^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0", "react-dom@^16.8.5 || ^17.0.0 || ^18.0.0", react-dom@^18.0.0, react-dom@^18.2.0, "react-dom@>= 16.3.0", "react-dom@>= 16.8.0", react-dom@>=16, react-dom@>=16.0.0, react-dom@>=16.11.0, react-dom@>=16.4.0, react-dom@>=16.8, react-dom@>=16.8.0, react-dom@>=16.9.0:
+react-dom@*, "react-dom@^0.14.0 || ^15.0.1 || ^16.0.0 || ^17.0.0 || ^18.0.0", "react-dom@^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0", "react-dom@^16 || ^17 || ^18", "react-dom@^16.0.0 || ^17.0.0 || ^18.0.0", "react-dom@^16.8 || ^17 || ^18", "react-dom@^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0", "react-dom@^16.8.5 || ^17.0.0 || ^18.0.0", react-dom@^18.0.0, react-dom@^18.2.0, "react-dom@>= 16.3.0", "react-dom@>= 16.8.0", react-dom@>=0.14.0, react-dom@>=16, react-dom@>=16.0.0, react-dom@>=16.11.0, react-dom@>=16.4.0, react-dom@>=16.8, "react-dom@>=16.8 || ^19.0.0-rc", react-dom@>=16.8.0, react-dom@>=16.9.0:
   version "18.2.0"
   resolved "https://registry.npmjs.org/react-dom/-/react-dom-18.2.0.tgz"
   integrity sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g==
@@ -12234,10 +12253,10 @@ react-helmet@^6.1.0:
     react-fast-compare "^3.1.1"
     react-side-effect "^2.1.0"
 
-react-icons@^4.8.0:
-  version "4.9.0"
-  resolved "https://registry.npmjs.org/react-icons/-/react-icons-4.9.0.tgz"
-  integrity sha512-ijUnFr//ycebOqujtqtV9PFS7JjhWg0QU6ykURVHuL4cbofvRCf3f6GMn9+fBktEFQOIVZnuAYLZdiyadRQRFg==
+react-icons@^4.12.0:
+  version "4.12.0"
+  resolved "https://registry.npmjs.org/react-icons/-/react-icons-4.12.0.tgz"
+  integrity sha512-IBaDuHiShdZqmfc/TwHu6+d6k2ltNCf3AszxNmjJc1KUfXdEeRJOKyNvLmAHaarhzGmTSVygNdyu8/opXv2gaw==
 
 react-idle-timer@^4.6.4:
   version "4.6.4"
@@ -12248,6 +12267,14 @@ react-image-size@^2.0.0:
   version "2.0.2"
   resolved "https://registry.npmjs.org/react-image-size/-/react-image-size-2.0.2.tgz"
   integrity sha512-j2ZhFsY5n8HAU43ZrhvDOkGBhAY0IJX2DjajmwF+TdXuZ/lGHuhmqj5/88o1M+yL8Un5oNSLjBRH5XikWiiHlA==
+
+react-input-mask@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.npmjs.org/react-input-mask/-/react-input-mask-2.0.4.tgz"
+  integrity sha512-1hwzMr/aO9tXfiroiVCx5EtKohKwLk/NT8QlJXHQ4N+yJJFyUuMT+zfTpLBwX/lK3PkuMlievIffncpMZ3HGRQ==
+  dependencies:
+    invariant "^2.2.4"
+    warning "^4.0.2"
 
 react-intersection-observer@^9.8.2:
   version "9.8.2"
@@ -12322,6 +12349,11 @@ react-map-gl@^7.0.21:
   dependencies:
     "@types/mapbox-gl" "^2.6.0"
 
+react-password-checklist@^1.8.1:
+  version "1.8.1"
+  resolved "https://registry.npmjs.org/react-password-checklist/-/react-password-checklist-1.8.1.tgz"
+  integrity sha512-QHIU/OejxoH4/cIfYLHaHLb+yYc8mtL0Vr4HTmULxQg3ZNdI9Ni/yYf7pwLBgsUh4sseKCV/GzzYHWpHqejTGw==
+
 react-pdf@^9.2.1:
   version "9.2.1"
   resolved "https://registry.npmjs.org/react-pdf/-/react-pdf-9.2.1.tgz"
@@ -12335,6 +12367,11 @@ react-pdf@^9.2.1:
     pdfjs-dist "4.8.69"
     tiny-invariant "^1.0.0"
     warning "^4.0.0"
+
+react-phone-hooks@^0.1.12:
+  version "0.1.12"
+  resolved "https://registry.npmjs.org/react-phone-hooks/-/react-phone-hooks-0.1.12.tgz"
+  integrity sha512-ilFdc0w+40hmA5DeeasrxT6CJN1mGyavCAZRbKsJinbuodVjNYe+XnJg+mw3UdaHAQqHV0oo3A0mBUOSIvc/fA==
 
 react-player@^2.11.0:
   version "2.12.0"
@@ -12556,7 +12593,7 @@ react-youtube@^10.1.0:
     prop-types "15.8.1"
     youtube-player "5.5.2"
 
-react@*, "react@^0.14.0 || ^15.0.1 || ^16.0.0 || ^17.0.0 || ^18.0.0", "react@^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0", "react@^16 || ^17 || ^18", "react@^16.0.0 || ^17.0.0 || ^18.0.0", "react@^16.3.0 || ^17.0.0 || ^18.0.0", "react@^16.8 || ^17 || ^18", "react@^16.8.0 || ^17 || ^18", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0", "react@^16.8.3 || ^17 || ^18", "react@^16.8.5 || ^17.0.0 || ^18.0.0", "react@^17.0.0 || ^18.0.0", react@^18.0.0, react@^18.2.0, "react@>= 16", "react@>= 16.3.0", "react@>= 16.8.0", react@>=0.14.1, react@>=15, react@>=16, react@>=16.0.0, react@>=16.11.0, react@>=16.3.0, react@>=16.4.0, react@>=16.4.1, react@>=16.6.0, react@>=16.8, react@>=16.8.0, react@>=16.9.0, "react@0.14 || 15 || 16 || 17 || 18":
+react@*, "react@^0.14.0 || ^15.0.1 || ^16.0.0 || ^17.0.0 || ^18.0.0", "react@^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0", "react@^16 || ^17 || ^18", "react@^16.0.0 || ^17.0.0 || ^18.0.0", "react@^16.3.0 || ^17.0.0 || ^18.0.0", "react@^16.8 || ^17 || ^18", "react@^16.8.0 || ^17 || ^18", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0", "react@^16.8.3 || ^17 || ^18", "react@^16.8.5 || ^17.0.0 || ^18.0.0", "react@^17.0.0 || ^18.0.0", react@^18.0.0, react@^18.2.0, "react@>= 16", "react@>= 16.3.0", "react@>= 16.8.0", react@>=0.14.0, react@>=0.14.1, react@>=15, react@>=16, react@>=16.0.0, react@>=16.11.0, react@>=16.3.0, react@>=16.4.0, react@>=16.4.1, react@>=16.6.0, react@>=16.8, "react@>=16.8 || ^19.0.0-rc", react@>=16.8.0, react@>=16.9.0, "react@>16.0.0-alpha || >17.0.0-alpha || >18.0.0-alpha", "react@0.14 || 15 || 16 || 17 || 18":
   version "18.2.0"
   resolved "https://registry.npmjs.org/react/-/react-18.2.0.tgz"
   integrity sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==
@@ -14768,7 +14805,7 @@ walker@^1.0.7, walker@^1.0.8:
   dependencies:
     makeerror "1.0.12"
 
-warning@^4.0.0:
+warning@^4.0.0, warning@^4.0.2:
   version "4.0.3"
   resolved "https://registry.npmjs.org/warning/-/warning-4.0.3.tgz"
   integrity sha512-rpJyN222KWIvHJ/F53XSZv0Zl/accqHR8et1kpaMTD/fLCRxtV8iX8czMzY7sVZupTI3zcUTg8eycS2kNF9l6w==

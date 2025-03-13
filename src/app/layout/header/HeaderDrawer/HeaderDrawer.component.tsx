@@ -96,7 +96,7 @@ const HeaderDrawer = () => {
         if (isSmall) {
             setScalingCooficient(scaleMobile);
             setOptions(mobileOptions);
-            setActive(menuPositionsMobile[optionId]);
+            setActive(optionId + 1);
         } else {
             setScalingCooficient(scaleDesktop);
             setOptions(desktopOptions);
@@ -122,7 +122,7 @@ const HeaderDrawer = () => {
                         thumbClassName="thumb"
                         min={scalingCooficient}
                         max={options * scalingCooficient}
-                        value={active}
+                        value={isSmall ? menuPositionsMobile[active - 1] : active}
                         renderTrack={(props) => <div {...props} />}
                         orientation="vertical"
                     />
