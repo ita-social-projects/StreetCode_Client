@@ -1,19 +1,24 @@
 import { observer } from 'mobx-react-lite';
+import BUTTON_LABELS from '@constants/buttonLabels';
 
 import { Modal } from 'antd';
 
-import useMobx, { useModalContext } from '@/app/stores/root-store';
+// eslint-disable-next-line import/extensions
+import { useModalContext } from '@/app/stores/root-store';
 
 const ConfirmationModal = () => {
     const { modalStore: { setConfirmationModal, modalsState: { confirmation } } } = useModalContext();
     return (
         <Modal
             title="Підтвердження"
+            okText={BUTTON_LABELS.SUBMIT}
+            cancelText={BUTTON_LABELS.CANCEL}
             open={confirmation.isOpen}
             onOk={() => {
                 if (confirmation.confirmationProps?.onSubmit) {
                     confirmation.confirmationProps.onSubmit();
                 }
+                confirmation.isOpen = false;
             }}
             onCancel={() => {
                 if (confirmation.confirmationProps?.onCancel) {

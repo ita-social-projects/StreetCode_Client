@@ -6,15 +6,15 @@ import React, { useEffect, useState } from 'react';
 import BlockSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import RelatedFigure from '@models/streetcode/related-figure.model';
-import useMobx, { useModalContext, useStreecodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
+import useMobx, { useModalContext, useStreetcodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 import RelatedFigureItem from '@streetcode/RelatedFiguresBlock/RelatedFigureItem/RelatedFigureItem.component';
 
 import ImagesApi from '@/app/api/media/images.api';
 import RelatedFigureApi from '@/app/api/streetcode/related-figure.api';
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
-import Streetcode from '@/models/streetcode/streetcode-types.model';
 import StreetcodeBlock from '@/models/streetcode/streetcode-blocks.model';
+import Streetcode from '@/models/streetcode/streetcode-types.model';
 
 interface Props {
     setActiveTagId: React.Dispatch<React.SetStateAction<number>>,
@@ -24,7 +24,7 @@ interface Props {
 
 const RelatedFiguresComponent = ({ setActiveTagId, setShowAllTags, streetcode }: Props) => {
     const { modalStore: { setModal } } = useModalContext();
-    const streecodePageLoaderContext = useStreecodePageLoaderContext();
+    const streecodePageLoaderContext = useStreetcodePageLoaderContext();
     const { relatedFiguresStore } = useMobx();
     const { getRelatedFiguresArray } = relatedFiguresStore;
     const { streetcodeStore: { getStreetCodeId, errorStreetCodeId } } = useStreetcodeDataContext();
@@ -114,7 +114,7 @@ const RelatedFiguresComponent = ({ setActiveTagId, setShowAllTags, streetcode }:
 
     return getRelatedFiguresArray.length > 0 ? (
         <div
-            className={`relatedFiguresWrapper container ${
+            className={`relatedFiguresWrapper ${
                 (!isDesktop && !isMobile)
                     ? 'smallWrapper'
                     : (getRelatedFiguresArray.length > 4 ? 'bigWrapper' : 'smallWrapper')

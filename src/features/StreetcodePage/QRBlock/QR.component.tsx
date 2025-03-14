@@ -28,7 +28,7 @@ const QRComponent = () => {
     return (
         qrUrl?.url
             ? (
-                <div className="QRBlockContainer container">
+                <div className="QRBlockContainer">
                     {isDesktop
                         ? (
                             <div id="QRBlock" className="QRBlockContent">

@@ -1,31 +1,36 @@
-import Agent, { AgentFrontend } from '@api/agent.api';
+import Agent from '@api/agent.api';
 import { API_ROUTES } from '@constants/api-routes.constants';
 import Streetcode,
 {
     EventStreetcode, PersonStreetcode, StreetcodeCatalogRecord,
-    StreetcodeCreate, StreetcodeMainPage, StreetcodeShort, StreetcodeUpdate,
+    StreetcodeCreate, StreetcodeFavourite, StreetcodeMainPage, StreetcodeShort, StreetcodeUpdate,
 } from '@models/streetcode/streetcode-types.model';
 
 import StreetcodeFilterRequestDTO, { StreetcodeFilterResultDTO } from '@/models/filters/streetcode-filter.model';
 import GetAllStreetcodes from '@/models/streetcode/getAllStreetcodes.request';
 
 const StreetcodesApi = {
-    getById: (id: number) => Agent.get<Streetcode>(`${API_ROUTES.STREETCODES.GET}/${id}`),
+    getById: (id: number) => (
+        Agent.get<Streetcode>(`${API_ROUTES.STREETCODES.GET}/${id}`)
+    ),
 
-    getByName: (name: string) => Agent.get<Streetcode>(`${API_ROUTES.STREETCODES.GET_BY_NAME}/${name}`),
+    getByUrl: (url: string) => (
+        Agent.get<Streetcode>(`${API_ROUTES.STREETCODES.GET_BY_URL}/${url}`)
+    ),
 
-    getByTagId: (id: number) => Agent.get<Streetcode[]>(`${API_ROUTES.STREETCODES.GET_BY_TAG_ID}/${id}`),
+    getFavouriteStatus: (streetcodeId: number) => Agent
+        .get<boolean>(`${API_ROUTES.STREETCODES.GET_FAVOURITE_STATUS}/${streetcodeId}`),
 
-    getByIndex: (index: string) => Agent.get<Streetcode>(`${API_ROUTES.STREETCODES.GET_BY_INDEX}/${index}`),
+    getAll: (getAllStreetcodes: GetAllStreetcodes | undefined) => (
+        Agent.get<{ totalAmount: number, streetcodes: Streetcode[] }>(
+            `${API_ROUTES.STREETCODES.GET_ALL}`,
+            getAllStreetcodes,
+        )
+    ),
 
-    getByUrl: (url: string) => Agent.get<Streetcode>(`${API_ROUTES.STREETCODES.GET_BY_URL}/${url}`),
-
-    getAll: (getAllStreetcodes: GetAllStreetcodes | undefined) => Agent
-        .get<{totalAmount: number, streetcodes: Streetcode[]}>(`${API_ROUTES.STREETCODES.GET_ALL}`, getAllStreetcodes),
-
-    getAllPublished: () => Agent.get<StreetcodeShort[]>(`${API_ROUTES.STREETCODES.GET_ALL_PUBLISHED}`),
-
-    getAllMainPage: () => Agent.get<StreetcodeMainPage[]>(`${API_ROUTES.STREETCODES.GET_ALL_MAINPAGE}`),
+    getAllPublished: () => (
+        Agent.get<StreetcodeShort[]>(`${API_ROUTES.STREETCODES.GET_ALL_PUBLISHED}`)
+    ),
 
     getPageMainPage: (page: number, pageSize: number) => Agent
         .get<StreetcodeMainPage[]>(
@@ -44,41 +49,53 @@ const StreetcodesApi = {
             new URLSearchParams({ page: page.toString(), count: count.toString() }),
         ),
 
-    getCount: (onlyPublished = false) => Agent.get<number>(
-        `${API_ROUTES.STREETCODES.GET_COUNT}?onlyPublished=${onlyPublished}`,
+    getAllFavourites: () => Agent
+        .get<StreetcodeFavourite[]>(
+            `${API_ROUTES.STREETCODES.GET_ALL_FAVOURITES}`,
+        ),
+
+    getCount: (onlyPublished = false) => (
+        Agent.get<number>(`${API_ROUTES.STREETCODES.GET_COUNT}?onlyPublished=${onlyPublished}`)
     ),
 
-    getAllShort: () => Agent.get<Streetcode[]>(`${API_ROUTES.STREETCODES.GET_ALL_SHORT}`),
-
-    getShortById: (id: number) => Agent.get<Streetcode>(`${API_ROUTES.STREETCODES.GET_SHORT_BY_ID}/${id}`),
-
-    getByFilter: (filter: StreetcodeFilterRequestDTO) => Agent.get<StreetcodeFilterResultDTO[]>(
-        `${API_ROUTES.STREETCODES.GET_BY_FILTER}`,
-        new URLSearchParams(Object.entries(filter)),
+    getAllShort: () => (
+        Agent.get<Streetcode[]>(`${API_ROUTES.STREETCODES.GET_ALL_SHORT}`)
     ),
-
-    getEvents: () => Agent.get<EventStreetcode[]>(`${API_ROUTES.STREETCODES.GET_EVENTS}`),
-
-    getPersons: () => Agent.get<PersonStreetcode[]>(`${API_ROUTES.STREETCODES.GET_PERSONS}`),
-
-    getUrlByQrId: (id: number) => Agent.get<string>(`${API_ROUTES.STREETCODES.GET_URL_BY_QR_ID}/${id}`),
 
     create: (streetcode: StreetcodeCreate) => Agent
         .post<StreetcodeCreate>(`${API_ROUTES.STREETCODES.CREATE}`, streetcode),
 
+    createFavourite: (streetcodeId: number) => Agent
+        .post<number>(`${API_ROUTES.STREETCODES.CREATE_FAVOURITE}/${streetcodeId}`, {}),
+
     update: (streetcode: StreetcodeUpdate) => Agent
         .put<StreetcodeUpdate>(`${API_ROUTES.STREETCODES.UPDATE}`, streetcode),
 
-    updateState: (id: number, stateId: number) => Agent.put<void>(
-        `${API_ROUTES.STREETCODES.UPDATE_STATE}/${id}/${stateId}`,
-        {},
+    updateState: (id: number, stateId: number) => Agent
+        .put<void>(`${API_ROUTES.STREETCODES.UPDATE_STATE}/${id}/${stateId}`, {}),
+
+    getShortById: (id: number) => (
+        Agent.get<Streetcode>(`${API_ROUTES.STREETCODES.GET_SHORT_BY_ID}/${id}`)
     ),
 
-    delete: (id: number) => Agent.delete(`${API_ROUTES.STREETCODES.DELETE}/${id}`),
+    getByFilter: (filter: StreetcodeFilterRequestDTO) => (
+        Agent.get<StreetcodeFilterResultDTO[]>(
+            `${API_ROUTES.STREETCODES.GET_BY_FILTER}`,
+            new URLSearchParams(Object.entries(filter)),
+        )
+    ),
+
+    deleteFromFavourite: (id: number) => Agent.delete(`${API_ROUTES.STREETCODES.DELETE_FROM_FAVOURITES}/${id}`),
 
     existWithIndex: (index:number) => Agent.get<boolean>(`${API_ROUTES.STREETCODES.EXIST_WITH_INDEX}/${index}`),
 
-    existWithUrl: (url: string) => Agent.get<boolean>(`${API_ROUTES.STREETCODES.EXIST_WITH_URL}/${url}`),
+    delete: (id: number) => (
+        Agent.delete(`${API_ROUTES.STREETCODES.DELETE}/${id}`)
+    ),
+
+    existWithUrl: (url: string) => (
+        Agent.get<boolean>(`${API_ROUTES.STREETCODES.EXIST_WITH_URL}/${url}`)
+    ),
 };
 
 export default StreetcodesApi;

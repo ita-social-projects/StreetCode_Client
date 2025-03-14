@@ -6,9 +6,10 @@ import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import Loader from '@components/Loader/Loader.component';
 import ScrollToTopBtn from '@components/ScrollToTopBtn/ScrollToTopBtn.component';
 import ProgressBar from '@features/ProgressBar/ProgressBar.component';
-import { streetcodeDataStore, useModalContext, useStreecodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
+import { useModalContext, useStreetcodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
 import DonateBtn from '@streetcode/DonateBtn/DonateBtn.component';
 import MainBlock from '@streetcode/MainBlock/MainBlock.component';
 import QRBlock from '@streetcode/QRBlock/QR.component';
@@ -18,27 +19,25 @@ import TickerBlock from '@streetcode/TickerBlock/Ticker.component';
 import { toStreetcodeRedirectClickEvent } from '@utils/googleAnalytics.unility';
 import { clearWindowHistoryState } from '@utils/window.utility';
 
-import Loader from "@components/Loader/Loader.component";
 import StatisticRecordApi from '@/app/api/analytics/statistic-record.api';
-import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import ArtGallery from '@/app/common/components/ArtGallery/ArtGalleryBlock.component';
 import TagsModalComponent from '@/app/common/components/modals/Tags/TagsModal.component';
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 import { useRouteUrl } from '@/app/common/hooks/stateful/useRouter.hook';
 import AuthService from '@/app/common/services/auth-service/AuthService';
+import StreetcodeBlock from '@/models/streetcode/streetcode-blocks.model';
 import Streetcode from '@/models/streetcode/streetcode-types.model';
 
 import InterestingFactsComponent from './InterestingFactsBlock/InterestingFacts.component';
+import MapBlockComponent from './MapBlock/MapBlock.component';
 import PartnersComponent from './PartnersBlock/Partners.component';
 import RelatedFiguresComponent from './RelatedFiguresBlock/RelatedFigures.component';
 import TimelineBlockComponent from './TimelineBlock/TimelineBlock.component';
-import MapBlockComponent from './MapBlock/MapBlock.component';
-import StreetcodeBlock from '@/models/streetcode/streetcode-blocks.model';
 
 const StreetcodeContent = () => {
     const { streetcodeStore } = useStreetcodeDataContext();
-    const streecodePageLoaderContext = useStreecodePageLoaderContext();
+    const streecodePageLoaderContext = useStreetcodePageLoaderContext();
     const { setCurrentStreetcodeId } = streetcodeStore;
     const streetcodeUrl = useRef<string>(useRouteUrl());
     const [streetcodeUrlState, setStreetcodeUrlState] = useState(streetcodeUrl.current);
@@ -67,7 +66,6 @@ const StreetcodeContent = () => {
     };
 
     setTimeout(handleSurveyModalOpen, 500);
-    setTimeout(() => streecodePageLoaderContext.endTransition(), 1500);
 
     useAsync(async () => {
         const idParam = searchParams.get('qrid');
@@ -108,7 +106,7 @@ const StreetcodeContent = () => {
         return () => {
             streecodePageLoaderContext.resetLoader();
             streetcodeStore.clearStore();
-        }
+        };
     }, [streetcodeUrlState]);
 
     useEffect(() => {
@@ -130,7 +128,7 @@ const StreetcodeContent = () => {
                 <TextBlockComponent />
                 <InterestingFactsComponent />
                 <TimelineBlockComponent />
-                <MapBlockComponent/>
+                <MapBlockComponent />
                 {streecodePageLoaderContext.isPageLoaded ? (
                     <ArtGallery isFillArtsStore />
                 ) : (

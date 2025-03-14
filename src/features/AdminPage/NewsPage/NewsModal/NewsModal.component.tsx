@@ -11,6 +11,7 @@ import CancelBtn from '@images/utils/Cancel_btn.svg';
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
 import ReactQuill from 'react-quill';
+import combinedImageValidator, { checkFile } from '@components/modals/validators/combinedImageValidator';
 import PreviewFileModal from '@features/AdminPage/NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
 import useMobx from '@stores/root-store';
 import dayjs from 'dayjs';
@@ -26,6 +27,8 @@ import {
     UploadFile,
 } from 'antd';
 import ukUAlocaleDatePicker from 'antd/es/date-picker/locale/uk_UA';
+import { UploadChangeParam } from 'antd/es/upload';
+import { UploadFileStatus } from 'antd/es/upload/interface';
 import ukUA from 'antd/locale/uk_UA';
 
 import {
@@ -40,6 +43,7 @@ import Image from '@/models/media/image.model';
 import News from '@/models/news/news.model';
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
+import BUTTON_LABELS from "@constants/buttonLabels";
 
 const NewsModal: React.FC<{
     newsItem?: News;
@@ -66,6 +70,7 @@ const NewsModal: React.FC<{
     const [editorCharacterCount, setEditorCharacterCount] = useState<number>(0);
     const [removedImage, setRemovedImage] = useState<Image | undefined>(undefined);
     const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
+    const [fileList, setFileList] = useState<UploadFile[]>([]);
 
     message.config({
         top: 100,
@@ -81,6 +86,22 @@ const NewsModal: React.FC<{
             setActionSuccess(false);
         }
     }, [actionSuccess]);
+
+    const createFileListData = (img: Image) => {
+        if (!newsItem || !img) {
+            return [];
+        }
+
+        return [{
+            name: '',
+            url: base64ToUrl(img.base64, img.mimeType),
+            thumbUrl: base64ToUrl(img.base64, img.mimeType),
+            uid: newsItem!.imageId?.toString(),
+            status: 'done' as UploadFileStatus,
+            type: img.mimeType,
+        }];
+    };
+
     const handlePreview = async (file: UploadFile) => {
         setFilePreview(file);
         setPreviewOpen(true);
@@ -100,7 +121,6 @@ const NewsModal: React.FC<{
         () => newsItem?.title?.trim(),
         'Заголовок вже існує',
     );
-    
 
     useEffect(() => {
         editorRef.current?.editor?.setText('');
@@ -125,6 +145,7 @@ const NewsModal: React.FC<{
             });
             setQuillEditorContent(editorRef.current, newsItem.text);
             setData(newsItem.text);
+            setFileList(createFileListData(newsItem.image!));
         } else {
             imageId.current = 0;
             image.current = undefined;
@@ -149,11 +170,13 @@ const NewsModal: React.FC<{
         if (newsItem) {
             newsItem.image = undefined;
         }
+        setFileList([]);
     };
 
     const closeAndCleanData = () => {
         if (!waitingForApiResponse) {
             form.resetFields();
+            setFileList([]);
             setIsModalOpen(false);
             setRemovedImage(undefined);
             editorRef.current?.editor?.setText('');
@@ -201,7 +224,7 @@ const NewsModal: React.FC<{
             url: formValues.url,
             title: formValues.title,
             text: data ?? '',
-            image: undefined,
+            image: formValues.image,
             creationDate: dayjs(formValues.creationDate),
         };
         newsStore.NewsArray.map((t) => t).forEach((t) => {
@@ -215,7 +238,6 @@ const NewsModal: React.FC<{
             if (newsItem) {
                 news.id = newsItem.id;
                 news.imageId = imageId.current as number;
-
                 await newsStore.updateNews(news);
             } else {
                 await newsStore.createNews(news);
@@ -235,9 +257,28 @@ const NewsModal: React.FC<{
     };
     const handleInputChange = () => setIsSaveButtonDisabled(false);
 
-    const handleUpdate = (value: any) => {
+    const handleUpdate = async (value: any) => {
         setData(value);
         handleInputChange();
+    };
+
+    const handleFileChange = async (param: UploadChangeParam<UploadFile<unknown>>) => {
+        if (await checkFile(param.file)) {
+            setFileList(param.fileList);
+            form.setFieldsValue({ image: fileList });
+        }
+        handleInputChange();
+    };
+
+    const onSuccessFileUpload = async (img: Image | Audio) => {
+        const newFileList = createFileListData(img as Image);
+        form.setFieldsValue({ image: newFileList });
+        imageId.current = img.id;
+        image.current = img as Image;
+        if (newsItem) {
+            newsItem.image = img as Image;
+            newsItem.imageId = img.id;
+        }
     };
 
     return (
@@ -269,7 +310,7 @@ const NewsModal: React.FC<{
                             <h2>
                                 {newsItem ? 'Редагувати' : 'Додати'}
                                 {' '}
-                                Новину
+                                новину
                             </h2>
                         </div>
                         <Form.Item
@@ -279,7 +320,7 @@ const NewsModal: React.FC<{
                                 { required: true, message: 'Введіть заголовок' },
                                 {
                                     validator: validateTitle,
-                                }                       
+                                },
                             ]}
                         >
                             <Input maxLength={100} showCount onChange={handleInputChange} />
@@ -339,38 +380,10 @@ const NewsModal: React.FC<{
                         <Form.Item
                             name="image"
                             label="Зображення: "
-                            valuePropName="fileList"
-                            getValueFromEvent={(e: any) => {
-                                if (Array.isArray(e)) {
-                                    return e;
-                                }
-                                return e?.fileList;
-                            }}
                             className="image-form-item"
-                            rules={[{
-                                required: true,
-                                message: 'Додайте зображення',
-                            },
-                            {
-                                validator: (_, fileList) => {
-                                    const file = fileList[0]
-                                    if (file) {
-                                        let name = '';
-                                        if (file.file) {
-                                            name = file.file.name.toLowerCase();
-                                        } else if (file.name) {
-                                            name = file.name.toLowerCase();
-                                        }
-                                        if (name.endsWith('.jpeg') || name.endsWith('.png')
-                                            || name.endsWith('.webp') || name.endsWith('.jpg') || name === '') {
-                                            return Promise.resolve();
-                                        }
-                                        // eslint-disable-next-line max-len
-                                        return Promise.reject(Error('Тільки файли з розширенням webp, jpeg, png, jpg дозволені!'));
-                                    }
-                                    return Promise.reject();
-                                },
-                            },
+                            rules={[
+                                { required: true, message: 'Додайте зображення' },
+                                { validator: combinedImageValidator(true) },
                             ]}
                         >
                             <FileUploader
@@ -378,32 +391,16 @@ const NewsModal: React.FC<{
                                 accept=".jpeg,.png,.jpg,.webp"
                                 listType="picture-card"
                                 maxCount={1}
+                                beforeUpload={checkFile}
                                 onPreview={handlePreview}
+                                fileList={fileList}
                                 uploadTo="image"
-                                onSuccessUpload={(img: Image | Audio) => {
-                                    imageId.current = img.id;
-                                    image.current = img as Image;
-                                    if (newsItem) {
-                                        newsItem.image = img as Image;
-                                    }
-                                }}
+                                onSuccessUpload={onSuccessFileUpload}
                                 onRemove={removeImage}
                                 defaultFileList={
-                                    newsItem?.imageId != null
-                                        ? [
-                                            {
-                                                name: '',
-                                                thumbUrl: base64ToUrl(
-                                                    newsItem?.image?.base64,
-                                                    newsItem?.image?.mimeType,
-                                                ),
-                                                uid: newsItem?.imageId?.toString() || '',
-                                                status: 'done',
-                                            },
-                                        ]
-                                        : []
+                                    newsItem?.image ? createFileListData(newsItem.image) : []
                                 }
-                                                onChange={handleInputChange}
+                                onChange={handleFileChange}
 
                             >
                                 <p>Виберіть чи перетягніть файл</p>
@@ -412,10 +409,15 @@ const NewsModal: React.FC<{
 
                         <Form.Item
                             name="creationDate"
-                            label="Дата створення: "
+                            label="Дата публікації: "
                             rules={[{ required: true, message: 'Введіть дату' }]}
                         >
-                            <DatePicker showTime allowClear={false} onChange={handleInputChange} />
+                            <DatePicker 
+                                showTime 
+                                allowClear={false} 
+                                onChange={handleInputChange} 
+                                disabledDate={current => current && current.isBefore(dayjs().startOf('day'))}
+                            />
                         </Form.Item>
                         <PreviewFileModal
                             opened={previewOpen}
@@ -427,9 +429,9 @@ const NewsModal: React.FC<{
                             <Button
                                 className="streetcode-custom-button"
                                 onClick={() => handleOk()}
-                                                disabled={isSaveButtonDisabled}
+                                disabled={isSaveButtonDisabled}
                             >
-                                Зберегти
+                                {BUTTON_LABELS.SAVE}
                             </Button>
                         </div>
                     </Form>
@@ -438,4 +440,5 @@ const NewsModal: React.FC<{
         </ConfigProvider>
     );
 });
+
 export default NewsModal;
