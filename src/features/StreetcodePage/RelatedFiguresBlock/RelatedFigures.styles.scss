@@ -4,7 +4,7 @@
 @use "@sass/variables/_variables.colors.scss" as c;
 $moreInfo-width: 150px;
 $card-size: 380px;
-.relatedFiguresWrapper.container {
+.relatedFiguresWrapper {
     margin-top: f.pxToRem(120px);
     height: 535px;
 }
@@ -15,6 +15,10 @@ $card-size: 380px;
         .slick-cloned {
             display: none;
         }
+    }
+
+    @media screen and (max-width: 481px) {
+        height: auto;
     }
 }
 
@@ -93,14 +97,15 @@ $card-size: 380px;
     }
 }
 
-@media screen and (max-width: 767px) and (min-width: 481px) {
+@media screen and (max-width: 1024px) and (min-width: 481px) {
     .relatedFiguresWrapper {
-        @include mut.sized($height: 400px);
+        height: f.pxToRem(400px) !important;
+        margin-bottom: 0;
     }
 }
 
 @media screen and (max-width: 1024px) {
-    .relatedFiguresWrapper.container {
+    .relatedFiguresWrapper {
         margin-top: f.pxToRem(60px);
     }
     .relatedFiguresSliderContainer {

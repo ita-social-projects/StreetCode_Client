@@ -6,16 +6,22 @@ import { Link } from 'react-router-dom';
 import {
     BarChartOutlined, DeleteOutlined, DownOutlined, EditOutlined, RollbackOutlined,
 } from '@ant-design/icons';
+
+import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
+
+import sortOptions from '@features/AdminPage/StreetcodesTable/constants/sortOptions';
+import STREETCODE_STATES from '@features/AdminPage/StreetcodesTable/constants/streetcodeStates';
 import { format } from 'date-fns';
 import { uk } from 'date-fns/locale';
 
 import {
-    Button, Dropdown, Empty, MenuProps, Pagination, Space
+    Button, Dropdown, Empty, MenuProps, Pagination, Space,
 } from 'antd';
 import Table from 'antd/es/table/Table';
 
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
+// eslint-disable-next-line import/extensions
 import { useModalContext } from '@/app/stores/root-store';
 import GetAllStreetcodesRequest from '@/models/streetcode/getAllStreetcodes.request';
 
@@ -49,7 +55,7 @@ const StreetcodesTable = () => {
         Page: pageRequest,
         Amount: amountRequest,
         Title: null,
-        Sort: null,
+        Sort: sortOptions.UpdatedAtDesc,
         Filter: null,
     };
 
@@ -67,7 +73,7 @@ const StreetcodesTable = () => {
             Page: page,
             Amount: amountRequest,
             Title: titleRequest === '' ? null : titleRequest,
-            Sort: null,
+            Sort: requestDefault.Sort,
             Filter: filter,
         });
     };
@@ -76,16 +82,16 @@ const StreetcodesTable = () => {
 
     const items: MenuProps['items'] = [
         {
-            label: 'Чернетка',
-            key: '0',
+            label: STREETCODE_STATES.DRAFT.label,
+            key: STREETCODE_STATES.DRAFT.key,
         },
         {
-            label: 'Опублікований',
-            key: '1',
+            label: STREETCODE_STATES.PUBLISHED.label,
+            key: STREETCODE_STATES.PUBLISHED.key,
         },
         {
-            label: 'Видалений',
-            key: '2',
+            label: STREETCODE_STATES.DELETED.label,
+            key: STREETCODE_STATES.DELETED.key,
         },
     ];
 
@@ -119,23 +125,23 @@ const StreetcodesTable = () => {
             let currentStatus: string;
 
             switch (selectedKey) {
-            case 0:
-                currentStatus = 'Чернетка';
+            case STREETCODE_STATES.DRAFT.key:
+                currentStatus = STREETCODE_STATES.DRAFT.label;
                 break;
-            case 1:
-                currentStatus = 'Опублікований';
+            case STREETCODE_STATES.PUBLISHED.key:
+                currentStatus = STREETCODE_STATES.PUBLISHED.label;
                 break;
-            case 2:
-                currentStatus = 'Видалений';
+            case STREETCODE_STATES.DELETED.key:
+                currentStatus = STREETCODE_STATES.DELETED.label;
                 break;
             default:
-                currentStatus = 'Чернетка';
+                currentStatus = STREETCODE_STATES.DRAFT.label;
                 break;
             }
             modalStore.setConfirmationModal(
                 'confirmation',
                 () => handleChangeStatusConfirmation(currentStatus, selectedKey),
-                'Ви впевнені, що хочете змінити статус цього history-коду?',
+                CONFIRMATION_MESSAGES.CHANGE_STREETCODE_STATUS,
                 isConfirmationModalVisible,
                 handleCancelConfirmation,
             );
@@ -144,14 +150,34 @@ const StreetcodesTable = () => {
         }
     };
 
-    const handleUndoDelete = async (id: number) => {
-        await StreetcodesApi.updateState(id, 0);
-        updateState(id, 'Видалений');
+    const handleUndoArchive = async (id: number) => {
+        await StreetcodesApi.updateState(id, STREETCODE_STATES.PUBLISHED.key);
+        updateState(id, STREETCODE_STATES.PUBLISHED.label);
     };
 
     const menuProps = {
         items,
         onClick: handleMenuClick,
+    };
+
+    const handleDeleteStreetcode = (streetcodeId: number) => {
+        modalStore.setConfirmationModal(
+            'confirmation',
+            () => {
+                StreetcodesApi.delete(streetcodeId)
+                    .then(() => {
+                        setMapedStreetCodes(mapedStreetCodes
+                            .filter((s) => s.key !== streetcodeId));
+                    })
+                    .catch((e) => {
+                        console.error(e);
+                    });
+                modalStore.setConfirmationModal('confirmation');
+            },
+            CONFIRMATION_MESSAGES.DELETE_STREETCODE,
+        );
+
+        deleteFormDB(streetcodeId);
     };
 
     const columnsNames = [
@@ -177,7 +203,7 @@ const StreetcodesTable = () => {
             title: 'Статус',
             dataIndex: 'status',
             key: 'status',
-            width: '20%',
+            width: '10%',
             onCell: (record: MapedStreetCode) => ({
                 onClick: () => {
                     setCurrentStreetcodeOption(record.key);
@@ -196,6 +222,15 @@ const StreetcodesTable = () => {
             ),
         },
         {
+            title: 'Автор',
+            dataIndex: 'author',
+            key: 'author',
+            width: '10%',
+            onCell: (record: MapedStreetCode) => ({
+                onClick: () => window.open(`${FRONTEND_ROUTES.ADMIN.BASE}/${record.url}`, '_blank'),
+            }),
+        },
+        {
             title: 'Останні зміни',
             dataIndex: 'date',
             key: 'date',
@@ -211,7 +246,7 @@ const StreetcodesTable = () => {
             key: 'action',
             render: (_: unknown, record: MapedStreetCode) => (
                 <>
-                    {record.status !== 'Видалений' ? (
+                    {record.status !== STREETCODE_STATES.DELETED.label ? (
                         <>
                             <Link to={`${FRONTEND_ROUTES.ADMIN.EDIT_STREETCODE}/${record.key}`}>
                                 <EditOutlined
@@ -223,28 +258,10 @@ const StreetcodesTable = () => {
                             </Link>
                             <DeleteOutlined
                                 className="actionButton"
-                                onClick={(event) => {
-                                    modalStore.setConfirmationModal(
-                                        'confirmation',
-                                        () => {
-                                            StreetcodesApi.delete(record.key)
-                                                .then(() => {
-                                                    setMapedStreetCodes(mapedStreetCodes
-                                                        .filter((s) => s.key !== record.key));
-                                                })
-                                                .catch((e) => {
-                                                    console.error(e);
-                                                });
-                                            modalStore.setConfirmationModal('confirmation');
-                                        },
-                                        'Ви впевнені, що хочете видалити цей history-код?',
-                                    );
-
-                                    deleteFormDB(record.key);
-                                }}
+                                onClick={() => handleDeleteStreetcode(record.key)}
                             />
                             <Link to={`${FRONTEND_ROUTES.ADMIN.ANALYTICS}/${record.key}`}>
-                                <BarChartOutlined 
+                                <BarChartOutlined
                                     className="actionButton"
                                 />
                             </Link>
@@ -252,7 +269,7 @@ const StreetcodesTable = () => {
                     ) : (
                         <RollbackOutlined
                             className="actionButton"
-                            onClick={() => handleUndoDelete(record.key)}
+                            onClick={() => handleUndoArchive(record.key)}
                         />
                     )}
                 </>
@@ -266,7 +283,8 @@ const StreetcodesTable = () => {
         status: string,
         date: string,
         name: string,
-        url: string
+        url: string,
+        author: string,
     }
 
     const fetchPaginatedData = async () => {
@@ -280,10 +298,10 @@ const StreetcodesTable = () => {
             let currentStatus = '';
 
             switch (streetcode.status) {
-            case 0: { currentStatus = 'Чернетка'; break; }
-            case 1: { currentStatus = 'Опублікований'; break; }
-            case 2: { currentStatus = 'Видалений'; break; }
-            default: { currentStatus = 'Чернетка'; break; }
+            case STREETCODE_STATES.DRAFT.key: { currentStatus = STREETCODE_STATES.DRAFT.label; break; }
+            case STREETCODE_STATES.PUBLISHED.key: { currentStatus = STREETCODE_STATES.PUBLISHED.label; break; }
+            case STREETCODE_STATES.DELETED.key: { currentStatus = STREETCODE_STATES.DELETED.label; break; }
+            default: { currentStatus = STREETCODE_STATES.DRAFT.label; break; }
             }
             const mapedStreetCode = {
                 key: streetcode.id,
@@ -296,6 +314,7 @@ const StreetcodesTable = () => {
                 ),
                 name: streetcode.title,
                 url: streetcode.transliterationUrl,
+                author: streetcode.createdBy,
             };
             mapedStreetCodesBuffer.push(mapedStreetCode);
         });

@@ -1,0 +1,78 @@
+﻿@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/variables/_variables.fonts.scss" as ft;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/_utils.functions.scss" as f;
+
+.modalDiscardChangesContainer{
+  @include mut.sizedImportant(416px, 213px);
+  .boldText{
+    font-weight: 700;
+  }
+
+  .ant-modal-footer{
+    @include mut.rem-margined(25px, 0, 0, 0);
+    @include mut.flexed(row, $justify-content: center);
+
+
+    button:hover{
+      background-color: c.$dark-red-color;
+      border-color: initial;
+    }
+
+    .ant-btn{
+      @include mut.sizedImportant(169px, 53px);
+      @include mut.colored(c.$white-color, c.$accented-red-color);
+      @include mut.rem-padded(0, 24px, 0, 24px);
+      @include mut.full-rounded(14px);
+      @include mut.with-font(
+              $font-family: ft.$roboto-font,
+              $font-weight: 500,
+              $font-size: 20px
+      );
+    }
+  }
+
+  &.ant-modal {
+    .ant-modal-close {
+      box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+      @include mut.positioned-as(absolute, $right: -33px, $top: -33px);
+      @include mut.circular(80px, c.$white-color);
+      @include mut.colored($color: c.$light-border-color);
+      @include mut.sized(101px, 101px);
+      z-index: 9999999;
+
+      svg{
+        @include mut.sized(36px, 36px);
+      }
+
+      &:hover {
+        background-color: c.$accented-gray-color;
+      }
+    }
+  }
+
+  .ant-modal-content{
+    text-align: center;
+    position: static;
+    @include mut.rem-padded(40px, 80px, 40px, 80px);
+    @include mut.full-rounded(50px);
+    @include mut.flexed(column, $align-items: center);
+
+    .ant-modal-header{
+      @include mut.rem-margined(0, 0, 0, 0);
+
+      .ant-modal-title{
+        @include mut.with-font(
+                $font-family: ft.$roboto-font,
+                $font-weight: 500,
+                $font-size: 24px,
+                $font-style: ft.$roboto-font-style
+        );
+      }
+    }
+
+    .ant-modal-footer{
+      @include mut.rem-margined(16px, 0, 0, 0);
+    }
+  }
+}

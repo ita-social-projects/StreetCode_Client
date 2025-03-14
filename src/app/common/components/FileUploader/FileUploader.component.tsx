@@ -1,7 +1,9 @@
 import * as React from 'react';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { UploadRequestOption } from 'rc-upload/lib/interface';
 
 import Upload, { RcFile, UploadChangeParam, UploadFile, UploadProps } from 'antd/es/upload';
+import ImgCrop from 'antd-img-crop';
 
 import AudiosApi from '@/app/api/media/audios.api';
 import ImagesApi from '@/app/api/media/images.api';
@@ -17,9 +19,17 @@ interface Props extends UploaderWithoutChildren {
     enableGrayscale?: boolean;
     imageType?: ImageAssigment;
     onSuccessUpload?:(value: ImageNew | Audio, file?: UploadFile)=>void;
+    cropAspect?: number;
+    enableCrop?: boolean;
 }
 const FileUploader:React.FC<Props> = ({
-    onSuccessUpload, uploadTo, enableGrayscale = false, imageType, children, ...uploadProps
+    onSuccessUpload,
+    uploadTo,
+    enableGrayscale = false,
+    imageType, enableCrop = false,
+    cropAspect = 1,
+    children,
+    ...uploadProps
 }) => {
     const applyGrayscale = (url:string) => new Promise((resolve, reject) => {
         const img = new Image();
@@ -95,6 +105,7 @@ const FileUploader:React.FC<Props> = ({
         const { onSuccess, onError, action, onProgress } = options;
 
         const reader = new FileReader();
+        const file = options.file as RcFile;
 
         reader.onloadend = async (obj) => {
             let baseString: any;
@@ -121,22 +132,35 @@ const FileUploader:React.FC<Props> = ({
                 });
         };
 
-        const file = options.file as RcFile;
-
         if (file) {
             reader.readAsDataURL(file);
         }
     };
 
     return (
-        <Upload
-            {...uploadProps}
-            customRequest={customRequest}
-            onChange={onUploadChange}
-            data-testid="fileuploader"
-        >
-            {children}
-        </Upload>
+        enableCrop
+            ? (
+                <ImgCrop modalTitle="Редагування фото" aspect={cropAspect} rotationSlider>
+                    <Upload
+                        {...uploadProps}
+                        customRequest={customRequest}
+                        onChange={onUploadChange}
+                        data-testid="fileuploader"
+                    >
+                        {children}
+                    </Upload>
+                </ImgCrop>
+            )
+            : (
+                <Upload
+                    {...uploadProps}
+                    customRequest={customRequest}
+                    onChange={onUploadChange}
+                    data-testid="fileuploader"
+                >
+                    {children}
+                </Upload>
+            )
     );
 };
 export default FileUploader;

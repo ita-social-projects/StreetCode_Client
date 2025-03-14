@@ -51,8 +51,7 @@ $articlesImg: "@assets/images/sources/Articles.webp";
 
   .relatedFiguresByTagsContentContainer{
     height: pxToRem(598px);
-    @include mut.flexed($direction: row, $gap: 30px, $wrap: wrap);
-
+    @include mut.flexed($direction: row, $align-items: flex-start, $justify-content: flex-start,  $gap: 30px, $wrap: wrap);
     overflow-y: scroll;
     @include mut.rem-margined(0, 21px, 0, 53px);
     @include mut.rem-padded(30px, 0, 30px, 3px);

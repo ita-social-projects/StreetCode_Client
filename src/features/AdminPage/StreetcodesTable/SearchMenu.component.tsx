@@ -3,6 +3,8 @@ import './StreetcodesTable.styles.scss';
 import MagnifyingGlass from '@images/header/Magnifying_glass.svg';
 
 import { ChangeEvent, Dispatch } from 'react';
+import BUTTON_LABELS from '@constants/buttonLabels';
+import STREETCODE_STATES from '@features/AdminPage/StreetcodesTable/constants/streetcodeStates';
 
 import { Button, Input, Select, SelectProps } from 'antd';
 
@@ -16,9 +18,9 @@ interface IProps {
 
 const SearchMenu = ({ setStatus, setTitle, setRequest }: IProps) => {
     const options: SelectProps['options'] = [
-        { value: 'Published', label: 'опублікований' },
-        { value: 'Draft', label: 'чернетка' },
-        { value: 'Deleted', label: 'видалений' },
+        { value: 'Published', label: STREETCODE_STATES.PUBLISHED.label.toLowerCase() },
+        { value: 'Draft', label: STREETCODE_STATES.DRAFT.label.toLowerCase() },
+        { value: 'Deleted', label: STREETCODE_STATES.DELETED.label.toLowerCase() },
     ];
 
     const handleChangeStatus = (value: string[]) => {
@@ -32,7 +34,7 @@ const SearchMenu = ({ setStatus, setTitle, setRequest }: IProps) => {
     return (
         <div className="searchMenu">
             <div className="searchMenuElement">
-                <Button className="Button" onClick={() => setRequest()}>Пошук history-кодів</Button>
+                <Button className="Button" onClick={() => setRequest()}>{BUTTON_LABELS.SEARCH_STREETCODE}</Button>
             </div>
             <div className="searchMenuElement">
                 <Input
@@ -57,7 +59,7 @@ const SearchMenu = ({ setStatus, setTitle, setRequest }: IProps) => {
                     className="Button"
                     onClick={() => window.open(`${FRONTEND_ROUTES.ADMIN.NEW_STREETCODE}`, '_blank')}
                 >
-                    Новий history-код
+                    {BUTTON_LABELS.CREATE_STREETCODE}
                 </Button>
             </div>
         </div>

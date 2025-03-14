@@ -6,6 +6,10 @@
 .partners-page{
     @include mut.admin-page-base-layout();
 
+    p {
+        word-break: break-word;
+    }
+
     .container-justify-end{
         display: flex;
         justify-content: end;
@@ -30,7 +34,7 @@
             margin-top: f.pxToRem(20px);
         }
         .partner-table-item-name{
-            @include mut.flexed(row, start,flex-start, wrap, 4px);
+            @include mut.flexed(row, center,flex-start, wrap, 8px);
         }
         .site-link{
             word-break: break-all

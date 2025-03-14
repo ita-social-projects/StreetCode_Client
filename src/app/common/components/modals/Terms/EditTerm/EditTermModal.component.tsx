@@ -11,6 +11,7 @@ import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
 
 import { Term } from '@/models/streetcode/text-contents.model';
+import BUTTON_LABELS from "@constants/buttonLabels";
 
 interface Props {
     handleEdit: (term: Partial<Term>) => void;
@@ -77,7 +78,7 @@ const EditTermModal = ({ handleEdit, term } : Props) => {
                     />
                 </FormItem>
                 <Button className="streetcode-custom-button" onClick={() => form.submit()}>
-                    Зберегти
+                    {BUTTON_LABELS.SAVE}
                 </Button>
             </Form>
         </Modal>

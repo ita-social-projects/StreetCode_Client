@@ -8,8 +8,6 @@ import getNewMinNegativeId from '@app/common/utils/newIdForStore';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import useMobx from '@stores/root-store';
 
-import imageValidator, { checkImageFileType } from '@/app/common/components/modals/validators/imageValidator';
-
 import {
     Button, Form, Input, message, Modal, Popover, UploadFile,
 } from 'antd';
@@ -27,6 +25,8 @@ import PreviewFileModal from '../../MainBlock/PreviewFileModal/PreviewFileModal.
 import { UploadChangeParam } from 'antd/es/upload';
 import POPOVER_CONTENT from '@/features/AdminPage/JobsPage/JobsModal/constants/popoverContent';
 import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
+import BUTTON_LABELS from "@constants/buttonLabels";
+import combinedImageValidator, { checkFile } from '@components/modals/validators/combinedImageValidator';
 
 interface Props {
     fact?: FactCreate,
@@ -43,10 +43,8 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
     const [previewOpen, setPreviewOpen] = useState<boolean>(false);
     const [hasUploadedPhoto, setHasUploadedPhoto] = useState<boolean>(false);
 
-    const checkFile = (file: UploadFile) => checkImageFileType(file.type);
-
     const handleFileChange = async (param: UploadChangeParam<UploadFile<unknown>>) => {
-        if (checkFile(param.file)) {
+        if (await checkFile(param.file)) {
             setFileList(param.fileList);
         }
     }
@@ -206,7 +204,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                             name="image"
                             rules={[
                                 { required: true, message: 'Завантажте фото, будь ласка' },
-                                { validator: imageValidator },
+                                { validator: combinedImageValidator(true) },
                             ]}
                         >
                             <FileUploader
@@ -252,7 +250,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                                 className="streetcode-custom-button"
                                 onClick={() => handleOk()}
                             >
-                                Зберегти
+                                {BUTTON_LABELS.SAVE}
                             </Button>
                         </div>
                     </Form>

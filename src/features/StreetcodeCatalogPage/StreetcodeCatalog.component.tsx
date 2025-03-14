@@ -1,42 +1,40 @@
 import './StreetcodeCatalog.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import useMobx from '@stores/root-store';
 
-import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import { useAsync } from '@/app/common/hooks/stateful/useAsync.hook';
 
 import StreetcodeCatalogItem from './StreetcodeCatalogItem/StreetcodeCatalogItem.component';
 
 const StreetcodeCatalog = () => {
     const { streetcodeCatalogStore } = useMobx();
-    const { fetchCatalogStreetcodes, getCatalogStreetcodesArray, moreThenEight, fetchNumber } = streetcodeCatalogStore;
+    const {
+        fetchCatalogStreetcodes,
+        getCatalogStreetcodesArray,
+        moreThenEight,
+        fetchNumber,
+        incrementScreen,
+    } = streetcodeCatalogStore;
     const [loading, setLoading] = useState(false);
-    const [screen, setScreen] = useState(1);
 
-    const handleSetNextScreen = () => {
-        setScreen(screen + 1);
+    const handleSetNextScreen = async () => {
+        incrementScreen();
+        setLoading(true);
+        await fetchCatalogStreetcodes(fetchNumber);
+        setLoading(false);
     };
-    useEffect(() => {
-        if (screen > 1) {
-            setLoading(true);
-        }
-    }, [screen]);
 
     useAsync(async () => {
-        const count = await StreetcodesApi.getCount();
-
-        if (count === getCatalogStreetcodesArray.length) {
-            return;
-        }
-        setTimeout(() => {
-            Promise.all([fetchCatalogStreetcodes(screen, fetchNumber)]).then(() => {
+        if (getCatalogStreetcodesArray.length === 0) {
+            setLoading(true);
+            fetchCatalogStreetcodes(fetchNumber).then(() => {
                 setLoading(false);
             });
-        }, 1000);
-    }, [screen]);
+        }
+    }, [fetchCatalogStreetcodes, fetchNumber, getCatalogStreetcodesArray.length]);
 
     return (
         <div className="catalogPage">
@@ -63,15 +61,15 @@ const StreetcodeCatalog = () => {
                         )
                     }
                 </div>
+                {
+                    loading && (moreThenEight)
+                    && (
+                        <div className="loadingWrapper">
+                            <div id="loadingGif" />
+                        </div>
+                    )
+                }
             </div>
-            {
-                loading && (moreThenEight)
-                && (
-                    <div className="loadingWrapper">
-                        <div id="loadingGif" />
-                    </div>
-                )
-            }
         </div>
     );
 };

@@ -15,6 +15,9 @@ module.exports = {
         extensions: ['.tsx', '.ts', '.js'],
         symlinks: false,
         alias: require('./webpack.aliases'),
+        fallback: {
+            'process/browser': require.resolve('process/browser'),
+        },
     },
     output: {
         filename: '[name].bundle.js',

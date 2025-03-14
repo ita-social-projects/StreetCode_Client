@@ -3,6 +3,7 @@ import ArtGalleryTemplateStore from '@stores/art-gallery-template-store';
 import ArtStore from '@stores/art-store';
 import AudioStore from '@stores/audio-store';
 import CheckBoxStore from '@stores/checkbox-store';
+import ContextStore from '@stores/context-store';
 import FactsStore from '@stores/facts-store';
 import HistoricalContextStore from '@stores/historicalcontext-store';
 import ImageStore from '@stores/image-store';
@@ -18,25 +19,26 @@ import StreetcodesCatalogStore from '@stores/streetcodes-catalog-store';
 import StreetcodeShortStore from '@stores/streetcodeshort-store';
 import SubtitlesStore from '@stores/subtitles-store';
 import TagsStore from '@stores/tags-store';
+import TeamPositionsStore from '@stores/teampoistions-store';
 import TermStore from '@stores/term-store';
 import TimelineStore from '@stores/timeline-store';
-import ContextStore from '@stores/context-store';
-import TeamPositionsStore from '@stores/teampoistions-store';
+import UserStore from '@stores/user-store';
 
 import NewsStore from './news-store/news-store';
+import StreetcodePageLoaderStore from './streetcode-page-loader-store/streetcode-page-loader-store';
 import CreateUpdateMediaStore from './create-update-media-store';
+import FavouritesCatalogStore from './favourites-catalog-store';
+import JobsStore from './jobs-store';
 import NewStreetcodeInfoStore from './newstreetcode-info-store';
 import PositionsStore from './position-store';
 import SourceCreateUpdateStreetcode from './source-category-store-create';
 import StatisticRecordStore from './statistic-record-store';
 import StreetcodeCoordinatesStore from './streetcode-coordinates-store';
 import StreetcodesMainPageStore from './streetcode-mainpage-store';
-import StreetcodePageLoaderStore from './streetcode-page-loader-store';
+import TextVideoStore from './streetcode-text-video-store';
 import StreetcodesByTagStore from './streetcodes-bytag-store';
 import TeamStore from './team-store';
 import ToponymStore from './toponym-store';
-import JobsStore from './jobs-store';
-import TextVideoStore from './streetcode-text-video-store';
 
 interface Store {
     factsStore: FactsStore,
@@ -46,6 +48,7 @@ interface Store {
     imagesStore: ImageStore,
     partnersStore: PartnersStore,
     teamStore: TeamStore,
+    userStore: UserStore,
     termsStore: TermStore,
     timelineItemStore: TimelineStore,
     sourcesStore: SourcesStore,
@@ -57,6 +60,7 @@ interface Store {
     relatedTermStore: RelatedTermsStore,
     historicalContextStore: HistoricalContextStore,
     streetcodeCatalogStore: StreetcodesCatalogStore,
+    favouritesCatalogStore: FavouritesCatalogStore,
     streetcodeShortStore: StreetcodeShortStore,
     newStreetcodeInfoStore: NewStreetcodeInfoStore,
     streetcodeCoordinatesStore: StreetcodeCoordinatesStore,
@@ -90,6 +94,7 @@ export const store: Store = {
     partnersStore: new PartnersStore(),
     termsStore: new TermStore(),
     teamStore: new TeamStore(),
+    userStore: new UserStore(),
     timelineItemStore: new TimelineStore(),
     sourcesStore: new SourcesStore(),
     relatedFiguresStore: new RelatedFiguresStore(),
@@ -97,6 +102,7 @@ export const store: Store = {
     relatedTermStore: new RelatedTermsStore(),
     historicalContextStore: new HistoricalContextStore(),
     streetcodeCatalogStore: new StreetcodesCatalogStore(),
+    favouritesCatalogStore: new FavouritesCatalogStore(),
     streetcodeShortStore: new StreetcodeShortStore(),
     newStreetcodeInfoStore: new NewStreetcodeInfoStore(),
     streetcodeCoordinatesStore: new StreetcodeCoordinatesStore(),
@@ -125,10 +131,10 @@ export const modalDataStore:ModalDataStore = {
 };
 
 export const toponymDataStore:ToponymStore = new ToponymStore();
-export const streecodePageLoaderStore:StreetcodePageLoaderStore = new StreetcodePageLoaderStore();
+export const streetcodePageLoaderStore:StreetcodePageLoaderStore = new StreetcodePageLoaderStore();
 export const audioDataStore: AudioStore = new AudioStore();
 
-const streecodePageLoaderContext = createContext(streecodePageLoaderStore);
+const streetcodePageLoaderContext = createContext(streetcodePageLoaderStore);
 const streetcodeContext = createContext(streetcodeDataStore);
 const modalContext = createContext(modalDataStore);
 const toponymContext = createContext(toponymDataStore);
@@ -137,7 +143,7 @@ const audioContext = createContext(audioDataStore);
 export const useStreetcodeDataContext = () => useContext(streetcodeContext);
 export const useModalContext = () => useContext(modalContext);
 export const useToponymContext = () => useContext(toponymContext);
-export const useStreecodePageLoaderContext = () => useContext(streecodePageLoaderContext);
+export const useStreetcodePageLoaderContext = () => useContext(streetcodePageLoaderContext);
 export const useAudioContext = () => useContext(audioContext);
 
 const StoreContext = createContext(store);

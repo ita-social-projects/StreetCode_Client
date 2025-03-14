@@ -7,7 +7,12 @@
 @use "@features/SlickSlider/SlickSlider.styles.scss" as ss;
 .sourcesWrapper {
     @include wr.main-page-block-wrapper();
-    margin-top: 110px;
+    margin-top: f.pxToRem(110px);
+
+    @media screen and (max-width: 1024px) and (min-width: 360px) {
+        margin-top: 0;
+    }
+
     .sourcesContainer {
         @include mut.sizedImportant(100%, 100%);
         @media screen and (max-width: 768px) {
@@ -64,7 +69,6 @@
         .slick-track {
             @include mut.flex-centered($gap: 30px);
             width: unset !important;
-            border: none;
             border: 1px solid transparent;
             .slick-slide {
                 @include vnd.vendored(transition, 'all .5s ease');
@@ -235,6 +239,7 @@
 @media screen and (max-width: 780px) {
     .sourcesWrapper .sourcesContainer {
         margin-bottom: 0;
+
     }
     .sourcesWrapper .sliderClass .slick-track {
         gap: f.pxToRem(10px);
