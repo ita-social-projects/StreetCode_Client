@@ -171,7 +171,7 @@ const HeaderBlock = () => {
     );
 
     const getMenuComponent = () => {
-        if (AuthService.isLoggedIn()) {
+        if (isLoggedIn) {
             return AuthService.isAdmin() ? <AdminMenu /> : <UserMenu />;
         }
 

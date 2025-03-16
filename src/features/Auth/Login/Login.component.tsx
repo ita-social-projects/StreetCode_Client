@@ -129,7 +129,9 @@ const Login: React.FC = () => {
                 />
                 <p className="registerNav">
                     Немає облікового запису?
-                    <span className="registerNavButton" onClick={navigateRegister}> Зареєструватися</span>
+                    <span className="registerNavButton" onClick={navigateRegister}>
+                        Зареєструватися
+                    </span>
                 </p>
                 <div className="continueWith">
                     <span className="line" />
