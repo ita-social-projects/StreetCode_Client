@@ -11,6 +11,7 @@ import Youtube from '@images/footer/You.svg';
 import { useEffect, useState } from 'react';
 import { HashLink as Link } from 'react-router-hash-link';
 import useWindowSize from '@hooks/stateful/useWindowSize.hook';
+import { useQuery } from '@tanstack/react-query';
 
 import JobApi from '@/app/api/job/Job.api';
 import { ContactUsModal } from '@/app/common/components/modals/ContactUsModal/ContactUsModal.component';
@@ -23,15 +24,17 @@ const Footer = () => {
     const [hasVacancies, setHasVacancies] = useState(false);
     const REPORTS = 'https://drive.google.com/drive/folders/11Ef4y_6ZHyqT5eDxD5Cn-aWhr-kThh3A?usp=drive_link';
 
+    const { data } = useQuery({
+        queryKey: ['jobsActive'],
+        queryFn: () => JobApi.getActive(),
+    });
+
     useEffect(() => {
-        JobApi.getActive()
-            .then(
-                (result) => {
-                    setHasVacancies(result.length > 0);
-                },
-            )
-            .catch();
-    }, []);
+        if (data) {
+            setHasVacancies(data.length > 0);
+        }
+    }, [data]);
+
     return (
         <>
             {windowSize.width > 1024 && (

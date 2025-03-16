@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
 import ReactQuill from 'react-quill';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
+import BUTTON_LABELS from '@constants/buttonLabels';
 
 import {
     Button, Form, Input, message, Modal, Popover, Select,
@@ -17,15 +18,20 @@ import {
 import Editor from '@/app/common/components/Editor/QEditor.component';
 
 import POPOVER_CONTENT from './constants/popoverContent';
-import BUTTON_LABELS from '@constants/buttonLabels';
 
 interface Props {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   currentId: number;
+  afterSubmit?: () => void;
 }
 
-const JobsModal = ({ open, setOpen, currentId }: Props) => {
+const JobsModal = ({
+    open,
+    setOpen,
+    currentId,
+    afterSubmit,
+}: Props) => {
     const maxLengths = {
         maxLengthVacancyName: 50,
         maxLengthVacancyDesc: 2000,
@@ -108,6 +114,10 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
                 await JobApi.create(newJob);
             } else {
                 await JobApi.update(newJob);
+            }
+
+            if (afterSubmit) {
+                afterSubmit();
             }
 
             message.success(POPOVER_CONTENT.SUCCESS, 2);
@@ -218,7 +228,7 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
                         }}
                         disabled={isSaveButtonDisabled}
                     >
-                      {BUTTON_LABELS.SAVE}
+                        {BUTTON_LABELS.SAVE}
                     </Button>
                 </div>
             </Form>

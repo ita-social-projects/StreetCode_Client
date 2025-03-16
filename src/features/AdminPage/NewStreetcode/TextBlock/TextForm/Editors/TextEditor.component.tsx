@@ -31,7 +31,7 @@ const TextEditor = ({
     const {
         modalStore: { setModal },
     } = useModalContext();
-    const { fetchTerms, getTermArray } = termsStore;
+    const { getAll, getTermArray } = termsStore;
     const { createRelatedTerm } = relatedTermStore;
     const [term, setTerm] = useState<Partial<Term>>();
     const [selected, setSelected] = useState("");
@@ -91,7 +91,7 @@ const TextEditor = ({
                 : errorMessage("Термін не було додано, спробуйте ще.");
     };
 
-    useAsync(fetchTerms, []);
+    useAsync(getAll, []);
 
     return (
         <FormItem label="Основний текст">
