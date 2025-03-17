@@ -1,11 +1,10 @@
 import './CategoriesPage.style.scss';
 
 import { observer } from 'mobx-react-lite';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import BUTTON_LABELS from '@constants/buttonLabels';
 import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
-import ImageStore from '@stores/image-store';
 import useMobx, { useModalContext } from '@stores/root-store';
 import { useQuery } from '@tanstack/react-query';
 
@@ -25,33 +24,10 @@ const CategoriesMainPage: React.FC = observer(() => {
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
     const [categoryToEdit, setSourcesToEdit] = useState<SourceCategoryAdmin>();
 
-    const { isLoading } = useQuery({
+    const { isLoading, refetch } = useQuery({
         queryKey: ['categories', sourcesStore.PaginationInfo.CurrentPage],
         queryFn: () => sourcesStore.fetchSrcCategoriesAll(),
     });
-
-    const updatedCategories = () => {
-        Promise.all([
-            sourcesStore.fetchSrcCategoriesAll(),
-        ]).then(() => {
-            sourcesStore?.srcCategoriesMap.forEach((val, key) => {
-                if (!!val.imageId && !val.image) {
-                    ImageStore.getImageById(val.imageId!).then((image) => {
-                        sourcesStore.srcCategoriesMap.set(
-                            key,
-                            { ...val, image },
-                        );
-                    });
-                }
-            });
-        }).then(() => {
-            sourcesStore.setInternalCategoriesMap(sourcesStore.getSrcCategoriesArray);
-        });
-    };
-
-    useEffect(() => {
-        updatedCategories();
-    }, [modalAddOpened, modalEditOpened]);
 
     const handleDeleteCategory = (categoryId: number | undefined) => {
         modalStore.setConfirmationModal(
@@ -127,6 +103,7 @@ const CategoriesMainPage: React.FC = observer(() => {
             ),
         },
     ];
+
     return (
         <div className="categories-page">
             <div className="categories-page-container">
@@ -174,11 +151,13 @@ const CategoriesMainPage: React.FC = observer(() => {
             <CategoryAdminModal
                 isModalVisible={modalAddOpened}
                 setIsModalOpen={setModalAddOpened}
+                afterSubmit={refetch}
             />
             <CategoryAdminModal
                 isModalVisible={modalEditOpened}
                 setIsModalOpen={setModalEditOpened}
                 initialData={categoryToEdit}
+                afterSubmit={refetch}
             />
         </div>
 

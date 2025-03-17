@@ -1,7 +1,7 @@
 import './TagsMainPage.style.scss';
 
 import { observer } from 'mobx-react-lite';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import BUTTON_LABELS from '@constants/buttonLabels';
 import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
@@ -22,18 +22,10 @@ const TagsMainPage: React.FC = observer(() => {
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
     const [tagToEdit, setTagToEdit] = useState<Tag>();
 
-    const { isLoading } = useQuery({
+    const { isLoading, refetch } = useQuery({
         queryKey: ['tags', tagsStore.PaginationInfo.CurrentPage],
         queryFn: () => tagsStore.fetchAllTags(),
     });
-
-    const updatedTags = () => {
-        tagsStore.fetchAllTags();
-    };
-
-    useEffect(() => {
-        updatedTags();
-    }, [modalAddOpened, modalEditOpened]);
 
     const handleDeleteTag = (tagId: number) => {
         modalStore.setConfirmationModal(
@@ -56,7 +48,7 @@ const TagsMainPage: React.FC = observer(() => {
             title: 'Назва',
             dataIndex: 'title',
             key: 'title',
-            render(value, record) {
+            render(value) {
                 return (
                     <div>
                         {value}
@@ -89,6 +81,7 @@ const TagsMainPage: React.FC = observer(() => {
             ),
         },
     ];
+
     return (
         <div className="tags-page">
             <div className="tags-page-container">
@@ -136,14 +129,16 @@ const TagsMainPage: React.FC = observer(() => {
             <TagAdminModal
                 isModalVisible={modalAddOpened}
                 setIsModalOpen={setModalAddOpened}
+                afterSubmit={refetch}
             />
             <TagAdminModal
                 isModalVisible={modalEditOpened}
                 setIsModalOpen={setModalEditOpened}
                 initialData={tagToEdit}
+                afterSubmit={refetch}
             />
         </div>
-
     );
 });
+
 export default TagsMainPage;

@@ -2,7 +2,7 @@
 import './TeamPage.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { DeleteOutlined, EditOutlined, StarOutlined } from '@ant-design/icons';
 import BUTTON_LABELS from '@constants/buttonLabels';
 import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
@@ -14,7 +14,6 @@ import { ColumnsType } from 'antd/es/table';
 import Image from '@/models/media/image.model';
 
 import base64ToUrl from '../../../app/common/utils/base64ToUrl.utility';
-import ImageStore from '../../../app/stores/image-store';
 import useMobx, { useModalContext } from '../../../app/stores/root-store';
 import TeamMember, { TeamMemberLink } from '../../../models/team/team.model';
 import PageBar from '../PageBar/PageBar.component';
@@ -27,36 +26,24 @@ const TeamPage = () => {
     const { modalStore } = useModalContext();
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
-    const [teamToEdit, setTeamToedit] = useState<TeamMember>();
+    const [teamToEdit, setTeamToEdit] = useState<TeamMember>();
 
-    const { isLoading } = useQuery({
+    const { isLoading, refetch } = useQuery({
         queryKey: ['team', teamStore.PaginationInfo.CurrentPage],
         queryFn: () => teamStore.getAll(),
     });
-
-    const updatedTeam = () => {
-        Promise.all([teamStore?.getAll()]).then(() => {
-            teamStore?.TeamMap.forEach((val, key) => {
-                ImageStore.getImageById(val.imageId).then((image) => {
-                    teamStore.TeamMap.set(val.id, { ...val, image });
-                });
-            });
-        }).then(() => teamStore.setInternalMap(teamStore.getTeamArray));
-    };
-
-    useEffect(() => {
-        updatedTeam();
-    }, []);
 
     const handleDeleteTeamMember = (teamId: number) => {
         modalStore.setConfirmationModal(
             'confirmation',
             () => {
-                teamStore.deleteTeam(teamId).then(() => {
-                    teamStore.TeamMap.delete(teamId);
-                }).catch((e) => {
-                    console.error(e);
-                });
+                teamStore.deleteTeam(teamId)
+                    .then(() => {
+                        teamStore.TeamMap.delete(teamId);
+                    })
+                    .catch((e) => {
+                        console.error(e);
+                    });
                 modalStore.setConfirmationModal('confirmation');
             },
             CONFIRMATION_MESSAGES.DELETE_TEAM_MEMBER,
@@ -163,15 +150,15 @@ const TeamPage = () => {
                         key={`${team.id}${index}222`}
                         className="actionButton"
                         onClick={() => {
-                            setTeamToedit(team);
+                            setTeamToEdit(team);
                             setModalEditOpened(true);
                         }}
                     />
-
                 </div>
             ),
         },
     ];
+
     return (
         <div className="team-page">
             <PageBar />
@@ -217,14 +204,19 @@ const TeamPage = () => {
                     </div>
                 </div>
             </div>
-            <TeamModal open={modalAddOpened} setIsModalOpen={setModalAddOpened} />
+            <TeamModal
+                open={modalAddOpened}
+                setIsModalOpen={setModalAddOpened}
+                afterSubmit={() => refetch()}
+            />
             <TeamModal
                 open={modalEditOpened}
                 setIsModalOpen={setModalEditOpened}
                 teamMember={teamToEdit}
-
+                afterSubmit={() => refetch()}
             />
         </div>
     );
 };
+
 export default observer(TeamPage);

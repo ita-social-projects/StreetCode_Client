@@ -1,40 +1,45 @@
 /* eslint-disable max-len */
 import CancelBtn from '@images/utils/Cancel_btn.svg';
+
 import { observer } from 'mobx-react-lite';
-import { useEffect, useState } from 'react';
-import { useAsync } from '@hooks/stateful/useAsync.hook';
+import React, { useEffect, useState } from 'react';
+import BUTTON_LABELS from '@constants/buttonLabels';
 import Context from '@models/additional-content/context.model';
 import useMobx from '@stores/root-store';
-import { Button, Form, Input, message, Modal, Popover, UploadFile } from 'antd';
-import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
+
+import {
+    Button, Form, Input, message, Modal, Popover,
+} from 'antd';
+
 import normaliseWhitespaces from '@/app/common/utils/normaliseWhitespaces';
 import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
-import BUTTON_LABELS from "@constants/buttonLabels";
+
+import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 
 interface ContextAdminProps {
     setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
     isModalVisible: boolean;
     initialData?: Context;
     isNewContext?: (data: boolean) => void;
+    afterSubmit?: () => void;
 }
 
 const ContextAdminModalComponent: React.FC<ContextAdminProps> = observer(({
     isModalVisible,
     setIsModalOpen,
     initialData,
-    isNewContext
+    isNewContext,
+    afterSubmit,
 }) => {
-    const {contextStore} = useMobx();
+    const { contextStore } = useMobx();
     const [form] = Form.useForm();
     const isEditing = !!initialData;
-	const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
+    const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
 
     const closeModal = () => {
         setIsModalOpen(false);
-			  setIsSaveButtonDisabled(true);
+        setIsSaveButtonDisabled(true);
     };
-
-    useAsync(() => contextStore.fetchContexts(), []);
 
     useEffect(() => {
         if (initialData && isModalVisible) {
@@ -45,9 +50,9 @@ const ContextAdminModalComponent: React.FC<ContextAdminProps> = observer(({
     }, [initialData, isModalVisible, form]);
 
     const validateContext = uniquenessValidator(
-        ()=>(contextStore.getContextArray.map((context) => context.title)), 
-        ()=>(initialData?.title), 
-        'Контекст з такою назвою вже існує'
+        () => (contextStore.getContextArray.map((context) => context.title)),
+        () => (initialData?.title),
+        'Контекст з такою назвою вже існує',
     );
 
     const onSubmit = async (formData: any) => {
@@ -58,7 +63,9 @@ const ContextAdminModalComponent: React.FC<ContextAdminProps> = observer(({
             title: (formData.title as string).trim(),
         };
 
-        if (currentContext.title === initialData?.title) return;
+        if (currentContext.title === initialData?.title) {
+            return;
+        }
 
         if (currentContext.id) {
             await contextStore.updateContext(currentContext as Context);
@@ -68,6 +75,10 @@ const ContextAdminModalComponent: React.FC<ContextAdminProps> = observer(({
 
         if (isNewContext !== undefined) {
             isNewContext(true);
+        }
+
+        if (afterSubmit) {
+            afterSubmit();
         }
     };
 
@@ -81,7 +92,7 @@ const ContextAdminModalComponent: React.FC<ContextAdminProps> = observer(({
             await form.validateFields();
             form.submit();
             message.success(`Контекст успішно ${isEditing ? 'змінено' : 'додано'}!`);
-			setIsSaveButtonDisabled(true);
+            setIsSaveButtonDisabled(true);
         } catch (error) {
             message.config({
                 top: 100,
@@ -97,7 +108,7 @@ const ContextAdminModalComponent: React.FC<ContextAdminProps> = observer(({
         title: 50,
     };
 
-		const handleInputChange = () => setIsSaveButtonDisabled(false);
+    const handleInputChange = () => setIsSaveButtonDisabled(false);
 
     return (
         <Modal
@@ -119,7 +130,7 @@ const ContextAdminModalComponent: React.FC<ContextAdminProps> = observer(({
                     layout="vertical"
                     onFinish={onSubmit}
                     initialValues={initialData}
-                    onKeyDown={(e) => e.key === 'Enter' ? e.preventDefault() : ''}
+                    onKeyDown={(e) => (e.key === 'Enter' ? e.preventDefault() : '')}
                 >
                     <div className="center">
                         <h2>{isEditing ? 'Редагувати контекст' : 'Додати контекст'}</h2>
@@ -127,8 +138,9 @@ const ContextAdminModalComponent: React.FC<ContextAdminProps> = observer(({
                     <Form.Item
                         name="title"
                         label="Назва: "
-                        rules={[{required: true, message: 'Введіть назву', max: MAX_LENGTH.title},
-                            {validator: validateContext}
+                        rules={[
+                            { required: true, message: 'Введіть назву', max: MAX_LENGTH.title },
+                            { validator: validateContext },
                         ]}
                         getValueProps={(value) => ({ value: normaliseWhitespaces(value) })}
                     >
@@ -137,7 +149,7 @@ const ContextAdminModalComponent: React.FC<ContextAdminProps> = observer(({
 
                     <div className="center">
                         <Button
-							disabled={isSaveButtonDisabled}
+                            disabled={isSaveButtonDisabled}
                             className="streetcode-custom-button"
                             onClick={() => handleOk()}
                         >

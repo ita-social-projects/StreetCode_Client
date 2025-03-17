@@ -1,7 +1,7 @@
 import './TeamPositionsMainPage.style.scss';
 
 import { observer } from 'mobx-react-lite';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import BUTTON_LABELS from '@constants/buttonLabels';
 import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
@@ -22,18 +22,10 @@ const TeamPositionsMainPage: React.FC = observer(() => {
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
     const [positionToEdit, setPositionToEdit] = useState<Position>();
 
-    const { isLoading } = useQuery({
+    const { isLoading, refetch } = useQuery({
         queryKey: ['positions', teamPositionsStore.PaginationInfo.CurrentPage],
         queryFn: () => teamPositionsStore.fetchPositions(),
     });
-
-    const updatedPositions = () => {
-        teamPositionsStore.fetchPositions();
-    };
-
-    useEffect(() => {
-        updatedPositions();
-    }, [modalAddOpened, modalEditOpened]);
 
     const handleDeletePosition = (positionId: number) => {
         modalStore.setConfirmationModal(
@@ -136,14 +128,16 @@ const TeamPositionsMainPage: React.FC = observer(() => {
             <TeamPositionsAdminModal
                 isModalVisible={modalAddOpened}
                 setIsModalOpen={setModalAddOpened}
+                afterSubmit={refetch}
             />
             <TeamPositionsAdminModal
                 isModalVisible={modalEditOpened}
                 setIsModalOpen={setModalEditOpened}
                 initialData={positionToEdit}
+                afterSubmit={refetch}
             />
         </div>
-
     );
 });
+
 export default TeamPositionsMainPage;

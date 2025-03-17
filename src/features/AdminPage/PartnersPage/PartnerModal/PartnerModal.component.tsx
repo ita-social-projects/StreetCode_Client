@@ -7,6 +7,7 @@ import CancelBtn from '@images/utils/Cancel_btn.svg';
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import combinedImageValidator, { checkFile } from '@components/modals/validators/combinedImageValidator';
 import BUTTON_LABELS from '@constants/buttonLabels';
 import PreviewFileModal from '@features/AdminPage/NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
 import SOCIAL_OPTIONS from '@features/AdminPage/PartnersPage/PartnerModal/constants/socialOptions';
@@ -19,10 +20,11 @@ import {
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
 import { UploadChangeParam } from 'antd/es/upload';
-import combinedImageValidator, { checkFile } from '@components/modals/validators/combinedImageValidator';
+
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 import validateSocialLink from '@/app/common/components/modals/validators/socialLinkValidator';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
+import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
 import PartnerLink from '@/features/AdminPage/PartnersPage/PartnerLink.component';
 import Audio from '@/models/media/audio.model';
 import Image from '@/models/media/image.model';
@@ -35,7 +37,6 @@ import { StreetcodeShort } from '@/models/streetcode/streetcode-types.model';
 
 // eslint-disable-next-line no-restricted-imports
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
-import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
 
 const PartnerModal: React.FC< {
     partnerItem?: Partner;
@@ -77,12 +78,6 @@ const PartnerModal: React.FC< {
             duration: 2,
             maxCount: 1,
         });
-
-        useEffect(() => {
-            if (isStreetcodeVisible) {
-                streetcodeShortStore.fetchStreetcodesAll();
-            }
-        }, []);
 
         useEffect(() => {
             setWaitingForApiResponse(false);
@@ -144,10 +139,11 @@ const PartnerModal: React.FC< {
         const handleInputChange = () => setIsSaved(false);
 
         const onStreetcodeSelect = (value: string) => {
-            const index = streetcodeShortStore.streetcodes.findIndex(
-                (c) => c.title === value,
-            );
-            selectedStreetcodes.current.push(streetcodeShortStore.streetcodes[index]);
+            streetcodeShortStore.StreetcodesShortMap.forEach((streetcodeShort) => {
+                if (streetcodeShort.title === value) {
+                    selectedStreetcodes.current.push(streetcodeShort);
+                }
+            });
         };
 
         const onStreetcodeDeselect = (value: string) => {
@@ -271,7 +267,9 @@ const PartnerModal: React.FC< {
             };
 
             partnersStore.getPartnerArray.map((t) => t).forEach((t) => {
-                if (formValues.title === t.title || imageId.current === t.logoId) partnerItem = t;
+                if (formValues.title === t.title || imageId.current === t.logoId) {
+                    partnerItem = t;
+                }
             });
 
             try {
@@ -285,10 +283,12 @@ const PartnerModal: React.FC< {
                 } else {
                     partner.id = (await partnersStore.createPartner(partner)).id;
                 }
+
                 if (afterSubmit) {
                     const partnerWithLogo = partnersStore.PartnerMap.get(partner.id) as Partner;
                     afterSubmit(partnerWithLogo);
                 }
+
                 setActionSuccess(true);
             } catch (e: unknown) {
                 message.error('Не вдалось оновити/створити партнера. Спробуйте ще раз.');
@@ -336,7 +336,7 @@ const PartnerModal: React.FC< {
                             <h2>
                                 {partnerItem ? 'Редагувати' : 'Додати'}
                                 {' '}
-партнера
+                                партнера
                             </h2>
                         </div>
                         <div className="checkbox-container">
@@ -442,9 +442,11 @@ const PartnerModal: React.FC< {
                                     onSelect={onStreetcodeSelect}
                                     onDeselect={onStreetcodeDeselect}
                                 >
-                                    {streetcodeShortStore.streetcodes.map((s) => (
-                                        <Select.Option key={`${s.id}`} value={s.title}>
-                                            {s.title}
+                                    {Array.from(
+                                        streetcodeShortStore.StreetcodesShortMap.values(),
+                                    ).map((streetcodeShort) => (
+                                        <Select.Option key={`${streetcodeShort.id}`} value={streetcodeShort.title}>
+                                            {streetcodeShort.title}
                                         </Select.Option>
                                     ))}
                                 </Select>

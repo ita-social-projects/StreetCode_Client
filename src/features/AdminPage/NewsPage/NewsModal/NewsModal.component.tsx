@@ -12,6 +12,7 @@ import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
 import ReactQuill from 'react-quill';
 import combinedImageValidator, { checkFile } from '@components/modals/validators/combinedImageValidator';
+import BUTTON_LABELS from '@constants/buttonLabels';
 import PreviewFileModal from '@features/AdminPage/NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
 import useMobx from '@stores/root-store';
 import dayjs from 'dayjs';
@@ -38,12 +39,12 @@ import {
 import Editor from '@/app/common/components/Editor/QEditor.component';
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
+import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
 import Audio from '@/models/media/audio.model';
 import Image from '@/models/media/image.model';
 import News from '@/models/news/news.model';
+
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
-import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
-import BUTTON_LABELS from "@constants/buttonLabels";
 
 const NewsModal: React.FC<{
     newsItem?: News;
@@ -53,7 +54,12 @@ const NewsModal: React.FC<{
     initialValue?: any;
     limit?: any;
 }> = observer(({
-    newsItem, open, setIsModalOpen, afterSubmit, initialValue, limit,
+    newsItem,
+    open,
+    setIsModalOpen,
+    afterSubmit,
+    initialValue,
+    limit,
 }) => {
     const [form] = Form.useForm();
     const { newsStore } = useMobx();
@@ -228,13 +234,16 @@ const NewsModal: React.FC<{
             creationDate: dayjs(formValues.creationDate),
         };
         newsStore.NewsArray.map((t) => t).forEach((t) => {
-            if (formValues.title == t.title || imageId.current == t.imageId) newsItem = t;
+            if (formValues.title == t.title || imageId.current == t.imageId) {
+                newsItem = t;
+            }
         });
         // need to fix when url is static because from didn't see ti when u press save button on second time
         try {
             if (!image.current) {
                 throw new Error("Image isn't uploaded yet");
             }
+
             if (newsItem) {
                 news.id = newsItem.id;
                 news.imageId = imageId.current as number;
@@ -246,6 +255,7 @@ const NewsModal: React.FC<{
             if (afterSubmit) {
                 afterSubmit(news);
             }
+
             setActionSuccess(true);
             setRemovedImage(undefined);
         } catch (e: unknown) {
@@ -401,7 +411,6 @@ const NewsModal: React.FC<{
                                     newsItem?.image ? createFileListData(newsItem.image) : []
                                 }
                                 onChange={handleFileChange}
-
                             >
                                 <p>Виберіть чи перетягніть файл</p>
                             </FileUploader>
@@ -412,11 +421,11 @@ const NewsModal: React.FC<{
                             label="Дата публікації: "
                             rules={[{ required: true, message: 'Введіть дату' }]}
                         >
-                            <DatePicker 
-                                showTime 
-                                allowClear={false} 
-                                onChange={handleInputChange} 
-                                disabledDate={current => current && current.isBefore(dayjs().startOf('day'))}
+                            <DatePicker
+                                showTime
+                                allowClear={false}
+                                onChange={handleInputChange}
+                                disabledDate={(current) => current && current.isBefore(dayjs().startOf('day'))}
                             />
                         </Form.Item>
                         <PreviewFileModal

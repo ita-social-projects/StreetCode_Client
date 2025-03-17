@@ -1,38 +1,40 @@
 /* eslint-disable max-len */
 import CancelBtn from '@images/utils/Cancel_btn.svg';
+
 import { observer } from 'mobx-react-lite';
-import { useEffect, useState } from 'react';
-import { useAsync } from '@hooks/stateful/useAsync.hook';
+import React, { useEffect } from 'react';
+import BUTTON_LABELS from '@constants/buttonLabels';
 import Position from '@models/additional-content/teampositions.model';
 import useMobx from '@stores/root-store';
-import { Button, Form, Input, message, Modal, Popover, UploadFile } from 'antd';
-import {parseJsonNumber} from "ajv/dist/runtime/parseJson";
-import position = parseJsonNumber.position;
+
+import {
+    Button, Form, Input, message, Modal, Popover,
+} from 'antd';
+
 import normaliseWhitespaces from '@/app/common/utils/normaliseWhitespaces';
 import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
-import BUTTON_LABELS from "@constants/buttonLabels";
 
 interface TeamPositionsAdminProps {
     setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
     isModalVisible: boolean;
     initialData?: Position;
     isNewPosition?: (data: boolean) => void;
+    afterSubmit?: () => void;
 }
 
 const TeamPositionsAdminModalComponent: React.FC<TeamPositionsAdminProps> = observer(({
     isModalVisible,
     setIsModalOpen,
     initialData,
-    isNewPosition
+    isNewPosition,
+    afterSubmit,
 }) => {
-    const {teamPositionsStore} = useMobx();
+    const { teamPositionsStore } = useMobx();
     const [form] = Form.useForm();
     const isEditing = !!initialData;
     const closeModal = () => {
         setIsModalOpen(false);
     };
-
-    useAsync(() => teamPositionsStore.fetchPositions(), []);
 
     useEffect(() => {
         if (initialData && isModalVisible) {
@@ -43,9 +45,9 @@ const TeamPositionsAdminModalComponent: React.FC<TeamPositionsAdminProps> = obse
     }, [initialData, isModalVisible, form]);
 
     const validatePosition = uniquenessValidator(
-        ()=>(teamPositionsStore.getPositionsArray.map((position) => position.position)), 
-        ()=>(initialData?.position), 
-        'Позиція з такою назвою вже існує'
+        () => (teamPositionsStore.getPositionsArray.map((position) => position.position)),
+        () => (initialData?.position),
+        'Позиція з такою назвою вже існує',
     );
 
     const onSubmit = async (formData: any) => {
@@ -56,7 +58,9 @@ const TeamPositionsAdminModalComponent: React.FC<TeamPositionsAdminProps> = obse
             position: (formData.position as string).trim(),
         };
 
-        if (currentPosition.position === initialData?.position) return;
+        if (currentPosition.position === initialData?.position) {
+            return;
+        }
 
         if (currentPosition.id) {
             await teamPositionsStore.updatePosition(currentPosition as Position);
@@ -66,6 +70,10 @@ const TeamPositionsAdminModalComponent: React.FC<TeamPositionsAdminProps> = obse
 
         if (isNewPosition !== undefined) {
             isNewPosition(true);
+        }
+
+        if (afterSubmit) {
+            afterSubmit();
         }
     };
 
@@ -114,7 +122,7 @@ const TeamPositionsAdminModalComponent: React.FC<TeamPositionsAdminProps> = obse
                     layout="vertical"
                     onFinish={onSubmit}
                     initialValues={initialData}
-                    onKeyDown={(e) => e.key === 'Enter' ? e.preventDefault() : ''}
+                    onKeyDown={(e) => (e.key === 'Enter' ? e.preventDefault() : '')}
                 >
                     <div className="center">
                         <h2>{isEditing ? 'Редагувати позицію' : 'Додати позицію'}</h2>
@@ -122,12 +130,13 @@ const TeamPositionsAdminModalComponent: React.FC<TeamPositionsAdminProps> = obse
                     <Form.Item
                         name="position"
                         label="Назва: "
-                        rules={[{required: true, message: 'Введіть назву', max: MAX_LENGTH.title},
-                            {validator: validatePosition}
+                        rules={[
+                            { required: true, message: 'Введіть назву', max: MAX_LENGTH.title },
+                            { validator: validatePosition },
                         ]}
                         getValueProps={(value) => ({ value: normaliseWhitespaces(value) })}
                     >
-                        <Input maxLength={MAX_LENGTH.title} showCount/>
+                        <Input maxLength={MAX_LENGTH.title} showCount />
                     </Form.Item>
 
                     <div className="center">

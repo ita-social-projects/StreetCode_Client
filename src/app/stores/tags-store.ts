@@ -132,7 +132,7 @@ export default class TagsStore {
         try {
             await tagsApi.delete(tagId);
             runInAction(() => {
-                this.TagMap.delete(tagId);
+                this.AllTagsMap.delete(tagId);
             });
         } catch (error: unknown) { /* empty */ }
     };

@@ -2,7 +2,7 @@ import Agent from '@api/agent.api';
 import { API_ROUTES } from '@constants/api-routes.constants';
 import Streetcode,
 {
-    EventStreetcode, PersonStreetcode, StreetcodeCatalogRecord,
+    StreetcodeCatalogRecord,
     StreetcodeCreate, StreetcodeFavourite, StreetcodeMainPage, StreetcodeShort, StreetcodeUpdate,
 } from '@models/streetcode/streetcode-types.model';
 
@@ -58,9 +58,20 @@ const StreetcodesApi = {
         Agent.get<number>(`${API_ROUTES.STREETCODES.GET_COUNT}?onlyPublished=${onlyPublished}`)
     ),
 
-    getAllShort: () => (
-        Agent.get<Streetcode[]>(`${API_ROUTES.STREETCODES.GET_ALL_SHORT}`)
-    ),
+    getAllShort: (page?: number, pageSize?: number) => {
+        const params = Object.entries({
+            page: page?.toString() ?? '',
+            pageSize: pageSize?.toString() ?? '',
+        });
+
+        const queryParams = params.filter((p) => !!p[1]);
+
+        const searchParams = new URLSearchParams(queryParams);
+        return Agent.get<{ totalAmount: number, streetcodesShort: StreetcodeShort[] }>(
+            `${API_ROUTES.STREETCODES.GET_ALL_SHORT}`,
+            searchParams,
+        );
+    },
 
     create: (streetcode: StreetcodeCreate) => Agent
         .post<StreetcodeCreate>(`${API_ROUTES.STREETCODES.CREATE}`, streetcode),

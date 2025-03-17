@@ -22,19 +22,19 @@ const HeaderLoginModal = () => {
     const [hasVacancies, setHasVacancies] = useState(false);
     const SURVEY_LINK = 'https://forms.gle/eWwX5RP84X7dymLR6';
     const { modalStore: { setModal, modalsState: { login } } } = useModalContext();
+
     const handleClick = () => login.isOpen = false;
+
     useEffect(() => {
-        JobApi.getActive()
-            .then(
-                (result) => {
+        if (login.isOpen) {
+            JobApi.getActive()
+                .then((result) => {
                     setHasVacancies(result.length > 0);
-                },
-            )
-            .catch(
-                (e) => {
-                    console.error(e);
-                },
-            );
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        }
     }, [login.isOpen]);
 
     const becomePartnerHandler = () => {

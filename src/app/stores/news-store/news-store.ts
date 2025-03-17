@@ -101,15 +101,15 @@ export default class NewsStore {
             });
     };
 
+    // eslint-disable-next-line class-methods-use-this
     public createNews = async (news: News) => {
         await NewsApi.create(news)
-            .then(() => this.getAll(this.PaginationInfo.PageSize))
             .catch((error) => console.error(error));
     };
 
+    // eslint-disable-next-line class-methods-use-this
     public updateNews = async (news: News) => {
         await NewsApi.update(news)
-            .then(() => this.getAll(this.PaginationInfo.PageSize))
             .catch((error) => console.error(error));
     };
 

@@ -4,7 +4,6 @@ import CancelBtn from '@images/utils/Cancel_btn.svg';
 
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import BUTTON_LABELS from '@constants/buttonLabels';
-import { useAsync } from '@hooks/stateful/useAsync.hook';
 import useMobx from '@stores/root-store';
 
 import {
@@ -22,6 +21,7 @@ interface SourceModalProps {
     setIsModalOpen: Dispatch<SetStateAction<boolean>>;
     initialData?: Tag;
     isNewTag?: (data: boolean) => void;
+    afterSubmit?: () => void;
 }
 
 const SourceModal: React.FC<SourceModalProps> = ({
@@ -29,6 +29,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
     setIsModalOpen,
     initialData,
     isNewTag,
+    afterSubmit,
 }) => {
     const { tagsStore } = useMobx();
     const [form] = Form.useForm();
@@ -43,8 +44,6 @@ const SourceModal: React.FC<SourceModalProps> = ({
 
         setIsSaveButtonDisabled(!isChanged || isExisting || isEmpty);
     };
-
-    useAsync(() => tagsStore.fetchAllTags(), []);
 
     useEffect(() => {
         if (initialData && isModalVisible) {
@@ -74,7 +73,9 @@ const SourceModal: React.FC<SourceModalProps> = ({
             title: (formData.title as string).trim(),
         };
 
-        if (currentTag.title === initialData?.title) return;
+        if (currentTag.title === initialData?.title) {
+            return;
+        }
 
         if (currentTag.id) {
             await tagsStore.updateTag(currentTag as Tag);
@@ -84,6 +85,10 @@ const SourceModal: React.FC<SourceModalProps> = ({
 
         if (isNewTag !== undefined) {
             isNewTag(true);
+        }
+
+        if (afterSubmit) {
+            afterSubmit();
         }
     };
 
