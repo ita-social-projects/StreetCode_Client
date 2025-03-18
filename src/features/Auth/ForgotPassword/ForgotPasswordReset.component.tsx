@@ -1,19 +1,18 @@
 ﻿import './ForgotPasswordReset.styles.scss';
 
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { LeftOutlined } from '@ant-design/icons';
 import AuthService from '@app/common/services/auth-service/AuthService';
 import Password from '@components/Auth/Password.component';
 import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
 
 import { Button, Form, message } from 'antd';
 
-const ForgotPasswordResetComponent: React.FC = () => {
+const ForgotPasswordResetComponent: FC = () => {
     const [form] = Form.useForm();
     const location = useLocation();
     const navigator = useNavigate();
-    const [isValid, setIsValid] = useState<boolean>(true);
+    const [isPasswordValid, setIsPasswordValid] = useState<boolean>(false);
 
     const handleUpdatePassword = async () => {
         const searchParams = new URLSearchParams(location.search);
@@ -32,30 +31,30 @@ const ForgotPasswordResetComponent: React.FC = () => {
         });
     };
 
-    const navigateToLogin = () => {
-        navigator(FRONTEND_ROUTES.AUTH.LOGIN);
-    };
-
     if (AuthService.isLoggedIn()) {
         return <Navigate to={FRONTEND_ROUTES.OTHER_PAGES.PROFILE} />;
     }
 
     return (
         <div className="forgotPasswordResetWrapper">
-            <Form form={form} className="forgot-password-reset-form" onFinish={handleUpdatePassword}>
+            <Form
+                form={form}
+                className="forgot-password-reset-form"
+                onFinish={handleUpdatePassword}
+                layout="vertical"
+            >
                 <p className="forgotPasswordResetTitle">Відновлення паролю</p>
-                <Password onPasswordValid={setIsValid} />
+                <Password
+                    setIsPasswordValid={setIsPasswordValid}
+                    isPasswordValid={isPasswordValid}
+                />
                 <Button
                     htmlType="submit"
-                    disabled={!isValid}
+                    disabled={!isPasswordValid}
                     className="streetcode-custom-button forgotPasswordResetButton"
                 >
-                    <p>Відновити пароль</p>
+                    <p>Зберегти пароль</p>
                 </Button>
-                <div onClick={navigateToLogin} className="navigationWrapper">
-                    <LeftOutlined style={{ cursor: 'pointer' }} />
-                    <button type="button" className="returnNavButton">Повернутися до входу</button>
-                </div>
             </Form>
         </div>
     );
