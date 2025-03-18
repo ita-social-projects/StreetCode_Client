@@ -4,6 +4,8 @@ import { observer } from 'mobx-react-lite/dist';
 import { useState } from 'react';
 import { Link } from 'react-router-dom/dist';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons/lib';
+import PageBar from '@features/AdminPage/PageBar/PageBar.component';
+import useMobx, { useModalContext } from '@stores/root-store';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 
@@ -11,14 +13,11 @@ import { ConfigProvider, Empty, Pagination, Tag } from 'antd/es';
 import Table, { ColumnsType } from 'antd/es/table';
 
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
-import useMobx, { useModalContext } from '@/app/stores/root-store';
 import {
     CalendarEvent,
     EventType,
 } from '@/models/calendar/calendarEvent.model';
 import { StreetcodeShort } from '@/models/streetcode/streetcode-types.model';
-
-import PageBar from '../PageBar/PageBar.component';
 
 import CalendarControlBar from './CalendarControlBar/CalendarControlBar.component';
 
@@ -62,7 +61,7 @@ const CalendarAdminPage = observer(() => {
             showSorterTooltip: false,
             render: (value) => {
                 const date = dayjs(value);
-                return <div>{date.format('YYYY-MM-DD')}</div>;
+                return <div>{date.format('DD/MM/YYYY')}</div>;
             },
         },
         {
@@ -126,6 +125,15 @@ const CalendarAdminPage = observer(() => {
 
     const columnsCustom: ColumnsType<CalendarEvent> = [
         ...columnsBase,
+        {
+            title: 'Час проведення',
+            dataIndex: 'dateString',
+            key: 'dateString',
+            width: '20%',
+            render(value: any, record: { id: any }) {
+                return <div key={`${value}${record.id}`}>{value}</div>;
+            },
+        },
         {
             title: 'Локація',
             dataIndex: 'location',

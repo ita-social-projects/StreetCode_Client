@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
+import useMobx from '@stores/root-store';
 import dayjs from 'dayjs';
 
 import { Cascader } from 'antd/es';
-
-import useMobx from '@/app/stores/root-store';
 
 interface Option {
   value: number;
@@ -13,11 +12,12 @@ interface Option {
 
 const EventStreetcodeCascader = ({ form }: { form: any }) => {
     const { streetcodeCatalogStore, timelineItemStore } = useMobx();
+    const [cascaderOptions, setCascaderOptions] = useState<Option[]>([]);
 
     useEffect(() => {
         const fetchCascaderData = async () => {
             try {
-                await streetcodeCatalogStore.fetchCatalogStreetcodes(1);
+                await streetcodeCatalogStore.fetchCatalogStreetcodes();
                 const streetcodeCatalog = streetcodeCatalogStore.getCatalogStreetcodesArray;
 
                 const formattedOptions: Option[] = await Promise.all(
@@ -47,14 +47,14 @@ const EventStreetcodeCascader = ({ form }: { form: any }) => {
         fetchCascaderData();
     }, []);
 
-    const [cascaderOptions, setCascaderOptions] = useState<Option[]>([]);
-
     const handleChange = async (value: any) => {
         const selectedStreetcodeId = value[0];
         const selectedTimelineItemId = value[1];
+
         await timelineItemStore.fetchTimelineItemsByStreetcodeId(
             selectedStreetcodeId,
         );
+
         const selectedTimelineItem = timelineItemStore.getTimelineItemArray.find(
             (item) => item.id === selectedTimelineItemId,
         );
@@ -82,6 +82,7 @@ const EventStreetcodeCascader = ({ form }: { form: any }) => {
     };
 
     const timelineItemId = form.getFieldValue('timelineItemId');
+    // eslint-disable-next-line max-len
     const streetcodeId = cascaderOptions.find((option) => option.children?.some((child) => child.value === timelineItemId))?.value;
 
     return (

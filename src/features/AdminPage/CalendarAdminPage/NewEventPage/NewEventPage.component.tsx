@@ -1,8 +1,8 @@
 import './NewEventPage.styles.scss';
 
-import { ConfigProvider } from 'antd';
+import PageBar from '@features/AdminPage/PageBar/PageBar.component';
 
-import PageBar from '../../PageBar/PageBar.component';
+import { ConfigProvider } from 'antd';
 
 import NewEventBlock from './NewEventBlock/NewEventBlock.component';
 

@@ -12,16 +12,11 @@ interface Props {
 }
 const CalendarControlBar: React.FC<Props> = ({ handleChange }) => (
     <div className="calendarControlBar">
-        <div className="calendarControlBarElement">
-            <Button className="Button" onClick={() => {}}>
-          Пошук події
-            </Button>
-        </div>
         <div className="calendarControlBarElement Input">
             <Input
                 prefix={<MagnifyingGlass />}
                 // onChange={handleChangeTitle} haven`t been implemented
-                placeholder="Назва або індекс події"
+                placeholder="Пошук..."
             />
         </div>
         <div className="calendarControlBarElement">

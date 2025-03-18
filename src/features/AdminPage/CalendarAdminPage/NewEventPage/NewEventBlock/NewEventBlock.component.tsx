@@ -1,8 +1,12 @@
+/* eslint-disable import/extensions */
 import './NewEventBlock.styles.scss';
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom/dist';
 import { InfoCircleOutlined } from '@ant-design/icons/lib';
+// eslint-disable-next-line max-len
+import EventStreetcodeCascader from '@features/AdminPage/CalendarAdminPage/EventStreetcodeCascader/EventStreetcodeCascader.component';
+import useMobx from '@stores/root-store';
 import dayjs from 'dayjs';
 
 import {
@@ -20,7 +24,7 @@ import { CheckboxGroupProps } from 'antd/es/checkbox';
 import ukUA from 'antd/es/locale/uk_UA';
 
 import SelectWithCustomSuffix from '@/app/common/components/SelectWithCustomSuffix';
-import useMobx from '@/app/stores/root-store';
+import validateLength from '@/app/common/utils/userValidators/validateLength';
 import {
     CreateCalendarEvent,
     EventType,
@@ -29,21 +33,22 @@ import {
 
 import 'dayjs/locale/uk';
 
-import EventStreetcodeCascader from '../../EventStreetcodeCascader/EventStreetcodeCascader.component';
-
 dayjs.locale('uk');
+
+const { RangePicker } = DatePicker;
 
 const NewEventBlock: React.FC = () => {
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
     const [currentEventType, setCurrentEventType] = useState<EventType>('Historical');
     const { calendarStore, streetcodeCatalogStore } = useMobx();
-    const { id } = useParams<any>();
-    const parseId = id ? +id : null;
+    const { idToUpdate } = useParams<any>();
+    const parseId = idToUpdate ? +idToUpdate : null;
     const [streetcodesOptions, setStreetcodesOptions] = useState<
     { label: string; value: number }[]
   >([]);
     const [selectedStreetcodes, setSelectedStreetcodes] = useState<number[]>([]);
+    const [disableInput, setDisableInput] = useState(true);
 
     const options: CheckboxGroupProps['options'] = [
         { label: 'Історична', value: 'Historical' },
@@ -100,7 +105,28 @@ const NewEventBlock: React.FC = () => {
         setSelectedStreetcodes((prev) => prev.filter((s) => s !== id));
     };
 
+    const handleDateRangeChange = (dates: any) => {
+        if (dates && dates[0] && dates[1]) {
+            form.setFieldsValue({ date: dates[0].format('DD/MM/YYYY') });
+            const formattedDate = `${dates[0].format('DD MMMM YYYY')} – ${dates[1].format('DD MMMM YYYY')}`;
+            form.setFieldsValue({ dateString: formattedDate });
+        } else if (dates && dates[0]) {
+            const formattedDate = `${dates[0].format('DD MMMM YYYY')}`;
+            form.setFieldsValue({ dateString: formattedDate });
+        } else {
+            form.setFieldsValue({ dateString: '' });
+        }
+
+        setDisableInput(!(dates && dates[0]));
+    };
+
+    const clearDateFields = () => {
+        form.setFieldsValue({ date: '', startEndDate: '' });
+        handleDateRangeChange([null, null]);
+    };
+
     const handleEventTypeChange = (event: RadioChangeEvent) => {
+        clearDateFields();
         setCurrentEventType(event.target.value);
     };
 
@@ -110,9 +136,10 @@ const NewEventBlock: React.FC = () => {
         try {
             const newEvent: CreateCalendarEvent = {
                 title: values.title,
-                date: values.date.format('YYYY-MM-DD'),
+                date: values.date ? values.date : values.startEndDate?.[0]?.format('YYYY-MM-DD'),
                 description: values.description,
                 eventType: currentEventType,
+                dateString: values.dateString || null,
                 location: values.location || null,
                 organizer: values.organizer || null,
                 timelineItemId: values.timelineItemId || null,
@@ -124,16 +151,16 @@ const NewEventBlock: React.FC = () => {
                     id: parseId,
                 };
                 await calendarStore.updateEvent(updatedEvent);
-                message.success('Подію успішно оновлено!');
+                message.success('Подію успішно оновлено');
             } else {
                 await calendarStore.addEvent(newEvent);
-                message.success('Подію успішно додано!');
+                message.success('Подію успішно додано');
 
                 form.resetFields();
             }
         } catch (error) {
-            console.error('Помилка зберегти події:', error);
             message.error('Не вдалося зберегти подію.');
+            console.log(error);
         } finally {
             setLoading(false);
         }
@@ -141,123 +168,149 @@ const NewEventBlock: React.FC = () => {
 
     return (
         <>
-            {!parseId ? <h2>Нова подія до календаря</h2> : null}
-            <Form
-                form={form}
-                layout="vertical"
-                onFinish={handleSubmit}
-                scrollToFirstError
-            >
-                <div className="mainblock-add-form">
-                    <Form.Item
-                        name="eventType"
-                        label="Тип події"
-                        rules={[{ required: true, message: 'Оберіть тип події!' }]}
-                    >
-                        <div className="radio-type">
-                            <Radio.Group
-                                options={options}
-                                value={currentEventType}
-                                optionType="button"
-                                buttonStyle="solid"
-                                onChange={handleEventTypeChange}
-                            />
-                        </div>
-                    </Form.Item>
-
-                    {currentEventType === 'Historical' ? (
+            {!parseId ? <h2>Нова подія</h2> : null}
+            <ConfigProvider locale={ukUA}>
+                <Form
+                    form={form}
+                    layout="vertical"
+                    onFinish={handleSubmit}
+                    scrollToFirstError
+                >
+                    <div className="mainblock-add-form">
                         <Form.Item
-                            name="timelineItemId"
-                            label={(
-                                <div className="choose-timeline-item-block-label">
-                                    <p>
-                    Бажаєте обрати подію з хронології існуючого History-коду?
-                                    </p>
-                                    <Popover
-                                        className="info-container"
-                                        placement="topLeft"
-                                        content={(
-                                            <p className="label-tags-block-info-container-content">
-                        Оберіть з переліку History-код та подію з пов'язаною з
+                            name="eventType"
+                            label="Тип події"
+                            rules={[{ required: true, message: 'Оберіть тип події!' }]}
+                        >
+                            <div className="radio-type">
+                                <Radio.Group
+                                    options={options}
+                                    value={currentEventType}
+                                    optionType="button"
+                                    buttonStyle="solid"
+                                    onChange={handleEventTypeChange}
+                                />
+                            </div>
+                        </Form.Item>
+
+                        {currentEventType === 'Historical' ? (
+                            <Form.Item
+                                name="timelineItemId"
+                                label={(
+                                    <div className="choose-timeline-item-block-label">
+                                        <p>
+                        Бажаєте обрати подію з хронології існуючого History-коду?
+                                        </p>
+                                        <Popover
+                                            className="info-container"
+                                            placement="topLeft"
+                                            content={(
+                                                <p className="label-tags-block-info-container-content">
+                        Оберіть з переліку History-код та подію з пов&apos;язаною з
                         ним хронологією. Деякі поля будуть автоматично заповнені
                         згідно обраної хронологічної події, але їх можна буде
                         змінити.
-                                            </p>
-                                        )}
-                                    >
-                                        <InfoCircleOutlined className="info-icon" />
-                                    </Popover>
-                                </div>
-                            )}
-                        >
-                            <EventStreetcodeCascader form={form} />
-                        </Form.Item>
-                    ) : null}
+                                                </p>
+                                            )}
+                                        >
+                                            <InfoCircleOutlined className="info-icon" />
+                                        </Popover>
+                                    </div>
+                                )}
+                            >
+                                <EventStreetcodeCascader form={form} />
+                            </Form.Item>
+                        ) : null}
 
-                    <Form.Item
-                        name="title"
-                        label="Назва події"
-                        className="maincard-item"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Будь ласка, введіть назву події!',
-                            },
-                        ]}
-                    >
-                        <Input showCount maxLength={100} />
-                    </Form.Item>
-
-                    <ConfigProvider locale={ukUA}>
                         <Form.Item
-                            name="date"
-                            label="Дата події"
+                            name="title"
+                            label="Назва"
+                            className="maincard-item"
                             rules={[
-                                { required: true, message: 'Будь ласка, виберіть дату!' },
+                                {
+                                    required: true,
+                                    message: 'Введіть назву',
+                                },
+                                {
+                                    validator: validateLength('Поле', 2, 100),
+                                },
                             ]}
                         >
-                            <DatePicker format="YYYY-MM-DD" />
+                            <Input showCount maxLength={100} />
                         </Form.Item>
-                    </ConfigProvider>
 
-                    <Form.Item name="description" label="Опис">
-                        <Input.TextArea showCount maxLength={500} style={{ height: 120 }} />
-                    </Form.Item>
+                        {currentEventType === 'Historical' ? (
+                            <Form.Item
+                                name="date"
+                                label="Дата"
+                                rules={[
+                                    { required: true, message: 'Виберіть дату' },
+                                ]}
+                            >
+                                <DatePicker format="DD/MM/YYYY" placeholder="РРРР-ММ-ДД" />
+                            </Form.Item>
+                        ) : (currentEventType === 'Custom') ? (
+                            <>
+                                <Form.Item
+                                    name="dateString"
+                                    label="Дата"
+                                >
+                                    <Input disabled={disableInput} showCount maxLength={100} />
+                                </Form.Item>
+                                <Form.Item
+                                    name="startEndDate"
+                                    rules={[
+                                        { required: true, message: 'Виберіть дату' },
+                                    ]}
+                                >
+                                    <RangePicker
+                                        format="DD/MM/YYYY"
+                                        onChange={handleDateRangeChange}
+                                        allowEmpty={[false, true]}
+                                    />
+                                </Form.Item>
+                            </>
+                        ) : null}
 
-                    <Form.Item name="streetcodes" label="Пов’язані History-коди">
-                        <SelectWithCustomSuffix
-                            mode="multiple"
-                            placeholder="Знайти history-код..."
-                            value={selectedStreetcodes}
-                            onSelect={handleAdd}
-                            onDeselect={handleDelete}
-                            filterOption={(input, option) => typeof option?.label === 'string'
+                        <Form.Item name="description" label="Опис">
+                            <Input.TextArea showCount maxLength={500} style={{ height: 120 }} />
+                        </Form.Item>
+
+                        <Form.Item name="streetcodes" label="Пов’язані History-коди">
+                            <SelectWithCustomSuffix
+                                mode="multiple"
+                                placeholder="Знайти history-код..."
+                                value={selectedStreetcodes}
+                                onSelect={handleAdd}
+                                onDeselect={handleDelete}
+                                filterOption={(input, option) => typeof option?.label === 'string'
                 && option.label.toLowerCase().includes(input.toLowerCase())}
-                            options={streetcodesOptions}
-                        />
-                    </Form.Item>
-
-                    {currentEventType === 'Custom' ? (
-                        <Form.Item name="location" label="Локація">
-                            <Input showCount />
+                                options={streetcodesOptions}
+                            />
                         </Form.Item>
-                    ) : null}
 
-                    {currentEventType === 'Custom' ? (
-                        <Form.Item name="organizer" label="Організатор">
-                            <Input showCount />
-                        </Form.Item>
-                    ) : null}
-                </div>
+                        {currentEventType === 'Custom' ? (
+                            <Form.Item name="location" label="Локація">
+                                <Input showCount maxLength={200} />
+                            </Form.Item>
+                        ) : null}
 
-                <Button
-                    htmlType="submit"
-                    className="submit-event-button"
-                    name="submit"
-                >
-                    {parseId ? 'Оновити подію' : 'Додати подію'}
-                </Button>
-            </Form>
+                        {currentEventType === 'Custom' ? (
+                            <Form.Item name="organizer" label="Організатор">
+                                <Input showCount maxLength={200} />
+                            </Form.Item>
+                        ) : null}
+                    </div>
+
+                    <Button
+                        htmlType="submit"
+                        className="submit-event-button"
+                        name="submit"
+                    >
+                        {parseId ? 'Оновити подію' : 'Додати подію'}
+                    </Button>
+                </Form>
+            </ConfigProvider>
         </>
     );
 };
