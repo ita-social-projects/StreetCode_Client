@@ -1,10 +1,9 @@
+import useMobx from '@stores/root-store';
 import { Dayjs } from 'dayjs';
 
 import { Calendar, CalendarProps, ConfigProvider, Tooltip } from 'antd/es';
 import uk_UA from 'antd/locale/uk_UA';
 
-// eslint-disable-next-line import/extensions
-import useMobx from '@/app/stores/root-store';
 import { CalendarEvent } from '@/models/calendar/calendarEvent.model';
 
 interface CalendarViewProps {
@@ -50,6 +49,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({
     const onPanelChange = (value: any, mode: CalendarProps<Dayjs>['mode']) => {
         setCurrentMonth(value);
     };
+
     return (
         <div className="calendar-container-wrapper">
             <ConfigProvider locale={uk_UA}>

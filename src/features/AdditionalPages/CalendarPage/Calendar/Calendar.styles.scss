@@ -4,10 +4,6 @@
 @use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
 @use "@sass/_utils.functions.scss" as f;
 
-.site-calendar-demo-card {
-  z-index: 1000 !important;
-}
-
 .ant-tooltip-inner {
   color: black !important;
 }
@@ -75,6 +71,9 @@
   background-color: c.$dark-red-color;
 }
 
+.ant-picker-calendar-mode-switch {
+  display: none;
+}
 .events {
   margin: 0;
   padding: 0;
@@ -109,4 +108,9 @@
   padding: 5px 10px;
   margin-bottom: 10px;
   border-radius: 5px;
+}
+
+.ant-picker-calendar.ant-picker-calendar-full .ant-picker-calendar-date {
+  height: 70px !important;
+  overflow: hidden;
 }

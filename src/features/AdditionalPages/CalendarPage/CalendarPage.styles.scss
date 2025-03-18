@@ -10,7 +10,7 @@ $bgImg: '@assets/images/main-page/background.webp';
 
 .calendarPage {
     @include mut.sized(70%);
-    margin: f.pxToRem(100px) auto;
+    margin: f.pxToRem(40px) auto;
 }
 
 .hiddenNavBar + .calendarPageWrapper {

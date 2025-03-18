@@ -2,14 +2,12 @@ import './Calendar.styles.scss';
 
 import { observer } from 'mobx-react-lite/dist';
 import React, { useRef, useState } from 'react';
+import useMobx from '@stores/root-store';
 import { useQuery } from '@tanstack/react-query';
 import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
 
 import { ConfigProvider, theme } from 'antd';
-
-// eslint-disable-next-line import/extensions
-import useMobx from '@/app/stores/root-store';
 
 import 'dayjs/locale/uk';
 
