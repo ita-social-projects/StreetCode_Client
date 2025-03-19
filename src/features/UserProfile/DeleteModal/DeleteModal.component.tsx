@@ -26,14 +26,14 @@ const DeleteModal = ({
         <div className="deleteText">
             <p className="boldText">Ви впевнені, що хочете видалити свій акаунт?</p>
             <div className="mainDeleteText">
-                <p>Видалення акаунта є незворотною дією та не може бути скасоване.</p>
+                <p>Видалення акаунта є незворотною дією та не може бути скасованим.</p>
                 <p>
-                        Це призведе до:
+                    Це призведе до:
                 </p>
                 <ul>
                     <li>
-                            Видалення всіх ваших персональних даних,
-                            включаючи інформацію профілю, збережений прогрес і вибраний контент.
+                        Видалення всіх ваших персональних даних,
+                        включаючи інформацію профілю, збережений прогрес і вибраний контент.
                     </li>
                     <li>Автоматичного виходу з системи.</li>
                     <li>Неможливості відновлення ваших даних у майбутньому.</li>
@@ -50,11 +50,12 @@ const DeleteModal = ({
         >
             <Form.Item label="Електронна адреса">
                 <Input
-                    type="email"
                     value={emailForDeletion}
                     onChange={handleOnChange}
                     placeholder="Введіть вашу електронну адресу"
                     className="formItemDelete"
+                    maxLength={50}
+                    showCount
                 />
             </Form.Item>
             <div className="confirmDeleteButton">

@@ -91,6 +91,12 @@ $navbar-hidden-innerwidth: 400px;
     $gap: 15px);
     @include mut.sizedImportant(auto, auto);
 
+    .ant-space-item{
+      svg{
+        @include mut.sized(36px, 36px)
+      }
+    }
+
     .participateButton {
       @include mut.sized(139.34px, 39px);
       @include mut.full-rounded(12px);

@@ -1,6 +1,7 @@
 import Expertise from '@models/user/expertises/expertise.model';
 
 export default interface User {
+    id: string;
     name:string;
     surname:string;
     email:string;
@@ -14,6 +15,7 @@ export default interface User {
 }
 
 export interface UpdateUser {
+    id: string;
     name: string;
     surname: string;
     userName: string;

@@ -17,8 +17,6 @@ const DeleteModalConfirm = ({ emailForDeletion, showDeleteConfirmedModal } : Pro
     const navigate = useNavigate();
 
     const handleDeleteConfirmation = () => {
-        userStore.deleteUser(emailForDeletion)
-            .catch(() => message.error('Виникла помилка при видаленні користувача'));
         navigate(FRONTEND_ROUTES.BASE);
     };
     return (
