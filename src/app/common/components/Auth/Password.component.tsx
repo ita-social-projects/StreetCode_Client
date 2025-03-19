@@ -46,6 +46,7 @@ const Password = ({ setIsPasswordValid, isPasswordValid } : Props) => {
                         value={password}
                         className="passwordInputField"
                         onChange={handleInputPasswordChange}
+                        maxLength={20}
                     />
                 </Form.Item>
                 <p
@@ -81,6 +82,7 @@ const Password = ({ setIsPasswordValid, isPasswordValid } : Props) => {
                     value={passwordRepeat}
                     className="passwordInputField"
                     onChange={handleInputPasswordRepeatChange}
+                    maxLength={20}
                 />
             </Form.Item>
         </>
