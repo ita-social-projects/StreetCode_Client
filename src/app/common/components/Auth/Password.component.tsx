@@ -26,7 +26,7 @@ const Password = ({ setIsPasswordValid, isPasswordValid } : Props) => {
     };
 
     return (
-        <>
+        <div className="passwordInputsWrapper">
             <div className="firstPasswordInputWrapper">
                 <Form.Item
                     wrapperCol={{ span: 24 }}
@@ -85,7 +85,7 @@ const Password = ({ setIsPasswordValid, isPasswordValid } : Props) => {
                     maxLength={20}
                 />
             </Form.Item>
-        </>
+        </div>
     );
 };
 

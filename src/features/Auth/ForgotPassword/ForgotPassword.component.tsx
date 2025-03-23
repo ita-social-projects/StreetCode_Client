@@ -36,7 +36,7 @@ const ForgotPassword: React.FC = () => {
 
             messageTimer = setTimeout(() => {
                 setShowMessage(false);
-            }, 5000);
+            }, 15000);
         }
 
         return () => {
@@ -115,7 +115,6 @@ const ForgotPassword: React.FC = () => {
                 >
                     <p>
                         Надіслати посилання
-                        { isButtonDisabled ? ` (${countdown})` : ''}
                     </p>
                 </Button>
                 {showMessage && (
