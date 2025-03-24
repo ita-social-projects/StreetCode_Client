@@ -8,7 +8,7 @@ import { Card } from 'antd';
 interface Props {
   selectedDate: Dayjs;
 }
-const DayViewCard: React.FC<Props> = ({ selectedDate }) => {
+const DayViewCard: React.FC<Props> = ({ selectedDate } : Props) => {
     const { calendarStore } = useMobx();
     const eventsForDay = calendarStore.getEventsByDate(
         selectedDate.format('MM-DD'),

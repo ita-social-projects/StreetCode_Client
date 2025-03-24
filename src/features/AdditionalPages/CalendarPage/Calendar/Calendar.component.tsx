@@ -1,29 +1,27 @@
 import './Calendar.styles.scss';
 
 import { observer } from 'mobx-react-lite/dist';
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import useMobx from '@stores/root-store';
 import { useQuery } from '@tanstack/react-query';
 import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
 
-import { ConfigProvider, theme } from 'antd';
+import { ConfigProvider } from 'antd';
 
 import 'dayjs/locale/uk';
 
-import CalendarHeader from './CalendarHeader/CalendarHeader.component';
-import CalendarView from './CalendarView/CalendarView.component';
-import DayView from './DayView/DayView.component';
+import { useCalendarContext } from './CalendarContext/CalendarContext.component';
+import CalendarView from './CalendarViews/CalendarView/CalendarView.component';
+import DayView from './CalendarViews/DayView/DayView.component';
+import ListCalendarView from './CalendarViews/ListCalendarView/ListCalendarView.component';
 
 dayjs.locale('uk');
 
 const CalendarComponent: React.FC = observer(() => {
-    const { token } = theme.useToken();
     const { calendarStore } = useMobx();
-    const topRef = useRef<HTMLDivElement>(null);
-
     const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
-    const [viewMode, setViewMode] = useState<'calendar' | 'dayView'>('calendar');
+    const { viewMode, setViewMode } = useCalendarContext();
     const [currentMonth, setCurrentMonth] = useState(dayjs());
 
     const { isLoading } = useQuery({
@@ -33,17 +31,11 @@ const CalendarComponent: React.FC = observer(() => {
         },
     });
 
-    const executeScroll = () => {
-        topRef.current?.scrollIntoView({ behavior: 'smooth' });
-    };
-
     const onDateClick = (date: Dayjs) => {
         if (!selectedDate || !date.isSame(selectedDate, 'date')) {
             setSelectedDate(date);
             setViewMode('dayView');
         }
-
-        executeScroll();
     };
 
     const handleBackToCalendar = () => {
@@ -52,12 +44,11 @@ const CalendarComponent: React.FC = observer(() => {
 
         setSelectedDate(null);
         setViewMode('calendar');
-
-        executeScroll();
     };
 
     const renderView = () => {
-        if (viewMode === 'calendar') {
+        switch (viewMode) {
+        case 'calendar':
             return (
                 <CalendarView
                     currentMonth={currentMonth}
@@ -65,22 +56,27 @@ const CalendarComponent: React.FC = observer(() => {
                     onDateClick={onDateClick}
                 />
             );
-        }
-
-        if (viewMode === 'dayView' && selectedDate) {
-            return (
+        case 'dayView':
+            return selectedDate ? (
                 <DayView
                     selectedDate={selectedDate}
                     handleBackToCalendar={handleBackToCalendar}
                     onDateClick={onDateClick}
                 />
+            ) : null;
+        case 'listView':
+            return (
+                <ListCalendarView
+                    initialSelectedDate={selectedDate}
+                />
             );
+        default:
+            return null;
         }
-
-        return null;
     };
 
     return (
+
         <ConfigProvider
             theme={{
                 token: {
@@ -90,8 +86,10 @@ const CalendarComponent: React.FC = observer(() => {
             }}
         >
             <div className="site-calendar-demo-card">
-                <div ref={topRef} className="calendar-header">
-                    <CalendarHeader />
+                <div className="calendar-header">
+                    <p>HistoryCode </p>
+                    <div className="small-square" />
+                    <p>КАЛЕНДАР</p>
                 </div>
                 <div className="calendar-container">{renderView()}</div>
             </div>

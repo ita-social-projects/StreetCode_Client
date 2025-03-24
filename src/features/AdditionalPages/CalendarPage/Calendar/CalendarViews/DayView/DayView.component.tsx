@@ -3,19 +3,19 @@ import { Dayjs } from 'dayjs';
 import { Calendar, ConfigProvider } from 'antd/es';
 import uk_UA from 'antd/locale/uk_UA';
 
-import DayViewCard from '../DayViewCard/DayViewCard.component';
+import DayViewCard from './DayViewCard/DayViewCard.component';
 
-interface DayViewProps {
+interface Props {
   selectedDate: Dayjs;
   handleBackToCalendar: () => void;
   onDateClick: (date: Dayjs) => void;
 }
 
-const DayView: React.FC<DayViewProps> = ({
+const DayView: React.FC<Props> = ({
     selectedDate,
     handleBackToCalendar,
     onDateClick,
-}) => (
+} : Props) => (
     <div className="day-view-container-wrapper">
         <div className="day-view-container">
             <DayViewCard selectedDate={selectedDate} />

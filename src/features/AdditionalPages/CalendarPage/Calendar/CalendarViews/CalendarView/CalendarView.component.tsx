@@ -1,3 +1,5 @@
+import CustomCalendarHeader
+    from '@features/AdditionalPages/CalendarPage/Calendar/CustomCalendarHeader/CustomCalendarHeader.component';
 import useMobx from '@stores/root-store';
 import { Dayjs } from 'dayjs';
 
@@ -6,17 +8,17 @@ import uk_UA from 'antd/locale/uk_UA';
 
 import { CalendarEvent } from '@/models/calendar/calendarEvent.model';
 
-interface CalendarViewProps {
+interface Props {
   currentMonth: Dayjs;
   setCurrentMonth: (month: Dayjs) => void;
   onDateClick: (date: Dayjs) => void;
 }
 
-const CalendarView: React.FC<CalendarViewProps> = ({
+const CalendarView: React.FC<Props> = ({
     currentMonth,
     setCurrentMonth,
     onDateClick,
-}) => {
+} : Props) => {
     const { calendarStore } = useMobx();
 
     const dateCellRender = (value: Dayjs) => {
@@ -50,11 +52,14 @@ const CalendarView: React.FC<CalendarViewProps> = ({
         setCurrentMonth(value);
     };
 
+    const renderCustomHeader = (props: any) => <CustomCalendarHeader {...props} />;
+
     return (
         <div className="calendar-container-wrapper">
             <ConfigProvider locale={uk_UA}>
                 <Calendar
                     className="calendar-full"
+                    headerRender={renderCustomHeader}
                     onSelect={(date) => {
                         if (date.isSame(currentMonth, 'month')) {
                             onDateClick(date);

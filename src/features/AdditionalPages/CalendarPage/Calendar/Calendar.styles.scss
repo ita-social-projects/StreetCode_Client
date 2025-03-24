@@ -98,19 +98,19 @@
 
 .day-view-container {
   display: flex;
-  gap: 30px;
+  gap: f.pxToRem(30px);
   overflow: hidden;
 }
 
 .back-button {
   background-color: c.$accented-red-color;
   color: white;
-  padding: 5px 10px;
-  margin-bottom: 10px;
-  border-radius: 5px;
+  padding: f.pxToRem(5px) f.pxToRem(10px);
+  margin-bottom: f.pxToRem(10px);
+  border-radius: f.pxToRem(5px);
 }
 
 .ant-picker-calendar.ant-picker-calendar-full .ant-picker-calendar-date {
-  height: 70px !important;
+  height: f.pxToRem(70px) !important;
   overflow: hidden;
 }
