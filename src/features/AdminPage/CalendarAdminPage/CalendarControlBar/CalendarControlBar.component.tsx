@@ -10,7 +10,7 @@ import { EventType } from '@/models/calendar/calendarEvent.model';
 interface Props {
   handleChange: (value: EventType) => void;
 }
-const CalendarControlBar: React.FC<Props> = ({ handleChange }) => (
+const CalendarControlBar: React.FC<Props> = ({ handleChange } : Props) => (
     <div className="calendarControlBar">
         <div className="calendarControlBarElement Input">
             <Input

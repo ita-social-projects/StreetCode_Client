@@ -4,8 +4,8 @@ import './NewEventBlock.styles.scss';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom/dist';
 import { InfoCircleOutlined } from '@ant-design/icons/lib';
-// eslint-disable-next-line max-len
-import EventStreetcodeCascader from '@features/AdminPage/CalendarAdminPage/EventStreetcodeCascader/EventStreetcodeCascader.component';
+import EventStreetcodeCascader
+    from '@features/AdminPage/CalendarAdminPage/EventStreetcodeCascader/EventStreetcodeCascader.component';
 import useMobx from '@stores/root-store';
 import dayjs from 'dayjs';
 
