@@ -85,8 +85,10 @@
   padding: 0;
   list-style: none;
   height: 100% !important;
-  overflow-y: overlay;
-  
+  min-height: f.pxToRem(20px);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 
   .badge {
     display: flex;
@@ -126,6 +128,7 @@
 }
 
 .ant-picker-calendar-date-content {
+  min-height: f.pxToRem(44px) !important;
   max-height: 100%;
   overflow: hidden;
 }
