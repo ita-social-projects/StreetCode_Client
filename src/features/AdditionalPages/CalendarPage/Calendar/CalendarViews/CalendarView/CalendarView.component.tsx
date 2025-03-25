@@ -22,9 +22,7 @@ const CalendarView: React.FC<Props> = ({
     const { calendarStore } = useMobx();
 
     const dateCellRender = (value: Dayjs) => {
-        const events: CalendarEvent[] = calendarStore.getEventsByDate(
-            value.format('MM-DD'),
-        );
+        const events: CalendarEvent[] = calendarStore.getEventsByDate(value);
 
         return (
             <ul className="events">
@@ -48,7 +46,7 @@ const CalendarView: React.FC<Props> = ({
         return info.originNode;
     };
 
-    const onPanelChange = (value: any, mode: CalendarProps<Dayjs>['mode']) => {
+    const onPanelChange = (value: any) => {
         setCurrentMonth(value);
     };
 

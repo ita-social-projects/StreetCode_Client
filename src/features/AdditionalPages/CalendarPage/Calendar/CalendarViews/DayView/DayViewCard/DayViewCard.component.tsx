@@ -10,9 +10,7 @@ interface Props {
 }
 const DayViewCard: React.FC<Props> = ({ selectedDate } : Props) => {
     const { calendarStore } = useMobx();
-    const eventsForDay = calendarStore.getEventsByDate(
-        selectedDate.format('MM-DD'),
-    );
+    const eventsForDay = calendarStore.getEventsByDate(selectedDate);
 
     return (
         <div>

@@ -25,6 +25,7 @@ import ukUA from 'antd/es/locale/uk_UA';
 
 import SelectWithCustomSuffix from '@/app/common/components/SelectWithCustomSuffix';
 import validateLength from '@/app/common/utils/userValidators/validateLength';
+import CalendarStore from '@/app/stores/calendar-store/calendar-store';
 import {
     CreateCalendarEvent,
     EventType,
@@ -150,10 +151,10 @@ const NewEventBlock: React.FC = () => {
                     ...newEvent,
                     id: parseId,
                 };
-                await calendarStore.updateEvent(updatedEvent);
+                await CalendarStore.updateEvent(updatedEvent);
                 message.success('Подію успішно оновлено');
             } else {
-                await calendarStore.addEvent(newEvent);
+                await CalendarStore.addEvent(newEvent);
                 message.success('Подію успішно додано');
 
                 form.resetFields();

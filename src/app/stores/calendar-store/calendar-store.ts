@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx';
 import eventsApi from '@api/events/events.api';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 
 import {
     CalendarEvent,
@@ -63,7 +63,7 @@ export default class CalendarStore {
         }
     };
 
-    getEventById = async (eventId: number) => {
+    static getEventById = async (eventId: number) => {
         try {
             const response = await eventsApi.getById(eventId.toString());
             return response;
@@ -72,7 +72,7 @@ export default class CalendarStore {
         }
     };
 
-    addEvent = async (event: CreateCalendarEvent) => {
+    static addEvent = async (event: CreateCalendarEvent) => {
         try {
             await eventsApi.create(event);
         } catch (error) {
@@ -80,7 +80,7 @@ export default class CalendarStore {
         }
     };
 
-    updateEvent = async (event: CalendarEvent) => {
+    static updateEvent = async (event: CalendarEvent) => {
         try {
             await eventsApi.update(event);
         } catch (error) {
@@ -97,11 +97,14 @@ export default class CalendarStore {
         }
     };
 
-    getEventsByDate(date: string): CalendarEvent[] {
+    getEventsByDate(date: Dayjs): CalendarEvent[] {
         return this.events
             .filter((event) => {
-                const eventDate = dayjs(event.date).format('MM-DD');
-                return eventDate === date;
+                const eventDate = dayjs(event.date);
+                if (event.eventType === 'Historical' as EventType) {
+                    return eventDate.format('MM-DD') === date.format('MM-DD');
+                }
+                return eventDate.isSame(date, 'day');
             })
             .sort((a, b) => dayjs(b.date).unix() - dayjs(a.date).unix());
     }
