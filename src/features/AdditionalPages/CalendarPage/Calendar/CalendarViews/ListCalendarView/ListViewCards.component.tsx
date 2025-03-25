@@ -56,17 +56,6 @@ const ListViewCards: React.FC<Props> = ({ selectedDate }) => {
         return { groupedEvents: grouped, groupOrder: order };
     }, [eventsList, selectedDate]);
 
-    eventsList.forEach((event) => {
-        const eventDate = dayjs(event.date);
-        const monthDayKey = eventDate.format('DD MMMM');
-
-        if (!groupedEvents[monthDayKey]) {
-            groupedEvents[monthDayKey] = [];
-        }
-
-        groupedEvents[monthDayKey].push(event);
-    });
-
     return (
         <div>
             <Card className="dayViewCard" title="Список подій">
