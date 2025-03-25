@@ -71,20 +71,28 @@
   background-color: c.$dark-red-color;
 }
 
-.ant-picker-calendar-mode-switch {
-  display: none;
+.events::-webkit-scrollbar {
+  width: 5px;
 }
+
+.events::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+}
+
 .events {
   margin: 0;
   padding: 0;
   list-style: none;
+  height: 100% !important;
+  overflow-y: overlay;
+  
 
   .badge {
     display: flex;
     align-items: center;
     width: 100%;
     height: fit-content;
-    margin-bottom: f.pxToRem(6px);
     padding-left: f.pxToRem(5px);
     border-radius: f.pxToRem(5px);
 
@@ -112,5 +120,12 @@
 
 .ant-picker-calendar.ant-picker-calendar-full .ant-picker-calendar-date {
   height: f.pxToRem(70px) !important;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.ant-picker-calendar-date-content {
+  max-height: 100%;
   overflow: hidden;
 }
