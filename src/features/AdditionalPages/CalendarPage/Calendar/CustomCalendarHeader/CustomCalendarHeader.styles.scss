@@ -1,0 +1,29 @@
+@use "@sass/_utils.functions.scss" as f;
+
+.calendar-custom-header {
+    display: flex;
+    gap: f.pxToRem(10px);
+    align-items: center;
+    justify-content: flex-end;
+    
+
+    .ant-select-selector {
+        border-radius: f.pxToRem(6px) !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: f.pxToRem(32px) !important;
+        width: f.pxToRem(72px) !important;
+    }
+    
+    .ant-radio-group {
+        display: flex;
+    }
+    .ant-radio-button-wrapper {
+        display: flex;
+        align-items: center !important;
+        justify-content: center !important;
+        width: f.pxToRem(90px) !important;
+        padding: 0 !important;
+    }
+}

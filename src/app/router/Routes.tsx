@@ -13,6 +13,7 @@ import StreetcodeContent from '@streetcode/Streetcode.component';
 
 import ProtectedComponent from '@/app/common/components/ProtectedComponent.component';
 import AboutUsPage from '@/features/AboutUsPage/AboutUsPage.component';
+import CalendarPage from '@/features/AdditionalPages/CalendarPage/CalendarPage.component';
 import ContactUs from '@/features/AdditionalPages/ContactUsPage/ContanctUs.component';
 import NewsPage from '@/features/AdditionalPages/NewsPage/News.component';
 import NotFound from '@/features/AdditionalPages/NotFoundPage/NotFound.component';
@@ -21,6 +22,8 @@ import PrivatePolicy from '@/features/AdditionalPages/PrivatePolicyPage/PrivateP
 import SupportUs from '@/features/AdditionalPages/SupportUsPage/SupportUs.component';
 import AdminPage from '@/features/AdminPage/AdminPage.component';
 import Analytics from '@/features/AdminPage/Analytics/Analytics.component';
+import CalendarAdminPage from '@/features/AdminPage/CalendarAdminPage/CalendarAdminPage.component';
+import NewEventPage from '@/features/AdminPage/CalendarAdminPage/NewEventPage/NewEventPage.component';
 import EditorPage from '@/features/AdminPage/EditorPage/EditorPage.component';
 import JobPage from '@/features/AdminPage/JobsPage/JobsPage.component';
 import News from '@/features/AdminPage/NewsPage/News.component';
@@ -45,6 +48,10 @@ const router = createBrowserRouter(createRoutesFromElements(
             element={<ProtectedComponent allowedRoles={[UserRole.Admin]}><NewStreetcode /></ProtectedComponent>}
         />
         <Route
+            path={FRONTEND_ROUTES.OTHER_PAGES.CALENDAR}
+            element={<CalendarPage />}
+        />
+        <Route
             path={FRONTEND_ROUTES.ADMIN.NEW_STREETCODE}
             element={<ProtectedComponent allowedRoles={[UserRole.Admin]}><NewStreetcode /></ProtectedComponent>}
         />
@@ -59,6 +66,18 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route
             path={FRONTEND_ROUTES.ADMIN.CONTEXT}
             element={<ProtectedComponent allowedRoles={[UserRole.Admin]}><ContextMainPage /></ProtectedComponent>}
+        />
+        <Route
+            path={FRONTEND_ROUTES.ADMIN.CALENDAR}
+            element={<ProtectedComponent allowedRoles={[UserRole.Admin]}><CalendarAdminPage /></ProtectedComponent>}
+        />
+        <Route
+            path={FRONTEND_ROUTES.ADMIN.NEW_EVENT}
+            element={<ProtectedComponent allowedRoles={[UserRole.Admin]}><NewEventPage /></ProtectedComponent>}
+        />
+        <Route
+            path={`${FRONTEND_ROUTES.ADMIN.EDIT_EVENT}/:id`}
+            element={<ProtectedComponent allowedRoles={[UserRole.Admin]}><NewEventPage /></ProtectedComponent>}
         />
         <Route
             path={`${FRONTEND_ROUTES.ADMIN.ANALYTICS}/:id`}

@@ -1,0 +1,56 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/variables/_variables.fonts.scss" as ft;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/_utils.functions.scss" as f;
+
+.new-event-page {
+  @include mut.admin-page-base-layout();
+
+  .adminContainer {
+    @include mut.sized(80%);
+    margin: auto;
+
+    &-block {
+      margin-bottom: f.pxToRem(20px);
+      display: flex;
+      flex-direction: column;
+    }
+
+    h2:not(.quillEditor h2):not(.textPreview h2) {
+      margin-bottom: f.pxToRem(15px);
+      font-size: 1.5em;
+      font-weight: 500;
+    }
+
+    h3:not(.quillEditor h3):not(.textPreview h3) {
+      font-weight: 300;
+      margin-bottom: f.pxToRem(7px);
+    }
+
+    h4:not(.quillEditor h4):not(.textPreview h4) {
+      font-weight: 300;
+      color: c.$accented-red-color;
+    }
+
+    .buttonWithPlus {
+      @include mut.sized($width: 150px, $height: 50px);
+      border: 1.5px solid c.$dark-red-color;
+      @include mut.full-rounded($rad: 7.86px);
+      color: c.$dark-red-color;
+      font-size: 1.7em;
+
+      &:hover {
+        cursor: pointer;
+        background-color: c.$dark-red-color;
+        color: white !important;
+        transition: all 0.3s ease-out;
+      }
+    }
+  }
+
+  .submit-button {
+    min-height: f.pxToRem(100px);
+    min-width: 100%;
+    margin-bottom: f.pxToRem(20px);
+  }
+}
