@@ -61,7 +61,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
     };
 
     const validateTag = uniquenessValidator(
-        () => (tagsStore.getTagArray.map((tag) => tag.title)),
+        () => (tagsStore.getAllTagsArray.map((tag) => tag.title)),
         () => (initialData?.title),
         'Тег з такою назвою вже існує',
     );
@@ -74,7 +74,9 @@ const SourceModal: React.FC<SourceModalProps> = ({
             title: (formData.title as string).trim(),
         };
 
-        if (currentTag.title === initialData?.title) return;
+        if (currentTag.title === initialData?.title) {
+            return;
+        }
 
         if (currentTag.id) {
             await tagsStore.updateTag(currentTag as Tag);
@@ -136,7 +138,8 @@ const SourceModal: React.FC<SourceModalProps> = ({
                 <Form.Item
                     name="title"
                     label="Назва: "
-                    rules={[{ required: true, message: 'Введіть назву' },
+                    rules={[
+                        { required: true, message: 'Введіть назву' },
                         { validator: validateTag },
                     ]}
                     getValueProps={(value: string) => ({ value: normaliseWhitespaces(value) })}
