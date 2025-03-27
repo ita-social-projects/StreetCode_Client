@@ -30,8 +30,11 @@ const RegistrationPage: React.FC = () => {
             await AuthService.registerAsync(request)
                 .then(() => {
                     navigate(FRONTEND_ROUTES.AUTH.LOGIN);
-                    message.success('Посилання для скидання пароля надіслано на вашу електронну адресу.'
-                        + ' Посилання дійсне протягом 15 хвилин.');
+                    message.success(
+                        `Лист надіслано на ${request.email}. 
+                        Перевірте пошту та перейдіть за посиланням, щоб підтвердити електронну адресу.
+                        Посилання дійсне протягом 15 хвилин.`,
+                    );
                 })
                 .catch((ex) => {
                     Object.keys(ex.response.data.errors).forEach((key) => {
