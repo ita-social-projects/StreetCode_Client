@@ -212,6 +212,8 @@ export const API_ROUTES = {
         LOGIN_GOOGLE: 'auth/googleLogin',
         REFRESH_TOKEN: 'auth/refreshToken',
         REGISTER: 'auth/register',
+        CONFIRM_EMAIL: 'auth/confirmEmail',
+        VALIDATE_TOKEN: 'auth/validateToken',
     },
     EMAIL: {
         SEND: 'email/send',
