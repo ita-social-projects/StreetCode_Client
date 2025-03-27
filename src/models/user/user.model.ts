@@ -61,6 +61,18 @@ export interface RefreshTokenResponce {
     accessToken:string;
 }
 
+export interface ConfirmEmail {
+    userName: string;
+    token: string;
+}
+
+export interface ValidateToken {
+    token: string;
+    purpose: string;
+    userName: string;
+    tokenProvider: string;
+}
+
 export enum UserRole {
     Admin,
     User,

@@ -8,7 +8,7 @@ import React, { useRef, useState } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import AuthService from '@app/common/services/auth-service/AuthService';
-import { ERROR_MESSAGES, INVALID_LOGIN_ATTEMPT } from '@constants/error-messages.constants';
+import { ERROR_MESSAGES } from '@constants/error-messages.constants';
 import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
 import validateEmail from '@utils/userValidators/validateEmail';
 
@@ -45,24 +45,20 @@ const Login: React.FC = () => {
 
     const handleLogin = async ({ login, password }: any) => {
         if (isVerified) {
-            try {
-                const token = recaptchaRef?.current?.getValue();
-                await AuthService.loginAsync(login, password, token)
-                    .then(() => {
-                        message.success('Ви успішно увійшли в систему.');
-                        navigate(location.state.previousUrl || FRONTEND_ROUTES.BASE);
-                    })
-                    .catch((ex) => {
-                        if (ex.response?.data) {
-                            Object.keys(ex.response.data.message).forEach((key) => {
-                                message.error(`${ex.response.data[key].message}`);
-                            });
-                        }
-                    });
-                recaptchaRef.current?.reset();
-            } catch (error) {
-                message.error(INVALID_LOGIN_ATTEMPT);
-            }
+            const token = recaptchaRef?.current?.getValue();
+            await AuthService.loginAsync(login, password, token)
+                .then(() => {
+                    message.success('Ви успішно увійшли в систему.');
+                    navigate(location.state.previousUrl || FRONTEND_ROUTES.BASE);
+                })
+                .catch((ex) => {
+                    if (ex.response?.data) {
+                        Object.keys(ex.response.data[0]).forEach((key, index) => {
+                            message.error(`${ex.response.data[index].message}`);
+                        });
+                    }
+                });
+            recaptchaRef.current?.reset();
         } else {
             message.error(RECAPTCHA_CHECK);
         }

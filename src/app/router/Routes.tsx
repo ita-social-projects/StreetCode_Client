@@ -1,6 +1,7 @@
 import { createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom';
 import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
 import ContextMainPage from '@features/AdminPage/ContextPage/ContextMainPage.component';
+import ConfirmEmail from '@features/Auth/ConfirmEmail/ConfirmEmail.component';
 import ForgotPassword from '@features/Auth/ForgotPassword/ForgotPassword.component';
 import ForgotPasswordResetComponent from '@features/Auth/ForgotPassword/ForgotPasswordReset.component';
 import Login from '@features/Auth/Login/Login.component';
@@ -121,6 +122,7 @@ const router = createBrowserRouter(createRoutesFromElements(
         />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/forgot-password-reset" element={<ForgotPasswordResetComponent />} />
+        <Route path="/confirm-email" element={<ConfirmEmail />} />
     </Route>,
 ));
 

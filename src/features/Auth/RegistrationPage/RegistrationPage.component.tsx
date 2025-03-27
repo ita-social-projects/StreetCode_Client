@@ -13,7 +13,6 @@ import validateLength from '@utils/userValidators/validateLength';
 import validatePatternNameSurname from '@utils/userValidators/validatePatternNameSurname';
 import validateRequired from '@utils/userValidators/validateRequired';
 
-
 import { Button, Form, Input, message } from 'antd';
 
 const RegistrationPage: React.FC = () => {
@@ -29,7 +28,14 @@ const RegistrationPage: React.FC = () => {
     const handleRegister = async (request: UserRegisterRequest) => {
         try {
             await AuthService.registerAsync(request)
-                .then(() => navigate(FRONTEND_ROUTES.AUTH.LOGIN))
+                .then(() => {
+                    navigate(FRONTEND_ROUTES.AUTH.LOGIN);
+                    message.success(
+                        `Лист надіслано на ${request.email}. 
+                        Перевірте пошту та перейдіть за посиланням, щоб підтвердити електронну адресу.
+                        Посилання дійсне протягом 15 хвилин.`,
+                    );
+                })
                 .catch((ex) => {
                     Object.keys(ex.response.data.errors).forEach((key) => {
                         message.error(`${ex.response.data.errors[key]}`);
