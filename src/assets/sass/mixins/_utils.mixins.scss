@@ -201,11 +201,10 @@
   height: 100%;
 }
 @mixin admin-page-base-layout(){
-  margin-top: f.pxToRem(100px);
   display: flex;
   float: left;
   width: 100%;
-  padding: 0 f.pxToRem(32px);
+  padding: 0 f.pxToRem(32px) 0 0;
   gap: f.pxToRem(10px);
 }
 // --------------------------Text----------------------------------
