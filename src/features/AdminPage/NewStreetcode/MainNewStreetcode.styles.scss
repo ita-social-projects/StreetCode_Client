@@ -97,7 +97,7 @@ $articlesImg: "@assets/images/sources/Articles.webp";
         .ant-input-focused,
         .ant-select-focused,
         .ant-picker-focused,
-        .my-picker :hover{
+        .ant-picker:hover{
             border-color: c.$accented-red-color;
             box-shadow: none !important;
         }
@@ -123,6 +123,10 @@ $articlesImg: "@assets/images/sources/Articles.webp";
                 border-color: c.$accented-red-color;
                 box-shadow: none;
             }
+        }
+
+        .ant-upload-list-item-file path:nth-of-type(2) {
+            fill: c.$dark-red-color;
         }
 
         .ant-form-item-label >label{
@@ -163,9 +167,15 @@ $articlesImg: "@assets/images/sources/Articles.webp";
         }
 
         .submit-button{
-            min-height: f.pxToRem(100px);
-            min-width: 100%;
+            min-height: f.pxToRem(50px);
+            min-width: 49%;
             margin-bottom: f.pxToRem(20px);
+        }
+
+        .submit-button-row {
+            display: flex;
+            justify-content: space-between;
+            gap: f.pxToRem(10px);
         }
 
         .ant-checkbox-inner {

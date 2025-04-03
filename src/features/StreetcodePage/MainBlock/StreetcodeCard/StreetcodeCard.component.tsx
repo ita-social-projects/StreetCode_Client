@@ -2,6 +2,7 @@ import './StreetcodeCard.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
+import { FaBookmark, FaRegBookmark } from 'react-icons/fa6';
 import { useNavigate } from 'react-router-dom';
 import { PlayCircleFilled } from '@ant-design/icons';
 import TagList from '@components/TagList/TagList.component';
@@ -9,12 +10,12 @@ import BlockSlider from '@features/SlickSlider/SlickSlider.component';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import { StreetcodeTag } from '@models/additional-content/tag.model';
 import Streetcode from '@models/streetcode/streetcode-types.model';
-import { useAudioContext, useModalContext, useStreecodePageLoaderContext } from '@stores/root-store';
+import { useAudioContext, useModalContext, useStreetcodeDataContext, useStreetcodePageLoaderContext }
+    from '@stores/root-store';
 
-import { Button } from 'antd';
+import { Button, Popover } from 'antd';
 
 import ImagesApi from '@/app/api/media/images.api';
-import TransactionLinksApi from '@/app/api/transactions/transactLinks.api';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import { audioClickEvent } from '@/app/common/utils/googleAnalytics.unility';
 import Image, { ImageAssigment } from '@/models/media/image.model';
@@ -30,13 +31,13 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setShowAllTags }: Props) =
     const id = streetcode?.id;
     const { modalStore: { setModal, modalsState } } = useModalContext();
     const audioState = modalsState.audio;
-    const streecodePageLoaderContext = useStreecodePageLoaderContext();
+    const streecodePageLoaderContext = useStreetcodePageLoaderContext();
     const { fetchAudioByStreetcodeId, audio } = useAudioContext();
-    const [arlink, setArlink] = useState('');
     const [audioIsLoaded, setAudioIsLoaded] = useState<boolean>(false);
-    const [images, setImages] = useState<Image[]>([]);
     const [imagesForSlider, setImagesForSlider] = useState<Image[]>([]);
     const navigate = useNavigate();
+    const { streetcodeStore } = useStreetcodeDataContext();
+    const { isFavourite, deleteFromFavourites, addToFavourites } = streetcodeStore;
 
     useAsync(() => {
         if (id && id > 0) {
@@ -50,7 +51,6 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setShowAllTags }: Props) =
         if (id && id > 0) {
             ImagesApi.getByStreetcodeId(id ?? 1)
                 .then((imgs) => {
-                    setImages(imgs);
                     setImagesForSlider(imgs.filter(
                         (image) => image.imageDetails?.alt === ImageAssigment.blackandwhite.toString()
                         || image.imageDetails?.alt === ImageAssigment.animation.toString(),
@@ -58,7 +58,6 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setShowAllTags }: Props) =
                     streecodePageLoaderContext.addBlockFetched(StreetcodeBlock.StreetcodeImage);
                 })
                 .catch((e) => { });
-            TransactionLinksApi.getByStreetcodeId(id).then((x) => setArlink(x.url));
         }
     }, [streetcode]);
 
@@ -77,59 +76,82 @@ const StreetcodeCard = ({ streetcode, setActiveTagId, setShowAllTags }: Props) =
         <div className="card">
             <div className="leftSider">
                 <div className="leftSiderContent">
-                    <BlockSlider
-                        arrows={false}
-                        slidesToShow={1}
-                        swipeOnClick
-                        infinite
-                    >
-                        {imagesForSlider.map((image, index) => {
-                            if (imagesForSlider.length > 1 && index === 0) {
-                                return (
-                                    <div>
-                                        <img
-                                            key={imagesForSlider[0].id}
-                                            src={
-                                                base64ToUrl(
-                                                    imagesForSlider[0].base64,
-                                                    imagesForSlider[0].mimeType,
-                                                )
-                                            }
-                                            className="streetcodeImgColored"
-                                            style={{ objectFit: 'contain' }}
-                                            alt={imagesForSlider[0].imageDetails?.alt}
-                                        />
-                                        <img
-                                            key={imagesForSlider[1].id}
-                                            src={base64ToUrl(
-                                                imagesForSlider[1].base64,
-                                                imagesForSlider[1].mimeType,
-                                            )}
-                                            className="streetcodeImgGrey"
-                                            style={{ objectFit: 'contain' }}
-                                            alt={imagesForSlider[1].imageDetails?.alt}
-                                        />
-                                    </div>
-                                );
-                            }
+                    {streecodePageLoaderContext.isPageLoaded ? (
+                        <BlockSlider
+                            arrows={false}
+                            slidesToShow={1}
+                            swipeOnClick
+                            infinite
+                        >
+                            {imagesForSlider.map((image, index) => {
+                                if (imagesForSlider.length > 1 && index === 0) {
+                                    return (
+                                        <div key={image.id}>
+                                            <img
+                                                key={imagesForSlider[0].id}
+                                                src={
+                                                    base64ToUrl(
+                                                        imagesForSlider[0].base64,
+                                                        imagesForSlider[0].mimeType,
+                                                    )
+                                                }
+                                                className="streetcodeImgColored"
+                                                style={{ objectFit: 'contain' }}
+                                                alt={imagesForSlider[0].imageDetails?.alt}
+                                            />
+                                            <img
+                                                key={imagesForSlider[1].id}
+                                                src={base64ToUrl(
+                                                    imagesForSlider[1].base64,
+                                                    imagesForSlider[1].mimeType,
+                                                )}
+                                                className="streetcodeImgGrey"
+                                                style={{ objectFit: 'contain' }}
+                                                alt={imagesForSlider[1].imageDetails?.alt}
+                                            />
+                                        </div>
+                                    );
+                                }
 
-                            return (
-                                <img
-                                    key={imagesForSlider[index].id}
-                                    src={base64ToUrl(
-                                        imagesForSlider[index].base64,
-                                        imagesForSlider[index].mimeType,
-                                    )}
-                                    className="streetcodeImg"
-                                    style={{ objectFit: 'contain' }}
-                                    alt={imagesForSlider[index].imageDetails?.alt}
-                                />
-                            );
-                        })}
-                    </BlockSlider>
+                                return (
+                                    <img
+                                        key={imagesForSlider[index].id}
+                                        src={base64ToUrl(
+                                            imagesForSlider[index].base64,
+                                            imagesForSlider[index].mimeType,
+                                        )}
+                                        className="streetcodeImg"
+                                        style={{ objectFit: 'contain' }}
+                                        alt={imagesForSlider[index].imageDetails?.alt}
+                                    />
+                                );
+                            })}
+                        </BlockSlider>
+                    ) : <></>}
                 </div>
             </div>
             <div className="rightSider">
+                {
+                    isFavourite !== undefined ? (
+                        isFavourite
+                            ? (
+                                <Popover
+                                    content="Видалити з улюблених"
+                                    trigger="hover"
+                                >
+                                    <FaBookmark className="bookmark" onClick={deleteFromFavourites} />
+                                </Popover>
+                            )
+                            : (
+                                <Popover
+                                    content="Додати до улюблених"
+                                    trigger="hover"
+                                >
+                                    <FaRegBookmark className="bookmark" onClick={addToFavourites} />
+                                </Popover>
+                            )
+                    ) : null
+                }
                 <div className="streetcodeIndex">
                             History-код #
                     {streetcode?.index ?? 0 <= 9999 ? `000${streetcode?.index}`.slice(-4)

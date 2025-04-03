@@ -217,106 +217,111 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
     return (
         <div>
             <div className="photo-uploader-container scrollable-container">
-                <FormItem
-                    name="animations"
-                    label="Кольорове"
-                    rules={[
-                        { validator: combinedImageValidator(false) },
-                    ]}
-                >
-                    <FileUploader
-                        accept=".jpeg,.png,.jpg,.webp"
-                        listType="picture-card"
-                        multiple={false}
-                        maxCount={1}
-                        fileList={animation}
-                        beforeUpload={async (file) => !(await checkFile(file, false))}
-                        onPreview={handlePreview}
-                        uploadTo="image"
-                        imageType={ImageAssigment.animation}
-                        onSuccessUpload={(file: Image | Audio) => {
-                            handleFileUpload(file.id, 'animationId', 'imagesUpdate');
-                            setAnimation([convertFileToUploadFile(file as Image)]);
-                        }}
-                        onChange={(info) => onImageChange(info.file, 'animations')}
-                        onRemove={(file) => {
-                            fileHandler(file, 'gif');
-                        }}
+                <p className="photo-uploader-title">
+                    Зображення
+                </p>
+                <div className="photo-uploader-items-container">
+                    <FormItem
+                        name="animations"
+                        label="Кольорове"
+                        rules={[
+                            { validator: combinedImageValidator(false) },
+                        ]}
                     >
-                        <InboxOutlined />
-                        <p className="ant-upload-text">{animation.length === 1 ? 'Змінити' : '+ Додати'}</p>
-                    </FileUploader>
-                </FormItem>
+                        <FileUploader
+                            accept=".jpeg,.png,.jpg,.webp"
+                            listType="picture-card"
+                            multiple={false}
+                            maxCount={1}
+                            fileList={animation}
+                            beforeUpload={async (file) => !(await checkFile(file, false))}
+                            onPreview={handlePreview}
+                            uploadTo="image"
+                            imageType={ImageAssigment.animation}
+                            onSuccessUpload={(file: Image | Audio) => {
+                                handleFileUpload(file.id, 'animationId', 'imagesUpdate');
+                                setAnimation([convertFileToUploadFile(file as Image)]);
+                            }}
+                            onChange={(info) => onImageChange(info.file, 'animations')}
+                            onRemove={(file) => {
+                                fileHandler(file, 'gif');
+                            }}
+                        >
+                            <InboxOutlined />
+                            <p className="ant-upload-text">{animation.length === 1 ? 'Змінити' : '+ Додати'}</p>
+                        </FileUploader>
+                    </FormItem>
 
-                <FormItem
-                    name="pictureBlackWhite"
-                    label="Чорнобіле"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Додайте зображення',
-                        },
-                        { validator: combinedImageValidator(true) },
-                    ]}
-                >
-                    <FileUploader
-                        multiple={false}
-                        accept=".jpeg,.png,.jpg,.webp"
-                        listType="picture-card"
-                        maxCount={1}
-                        fileList={blackAndWhite}
-                        beforeUpload={async (file) => !(await checkFile(file, true))}
-                        onPreview={handlePreview}
-                        uploadTo="image"
-                        imageType={ImageAssigment.blackandwhite}
-                        onSuccessUpload={(file: Image | Audio) => {
-                            handleFileUpload(file.id, 'blackAndWhiteId', 'imagesUpdate');
-                            setBlackAndWhite([convertFileToUploadFile(file as Image)]);
-                        }}
-                        onRemove={(file) => {
-                            fileHandler(file, 'blackAndWhite');
-                        }}
+                    <FormItem
+                        name="pictureBlackWhite"
+                        label="Чорнобіле"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Додайте зображення',
+                            },
+                            { validator: combinedImageValidator(true) },
+                        ]}
                     >
-                        <InboxOutlined />
-                        <p className="ant-upload-text">{blackAndWhite.length === 1 ? 'Змінити' : '+ Додати'}</p>
-                    </FileUploader>
-                </FormItem>
+                        <FileUploader
+                            multiple={false}
+                            accept=".jpeg,.png,.jpg,.webp"
+                            listType="picture-card"
+                            maxCount={1}
+                            fileList={blackAndWhite}
+                            beforeUpload={async (file) => !(await checkFile(file, true))}
+                            onPreview={handlePreview}
+                            uploadTo="image"
+                            imageType={ImageAssigment.blackandwhite}
+                            onSuccessUpload={(file: Image | Audio) => {
+                                handleFileUpload(file.id, 'blackAndWhiteId', 'imagesUpdate');
+                                setBlackAndWhite([convertFileToUploadFile(file as Image)]);
+                            }}
+                            onRemove={(file) => {
+                                fileHandler(file, 'blackAndWhite');
+                            }}
+                        >
+                            <InboxOutlined />
+                            <p className="ant-upload-text">{blackAndWhite.length === 1 ? 'Змінити' : '+ Додати'}</p>
+                        </FileUploader>
+                    </FormItem>
 
-                <FormItem
-                    name="pictureRelations"
-                    label="Для зв'язків"
-                    rules={[
-                        { validator: combinedImageValidator(false) },
-                    ]}
-                >
-                    <FileUploader
-                        multiple={false}
-                        accept=".jpeg,.png,.jpg,.webp"
-                        listType="picture-card"
-                        maxCount={1}
-                        fileList={relatedFigure}
-                        onPreview={handlePreview}
-                        uploadTo="image"
-                        imageType={ImageAssigment.relatedfigure}
-                        beforeUpload={async (file) => !(await checkFile(file, false))}
-                        onSuccessUpload={(file: Image | Audio) => {
-                            handleFileUpload(file.id, 'relatedFigureId', 'imagesUpdate');
-                            setRelatedFigure([convertFileToUploadFile(file as Image)]);
-                        }}
-                        onChange={(info) => onImageChange(info.file, 'pictureRelations')}
-                        onRemove={(file) => {
-                            fileHandler(file, 'relatedFigure');
-                        }}
+                    <FormItem
+                        name="pictureRelations"
+                        label="Для зв'язків"
+                        rules={[
+                            { validator: combinedImageValidator(false) },
+                        ]}
                     >
-                        <InboxOutlined />
-                        <p className="ant-upload-text">{relatedFigure.length === 1 ? 'Змінити' : '+ Додати'}</p>
-                    </FileUploader>
-                    {visibleErrorRelatedFigure && (
-                        <p className="error-text">
-                            Тільки файли з розширенням webp, jpeg, png, jpg дозволені!
-                        </p>
-                    )}
-                </FormItem>
+                        <FileUploader
+                            multiple={false}
+                            accept=".jpeg,.png,.jpg,.webp"
+                            listType="picture-card"
+                            maxCount={1}
+                            fileList={relatedFigure}
+                            onPreview={handlePreview}
+                            uploadTo="image"
+                            imageType={ImageAssigment.relatedfigure}
+                            beforeUpload={async (file) => !(await checkFile(file, false))}
+                            onSuccessUpload={(file: Image | Audio) => {
+                                handleFileUpload(file.id, 'relatedFigureId', 'imagesUpdate');
+                                setRelatedFigure([convertFileToUploadFile(file as Image)]);
+                            }}
+                            onChange={(info) => onImageChange(info.file, 'pictureRelations')}
+                            onRemove={(file) => {
+                                fileHandler(file, 'relatedFigure');
+                            }}
+                        >
+                            <InboxOutlined />
+                            <p className="ant-upload-text">{relatedFigure.length === 1 ? 'Змінити' : '+ Додати'}</p>
+                        </FileUploader>
+                        {visibleErrorRelatedFigure && (
+                            <p className="error-text">
+                                Тільки файли з розширенням webp, jpeg, png, jpg дозволені!
+                            </p>
+                        )}
+                    </FormItem>
+                </div>
             </div>
             <div className="display-flex-row">
                 <FormItem
@@ -345,6 +350,7 @@ const FileInputsPart = ({ form, onChange }: FileInputsPartProps) => {
                     ]}
                 >
                     <FileUploader
+                        className="audioUploader"
                         multiple={false}
                         accept=".mp3"
                         maxCount={1}

@@ -11,6 +11,7 @@ import '@testing-library/jest-dom';
 import { MockPagination, MockPaginationProps } from '../../../../__mocks__/antd/antd';
 
 import Newss from './News.component';
+import BUTTON_LABELS from "@constants/buttonLabels";
 
 const getPaginationInfoMpckFn = () => {
     const mockFn = jest.fn();
@@ -133,7 +134,7 @@ describe('News', () => {
         );
 
         const columnHeaders = screen.getAllByRole('columnheader');
-        const createNewsButton = screen.getByText('Створити новину');
+        const createNewsButton = screen.getByText(BUTTON_LABELS.ADD_NEWS);
 
         const titleCell = screen.getByText('Mock News 1').closest('td');
         const imageCell = screen.getByAltText('Mock News 1 Image');

@@ -13,6 +13,7 @@ import TextArea from 'antd/es/input/TextArea';
 
 import { Term } from '@/models/streetcode/text-contents.model';
 import POPOVER_CONTENT from '@/features/AdminPage/JobsPage/JobsModal/constants/popoverContent';
+import BUTTON_LABELS from "@constants/buttonLabels";
 
 interface Props {
     handleAdd: (id: number, title: string, description: string | undefined) => void;
@@ -91,7 +92,7 @@ const AddTermModal = ({ handleAdd, term, setTerm } : Props) => {
                     />
                 </FormItem>
                 <Button className="streetcode-custom-button" onClick={() => handleOk()}>
-                    Зберегти
+                    {BUTTON_LABELS.SAVE}
                 </Button>
             </Form>
         </Modal>

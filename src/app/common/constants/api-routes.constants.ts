@@ -14,6 +14,7 @@ export const API_ROUTES = {
     },
     NEWS: {
         GET_ALL: 'news/getAll',
+        GET_ALL_PUBLISHED: 'news/getAllPublished',
         GET: 'news/getById',
         GET_BY_URL: 'news/getByUrl',
         GET_NEWS_AND_LINKS_BY_URL: 'news/getNewsAndLinksByUrl',
@@ -178,10 +179,15 @@ export const API_ROUTES = {
         GET_BY_INDEX: 'streetcode/getByIndex',
         GET_BY_URL: 'streetcode/getByTransliterationUrl',
         GET_URL_BY_QR_ID: 'streetcode/getByQrId',
+        GET_ALL_FAVOURITES: 'streetcode/getAllFavourites',
+        GET_FAVOURITE_BY_ID: 'streetcode/getFavouriteById',
+        GET_FAVOURITE_STATUS: 'streetcode/getFavouriteStatus',
         CREATE: 'streetcode/create',
+        CREATE_FAVOURITE: 'streetcode/createFavourite',
         UPDATE: 'streetcode/update',
         UPDATE_STATE: 'streetcode/patchStage',
         DELETE: 'streetcode/delete',
+        DELETE_FROM_FAVOURITES: 'streetcode/deleteFromFavourites',
         EXIST_WITH_INDEX: 'streetcode/existWithIndex',
         EXIST_WITH_URL: 'streetcode/existWithUrl',
     },
@@ -213,15 +219,11 @@ export const API_ROUTES = {
     DONATION: {
         CREATE: 'payment/createInvoice',
     },
-    INSTAGRAM: {
-        GET_ALL: 'instagram/getAll',
-    },
     STATISTIC_RECORD: {
         GET_ALL: 'statisticRecord/getAll',
         GET_BY_QRID: 'statisticRecord/getByQrId',
         GET_ALL_BY_STREETCODE_ID: 'statisticRecord/getAllByStreetcodeId',
         EXIST_BY_QRID: 'statisticRecord/existByQrId',
-        CREATE: 'statisticRecord/create',
         UPDATE: 'statisticRecord/update',
         DELETE: 'statisticRecord/delete',
     },
@@ -255,7 +257,7 @@ export const API_ROUTES = {
         GET_ALL_WITH_TEAM_MEMBERS: 'Position/getAllWithTeamMembers',
     },
     USERS: {
-        GET_BY_USERNAME: 'Users/GetByUserName',
+        GET_BY_USERNAME: 'Users/GetByEmail',
         EXIST_WITH_USERNAME: 'Users/ExistWithUserName',
         UPDATE: 'Users/Update',
         DELETE: 'Users/Delete',
