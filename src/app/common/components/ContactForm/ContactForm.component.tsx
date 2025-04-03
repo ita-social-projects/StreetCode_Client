@@ -1,14 +1,13 @@
 import './ContactForm.styles.scss';
 
-import { forwardRef, useImperativeHandle, useRef, useState } from 'react';
-import ReCAPTCHA from 'react-google-recaptcha';
+import { forwardRef, useImperativeHandle, useState } from 'react';
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
+import { ERROR_MESSAGES } from '@constants/error-messages.constants';
 
 import { Button, Form, Input, message } from 'antd';
 
 import EmailApi from '@/app/api/email/email.api';
 import Email from '@/models/email/email.model';
-
-import { ERROR_MESSAGES } from '../../constants/error-messages.constants';
 
 const MAX_SYMBOLS = 500;
 
@@ -18,22 +17,12 @@ interface Props {
 
 const ContactForm = forwardRef((customClass: Props, ref) => {
     const [formData, setFormData] = useState({ email: '', message: '' });
-    const [isVerified, setIsVerified] = useState(false);
     const [messageApi, messageContextHolder] = message.useMessage();
     const [form] = Form.useForm();
-    const recaptchaRef = useRef<ReCAPTCHA>(null);
-    const siteKey = window._env_.RECAPTCHA_SITE_KEY;
-    const { MESSAGE_LIMIT, SOMETHING_IS_WRONG, RECAPTCHA_CHECK } = ERROR_MESSAGES;
+    const { MESSAGE_LIMIT } = ERROR_MESSAGES;
+    const { executeRecaptcha } = useGoogleReCaptcha();
 
     const handleChange = (e: any) => setFormData({ ...formData, [e.target.name]: e.target.value });
-
-    const handleVerify = () => {
-        setIsVerified(true);
-    };
-
-    const handleExpiration = () => {
-        setIsVerified(false);
-    };
 
     useImperativeHandle(ref, () => ({
         clearModal() {
@@ -55,33 +44,30 @@ const ContactForm = forwardRef((customClass: Props, ref) => {
         });
     };
 
-    const onFinish = () => {
-        if (isVerified) {
-            const token = recaptchaRef?.current?.getValue();
-            const newEmail: Email = {
-                from: formData.email,
-                source: 'сторінка Контакти',
-                content: formData.message,
-                token,
-            };
-            EmailApi.send(newEmail)
-                .then(() => {
-                    successMessage();
-                })
-                .catch((error) => {
-                    if (error.status === 429) {
-                        errorMessage(MESSAGE_LIMIT);
-                    } else {
-                        for (const key in error.data) {
-                            errorMessage(`${error.data[key].message}`)
-                        }
-                    }
-                });
-            recaptchaRef.current?.reset();
-            setIsVerified(false);
-        } else {
-            errorMessage(RECAPTCHA_CHECK);
+    const onFinish = async (values: { email: string; message: string }) => {
+        if (!executeRecaptcha) {
+            return;
         }
+        const token = await executeRecaptcha('feedback');
+        const newEmail: Email = {
+            from: values.email,
+            source: 'сторінка Контакти',
+            content: values.message,
+            token,
+        };
+        EmailApi.send(newEmail)
+            .then(() => {
+                successMessage();
+            })
+            .catch((error) => {
+                if (error.status === 429) {
+                    errorMessage(MESSAGE_LIMIT);
+                } else {
+                    for (const key in error.data) {
+                        errorMessage(`${error.data[key].message}`);
+                    }
+                }
+            });
     };
 
     return (
@@ -139,16 +125,6 @@ const ContactForm = forwardRef((customClass: Props, ref) => {
                         onChange={handleChange}
                     />
                 </Form.Item>
-                <div className="captchaBlock">
-                    <ReCAPTCHA
-                        className="required-captcha"
-                        sitekey={siteKey || ''}
-                        onChange={handleVerify}
-                        onExpired={handleExpiration}
-                        ref={recaptchaRef}
-                        hl='uk'
-                    />
-                </div>
                 <Form.Item>
                     <Button type="primary" htmlType="submit">
                         Відправити
