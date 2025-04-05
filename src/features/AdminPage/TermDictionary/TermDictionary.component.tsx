@@ -1,11 +1,11 @@
 import './TermDictionary.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useState } from 'react';
-import { DeleteFilled, EditFilled } from '@ant-design/icons';
+import { useEffect, useState, useMemo } from 'react';
+import { DeleteFilled, DownOutlined, EditFilled } from '@ant-design/icons';
 import useMobx, { useModalContext } from '@stores/root-store';
 
-import { Button, Space, Table } from 'antd';
+import { Button, Dropdown, Space, Table } from 'antd';
 
 import termsApi from '@/app/api/streetcode/text-content/terms.api';
 import AddTermModal from '@/app/common/components/modals/Terms/AddTerm/AddTermModal.component';
@@ -14,13 +14,42 @@ import EditTermModal from '@/app/common/components/modals/Terms/EditTerm/EditTer
 import PageBar from '@/features/AdminPage/PageBar/PageBar.component';
 import { Term } from '@/models/streetcode/text-contents.model';
 
+const PaginationSelect = ({ selected, onChange }) => {
+    const paginationItems = useMemo(
+        () =>
+            [10, 25, 50].map((value) => ({
+                key: value.toString(),
+                label: value.toString(),
+                onClick: () => onChange(value),
+            })),
+        [onChange]
+    );
+
+    return (
+        <div className="PaginationSelect">
+            <p>Рядків на сторінці:</p>
+            <Dropdown menu={{ items: paginationItems }} trigger={['click']}>
+                <Button>
+                    <Space>
+                        {selected}
+                        <DownOutlined />
+                    </Space>
+                </Button>
+            </Dropdown>
+        </div>
+    );
+};
+
 const TermDictionary = () => {
     const { termsStore } = useMobx();
     const { modalStore } = useModalContext();
     const { fetchTerms } = termsStore;
     const { setModal } = modalStore;
-    const [term, setTerm] = useState<Partial<Term>>();
-    const [data, setData] = useState<Term[]>();
+
+    const [term, setTerm] = useState<Partial<Term>>({});
+    const [data, setData] = useState<Term[]>([]);
+    const [selected, setSelected] = useState(10);
+    const [currentPage, setCurrentPage] = useState(1);
 
     const setTableState = async () => {
         await termsApi.getAll().then((response) => {
@@ -30,21 +59,25 @@ const TermDictionary = () => {
 
     useEffect(() => {
         fetchTerms();
-        setTableState();
+        termsApi.getAll().then(setData);
     }, []);
 
+    const handlePageSizeChange = (value: number) => {
+        setSelected(value);
+        setCurrentPage(1);
+    };
+
     const handleAdd = () => {
-        const newTerm : Term = {
+        const newTerm: Term = {
             id: 0,
-            title: term?.title as string,
-            description: term?.description,
+            title: term?.title || '',
+            description: term?.description || '',
         };
-        termsStore.createTerm(newTerm).then(
-            (response) => {
-                setData([...data || [], response ?? newTerm]);
-                setTerm({ title: '', description: '' });
-            },
-        );
+
+        termsStore.createTerm(newTerm).then((response) => {
+            setData([...data, response ?? newTerm]);
+            setTerm({ title: '', description: '' });
+        });
     };
 
     const handleDelete = (id: number) => {
@@ -64,6 +97,7 @@ const TermDictionary = () => {
             ));
         }
     };
+
     const columns = [
         {
             title: 'Назва',
@@ -116,10 +150,11 @@ const TermDictionary = () => {
             ),
         },
     ];
+
     return (
         <div className="termDictionaryCover">
             <div className="wrapper">
-            <PageBar />
+                <PageBar />
                 <div className="termDictionaryContainer">
                     <div className="dictionaryHeader">
                         <h1>Словник термінів</h1>
@@ -137,7 +172,13 @@ const TermDictionary = () => {
                             columns={columns}
                             dataSource={data}
                             rowKey={({ id }) => id}
-                            pagination={{ defaultPageSize: 5 }}
+                            pagination={{
+                                current: currentPage,
+                                pageSize: selected,
+                                onChange: (page) => setCurrentPage(page),
+                                showSizeChanger: false,
+                                showTotal: () => <PaginationSelect selected={selected} onChange={handlePageSizeChange} />,
+                            }}
                         />
                     </div>
                 </div>

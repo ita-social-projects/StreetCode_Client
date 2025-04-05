@@ -3,12 +3,12 @@ import './TeamPage.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
-import { DeleteOutlined, EditOutlined, StarOutlined } from '@ant-design/icons';
+import { DeleteOutlined, DownOutlined, EditOutlined, StarOutlined } from '@ant-design/icons';
 import BUTTON_LABELS from '@constants/buttonLabels';
 import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
 import { useQuery } from '@tanstack/react-query';
 
-import { Button, Empty, Pagination, Table } from 'antd';
+import { Button, Dropdown, Empty, Pagination, Space, Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 
 import Image from '@/models/media/image.model';
@@ -28,7 +28,9 @@ const TeamPage = () => {
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
     const [teamToEdit, setTeamToedit] = useState<TeamMember>();
-
+    const [currentPages, setCurrentPages] = useState(1);
+    const [amountRequest, setAmountRequest] = useState(10);
+    const [selected, setSelected] = useState(10);
     const { isLoading } = useQuery({
         queryKey: ['team', teamStore.PaginationInfo.CurrentPage],
         queryFn: () => teamStore.getAll(),
@@ -42,6 +44,20 @@ const TeamPage = () => {
                 });
             });
         }).then(() => teamStore.setInternalMap(teamStore.getTeamArray));
+    };
+
+    const PaginationProps = {
+        items: [10, 25, 50].map((value) => ({
+            key: value.toString(),
+            label: value.toString(),
+            onClick: () => {
+                setSelected(value);
+                setAmountRequest(value);
+                setCurrentPages(1);
+                teamStore.PaginationInfo.PageSize = value;
+                teamStore.getAll();
+            },
+        })),
     };
 
     useEffect(() => {
@@ -203,15 +219,28 @@ const TeamPage = () => {
                 <div className="underTableZone">
                     <br />
                     <div className="underTableElement">
+                        <div className="PaginationSelect">
+                            <p>Рядків на сторінці</p>
+                            <Dropdown menu={{ items: PaginationProps.items }} trigger={['click']}>
+                                <Button>
+                                    <Space>
+                                        {selected}
+                                        <DownOutlined />
+                                    </Space>
+                                </Button>
+                            </Dropdown>
+                        </div>
                         <Pagination
                             className="paginationElement"
                             showSizeChanger={false}
                             defaultCurrent={1}
-                            current={teamStore.PaginationInfo.CurrentPage}
+                            current={currentPages}
                             total={teamStore.PaginationInfo.TotalItems}
-                            pageSize={teamStore.PaginationInfo.PageSize}
-                            onChange={(value: any) => {
-                                teamStore.setCurrentPage(value);
+                            pageSize={amountRequest}
+                            onChange={(page: number) => {
+                                setCurrentPages(page);
+                                teamStore.setCurrentPage(page);
+                                teamStore.getAll();
                             }}
                         />
                     </div>

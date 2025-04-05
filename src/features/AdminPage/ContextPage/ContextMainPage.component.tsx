@@ -2,14 +2,14 @@ import './ContextMainPage.style.scss';
 
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { DeleteOutlined, DownOutlined, EditOutlined } from '@ant-design/icons';
 import BUTTON_LABELS from '@constants/buttonLabels';
 import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
 import ContextAdminModalComponent from '@features/AdminPage/ContextPage/ContextModal/ContextAdminModal.component';
 import useMobx, { useModalContext } from '@stores/root-store';
 import { useQuery } from '@tanstack/react-query';
 
-import { Button, Empty, Pagination } from 'antd';
+import { Button, Dropdown, Empty, Pagination, Space } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 
 import Context from '@/models/additional-content/context.model';
@@ -20,7 +20,9 @@ const ContextMainPage: React.FC = observer(() => {
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
     const [contextToEdit, setContextToEdit] = useState<Context>();
-
+    const [currentPages, setCurrentPages] = useState(1);
+    const [amountRequest, setAmountRequest] = useState(10);
+    const [selected, setSelected] = useState(10);
     const { isLoading } = useQuery({
         queryKey: ['contexts', contextStore.PaginationInfo.CurrentPage],
         queryFn: () => contextStore.fetchContexts(),
@@ -30,6 +32,19 @@ const ContextMainPage: React.FC = observer(() => {
         contextStore.fetchContexts();
     };
 
+    const PaginationProps = {
+        items: [10, 25, 50].map((value) => ({
+            key: value.toString(),
+            label: value.toString(),
+            onClick: () => {
+                setSelected(value);
+                setAmountRequest(value);
+                setCurrentPages(1);
+                contextStore.PaginationInfo.PageSize = value;
+                contextStore.fetchContexts();
+            },
+        })),
+    };
     useEffect(() => {
         updatedContexts();
     }, [modalAddOpened, modalEditOpened]);
@@ -118,15 +133,28 @@ const ContextMainPage: React.FC = observer(() => {
                 <div className="underTableZone">
                     <br />
                     <div className="underTableElement">
+                        <div className="PaginationSelect">
+                            <p>Рядків на сторінці</p>
+                            <Dropdown menu={{ items: PaginationProps.items }} trigger={['click']}>
+                                <Button>
+                                    <Space>
+                                        {selected}
+                                        <DownOutlined />
+                                    </Space>
+                                </Button>
+                            </Dropdown>
+                        </div>
                         <Pagination
                             className="paginationElement"
                             showSizeChanger={false}
                             defaultCurrent={1}
-                            current={contextStore.PaginationInfo.CurrentPage}
+                            current={currentPages}
                             total={contextStore.PaginationInfo.TotalItems}
-                            pageSize={contextStore.PaginationInfo.PageSize}
-                            onChange={(value: any) => {
-                                contextStore.setCurrentPage(value);
+                            pageSize={amountRequest}
+                            onChange={(page: number) => {
+                                setCurrentPages(page);
+                                contextStore.setCurrentPage(page);
+                                contextStore.fetchContexts();
                             }}
                         />
                     </div>

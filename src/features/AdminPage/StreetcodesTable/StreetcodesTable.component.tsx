@@ -27,6 +27,7 @@ import GetAllStreetcodesRequest from '@/models/streetcode/getAllStreetcodes.requ
 
 import { formatDate } from './FormatDateAlgorithm';
 import SearchMenu from './SearchMenu.component';
+import DropdownButton from 'antd/es/dropdown/dropdown-button';
 
 function convertUTCDateToLocalDate(date :Date) {
     const newDate = new Date(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
@@ -49,8 +50,8 @@ const StreetcodesTable = () => {
     const [isConfirmationModalVisible, setIsConfirmationModalVisible] = useState(false);
     const [deleteStreetcode, deleteFormDB] = useState<number>(0);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const amountRequest = 10;
-
+    const [selected, setSelected] = useState(10);
+    const [amountRequest, setAmountRequest] = useState(10);
     const requestDefault: GetAllStreetcodesRequest = {
         Page: pageRequest,
         Amount: amountRequest,
@@ -179,7 +180,17 @@ const StreetcodesTable = () => {
 
         deleteFormDB(streetcodeId);
     };
-
+    const PaginationProps = {
+        items: [10, 25, 50].map((value) => ({
+            key: value.toString(),
+            label: value.toString(),
+            onClick: () => {
+                setSelected(value);
+                setAmountRequest(value);
+                setRequest();
+            },
+        })),
+    };
     const columnsNames = [
         {
             title: 'Назва history-коду',
@@ -351,6 +362,17 @@ const StreetcodesTable = () => {
                 <div className="underTableZone">
                     <br />
                     <div className="underTableElement">
+                        <div className="PaginationSelect">
+                            <p>Рядків на сторінці</p>
+                            <Dropdown menu={{ items: PaginationProps.items, className: 'classss' }} trigger={['click']}>
+                                <Button>
+                                    <Space>
+                                        {selected}
+                                        <DownOutlined />
+                                    </Space>
+                                </Button>
+                            </Dropdown>
+                        </div>
                         <Pagination
                             className="paginationElement"
                             showSizeChanger={false}

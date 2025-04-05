@@ -24,12 +24,27 @@ const JobsTable = observer(() => {
     const [currentId, setCurrentId] = useState<number>(0);
     const { modalStore } = useModalContext();
     const [open, setOpen] = useState(false);
-
+    const [currentPages, setCurrentPages] = useState(1);
+    const [amountRequest, setAmountRequest] = useState(10);
+    const [selected, setSelected] = useState(10);
     const { isLoading } = useQuery({
         queryKey: ['jobs', jobsStore.PaginationInfo.CurrentPage],
         queryFn: () => jobsStore.getAll(),
     });
 
+    const PaginationProps = {
+        items: [10, 25, 50].map((value) => ({
+            key: value.toString(),
+            label: value.toString(),
+            onClick: () => {
+                setSelected(value);
+                setAmountRequest(value);
+                setCurrentPages(1);
+                jobsStore.PaginationInfo.PageSize = value;
+                jobsStore.getAll();
+            },
+        })),
+    };
     const DeleteJob = (id: number) => {
         modalStore.setConfirmationModal(
             'confirmation',
@@ -183,15 +198,28 @@ const JobsTable = observer(() => {
             <div className="underTableZone">
                 <br />
                 <div className="underTableElement">
+                    <div className="PaginationSelect">
+                        <p>Рядків на сторінці</p>
+                        <Dropdown menu={{ items: PaginationProps.items }} trigger={['click']}>
+                            <Button>
+                                <Space>
+                                    {selected}
+                                    <DownOutlined />
+                                </Space>
+                            </Button>
+                        </Dropdown>
+                    </div>
                     <Pagination
                         className="paginationElement"
                         showSizeChanger={false}
                         defaultCurrent={1}
                         current={jobsStore.PaginationInfo.CurrentPage}
                         total={jobsStore.PaginationInfo.TotalItems}
-                        pageSize={jobsStore.PaginationInfo.PageSize}
-                        onChange={(value: any) => {
-                            jobsStore.setCurrentPage(value);
+                        pageSize={amountRequest}
+                        onChange={(page: number) => {
+                            setCurrentPages(page);
+                            jobsStore.setCurrentPage(page);
+                            jobsStore.getAll();
                         }}
                     />
                 </div>

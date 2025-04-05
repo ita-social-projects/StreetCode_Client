@@ -3,7 +3,7 @@ import './Partners.styles.scss';
 import { runInAction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
-import { DeleteOutlined, EditOutlined, StarOutlined } from '@ant-design/icons';
+import { DeleteOutlined, DownOutlined, EditOutlined, StarOutlined } from '@ant-design/icons';
 import facebook from '@assets/images/partners/facebook.svg';
 import instagram from '@assets/images/partners/instagram.svg';
 import twitter from '@assets/images/partners/twitterNew.svg';
@@ -14,7 +14,7 @@ import ImageStore from '@stores/image-store';
 import useMobx, { useModalContext } from '@stores/root-store';
 import { useQuery } from '@tanstack/react-query';
 
-import { Button, Empty, Pagination } from 'antd';
+import { Button, Dropdown, Empty, Pagination, Space } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 
 import PartnersApi from '@/app/api/partners/partners.api';
@@ -35,6 +35,9 @@ const Partners: React.FC = observer(() => {
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
     const [partnerToEdit, setPartnerToedit] = useState<Partner>();
+    const [currentPages, setCurrentPages] = useState(1);
+    const [amountRequest, setAmountRequest] = useState(10);
+    const [selected, setSelected] = useState(10);
 
     const { isLoading } = useQuery({
         queryKey: ['partners', partnersStore.PaginationInfo.CurrentPage],
@@ -59,9 +62,26 @@ const Partners: React.FC = observer(() => {
             partnersStore.setInternalMap(partnersStore.getPartnerArray);
         });
     };
+
     useEffect(() => {
         updatedPartners();
     }, [modalAddOpened, modalEditOpened]);
+
+    const { PageSize, TotalItems } = partnersStore.PaginationInfo;
+
+    const PaginationProps = {
+        items: [10, 25, 50].map((value) => ({
+            key: value.toString(),
+            label: value.toString(),
+            onClick: () => {
+                setSelected(value);
+                setAmountRequest(value);
+                setCurrentPages(1);
+                partnersStore.PaginationInfo.PageSize = value;
+                partnersStore.getAll();
+            },
+        })),
+    };
 
     const handleDeletePartner = (partnerId: number) => {
         modalStore.setConfirmationModal(
@@ -185,39 +205,48 @@ const Partners: React.FC = observer(() => {
                         {BUTTON_LABELS.ADD_PARTNER}
                     </Button>
                 </div>
-                <div>
-                    <Table
-                        pagination={false}
-                        className="partners-table"
-                        columns={columns}
-                        dataSource={partnersStore.getPartnerArray || []}
-                        rowKey="id"
-                        locale={{
-                            emptyText: isLoading ? (
-                                <div className="loadingWrapper">
-                                    <div id="loadingGif" />
-                                </div>
-                            ) : (
-                                <Empty description="Дані відсутні" />
-                            ),
-                        }}
-                    />
-                    <div>
-                        <div className="underTableZone">
-                            <div className="underTableElement">
-                                <Pagination
-                                    className="paginationElement"
-                                    showSizeChanger={false}
-                                    defaultCurrent={1}
-                                    current={partnersStore.PaginationInfo.CurrentPage}
-                                    total={partnersStore.PaginationInfo.TotalItems}
-                                    pageSize={partnersStore.PaginationInfo.PageSize}
-                                    onChange={(value: any) => {
-                                        partnersStore.setCurrentPage(value);
-                                    }}
-                                />
+                <Table
+                    pagination={false}
+                    className="partners-table"
+                    columns={columns}
+                    dataSource={partnersStore.getPartnerArray || []}
+                    rowKey="id"
+                    locale={{
+                        emptyText: isLoading ? (
+                            <div className="loadingWrapper">
+                                <div id="loadingGif" />
                             </div>
+                        ) : (
+                            <Empty description="Дані відсутні" />
+                        ),
+                    }}
+                />
+                <div className="underTableZone">
+                    <div className="underTableElement">
+                        <div className="PaginationSelect">
+                            <p>Рядків на сторінці</p>
+                            <Dropdown menu={{ items: PaginationProps.items }} trigger={['click']}>
+                                <Button>
+                                    <Space>
+                                        {selected}
+                                        <DownOutlined />
+                                    </Space>
+                                </Button>
+                            </Dropdown>
                         </div>
+                        <Pagination
+                            className="paginationElement"
+                            showSizeChanger={false}
+                            defaultCurrent={1}
+                            current={currentPages}
+                            total={TotalItems}
+                            pageSize={amountRequest}
+                            onChange={(page: number) => {
+                                setCurrentPages(page);
+                                partnersStore.setCurrentPage(page);
+                                partnersStore.getAll();
+                            }}
+                        />
                     </div>
                 </div>
                 <PartnerModal open={modalAddOpened} setIsModalOpen={setModalAddOpened} isStreetcodeVisible />

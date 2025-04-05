@@ -74,11 +74,16 @@
         transform: none !important;
     }
 }
-
 .ant-pagination-item{
-    border: 0.02rem solid c.$dark-red-color;
+    border: 0.02rem solid transparent;
     color: c.$dark-red-color;
     a{
         color: c.$dark-red-color;
     }
 }
+.PaginationSelect {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+

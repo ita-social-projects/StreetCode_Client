@@ -4,14 +4,14 @@ import './News.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import React, { useState } from 'react';
-import { DeleteOutlined, EditOutlined, InfoCircleOutlined } from '@ant-design/icons';
+import { DeleteOutlined, DownOutlined, EditOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import NewsModal from '@features/AdminPage/NewsPage/NewsModal/NewsModal.component';
 import PageBar from '@features/AdminPage/PageBar/PageBar.component';
 import useMobx, { useModalContext } from '@stores/root-store';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 
-import { Button, Empty, Pagination, Popover } from 'antd';
+import { Button, Dropdown, Empty, Pagination, Popover, Space } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
@@ -27,7 +27,9 @@ const Newss: React.FC = observer(() => {
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
     const [newsToEdit, setNewsToEdit] = useState<News>();
-
+    const [currentPages, setCurrentPages] = useState(1);
+    const [amountRequest, setAmountRequest] = useState(10);
+    const [selected, setSelected] = useState(10);
     const { isLoading } = useQuery({
         queryKey: ['news', newsStore.CurrentPage],
         queryFn: () => newsStore.getAll(),
@@ -46,6 +48,20 @@ const Newss: React.FC = observer(() => {
             },
             CONFIRMATION_MESSAGES.DELETE_NEWS,
         );
+    };
+
+    const PaginationProps = {
+        items: [10, 25, 50].map((value) => ({
+            key: value.toString(),
+            label: value.toString(),
+            onClick: () => {
+                setSelected(value);
+                setAmountRequest(value);
+                setCurrentPages(1);
+                newsStore.PaginationInfo.PageSize = value;
+                newsStore.getAll();
+            },
+        })),
     };
 
     const columns: ColumnsType<News> = [
@@ -154,15 +170,28 @@ const Newss: React.FC = observer(() => {
                 <div className="underTableZone">
                     <br />
                     <div className="underTableElement">
+                        <div className="PaginationSelect">
+                            <p>Рядків на сторінці</p>
+                            <Dropdown menu={{ items: PaginationProps.items }} trigger={['click']}>
+                                <Button>
+                                    <Space>
+                                        {selected}
+                                        <DownOutlined />
+                                    </Space>
+                                </Button>
+                            </Dropdown>
+                        </div>
                         <Pagination
                             className="paginationElement"
                             showSizeChanger={false}
                             defaultCurrent={1}
-                            current={newsStore.PaginationInfo.CurrentPage}
+                            current={currentPages}
                             total={newsStore.PaginationInfo.TotalItems}
-                            pageSize={newsStore.PaginationInfo.PageSize}
-                            onChange={(value: any) => {
-                                newsStore.setCurrentPage(value);
+                            pageSize={amountRequest}
+                            onChange={(page: number) => {
+                                setCurrentPages(page);
+                                newsStore.setCurrentPage(page);
+                                newsStore.getAll();
                             }}
                         />
                     </div>

@@ -2,13 +2,13 @@ import './TeamPositionsMainPage.style.scss';
 
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { DeleteOutlined, DownOutlined, EditOutlined } from '@ant-design/icons';
 import BUTTON_LABELS from '@constants/buttonLabels';
 import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
 import useMobx, { useModalContext } from '@stores/root-store';
 import { useQuery } from '@tanstack/react-query';
 
-import { Button, Empty, Pagination } from 'antd';
+import { Button, Dropdown, Empty, Pagination, Space } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 
 import Position from '@/models/additional-content/teampositions.model';
@@ -21,7 +21,9 @@ const TeamPositionsMainPage: React.FC = observer(() => {
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
     const [positionToEdit, setPositionToEdit] = useState<Position>();
-
+    const [currentPages, setCurrentPages] = useState(1);
+    const [amountRequest, setAmountRequest] = useState(10);
+    const [selected, setSelected] = useState(10);
     const { isLoading } = useQuery({
         queryKey: ['positions', teamPositionsStore.PaginationInfo.CurrentPage],
         queryFn: () => teamPositionsStore.fetchPositions(),
@@ -35,6 +37,19 @@ const TeamPositionsMainPage: React.FC = observer(() => {
         updatedPositions();
     }, [modalAddOpened, modalEditOpened]);
 
+    const PaginationProps = {
+        items: [10, 25, 50].map((value) => ({
+            key: value.toString(),
+            label: value.toString(),
+            onClick: () => {
+                setSelected(value);
+                setAmountRequest(value);
+                setCurrentPages(1);
+                teamPositionsStore.PaginationInfo.PageSize = value;
+                teamPositionsStore.fetchPositions();
+            },
+        })),
+    };
     const handleDeletePosition = (positionId: number) => {
         modalStore.setConfirmationModal(
             'confirmation',
@@ -119,15 +134,28 @@ const TeamPositionsMainPage: React.FC = observer(() => {
                 <div className="underTableZone">
                     <br />
                     <div className="underTableElement">
+                        <div className="PaginationSelect">
+                            <p>Рядків на сторінці</p>
+                            <Dropdown menu={{ items: PaginationProps.items }} trigger={['click']}>
+                                <Button>
+                                    <Space>
+                                        {selected}
+                                        <DownOutlined />
+                                    </Space>
+                                </Button>
+                            </Dropdown>
+                        </div>
                         <Pagination
                             className="paginationElement"
                             showSizeChanger={false}
                             defaultCurrent={1}
-                            current={teamPositionsStore.PaginationInfo.CurrentPage}
+                            current={currentPages}
                             total={teamPositionsStore.PaginationInfo.TotalItems}
-                            pageSize={teamPositionsStore.PaginationInfo.PageSize}
-                            onChange={(value: any) => {
-                                teamPositionsStore.setCurrentPage(value);
+                            pageSize={amountRequest}
+                            onChange={(page: number) => {
+                                setCurrentPages(page);
+                                teamPositionsStore.setCurrentPage(page);
+                                teamPositionsStore.fetchPositions();
                             }}
                         />
                     </div>

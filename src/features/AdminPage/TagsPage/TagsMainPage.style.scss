@@ -42,3 +42,31 @@
         }
     }
 }
+
+    .ant-dropdown-menu {
+        border: 1px solid #891F16 !important;
+        width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        box-sizing: border-box;
+    }
+
+    .ant-dropdown-menu-item {
+        display: block;
+        width: 100% !important;
+        font-size: 18px;
+        margin: 0 !important;
+        padding: 0 !important; 
+        text-align: center;
+        color: c.$dark-red-color;
+        border-bottom: 1px solid c.$dark-red-color;
+        box-sizing: border-box;
+        border-radius: 0 !important;
+
+        &:hover {
+            background-color: rgba(154, 4, 4, 0.2) !important;
+        }
+        &:last-child{
+            border-bottom: 1px solid transparent !important;
+        }
+    }
