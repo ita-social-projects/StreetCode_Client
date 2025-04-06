@@ -6,16 +6,28 @@
 .partners-page{
     @include mut.admin-page-base-layout();
 
+    padding-right: 0;
+
+    background-color: #f8f8f8;
+
     p {
         word-break: break-word;
     }
 
+    .streetcode-custom-button{
+        margin-top: 3rem;
+    }
     .container-justify-end{
         display: flex;
         justify-content: end;
     }
     .partners-page-container{
         @include mut.sized(80%);
+
+        margin-left: 0.75rem;
+
+        display: flex;
+        flex-direction: column;
 
         .partners-table-logo{
             max-width: 90%;
@@ -25,7 +37,7 @@
         }
         .partner-page-actions{
             display: flex;
-            gap: f.pxToRem(30px);
+            gap: f.pxToRem(3px);
         }
         .partner-links{
             @include mut.flexed(row, start,space-between, wrap, 4px);

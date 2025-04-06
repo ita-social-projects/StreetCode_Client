@@ -103,6 +103,7 @@ const Partners: React.FC = observer(() => {
             title: 'Назва',
             dataIndex: 'title',
             key: 'title',
+            width: '30%',
             render(value, record) {
                 return (
                     <div key={`${value}${record.id}`} className="partner-table-item-name">
