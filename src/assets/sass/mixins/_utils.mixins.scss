@@ -204,8 +204,9 @@
   display: flex;
   float: left;
   width: 100%;
-  padding: 0 f.pxToRem(32px) 0 0;
-  gap: f.pxToRem(10px);
+  padding: 0 0;
+  gap: f.pxToRem(28px);
+  background-color: #f8f8f8;
 }
 // --------------------------Text----------------------------------
 @mixin withLineHeight($line-height){

@@ -193,18 +193,18 @@ const StreetcodesTable = () => {
     };
     const columnsNames = [
         {
-            title: 'Назва history-коду',
+            title: 'Назва',
             dataIndex: 'name',
-            width: '40%',
+            width: '18%',
             key: 'name',
             onCell: (record: MapedStreetCode) => ({
                 onClick: () => window.open(`${FRONTEND_ROUTES.ADMIN.BASE}/${record.url}`, '_blank'),
             }),
         },
         {
-            title: 'Номер history-коду',
+            title: 'Номер',
             dataIndex: 'index',
-            width: '10%',
+            width: '18%',
             key: 'index',
             onCell: (record: MapedStreetCode) => ({
                 onClick: () => window.open(`${FRONTEND_ROUTES.ADMIN.BASE}/${record.url}`, '_blank'),
@@ -214,7 +214,7 @@ const StreetcodesTable = () => {
             title: 'Статус',
             dataIndex: 'status',
             key: 'status',
-            width: '10%',
+            width: '18%',
             onCell: (record: MapedStreetCode) => ({
                 onClick: () => {
                     setCurrentStreetcodeOption(record.key);
@@ -236,16 +236,16 @@ const StreetcodesTable = () => {
             title: 'Автор',
             dataIndex: 'author',
             key: 'author',
-            width: '10%',
+            width: '18%',
             onCell: (record: MapedStreetCode) => ({
                 onClick: () => window.open(`${FRONTEND_ROUTES.ADMIN.BASE}/${record.url}`, '_blank'),
             }),
         },
         {
-            title: 'Останні зміни',
+            title: 'Історія',
             dataIndex: 'date',
             key: 'date',
-            width: '15%',
+            width: '18%',
             onCell: (record: MapedStreetCode) => ({
                 onClick: () => window.open(`${FRONTEND_ROUTES.ADMIN.BASE}/${record.url}`, '_blank'),
             }),
@@ -253,7 +253,7 @@ const StreetcodesTable = () => {
         {
             title: 'Дії',
             dataIndex: 'action',
-            width: 100,
+            width: '10%',
             key: 'action',
             render: (_: unknown, record: MapedStreetCode) => (
                 <>
