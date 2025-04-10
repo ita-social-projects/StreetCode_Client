@@ -1,21 +1,16 @@
 import './SortButton.styles.scss';
 
-import React, { useState } from 'react';
 import unsortedSortButton from '@images/admin-panel/sort button default.png';
 import ascendSortButton from '@images/admin-panel/sort button sort1.png';
 import descendSortButton from '@images/admin-panel/sort button sort2.png';
+
+import React, { useState } from 'react';
 
 const images = [
     unsortedSortButton,
     ascendSortButton,
     descendSortButton,
 ];
-
-export enum SortDirection {
-    Unsorted,
-    Ascend,
-    Descend,
-}
 
 interface SortButtonProps {
     sortOnClick: () => void;

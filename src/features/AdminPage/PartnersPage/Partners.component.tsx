@@ -10,8 +10,9 @@ import twitter from '@assets/images/partners/twitterNew.svg';
 import youtube from '@assets/images/partners/youtube.svg';
 import BUTTON_LABELS from '@constants/buttonLabels';
 import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
-import SortButton, { SortDirection } from '@features/AdminPage/SortButton/SortButton';
+import SortButton from '@features/AdminPage/SortButton/SortButton';
 import SortData from '@features/AdminPage/SortButton/SortLogic';
+import useSortDirection from '@features/AdminPage/SortButton/useSortDirection';
 import ImageStore from '@stores/image-store';
 import useMobx, { useModalContext } from '@stores/root-store';
 import { useQuery } from '@tanstack/react-query';
@@ -103,16 +104,7 @@ const Partners: React.FC = observer(() => {
     };
 
     const dataSource = partnersStore.getPartnerArray || [];
-
-    const [sortDirection, setSortDirection] = useState<SortDirection>(SortDirection.Unsorted);
-
-    const sortOnClick = () => {
-        setSortDirection((prev) => {
-            if (prev === SortDirection.Unsorted) return SortDirection.Ascend;
-            if (prev === SortDirection.Ascend) return SortDirection.Descend;
-            return SortDirection.Unsorted;
-        });
-    };
+    const { sortDirection, toggleSort } = useSortDirection();
 
     const sortedData = useMemo(() => SortData(dataSource, sortDirection), [dataSource, sortDirection]);
 
@@ -121,7 +113,7 @@ const Partners: React.FC = observer(() => {
             title: (
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <span>Назва</span>
-                    <SortButton sortOnClick={sortOnClick} />
+                    <SortButton sortOnClick={toggleSort} />
                 </div>
             ),
             dataIndex: 'title',

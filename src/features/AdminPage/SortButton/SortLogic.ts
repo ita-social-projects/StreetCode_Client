@@ -1,4 +1,4 @@
-import { SortDirection } from '@features/AdminPage/SortButton/SortButton';
+import { SortDirection } from '@features/AdminPage/SortButton/useSortDirection';
 
 function SortData(dataSource: any[], sortDirection: SortDirection) : any[] {
     if (sortDirection === SortDirection.Unsorted) return dataSource || [];
