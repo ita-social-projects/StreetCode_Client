@@ -1,8 +1,11 @@
 import './TermDictionary.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { DeleteFilled, DownOutlined, EditFilled } from '@ant-design/icons';
+import SortButton from '@features/AdminPage/SortButton/SortButton';
+import SortData from '@features/AdminPage/SortButton/SortLogic';
+import useSortDirection from '@features/AdminPage/SortButton/useSortDirection';
 import useMobx, { useModalContext } from '@stores/root-store';
 
 import { Button, Dropdown, Space, Table } from 'antd';
@@ -98,9 +101,21 @@ const TermDictionary = () => {
         }
     };
 
+    const { sortDirection, toggleSort } = useSortDirection();
+    const sortedData = useMemo(
+        () => SortData<Term>(data, sortDirection, (itemToCompare: Term) => itemToCompare?.title),
+        [data, sortDirection],
+    );
+
     const columns = [
         {
-            title: 'Назва',
+            title: (
+
+                <div className="content-table-title">
+                    <span>Назва</span>
+                    <SortButton sortOnClick={toggleSort} />
+                </div>
+            ),
             dataIndex: 'title',
             key: 'title',
         },
@@ -170,7 +185,7 @@ const TermDictionary = () => {
                     <div className="termTable">
                         <Table
                             columns={columns}
-                            dataSource={data}
+                            dataSource={sortedData}
                             rowKey={({ id }) => id}
                             pagination={{
                                 current: currentPage,
