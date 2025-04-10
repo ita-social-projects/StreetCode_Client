@@ -1,16 +1,23 @@
 import { SortDirection } from '@features/AdminPage/SortButton/useSortDirection';
 
-function SortData(dataSource: any[], sortDirection: SortDirection) : any[] {
+function SortData<T>(
+    dataSource: T[],
+    sortDirection: SortDirection,
+    selector: (item: T) => string,
+): T[] {
     if (sortDirection === SortDirection.Unsorted) return dataSource || [];
 
     const sortedArray = [...(dataSource || [])];
 
     sortedArray.sort((left, right) => {
+        const leftValue = selector(left);
+        const rightValue = selector(right);
+
         if (sortDirection === SortDirection.Ascend) {
-            return left.title.localeCompare(right.title);
+            return leftValue.localeCompare(rightValue);
         }
         if (sortDirection === SortDirection.Descend) {
-            return right.title.localeCompare(left.title);
+            return rightValue.localeCompare(leftValue);
         }
         return 0;
     });
