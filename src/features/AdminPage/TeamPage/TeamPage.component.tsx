@@ -2,10 +2,13 @@
 import './TeamPage.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useState } from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import { DeleteOutlined, DownOutlined, EditOutlined, StarOutlined } from '@ant-design/icons';
 import BUTTON_LABELS from '@constants/buttonLabels';
 import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
+import SortButton from '@features/AdminPage/SortButton/SortButton';
+import SortData from '@features/AdminPage/SortButton/SortLogic';
+import useSortDirection from '@features/AdminPage/SortButton/useSortDirection';
 import { useQuery } from '@tanstack/react-query';
 
 import { Button, Dropdown, Empty, Pagination, Space, Table } from 'antd';
@@ -87,9 +90,24 @@ const TeamPage = () => {
             alt={image?.alt}
         />
     );
+
+    const dataSource = teamStore?.getTeamArray;
+
+    const { sortDirection, toggleSort } = useSortDirection();
+    const sortedData = useMemo(
+        () => SortData<TeamMember>(dataSource, sortDirection, (itemToCompare: TeamMember) => itemToCompare?.name),
+        [dataSource, sortDirection],
+    );
+
     const columns: ColumnsType<TeamMember> = [
         {
-            title: "Прізвище та ім'я",
+            title: (
+                <div className="content-table-title">
+                    {/* eslint-disable-next-line react/no-unescaped-entities */}
+                    <span>Прізвище та ім'я</span>
+                    <SortButton sortOnClick={toggleSort} />
+                </div>
+            ),
             dataIndex: 'name',
             key: 'name',
             render(value, record) {
@@ -204,7 +222,7 @@ const TeamPage = () => {
                     pagination={false}
                     className="team-table"
                     columns={columns}
-                    dataSource={teamStore?.getTeamArray || []}
+                    dataSource={sortedData || []}
                     rowKey="id"
                     locale={{
                         emptyText: isLoading ? (

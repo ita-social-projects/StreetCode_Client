@@ -3,10 +3,15 @@
 import './News.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import React, { useState } from 'react';
+import React, {useMemo, useState} from 'react';
 import { DeleteOutlined, DownOutlined, EditOutlined, InfoCircleOutlined } from '@ant-design/icons';
+import BUTTON_LABELS from '@constants/buttonLabels';
+import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
 import NewsModal from '@features/AdminPage/NewsPage/NewsModal/NewsModal.component';
 import PageBar from '@features/AdminPage/PageBar/PageBar.component';
+import SortButton from '@features/AdminPage/SortButton/SortButton';
+import SortData from '@features/AdminPage/SortButton/SortLogic';
+import useSortDirection from '@features/AdminPage/SortButton/useSortDirection';
 import useMobx, { useModalContext } from '@stores/root-store';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
@@ -18,8 +23,6 @@ import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Image from '@/models/media/image.model';
 import News from '@/models/news/news.model';
-import BUTTON_LABELS from "@constants/buttonLabels";
-import CONFIRMATION_MESSAGES from "@constants/confirmationMessages";
 
 const Newss: React.FC = observer(() => {
     const { modalStore } = useModalContext();
@@ -64,9 +67,22 @@ const Newss: React.FC = observer(() => {
         })),
     };
 
+    const dataSource = newsStore.NewsArray;
+
+    const { sortDirection, toggleSort } = useSortDirection();
+    const sortedData = useMemo(
+        () => SortData<News>(dataSource, sortDirection, (itemToCompare: News) => itemToCompare?.title),
+        [dataSource, sortDirection],
+    );
+
     const columns: ColumnsType<News> = [
         {
-            title: 'Назва',
+            title: (
+                <div className="content-table-title">
+                    <span>Назва</span>
+                    <SortButton sortOnClick={toggleSort} />
+                </div>
+            ),
             dataIndex: 'title',
             key: 'title',
             render(value, record) {
@@ -106,10 +122,10 @@ const Newss: React.FC = observer(() => {
             render: (value: string) => (
                 <div key={value} className="partner-table-item-name">
                     <p>{value ? dayjs(value).format('YYYY-MM-DD') : ''}</p>
-                    {value && dayjs(value).isAfter(dayjs()) && 
-                     <Popover content={"Заплановано"} trigger="hover">
-                        <InfoCircleOutlined className='info-circle-for-planed-content'/>
-                    </Popover>
+                    {value && dayjs(value).isAfter(dayjs()) &&
+                        <Popover content={"Заплановано"} trigger="hover">
+                            <InfoCircleOutlined className='info-circle-for-planed-content'/>
+                        </Popover>
                     }
                 </div>
             ),
@@ -155,7 +171,7 @@ const Newss: React.FC = observer(() => {
                     pagination={false}
                     className="partners-table"
                     columns={columns}
-                    dataSource={newsStore.NewsArray || []}
+                    dataSource={sortedData || []}
                     rowKey="id"
                     locale={{
                         emptyText: isLoading ? (

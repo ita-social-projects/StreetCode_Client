@@ -2,7 +2,7 @@
 import './JobsTable.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useState } from 'react';
+import {useEffect, useMemo, useState} from 'react';
 import { DeleteOutlined, DownOutlined, EditOutlined } from '@ant-design/icons';
 import BUTTON_LABELS from '@constants/buttonLabels';
 import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
@@ -17,6 +17,9 @@ import useMobx, { useModalContext } from '@/app/stores/root-store';
 
 // eslint-disable-next-line no-restricted-imports
 import JobsModalComponent from '../JobsModal/JobsModal.component';
+import useSortDirection from "@features/AdminPage/SortButton/useSortDirection";
+import SortData from "@features/AdminPage/SortButton/SortLogic";
+import SortButton from "@features/AdminPage/SortButton/SortButton";
 
 const JobsTable = observer(() => {
     const { jobsStore } = useMobx();
@@ -104,9 +107,23 @@ const JobsTable = observer(() => {
         onClick: handleMenuClick,
     };
 
+    const dataSource = jobsStore.getJobsArray;
+
+    const { sortDirection, toggleSort } = useSortDirection();
+    const sortedData = useMemo(
+        () => SortData<Job>(dataSource, sortDirection, (itemToCompare: Job) => itemToCompare?.title),
+        [dataSource, sortDirection],
+    );
+
     const columnsNames = [
         {
-            title: 'Назва вакансії',
+            title: (
+
+                <div className="content-table-title">
+                    <span>Назва вакансії</span>
+                    <SortButton sortOnClick={toggleSort} />
+                </div>
+            ),
             dataIndex: 'title',
             key: 'title',
         },
@@ -182,7 +199,7 @@ const JobsTable = observer(() => {
             <Table
                 pagination={false}
                 columns={columnsNames}
-                dataSource={jobsStore.getJobsArray || []}
+                dataSource={sortedData || []}
                 className="job-table"
                 rowKey="id"
                 locale={{
