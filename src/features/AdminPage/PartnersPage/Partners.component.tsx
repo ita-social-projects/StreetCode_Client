@@ -104,7 +104,6 @@ const Partners: React.FC = observer(() => {
     const dataSource = partnersStore.getPartnerArray || [];
 
     const [sortDirection, setSortDirection] = useState<SortDirection>(SortDirection.Unsorted);
-    const [sortedPartners, setSortedPartners] = useState(partnersStore.getPartnerArray || []);
 
     const sortOnClick = () => {
         setSortDirection((prev) => {
@@ -115,22 +114,22 @@ const Partners: React.FC = observer(() => {
     };
 
     const sortedData = useMemo(() => {
-        if (sortDirection === SortDirection.Unsorted) return partnersStore.getPartnerArray || [];
+        if (sortDirection === SortDirection.Unsorted) return dataSource || [];
 
-        const sortedArray = [...(partnersStore.getPartnerArray || [])];
+        const sortedArray = [...(dataSource || [])];
 
-        sortedArray.sort((a, b) => {
+        sortedArray.sort((left, right) => {
             if (sortDirection === SortDirection.Ascend) {
-                return a.title.localeCompare(b.title);
+                return left.title.localeCompare(right.title);
             }
             if (sortDirection === SortDirection.Descend) {
-                return b.title.localeCompare(a.title);
+                return right.title.localeCompare(left.title);
             }
             return 0;
         });
 
         return sortedArray;
-    }, [partnersStore.getPartnerArray, sortDirection]);
+    }, [dataSource, sortDirection]);
 
     const columns: ColumnsType<Partner> = [
         {
