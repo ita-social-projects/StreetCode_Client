@@ -11,7 +11,7 @@
         justify-content: end;
     }
     .team-page-container{
-        @include mut.sized(80%);
+        @include mut.sized(81%);
 
         .team-table-logo{
             height: f.pxToRem(40px);

@@ -7,26 +7,27 @@
     @include mut.admin-page-base-layout();
     .wrapper {
         
-        
         .PageBarContainer {
-            width: unset;
+            width: 16%;
         }
     }
 }
 
 .termDictionaryContainer {
-    flex-wrap:wrap;
+    @include mut.sized(84%);
+    display: flex;
+    flex-direction: column;
     gap: f.pxToRem(10px);
 
     .dictionaryHeader {
         display: grid;
-        grid-template-columns: 85% 15%;
+        grid-template-columns: 80% 15%;
         margin-bottom: f.pxToRem(40px);
-        padding: 0 f.pxToRem(170px);
+        padding: 0 f.pxToRem(28px);
     }
 
     .termTable {
-        padding: 0 f.pxToRem(170px);
+        padding: 0 f.pxToRem(28px);
     }
 }
     
