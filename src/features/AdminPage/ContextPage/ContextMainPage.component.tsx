@@ -79,7 +79,7 @@ const ContextMainPage: React.FC = observer(() => {
     const columns: ColumnsType<Context> = [
         {
             title: (
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <div className="content-table-title">
                     <span>Назва</span>
                     <SortButton sortOnClick={toggleSort} />
                 </div>

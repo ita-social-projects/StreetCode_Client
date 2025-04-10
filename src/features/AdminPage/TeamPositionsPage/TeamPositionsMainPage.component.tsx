@@ -80,7 +80,7 @@ const TeamPositionsMainPage: React.FC = observer(() => {
     const columns: ColumnsType<Position> = [
         {
             title: (
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <div className="content-table-title">
                     <span>Назва</span>
                     <SortButton sortOnClick={toggleSort} />
                 </div>
