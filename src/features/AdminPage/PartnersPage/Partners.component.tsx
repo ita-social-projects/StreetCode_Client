@@ -10,7 +10,8 @@ import twitter from '@assets/images/partners/twitterNew.svg';
 import youtube from '@assets/images/partners/youtube.svg';
 import BUTTON_LABELS from '@constants/buttonLabels';
 import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
-import SortButton, { SortDirection } from '@features/AdminPage/PartnersPage/SortButton';
+import SortButton, { SortDirection } from '@features/AdminPage/SortButton/SortButton';
+import SortData from '@features/AdminPage/SortButton/SortLogic';
 import ImageStore from '@stores/image-store';
 import useMobx, { useModalContext } from '@stores/root-store';
 import { useQuery } from '@tanstack/react-query';
@@ -113,23 +114,7 @@ const Partners: React.FC = observer(() => {
         });
     };
 
-    const sortedData = useMemo(() => {
-        if (sortDirection === SortDirection.Unsorted) return dataSource || [];
-
-        const sortedArray = [...(dataSource || [])];
-
-        sortedArray.sort((left, right) => {
-            if (sortDirection === SortDirection.Ascend) {
-                return left.title.localeCompare(right.title);
-            }
-            if (sortDirection === SortDirection.Descend) {
-                return right.title.localeCompare(left.title);
-            }
-            return 0;
-        });
-
-        return sortedArray;
-    }, [dataSource, sortDirection]);
+    const sortedData = useMemo(() => SortData(dataSource, sortDirection), [dataSource, sortDirection]);
 
     const columns: ColumnsType<Partner> = [
         {

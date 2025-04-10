@@ -1,9 +1,9 @@
 import './SortButton.styles.scss';
 
 import React, { useState } from 'react';
-import unsortedSortButton from '@assets/images/admin-panel/sort button default.png';
-import ascendSortButton from '@assets/images/admin-panel/sort button sort1.png';
-import descendSortButton from '@assets/images/admin-panel/sort button sort2.png';
+import unsortedSortButton from '@images/admin-panel/sort button default.png';
+import ascendSortButton from '@images/admin-panel/sort button sort1.png';
+import descendSortButton from '@images/admin-panel/sort button sort2.png';
 
 const images = [
     unsortedSortButton,
