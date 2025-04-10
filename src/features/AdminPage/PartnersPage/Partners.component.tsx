@@ -16,6 +16,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { Button, Dropdown, Empty, Pagination, Space } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
+import SortButton from '@features/AdminPage/PartnersPage/SortButton';
 
 import PartnersApi from '@/app/api/partners/partners.api';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
@@ -100,7 +101,12 @@ const Partners: React.FC = observer(() => {
 
     const columns: ColumnsType<Partner> = [
         {
-            title: 'Назва',
+            title: (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span>Назва</span>
+                    <SortButton />
+                </div>
+            ),
             dataIndex: 'title',
             key: 'title',
             width: '30%',

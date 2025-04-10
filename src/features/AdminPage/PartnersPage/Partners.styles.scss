@@ -24,8 +24,6 @@
     .partners-page-container{
         @include mut.sized(80%);
 
-        margin-left: 0.75rem;
-
         display: flex;
         flex-direction: column;
 
