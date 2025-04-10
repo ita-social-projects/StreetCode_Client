@@ -1,11 +1,14 @@
 import './ContextMainPage.style.scss';
 
 import { observer } from 'mobx-react-lite';
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import { DeleteOutlined, DownOutlined, EditOutlined } from '@ant-design/icons';
 import BUTTON_LABELS from '@constants/buttonLabels';
 import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
 import ContextAdminModalComponent from '@features/AdminPage/ContextPage/ContextModal/ContextAdminModal.component';
+import SortButton from '@features/AdminPage/SortButton/SortButton';
+import SortData from '@features/AdminPage/SortButton/SortLogic';
+import useSortDirection from '@features/AdminPage/SortButton/useSortDirection';
 import useMobx, { useModalContext } from '@stores/root-store';
 import { useQuery } from '@tanstack/react-query';
 
@@ -65,9 +68,22 @@ const ContextMainPage: React.FC = observer(() => {
         );
     };
 
+    const dataSource = contextStore.getContextArray;
+
+    const { sortDirection, toggleSort } = useSortDirection();
+    const sortedData = useMemo(
+        () => SortData<Context>(dataSource, sortDirection, (itemToCompare: Context) => itemToCompare?.title),
+        [dataSource, sortDirection],
+    );
+
     const columns: ColumnsType<Context> = [
         {
-            title: 'Назва',
+            title: (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span>Назва</span>
+                    <SortButton sortOnClick={toggleSort} />
+                </div>
+            ),
             dataIndex: 'title',
             key: 'title',
             render(value) {
@@ -118,7 +134,7 @@ const ContextMainPage: React.FC = observer(() => {
                     pagination={false}
                     className="partners-table"
                     columns={columns}
-                    dataSource={contextStore.getContextArray || []}
+                    dataSource={sortedData || []}
                     rowKey="id"
                     locale={{
                         emptyText: isLoading ? (

@@ -1,20 +1,25 @@
 import './CategoriesPage.style.scss';
 
 import { observer } from 'mobx-react-lite';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { DeleteOutlined, DownOutlined, EditOutlined } from '@ant-design/icons';
 import BUTTON_LABELS from '@constants/buttonLabels';
 import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
+import SortButton from '@features/AdminPage/SortButton/SortButton';
+import SortData from '@features/AdminPage/SortButton/SortLogic';
+import useSortDirection from '@features/AdminPage/SortButton/useSortDirection';
 import ImageStore from '@stores/image-store';
 import useMobx, { useModalContext } from '@stores/root-store';
 import { useQuery } from '@tanstack/react-query';
 
-import { Button, Dropdown, Empty, Pagination, Space } from 'antd';
+import {
+    Button, Dropdown, Empty, Pagination, Space,
+} from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Image from '@/models/media/image.model';
-import { SourceCategoryAdmin } from '@/models/sources/sources.model';
+import { SourceCategory, SourceCategoryAdmin } from '@/models/sources/sources.model';
 
 import CategoryAdminModal from './CategoriesPage/CategoryAdminModal.component';
 
@@ -88,9 +93,26 @@ const CategoriesMainPage: React.FC = observer(() => {
         );
     };
 
+    const dataSource = sourcesStore.getSrcCategoriesArray;
+
+    const { sortDirection, toggleSort } = useSortDirection();
+    const sortedData = useMemo(
+        () => SortData<SourceCategory>(
+            dataSource,
+            sortDirection,
+            (itemToCompare: SourceCategory) => itemToCompare?.title,
+        ),
+        [dataSource, sortDirection],
+    );
+
     const columns: ColumnsType<SourceCategoryAdmin> = [
         {
-            title: 'Назва',
+            title: (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span>Назва</span>
+                    <SortButton sortOnClick={toggleSort} />
+                </div>
+            ),
             dataIndex: 'title',
             key: 'title',
             render(value) {
@@ -158,7 +180,7 @@ const CategoriesMainPage: React.FC = observer(() => {
                     pagination={false}
                     className="categories-table"
                     columns={columns}
-                    dataSource={sourcesStore.getSrcCategoriesArray || []}
+                    dataSource={sortedData || []}
                     rowKey="id"
                     locale={{
                         emptyText: isLoading ? (

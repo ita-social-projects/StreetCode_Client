@@ -204,7 +204,7 @@ const StreetcodesTable = () => {
     const columnsNames = [
         {
             title: (
-                <div style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <span>Назва</span>
                     <SortButton sortOnClick={toggleSort} />
                 </div>

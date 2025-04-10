@@ -1,7 +1,7 @@
 import './TeamPositionsMainPage.style.scss';
 
 import { observer } from 'mobx-react-lite';
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import { DeleteOutlined, DownOutlined, EditOutlined } from '@ant-design/icons';
 import BUTTON_LABELS from '@constants/buttonLabels';
 import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
@@ -14,6 +14,9 @@ import Table, { ColumnsType } from 'antd/es/table';
 import Position from '@/models/additional-content/teampositions.model';
 
 import TeamPositionsAdminModal from './TeamPositionsModal/TeamPositionsAdminModal.component';
+import useSortDirection from "@features/AdminPage/SortButton/useSortDirection";
+import SortData from "@features/AdminPage/SortButton/SortLogic";
+import SortButton from "@features/AdminPage/SortButton/SortButton";
 
 const TeamPositionsMainPage: React.FC = observer(() => {
     const { modalStore } = useModalContext();
@@ -66,9 +69,22 @@ const TeamPositionsMainPage: React.FC = observer(() => {
         );
     };
 
+    const dataSource = teamPositionsStore.getPositionsArray;
+
+    const { sortDirection, toggleSort } = useSortDirection();
+    const sortedData = useMemo(
+        () => SortData<Position>(dataSource, sortDirection, (itemToCompare: Position) => itemToCompare?.position),
+        [dataSource, sortDirection],
+    );
+
     const columns: ColumnsType<Position> = [
         {
-            title: 'Назва',
+            title: (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span>Назва</span>
+                    <SortButton sortOnClick={toggleSort} />
+                </div>
+            ),
             dataIndex: 'position',
             key: 'position',
             render(value, record) {
@@ -119,7 +135,7 @@ const TeamPositionsMainPage: React.FC = observer(() => {
                     pagination={false}
                     className="positions-table"
                     columns={columns}
-                    dataSource={teamPositionsStore.getPositionsArray || []}
+                    dataSource={sortedData || []}
                     rowKey="id"
                     locale={{
                         emptyText: isLoading ? (

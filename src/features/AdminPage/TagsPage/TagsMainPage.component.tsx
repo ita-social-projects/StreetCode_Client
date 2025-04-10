@@ -1,14 +1,19 @@
 import './TagsMainPage.style.scss';
 
 import { observer } from 'mobx-react-lite';
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import { DeleteOutlined, DownOutlined, EditOutlined } from '@ant-design/icons';
 import BUTTON_LABELS from '@constants/buttonLabels';
 import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
+import SortButton from '@features/AdminPage/SortButton/SortButton';
+import SortData from '@features/AdminPage/SortButton/SortLogic';
+import useSortDirection from '@features/AdminPage/SortButton/useSortDirection';
 import useMobx, { useModalContext } from '@stores/root-store';
 import { useQuery } from '@tanstack/react-query';
 
-import { Button, Dropdown, Empty, Pagination, Space } from 'antd';
+import {
+    Button, Dropdown, Empty, Pagination, Space,
+} from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 
 import Tag from '@/models/additional-content/tag.model';
@@ -66,9 +71,22 @@ const TagsMainPage: React.FC = observer(() => {
         );
     };
 
+    const dataSource = tagsStore.getAllTagsArray;
+
+    const { sortDirection, toggleSort } = useSortDirection();
+    const sortedData = useMemo(
+        () => SortData<Tag>(dataSource, sortDirection, (itemToCompare: Tag) => itemToCompare?.title),
+        [dataSource, sortDirection],
+    );
+
     const columns: ColumnsType<Tag> = [
         {
-            title: 'Назва',
+            title: (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span>Назва</span>
+                    <SortButton sortOnClick={toggleSort} />
+                </div>
+            ),
             dataIndex: 'title',
             key: 'title',
             render(value, record) {
@@ -119,7 +137,7 @@ const TagsMainPage: React.FC = observer(() => {
                     pagination={false}
                     className="tags-table"
                     columns={columns}
-                    dataSource={tagsStore.getAllTagsArray || []}
+                    dataSource={sortedData || []}
                     rowKey="id"
                     locale={{
                         emptyText: isLoading ? (
