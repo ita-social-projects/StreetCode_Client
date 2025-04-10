@@ -1,14 +1,15 @@
 import './SearchMenu.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
     BarChartOutlined, DeleteOutlined, DownOutlined, EditOutlined, RollbackOutlined,
 } from '@ant-design/icons';
-
 import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
-
+import SortButton from '@features/AdminPage/SortButton/SortButton';
+import SortData from '@features/AdminPage/SortButton/SortLogic';
+import useSortDirection from '@features/AdminPage/SortButton/useSortDirection';
 import sortOptions from '@features/AdminPage/StreetcodesTable/constants/sortOptions';
 import STREETCODE_STATES from '@features/AdminPage/StreetcodesTable/constants/streetcodeStates';
 import { format } from 'date-fns';
@@ -27,7 +28,6 @@ import GetAllStreetcodesRequest from '@/models/streetcode/getAllStreetcodes.requ
 
 import { formatDate } from './FormatDateAlgorithm';
 import SearchMenu from './SearchMenu.component';
-import DropdownButton from 'antd/es/dropdown/dropdown-button';
 
 function convertUTCDateToLocalDate(date :Date) {
     const newDate = new Date(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
@@ -59,6 +59,16 @@ const StreetcodesTable = () => {
         Sort: sortOptions.UpdatedAtDesc,
         Filter: null,
     };
+
+    const { sortDirection, toggleSort } = useSortDirection();
+    const sortedData = useMemo(
+        () => SortData<MapedStreetCode>(
+            mapedStreetCodes,
+            sortDirection,
+            (itemToCompare: MapedStreetCode) => itemToCompare?.name,
+        ),
+        [mapedStreetCodes, sortDirection],
+    );
 
     const [requestGetAll, setRequestGetAll] = useState<GetAllStreetcodesRequest>(requestDefault);
 
@@ -193,7 +203,12 @@ const StreetcodesTable = () => {
     };
     const columnsNames = [
         {
-            title: 'Назва',
+            title: (
+                <div style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
+                    <span>Назва</span>
+                    <SortButton sortOnClick={toggleSort} />
+                </div>
+            ),
             dataIndex: 'name',
             width: '18%',
             key: 'name',
@@ -345,7 +360,7 @@ const StreetcodesTable = () => {
             <div>
                 <Table
                     columns={columnsNames}
-                    dataSource={isLoading ? [] : mapedStreetCodes}
+                    dataSource={isLoading ? [] : sortedData}
                     pagination={false}
                     locale={{
                         emptyText: isLoading ? (

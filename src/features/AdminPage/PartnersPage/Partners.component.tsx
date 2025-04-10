@@ -104,8 +104,8 @@ const Partners: React.FC = observer(() => {
     };
 
     const dataSource = partnersStore.getPartnerArray || [];
-    const { sortDirection, toggleSort } = useSortDirection();
 
+    const { sortDirection, toggleSort } = useSortDirection();
     const sortedData = useMemo(
         () => SortData<Partner>(dataSource, sortDirection, (itemToCompare: Partner) => itemToCompare?.title),
         [dataSource, sortDirection],
