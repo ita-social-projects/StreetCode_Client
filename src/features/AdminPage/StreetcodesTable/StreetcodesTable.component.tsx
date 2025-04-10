@@ -357,7 +357,7 @@ const StreetcodesTable = () => {
     return (
         <div className="StreetcodeTableWrapper">
             <SearchMenu setStatus={setStatusRequest} setTitle={setTitleRequest} setRequest={setRequest} />
-            <div>
+            <div className='ScrollableTableContainer'>
                 <Table
                     columns={columnsNames}
                     dataSource={isLoading ? [] : sortedData}
