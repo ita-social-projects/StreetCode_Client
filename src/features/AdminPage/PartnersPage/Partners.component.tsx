@@ -2,7 +2,7 @@ import './Partners.styles.scss';
 
 import { runInAction } from 'mobx';
 import { observer } from 'mobx-react-lite';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { DeleteOutlined, DownOutlined, EditOutlined, StarOutlined } from '@ant-design/icons';
 import facebook from '@assets/images/partners/facebook.svg';
 import instagram from '@assets/images/partners/instagram.svg';
@@ -10,13 +10,15 @@ import twitter from '@assets/images/partners/twitterNew.svg';
 import youtube from '@assets/images/partners/youtube.svg';
 import BUTTON_LABELS from '@constants/buttonLabels';
 import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
+import SortButton, { SortDirection } from '@features/AdminPage/PartnersPage/SortButton';
 import ImageStore from '@stores/image-store';
 import useMobx, { useModalContext } from '@stores/root-store';
 import { useQuery } from '@tanstack/react-query';
 
-import { Button, Dropdown, Empty, Pagination, Space } from 'antd';
+import {
+    Button, Dropdown, Empty, Pagination, Space,
+} from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
-import SortButton from '@features/AdminPage/PartnersPage/SortButton';
 
 import PartnersApi from '@/app/api/partners/partners.api';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
@@ -99,12 +101,43 @@ const Partners: React.FC = observer(() => {
         );
     };
 
+    const dataSource = partnersStore.getPartnerArray || [];
+
+    const [sortDirection, setSortDirection] = useState<SortDirection>(SortDirection.Unsorted);
+    const [sortedPartners, setSortedPartners] = useState(partnersStore.getPartnerArray || []);
+
+    const sortOnClick = () => {
+        setSortDirection((prev) => {
+            if (prev === SortDirection.Unsorted) return SortDirection.Ascend;
+            if (prev === SortDirection.Ascend) return SortDirection.Descend;
+            return SortDirection.Unsorted;
+        });
+    };
+
+    const sortedData = useMemo(() => {
+        if (sortDirection === SortDirection.Unsorted) return partnersStore.getPartnerArray || [];
+
+        const sortedArray = [...(partnersStore.getPartnerArray || [])];
+
+        sortedArray.sort((a, b) => {
+            if (sortDirection === SortDirection.Ascend) {
+                return a.title.localeCompare(b.title);
+            }
+            if (sortDirection === SortDirection.Descend) {
+                return b.title.localeCompare(a.title);
+            }
+            return 0;
+        });
+
+        return sortedArray;
+    }, [partnersStore.getPartnerArray, sortDirection]);
+
     const columns: ColumnsType<Partner> = [
         {
             title: (
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <span>Назва</span>
-                    <SortButton />
+                    <SortButton sortOnClick={sortOnClick} />
                 </div>
             ),
             dataIndex: 'title',
@@ -216,7 +249,7 @@ const Partners: React.FC = observer(() => {
                     pagination={false}
                     className="partners-table"
                     columns={columns}
-                    dataSource={partnersStore.getPartnerArray || []}
+                    dataSource={sortedData}
                     rowKey="id"
                     locale={{
                         emptyText: isLoading ? (
