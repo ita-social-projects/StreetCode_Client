@@ -13,6 +13,10 @@
   }
   .contexts-page-container{
     @include mut.sized(100%);
+    
+    .partners-table{
+      @include mut.admin-page-table-scroller();
+    }
 
     .tags-table-logo{
       max-width: 90%;

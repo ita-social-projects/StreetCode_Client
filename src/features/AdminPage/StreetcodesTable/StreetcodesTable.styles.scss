@@ -5,7 +5,7 @@
 
 .StreetcodeTableWrapper {
     @include mut.sized(81%);
-    overflow: hidden;
+    overflow: visible;
     float: right;
 
     .ScrollableTableContainer{

@@ -25,6 +25,7 @@
             @include mut.flexed(row, start,space-between, wrap, 4px);
         }
         .team-table{
+            @include mut.admin-page-table-scroller();
             margin-top: f.pxToRem(20px);
         }
         .team-table-item-name{

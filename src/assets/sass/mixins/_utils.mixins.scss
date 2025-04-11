@@ -220,13 +220,20 @@
   &::-webkit-scrollbar-track {
     border: 2px solid #f4f4f4;
     border-radius: 8px;
-    background-color: #ffffff;
+    background-color: #f4f4f4;
   }
 
   &::-webkit-scrollbar-thumb {
     border: 2px solid #f4f4f4;
     border-radius: 8px;
-    background-color: #f4f4f4;
+    background-color: #9f9f9fa4;
+  }
+
+  thead > tr > th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: white !important;
   }
 }
 // --------------------------Text----------------------------------

@@ -28,6 +28,7 @@
       @include mut.flexed(row, start,space-between, wrap, 4px);
     }
     .positions-table{
+      @include mut.admin-page-table-scroller();
       margin-top: f.pxToRem(20px);
     }
     .position-table-item-name{

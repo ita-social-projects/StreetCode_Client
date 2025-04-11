@@ -3,6 +3,11 @@
 @use "@sass/variables/_variables.colors.scss" as c;
 @use "@sass/_utils.functions.scss" as f;
 
+.wrapper{
+    display: flex;
+    gap: f.pxToRem(28px);
+}
+
 .termDictionaryCover {
     @include mut.admin-page-base-layout();
     .wrapper {
@@ -14,20 +19,20 @@
 }
 
 .termDictionaryContainer {
-    @include mut.sized(84%);
+    @include mut.sized(81%);
     display: flex;
     flex-direction: column;
-    gap: f.pxToRem(10px);
+    gap: f.pxToRem(20px);
 
     .dictionaryHeader {
         display: grid;
-        grid-template-columns: 80% 15%;
+        grid-template-columns: 81% 15%;
         margin-bottom: f.pxToRem(40px);
         padding: 0 f.pxToRem(28px);
     }
 
     .termTable {
-        padding: 0 f.pxToRem(28px);
+        @include mut.admin-page-table-scroller();
     }
 }
     

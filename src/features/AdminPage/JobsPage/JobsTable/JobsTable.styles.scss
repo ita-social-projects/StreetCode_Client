@@ -1,6 +1,8 @@
 @use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/mixins/_utils.mixins.scss" as mut;
 
 .job-table {
+    @include mut.admin-page-table-scroller();
     .ant-btn-primary:disabled {
         background-color: c.$lighter-gray-color;
         color: c.$pure-white-color;
