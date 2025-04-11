@@ -14,15 +14,16 @@
         @include mut.sized(81%);
 
         .team-table-logo{
+            display: block; 
             height: f.pxToRem(40px);
-            margin: 0;
+            margin: 0 auto;
             padding: 0
         }
         .team-page-actions{
-            @include mut.flexed(row, start,space-between);
+            @include mut.flexed(row, center, center, nowrap, 4px);
         }
         .team-links{
-            @include mut.flexed(row, start,space-between, wrap, 4px);
+            @include mut.flexed(row, center, center, nowrap, 4px);
         }
         .team-table{
             @include mut.admin-page-table-scroller();

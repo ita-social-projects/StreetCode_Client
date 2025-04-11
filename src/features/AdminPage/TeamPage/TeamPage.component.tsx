@@ -116,6 +116,7 @@ const TeamPage = () => {
             ),
             dataIndex: 'name',
             key: 'name',
+            width: '20%',
             render(value, record) {
                 return (
                     <div key={`${value}${record.id}`} className="team-table-item-name">
@@ -131,6 +132,7 @@ const TeamPage = () => {
             title: 'Позиція',
             dataIndex: 'positions',
             key: 'positions',
+            width: '20%',
             render(value, record) {
                 return (
                     <div key={`${value}${record.id}`} className="team-table-item-name">
@@ -146,6 +148,7 @@ const TeamPage = () => {
             title: 'Опис',
             dataIndex: 'description',
             key: 'description',
+            width: '28%',
             render(value, record) {
                 return (
                     <div key={`${value}${record.id}`} className="team-table-item-name">
@@ -158,6 +161,7 @@ const TeamPage = () => {
             title: 'Фото',
             dataIndex: 'image',
             key: 'image',
+            width: '7%',
             onCell: () => ({
                 style: { padding: '0', margin: '0' },
             }),
@@ -167,7 +171,8 @@ const TeamPage = () => {
             title: 'Соц. мережі',
             dataIndex: 'teamMemberLinks',
             key: 'teamMemberLinks',
-            width: '8%',
+            width: '15%',
+            align: 'center',
             render: (links: TeamMemberLink[], team) => (
                 <div key={`${links.length}${team.id}${team.imageId}`} className="team-links">
                     {links.map((link) => {
@@ -191,7 +196,8 @@ const TeamPage = () => {
             title: 'Дії',
             dataIndex: 'action',
             key: 'action',
-            width: '5%',
+            width: '10%',
+            align: 'center',
             render: (value, team, index) => (
                 <div key={`${team.id}${index}`} className="team-page-actions">
                     <DeleteOutlined
