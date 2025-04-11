@@ -208,6 +208,27 @@
   gap: f.pxToRem(28px);
   background-color: #f8f8f8;
 }
+
+@mixin admin-page-table-scroller() {
+  max-height: 77vh;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    border: 2px solid #f4f4f4;
+    border-radius: 8px;
+    background-color: #ffffff;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border: 2px solid #f4f4f4;
+    border-radius: 8px;
+    background-color: #f4f4f4;
+  }
+}
 // --------------------------Text----------------------------------
 @mixin withLineHeight($line-height){
   line-height:f.pxToRem($line-height);

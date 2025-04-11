@@ -28,7 +28,7 @@
             @include mut.flexed(row, start,space-between, wrap, 4px);
         }
         .categories-table{
-            margin-top: f.pxToRem(20px);
+            @include mut.admin-page-table-scroller();
         }
         .category-table-item-name{
             @include mut.flexed(row, start,flex-start, wrap, 4px);
@@ -36,7 +36,6 @@
         .site-link{
             word-break: break-all
         }
-        
         .underTableElement {
             padding-bottom: 10px;
         }

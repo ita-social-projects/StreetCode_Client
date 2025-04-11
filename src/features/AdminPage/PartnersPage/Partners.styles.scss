@@ -41,6 +41,7 @@
             @include mut.flexed(row, start,space-between, wrap, 4px);
         }
         .partners-table{
+            @include mut.admin-page-table-scroller();
             margin-top: f.pxToRem(20px);
         }
         .partner-table-item-name{
