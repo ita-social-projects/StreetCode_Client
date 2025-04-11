@@ -17,6 +17,7 @@ import TeamPositionsAdminModal from './TeamPositionsModal/TeamPositionsAdminModa
 import useSortDirection from "@features/AdminPage/SortButton/useSortDirection";
 import SortData from "@features/AdminPage/SortButton/SortLogic";
 import SortButton from "@features/AdminPage/SortButton/SortButton";
+import {StringComparator} from "@features/AdminPage/SortButton/ComparatorImplementations";
 
 const TeamPositionsMainPage: React.FC = observer(() => {
     const { modalStore } = useModalContext();
@@ -73,7 +74,12 @@ const TeamPositionsMainPage: React.FC = observer(() => {
 
     const { sortDirection, toggleSort } = useSortDirection();
     const sortedData = useMemo(
-        () => SortData<Position>(dataSource, sortDirection, (itemToCompare: Position) => itemToCompare?.position),
+        () => SortData<Position, string>(
+            dataSource,
+            sortDirection,
+            (itemToCompare: Position) => itemToCompare?.position,
+            StringComparator,
+        ),
         [dataSource, sortDirection],
     );
 

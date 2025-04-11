@@ -23,6 +23,7 @@ import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Image from '@/models/media/image.model';
 import News from '@/models/news/news.model';
+import {StringComparator} from "@features/AdminPage/SortButton/ComparatorImplementations";
 
 const Newss: React.FC = observer(() => {
     const { modalStore } = useModalContext();
@@ -71,7 +72,12 @@ const Newss: React.FC = observer(() => {
 
     const { sortDirection, toggleSort } = useSortDirection();
     const sortedData = useMemo(
-        () => SortData<News>(dataSource, sortDirection, (itemToCompare: News) => itemToCompare?.title),
+        () => SortData<News, string>(
+            dataSource,
+            sortDirection,
+            (itemToCompare: News) => itemToCompare?.title,
+            StringComparator,
+        ),
         [dataSource, sortDirection],
     );
 

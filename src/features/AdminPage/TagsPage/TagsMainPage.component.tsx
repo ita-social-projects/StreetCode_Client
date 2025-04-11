@@ -19,6 +19,7 @@ import Table, { ColumnsType } from 'antd/es/table';
 import Tag from '@/models/additional-content/tag.model';
 
 import TagAdminModal from './TagsPage/TagAdminModal';
+import {StringComparator} from "@features/AdminPage/SortButton/ComparatorImplementations";
 
 const TagsMainPage: React.FC = observer(() => {
     const { modalStore } = useModalContext();
@@ -75,7 +76,12 @@ const TagsMainPage: React.FC = observer(() => {
 
     const { sortDirection, toggleSort } = useSortDirection();
     const sortedData = useMemo(
-        () => SortData<Tag>(dataSource, sortDirection, (itemToCompare: Tag) => itemToCompare?.title),
+        () => SortData<Tag, string>(
+            dataSource,
+            sortDirection,
+            (itemToCompare: Tag) => itemToCompare?.title,
+            StringComparator,
+        ),
         [dataSource, sortDirection],
     );
 

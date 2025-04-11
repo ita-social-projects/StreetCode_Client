@@ -22,6 +22,7 @@ import Image from '@/models/media/image.model';
 import { SourceCategory, SourceCategoryAdmin } from '@/models/sources/sources.model';
 
 import CategoryAdminModal from './CategoriesPage/CategoryAdminModal.component';
+import {StringComparator} from "@features/AdminPage/SortButton/ComparatorImplementations";
 
 const CategoriesMainPage: React.FC = observer(() => {
     const { modalStore } = useModalContext();
@@ -97,10 +98,11 @@ const CategoriesMainPage: React.FC = observer(() => {
 
     const { sortDirection, toggleSort } = useSortDirection();
     const sortedData = useMemo(
-        () => SortData<SourceCategory>(
+        () => SortData<SourceCategory, string>(
             dataSource,
             sortDirection,
             (itemToCompare: SourceCategory) => itemToCompare?.title,
+            StringComparator,
         ),
         [dataSource, sortDirection],
     );

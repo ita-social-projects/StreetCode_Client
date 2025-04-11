@@ -31,6 +31,7 @@ import Partner, { PartnerSourceLink } from '@/models/partners/partners.model';
 import PageBar from '../PageBar/PageBar.component';
 
 import PartnerModal from './PartnerModal/PartnerModal.component';
+import {StringComparator} from "@features/AdminPage/SortButton/ComparatorImplementations";
 
 const LogoType = [twitter, instagram, facebook, youtube];
 
@@ -107,7 +108,12 @@ const Partners: React.FC = observer(() => {
 
     const { sortDirection, toggleSort } = useSortDirection();
     const sortedData = useMemo(
-        () => SortData<Partner>(dataSource, sortDirection, (itemToCompare: Partner) => itemToCompare?.title),
+        () => SortData<Partner, string>(
+            dataSource,
+            sortDirection,
+            (itemToCompare: Partner) => itemToCompare?.title,
+            StringComparator,
+        ),
         [dataSource, sortDirection],
     );
 

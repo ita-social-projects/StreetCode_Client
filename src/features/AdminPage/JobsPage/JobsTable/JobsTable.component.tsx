@@ -20,6 +20,7 @@ import JobsModalComponent from '../JobsModal/JobsModal.component';
 import useSortDirection from "@features/AdminPage/SortButton/useSortDirection";
 import SortData from "@features/AdminPage/SortButton/SortLogic";
 import SortButton from "@features/AdminPage/SortButton/SortButton";
+import {StringComparator} from "@features/AdminPage/SortButton/ComparatorImplementations";
 
 const JobsTable = observer(() => {
     const { jobsStore } = useMobx();
@@ -111,7 +112,12 @@ const JobsTable = observer(() => {
 
     const { sortDirection, toggleSort } = useSortDirection();
     const sortedData = useMemo(
-        () => SortData<Job>(dataSource, sortDirection, (itemToCompare: Job) => itemToCompare?.title),
+        () => SortData<Job, string>(
+            dataSource,
+            sortDirection,
+            (itemToCompare: Job) => itemToCompare?.title,
+            StringComparator,
+        ),
         [dataSource, sortDirection],
     );
 

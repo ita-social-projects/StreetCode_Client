@@ -24,6 +24,7 @@ import PageBar from '../PageBar/PageBar.component';
 
 import LOGO_ICONS from './TeamModal/constants/logoIcons';
 import TeamModal from './TeamModal/TeamModal.component';
+import {StringComparator} from "@features/AdminPage/SortButton/ComparatorImplementations";
 
 const TeamPage = () => {
     const { teamStore } = useMobx();
@@ -95,7 +96,12 @@ const TeamPage = () => {
 
     const { sortDirection, toggleSort } = useSortDirection();
     const sortedData = useMemo(
-        () => SortData<TeamMember>(dataSource, sortDirection, (itemToCompare: TeamMember) => itemToCompare?.name),
+        () => SortData<TeamMember, string>(
+            dataSource,
+            sortDirection,
+            (itemToCompare: TeamMember) => itemToCompare?.name,
+            StringComparator,
+        ),
         [dataSource, sortDirection],
     );
 

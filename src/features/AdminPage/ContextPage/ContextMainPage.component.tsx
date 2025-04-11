@@ -16,6 +16,7 @@ import { Button, Dropdown, Empty, Pagination, Space } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 
 import Context from '@/models/additional-content/context.model';
+import {StringComparator} from "@features/AdminPage/SortButton/ComparatorImplementations";
 
 const ContextMainPage: React.FC = observer(() => {
     const { modalStore } = useModalContext();
@@ -72,7 +73,12 @@ const ContextMainPage: React.FC = observer(() => {
 
     const { sortDirection, toggleSort } = useSortDirection();
     const sortedData = useMemo(
-        () => SortData<Context>(dataSource, sortDirection, (itemToCompare: Context) => itemToCompare?.title),
+        () => SortData<Context, string>(
+            dataSource,
+            sortDirection,
+            (itemToCompare: Context) => itemToCompare?.title,
+            StringComparator,
+        ),
         [dataSource, sortDirection],
     );
 

@@ -3,6 +3,7 @@ import './TermDictionary.styles.scss';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useMemo, useState } from 'react';
 import { DeleteFilled, DownOutlined, EditFilled } from '@ant-design/icons';
+import { StringComparator } from '@features/AdminPage/SortButton/ComparatorImplementations';
 import SortButton from '@features/AdminPage/SortButton/SortButton';
 import SortData from '@features/AdminPage/SortButton/SortLogic';
 import useSortDirection from '@features/AdminPage/SortButton/useSortDirection';
@@ -103,7 +104,12 @@ const TermDictionary = () => {
 
     const { sortDirection, toggleSort } = useSortDirection();
     const sortedData = useMemo(
-        () => SortData<Term>(data, sortDirection, (itemToCompare: Term) => itemToCompare?.title),
+        () => SortData<Term, string>(
+            data,
+            sortDirection,
+            (itemToCompare: Term) => itemToCompare?.title,
+            StringComparator,
+        ),
         [data, sortDirection],
     );
 

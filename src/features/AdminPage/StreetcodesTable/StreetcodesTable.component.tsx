@@ -7,6 +7,7 @@ import {
     BarChartOutlined, DeleteOutlined, DownOutlined, EditOutlined, RollbackOutlined,
 } from '@ant-design/icons';
 import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
+import { StringComparator } from '@features/AdminPage/SortButton/ComparatorImplementations';
 import SortButton from '@features/AdminPage/SortButton/SortButton';
 import SortData from '@features/AdminPage/SortButton/SortLogic';
 import useSortDirection from '@features/AdminPage/SortButton/useSortDirection';
@@ -62,10 +63,11 @@ const StreetcodesTable = () => {
 
     const { sortDirection, toggleSort } = useSortDirection();
     const sortedData = useMemo(
-        () => SortData<MapedStreetCode>(
+        () => SortData<MapedStreetCode, string>(
             mapedStreetCodes,
             sortDirection,
             (itemToCompare: MapedStreetCode) => itemToCompare?.name,
+            StringComparator,
         ),
         [mapedStreetCodes, sortDirection],
     );
