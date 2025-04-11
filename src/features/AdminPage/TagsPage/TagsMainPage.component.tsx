@@ -1,7 +1,7 @@
 import './TagsMainPage.style.scss';
 
 import { observer } from 'mobx-react-lite';
-import React, {useEffect, useMemo, useState} from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { DeleteOutlined, DownOutlined, EditOutlined } from '@ant-design/icons';
 import BUTTON_LABELS from '@constants/buttonLabels';
 import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
@@ -133,22 +133,24 @@ const TagsMainPage: React.FC = observer(() => {
                         {BUTTON_LABELS.ADD_TAG}
                     </Button>
                 </div>
-                <Table
-                    pagination={false}
-                    className="tags-table"
-                    columns={columns}
-                    dataSource={sortedData || []}
-                    rowKey="id"
-                    locale={{
-                        emptyText: isLoading ? (
-                            <div className="loadingWrapper">
-                                <div id="loadingGif" />
-                            </div>
-                        ) : (
-                            <Empty description="Дані відсутні" />
-                        ),
-                    }}
-                />
+                <div className="ScrollableTableContainer">
+                    <Table
+                        pagination={false}
+                        className="tags-table"
+                        columns={columns}
+                        dataSource={sortedData || []}
+                        rowKey="id"
+                        locale={{
+                            emptyText: isLoading ? (
+                                <div className="loadingWrapper">
+                                    <div id="loadingGif" />
+                                </div>
+                            ) : (
+                                <Empty description="Дані відсутні" />
+                            ),
+                        }}
+                    />
+                </div>
                 <div className="underTableZone">
                     <br />
                     <div className="underTableElement">

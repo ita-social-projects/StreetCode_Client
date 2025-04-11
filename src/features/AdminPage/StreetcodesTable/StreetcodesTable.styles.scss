@@ -17,13 +17,13 @@
         }
 
         &::-webkit-scrollbar-track{
-            border: 1px solid #f4f4f4;
+            border: 2px solid #f4f4f4;
             border-radius: 8px;
             background-color: #ffffff;
         }
 
         &::-webkit-scrollbar-thumb{
-            border: 1px solid #f4f4f4;
+            border: 2px solid #f4f4f4;
             border-radius: 8px;
             background-color: #f4f4f4;
         }
@@ -59,6 +59,10 @@
 
 .ant-table table {
     @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 18px);
+}
+
+.ant-table-tbody>tr{
+    height: 7vh;
 }
 
 .ant-table-tbody>tr>td {
