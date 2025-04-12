@@ -4,7 +4,7 @@ import unsortedSortButton from '@images/admin-panel/sort button default.png';
 import ascendSortButton from '@images/admin-panel/sort button sort1.png';
 import descendSortButton from '@images/admin-panel/sort button sort2.png';
 
-import React, { useState } from 'react';
+import React, {forwardRef, useImperativeHandle, useState} from 'react';
 import { SortDirection } from '@features/AdminPage/SortButton/useSortDirection';
 
 const images = [
@@ -13,31 +13,49 @@ const images = [
     descendSortButton,
 ];
 
+export interface SortButtonHandle {
+    resetImage: () => void;
+    changeImage: (sortDirection: SortDirection) => void;
+}
+
 interface SortButtonProps {
-    previousSortDirection: SortDirection;
     sortOnClick: () => void;
 }
 
-const SortButton: React.FC<SortButtonProps> = ({ previousSortDirection, sortOnClick }) => {
-    const [imageIndex, setImageIndex] = useState(0);
+const SortButton: React.FC<SortButtonProps> = forwardRef<SortButtonHandle, SortButtonProps>(
+    ({ sortOnClick }, ref) => {
+        const [imageIndex, setImageIndex] = useState(0);
 
-    function changeImageOnClick() {
-        setImageIndex(() => (previousSortDirection as number + 1) % images.length);
-    }
+        function resetImage() {
+            setImageIndex(0);
+        }
 
-    return (
-        <div className="sort-button">
-            <button
-                type="button"
-                onClick={() => {
-                    sortOnClick();
-                    changeImageOnClick();
-                }}
-            >
-                <img src={images[imageIndex]} alt="sort button" />
-            </button>
-        </div>
-    );
-};
+        function changeImage(sortDirection: SortDirection) {
+            setImageIndex(() => sortDirection as number);
+        }
 
-export default SortButton;
+        useImperativeHandle(ref, () => ({
+            resetImage,
+            changeImage,
+        }));
+
+        return (
+            <div className="sort-button">
+                <button
+                    type="button"
+                    onClick={() => {
+                        sortOnClick();
+                    }}
+                >
+                    <img src={images[imageIndex]} alt="sort button" />
+                </button>
+            </div>
+        );
+    },
+);
+
+export default React.memo(SortButton) as React.MemoExoticComponent<
+    React.ForwardRefExoticComponent<
+        SortButtonProps & React.RefAttributes<SortButtonHandle>
+    >
+>;

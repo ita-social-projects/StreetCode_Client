@@ -1,7 +1,7 @@
 import './SearchMenu.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
     BarChartOutlined, DeleteOutlined, DownOutlined, EditOutlined, RollbackOutlined,
@@ -11,7 +11,7 @@ import {
     NumberComparator,
     StringComparator,
 } from '@features/AdminPage/SortButton/ComparatorImplementations';
-import SortButton from '@features/AdminPage/SortButton/SortButton';
+import SortButton, { SortButtonHandle } from '@features/AdminPage/SortButton/SortButton';
 import SortData from '@features/AdminPage/SortButton/SortLogic';
 import useSortDirection, { SortDirection } from '@features/AdminPage/SortButton/useSortDirection';
 import sortOptions from '@features/AdminPage/StreetcodesTable/constants/sortOptions';
@@ -66,9 +66,24 @@ const StreetcodesTable = () => {
 
     const { sortDirection, toggleSort, activeKey } = useSortDirection();
 
-    const resetSortButtonImagesOnClick = () => {
-        const buttons = document.querySelectorAll('.sort-button');
+    const sortButtons = {
+        sortByName: useRef<SortButtonHandle>(null),
+        sortByIndex: useRef<SortButtonHandle>(null),
+        sortByAuthor: useRef<SortButtonHandle>(null),
+        sortByDate: useRef<SortButtonHandle>(null),
     };
+
+    const [buttonKey, setButtonKey] = useState<string | null>(null);
+
+    useEffect(() => {
+        Object.entries(sortButtons).forEach(([key, value]) => {
+            if (buttonKey === key) {
+                (value.current as SortButtonHandle).changeImage(sortDirection);
+            } else {
+                (value.current as SortButtonHandle).resetImage();
+            }
+        });
+    }, [sortDirection, buttonKey]);
 
     const sortingDelegates = {
         name: () => SortData<MapedStreetCode, string>(
@@ -77,7 +92,7 @@ const StreetcodesTable = () => {
             (itemToCompare: MapedStreetCode) => itemToCompare?.name,
             StringComparator,
         ),
-        number: () => SortData<MapedStreetCode, number>(
+        index: () => SortData<MapedStreetCode, number>(
             mapedStreetCodes,
             sortDirection,
             (itemToCompare: MapedStreetCode) => itemToCompare?.index,
@@ -244,10 +259,10 @@ const StreetcodesTable = () => {
                 <div className="content-table-title">
                     <span>Назва</span>
                     <SortButton
-                        previousSortDirection={sortDirection}
+                        ref={sortButtons.sortByName}
                         sortOnClick={() => {
                             toggleSort('name');
-                            resetSortButtonImagesOnClick();
+                            setButtonKey('sortByName');
                         }}
                     />
                 </div>
@@ -264,8 +279,11 @@ const StreetcodesTable = () => {
                 <div className="content-table-title">
                     <span>Номер</span>
                     <SortButton
-                        previousSortDirection={sortDirection}
-                        sortOnClick={() => toggleSort('number')}
+                        ref={sortButtons.sortByIndex}
+                        sortOnClick={() => {
+                            toggleSort('index');
+                            setButtonKey('sortByIndex');
+                        }}
                     />
                 </div>
             ),
@@ -299,7 +317,18 @@ const StreetcodesTable = () => {
             ),
         },
         {
-            title: 'Автор',
+            title: (
+                <div className="content-table-title">
+                    <span>Автор</span>
+                    <SortButton
+                        ref={sortButtons.sortByAuthor}
+                        sortOnClick={() => {
+                            toggleSort('author');
+                            setButtonKey('sortByAuthor');
+                        }}
+                    />
+                </div>
+            ),
             dataIndex: 'author',
             key: 'author',
             width: '18%',
@@ -308,7 +337,18 @@ const StreetcodesTable = () => {
             }),
         },
         {
-            title: 'Історія',
+            title: (
+                <div className="content-table-title">
+                    <span>Історія</span>
+                    <SortButton
+                        ref={sortButtons.sortByDate}
+                        sortOnClick={() => {
+                            toggleSort('date');
+                            setButtonKey('sortByDate');
+                        }}
+                    />
+                </div>
+            ),
             dataIndex: 'date',
             key: 'date',
             width: '18%',

@@ -13,8 +13,12 @@ const useSortDirection = () => {
     const toggleSort = (key: string) => {
         if (key === activeKey) {
             setSortDirection((prev) => {
-                if (prev === SortDirection.Unsorted) return SortDirection.Ascend;
-                if (prev === SortDirection.Ascend) return SortDirection.Descend;
+                if (prev === SortDirection.Unsorted) {
+                    return SortDirection.Ascend;
+                }
+                if (prev === SortDirection.Ascend) {
+                    return SortDirection.Descend;
+                }
                 return SortDirection.Unsorted;
             });
         } else {
