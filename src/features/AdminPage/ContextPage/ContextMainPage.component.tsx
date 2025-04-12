@@ -87,7 +87,7 @@ const ContextMainPage: React.FC = observer(() => {
             title: (
                 <div className="content-table-title">
                     <span>Назва</span>
-                    <SortButton sortOnClick={toggleSort} />
+                    <SortButton sortOnClick={() => toggleSort('name')} />
                 </div>
             ),
             dataIndex: 'title',

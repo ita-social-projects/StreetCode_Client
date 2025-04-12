@@ -5,6 +5,7 @@ import ascendSortButton from '@images/admin-panel/sort button sort1.png';
 import descendSortButton from '@images/admin-panel/sort button sort2.png';
 
 import React, { useState } from 'react';
+import { SortDirection } from '@features/AdminPage/SortButton/useSortDirection';
 
 const images = [
     unsortedSortButton,
@@ -13,14 +14,15 @@ const images = [
 ];
 
 interface SortButtonProps {
+    previousSortDirection: SortDirection;
     sortOnClick: () => void;
 }
 
-const SortButton: React.FC<SortButtonProps> = ({ sortOnClick }) => {
+const SortButton: React.FC<SortButtonProps> = ({ previousSortDirection, sortOnClick }) => {
     const [imageIndex, setImageIndex] = useState(0);
 
     function changeImageOnClick() {
-        setImageIndex((prev) => (prev + 1) % images.length);
+        setImageIndex(() => (previousSortDirection as number + 1) % images.length);
     }
 
     return (
@@ -28,8 +30,8 @@ const SortButton: React.FC<SortButtonProps> = ({ sortOnClick }) => {
             <button
                 type="button"
                 onClick={() => {
-                    changeImageOnClick();
                     sortOnClick();
+                    changeImageOnClick();
                 }}
             >
                 <img src={images[imageIndex]} alt="sort button" />

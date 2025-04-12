@@ -7,10 +7,13 @@ import {
     BarChartOutlined, DeleteOutlined, DownOutlined, EditOutlined, RollbackOutlined,
 } from '@ant-design/icons';
 import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
-import { StringComparator } from '@features/AdminPage/SortButton/ComparatorImplementations';
+import {
+    NumberComparator,
+    StringComparator,
+} from '@features/AdminPage/SortButton/ComparatorImplementations';
 import SortButton from '@features/AdminPage/SortButton/SortButton';
 import SortData from '@features/AdminPage/SortButton/SortLogic';
-import useSortDirection from '@features/AdminPage/SortButton/useSortDirection';
+import useSortDirection, { SortDirection } from '@features/AdminPage/SortButton/useSortDirection';
 import sortOptions from '@features/AdminPage/StreetcodesTable/constants/sortOptions';
 import STREETCODE_STATES from '@features/AdminPage/StreetcodesTable/constants/streetcodeStates';
 import { format } from 'date-fns';
@@ -61,15 +64,47 @@ const StreetcodesTable = () => {
         Filter: null,
     };
 
-    const { sortDirection, toggleSort } = useSortDirection();
-    const sortedData = useMemo(
-        () => SortData<MapedStreetCode, string>(
+    const { sortDirection, toggleSort, activeKey } = useSortDirection();
+
+    const resetSortButtonImagesOnClick = () => {
+        const buttons = document.querySelectorAll('.sort-button');
+    };
+
+    const sortingDelegates = {
+        name: () => SortData<MapedStreetCode, string>(
             mapedStreetCodes,
             sortDirection,
             (itemToCompare: MapedStreetCode) => itemToCompare?.name,
             StringComparator,
         ),
-        [mapedStreetCodes, sortDirection],
+        number: () => SortData<MapedStreetCode, number>(
+            mapedStreetCodes,
+            sortDirection,
+            (itemToCompare: MapedStreetCode) => itemToCompare?.index,
+            NumberComparator,
+        ),
+        author: () => SortData<MapedStreetCode, string>(
+            mapedStreetCodes,
+            sortDirection,
+            (itemToCompare: MapedStreetCode) => itemToCompare?.author,
+            StringComparator,
+        ),
+        date: () => SortData<MapedStreetCode, string>(
+            mapedStreetCodes,
+            sortDirection,
+            (itemToCompare: MapedStreetCode) => itemToCompare?.date,
+            StringComparator,
+        ),
+    };
+
+    const sortedData = useMemo(
+        () => {
+            if (activeKey && activeKey in sortingDelegates) {
+                return sortingDelegates[activeKey as keyof typeof sortingDelegates]();
+            }
+            return mapedStreetCodes;
+        },
+        [mapedStreetCodes, sortDirection, activeKey, sortingDelegates],
     );
 
     const [requestGetAll, setRequestGetAll] = useState<GetAllStreetcodesRequest>(requestDefault);
@@ -208,7 +243,13 @@ const StreetcodesTable = () => {
             title: (
                 <div className="content-table-title">
                     <span>Назва</span>
-                    <SortButton sortOnClick={toggleSort} />
+                    <SortButton
+                        previousSortDirection={sortDirection}
+                        sortOnClick={() => {
+                            toggleSort('name');
+                            resetSortButtonImagesOnClick();
+                        }}
+                    />
                 </div>
             ),
             dataIndex: 'name',
@@ -219,7 +260,15 @@ const StreetcodesTable = () => {
             }),
         },
         {
-            title: 'Номер',
+            title: (
+                <div className="content-table-title">
+                    <span>Номер</span>
+                    <SortButton
+                        previousSortDirection={sortDirection}
+                        sortOnClick={() => toggleSort('number')}
+                    />
+                </div>
+            ),
             dataIndex: 'index',
             width: '18%',
             key: 'index',
