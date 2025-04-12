@@ -2,7 +2,7 @@ import './Partners.styles.scss';
 
 import { runInAction } from 'mobx';
 import { observer } from 'mobx-react-lite';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { DeleteOutlined, DownOutlined, EditOutlined, StarOutlined } from '@ant-design/icons';
 import facebook from '@assets/images/partners/facebook.svg';
 import instagram from '@assets/images/partners/instagram.svg';
@@ -10,7 +10,8 @@ import twitter from '@assets/images/partners/twitterNew.svg';
 import youtube from '@assets/images/partners/youtube.svg';
 import BUTTON_LABELS from '@constants/buttonLabels';
 import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
-import SortButton from '@features/AdminPage/SortButton/SortButton';
+import { StringComparator } from '@features/AdminPage/SortButton/ComparatorImplementations';
+import SortButton, { SortButtonHandle } from '@features/AdminPage/SortButton/SortButton';
 import SortData from '@features/AdminPage/SortButton/SortLogic';
 import useSortDirection from '@features/AdminPage/SortButton/useSortDirection';
 import ImageStore from '@stores/image-store';
@@ -31,7 +32,6 @@ import Partner, { PartnerSourceLink } from '@/models/partners/partners.model';
 import PageBar from '../PageBar/PageBar.component';
 
 import PartnerModal from './PartnerModal/PartnerModal.component';
-import {StringComparator} from "@features/AdminPage/SortButton/ComparatorImplementations";
 
 const LogoType = [twitter, instagram, facebook, youtube];
 
@@ -107,6 +107,22 @@ const Partners: React.FC = observer(() => {
     const dataSource = partnersStore.getPartnerArray || [];
 
     const { sortDirection, toggleSort } = useSortDirection();
+    const [buttonKey, setButtonKey] = useState<string | null>(null);
+
+    const sortButtons = {
+        sortByName: useRef<SortButtonHandle>(null),
+    };
+
+    useEffect(() => {
+        Object.entries(sortButtons).forEach(([key, value]) => {
+            if (buttonKey === key) {
+                (value.current as SortButtonHandle).changeImage(sortDirection);
+            } else {
+                (value.current as SortButtonHandle).resetImage();
+            }
+        });
+    }, [sortDirection, buttonKey]);
+
     const sortedData = useMemo(
         () => SortData<Partner, string>(
             dataSource,
@@ -122,7 +138,13 @@ const Partners: React.FC = observer(() => {
             title: (
                 <div className="content-table-title">
                     <span>Назва</span>
-                    <SortButton sortOnClick={toggleSort} />
+                    <SortButton
+                        ref={sortButtons.sortByName}
+                        sortOnClick={() => {
+                            toggleSort('name');
+                            setButtonKey('sortByName');
+                        }}
+                    />
                 </div>
             ),
             dataIndex: 'title',

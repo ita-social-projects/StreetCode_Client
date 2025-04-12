@@ -1,22 +1,24 @@
 import './ContextMainPage.style.scss';
 
 import { observer } from 'mobx-react-lite';
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import { DeleteOutlined, DownOutlined, EditOutlined } from '@ant-design/icons';
 import BUTTON_LABELS from '@constants/buttonLabels';
 import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
 import ContextAdminModalComponent from '@features/AdminPage/ContextPage/ContextModal/ContextAdminModal.component';
-import SortButton from '@features/AdminPage/SortButton/SortButton';
+import { StringComparator } from '@features/AdminPage/SortButton/ComparatorImplementations';
+import SortButton, {SortButtonHandle} from '@features/AdminPage/SortButton/SortButton';
 import SortData from '@features/AdminPage/SortButton/SortLogic';
 import useSortDirection from '@features/AdminPage/SortButton/useSortDirection';
 import useMobx, { useModalContext } from '@stores/root-store';
 import { useQuery } from '@tanstack/react-query';
 
-import { Button, Dropdown, Empty, Pagination, Space } from 'antd';
+import {
+    Button, Dropdown, Empty, Pagination, Space,
+} from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 
 import Context from '@/models/additional-content/context.model';
-import {StringComparator} from "@features/AdminPage/SortButton/ComparatorImplementations";
 
 const ContextMainPage: React.FC = observer(() => {
     const { modalStore } = useModalContext();
@@ -72,6 +74,23 @@ const ContextMainPage: React.FC = observer(() => {
     const dataSource = contextStore.getContextArray;
 
     const { sortDirection, toggleSort } = useSortDirection();
+
+    const sortButtons = {
+        sortByName: useRef<SortButtonHandle>(null),
+    };
+
+    const [buttonKey, setButtonKey] = useState<string | null>(null);
+
+    useEffect(() => {
+        Object.entries(sortButtons).forEach(([key, value]) => {
+            if (buttonKey === key) {
+                (value.current as SortButtonHandle).changeImage(sortDirection);
+            } else {
+                (value.current as SortButtonHandle).resetImage();
+            }
+        });
+    }, [sortDirection, buttonKey]);
+
     const sortedData = useMemo(
         () => SortData<Context, string>(
             dataSource,
@@ -87,7 +106,13 @@ const ContextMainPage: React.FC = observer(() => {
             title: (
                 <div className="content-table-title">
                     <span>Назва</span>
-                    <SortButton sortOnClick={() => toggleSort('name')} />
+                    <SortButton
+                        ref={sortButtons.sortByName}
+                        sortOnClick={() => {
+                            toggleSort('name');
+                            setButtonKey('sortByName');
+                        }}
+                    />
                 </div>
             ),
             dataIndex: 'title',

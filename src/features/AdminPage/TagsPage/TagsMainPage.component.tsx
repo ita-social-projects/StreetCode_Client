@@ -1,11 +1,11 @@
 import './TagsMainPage.style.scss';
 
 import { observer } from 'mobx-react-lite';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import { DeleteOutlined, DownOutlined, EditOutlined } from '@ant-design/icons';
 import BUTTON_LABELS from '@constants/buttonLabels';
 import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
-import SortButton from '@features/AdminPage/SortButton/SortButton';
+import SortButton, {SortButtonHandle} from '@features/AdminPage/SortButton/SortButton';
 import SortData from '@features/AdminPage/SortButton/SortLogic';
 import useSortDirection from '@features/AdminPage/SortButton/useSortDirection';
 import useMobx, { useModalContext } from '@stores/root-store';
@@ -75,6 +75,23 @@ const TagsMainPage: React.FC = observer(() => {
     const dataSource = tagsStore.getAllTagsArray;
 
     const { sortDirection, toggleSort } = useSortDirection();
+
+    const sortButtons = {
+        sortByName: useRef<SortButtonHandle>(null),
+    };
+
+    const [buttonKey, setButtonKey] = useState<string | null>(null);
+
+    useEffect(() => {
+        Object.entries(sortButtons).forEach(([key, value]) => {
+            if (buttonKey === key) {
+                (value.current as SortButtonHandle).changeImage(sortDirection);
+            } else {
+                (value.current as SortButtonHandle).resetImage();
+            }
+        });
+    }, [sortDirection, buttonKey]);
+
     const sortedData = useMemo(
         () => SortData<Tag, string>(
             dataSource,
@@ -90,7 +107,13 @@ const TagsMainPage: React.FC = observer(() => {
             title: (
                 <div className="content-table-title">
                     <span>Назва</span>
-                    <SortButton sortOnClick={toggleSort} />
+                    <SortButton
+                        ref={sortButtons.sortByName}
+                        sortOnClick={() => {
+                            toggleSort('name');
+                            setButtonKey('sortByName');
+                        }}
+                    />
                 </div>
             ),
             dataIndex: 'title',

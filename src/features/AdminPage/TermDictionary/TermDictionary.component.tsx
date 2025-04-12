@@ -1,10 +1,10 @@
 import './TermDictionary.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { DeleteFilled, DownOutlined, EditFilled } from '@ant-design/icons';
 import { StringComparator } from '@features/AdminPage/SortButton/ComparatorImplementations';
-import SortButton from '@features/AdminPage/SortButton/SortButton';
+import SortButton, { SortButtonHandle } from '@features/AdminPage/SortButton/SortButton';
 import SortData from '@features/AdminPage/SortButton/SortLogic';
 import useSortDirection from '@features/AdminPage/SortButton/useSortDirection';
 import useMobx, { useModalContext } from '@stores/root-store';
@@ -20,13 +20,12 @@ import { Term } from '@/models/streetcode/text-contents.model';
 
 const PaginationSelect = ({ selected, onChange }) => {
     const paginationItems = useMemo(
-        () =>
-            [10, 25, 50].map((value) => ({
-                key: value.toString(),
-                label: value.toString(),
-                onClick: () => onChange(value),
-            })),
-        [onChange]
+        () => [10, 25, 50].map((value) => ({
+            key: value.toString(),
+            label: value.toString(),
+            onClick: () => onChange(value),
+        })),
+        [onChange],
     );
 
     return (
@@ -91,7 +90,7 @@ const TermDictionary = () => {
 
     const handleEdit = (upd: Partial<Term>) => {
         if (upd && upd.id !== undefined) {
-            let term: Term = upd as Term;
+            const term: Term = upd as Term;
             termsStore.updateTerm(upd.id, term);
             setData(data?.map(
                 (t) => (t.id === upd?.id
@@ -103,6 +102,23 @@ const TermDictionary = () => {
     };
 
     const { sortDirection, toggleSort } = useSortDirection();
+
+    const sortButtons = {
+        sortByName: useRef<SortButtonHandle>(null),
+    };
+
+    const [buttonKey, setButtonKey] = useState<string | null>(null);
+
+    useEffect(() => {
+        Object.entries(sortButtons).forEach(([key, value]) => {
+            if (buttonKey === key) {
+                (value.current as SortButtonHandle).changeImage(sortDirection);
+            } else {
+                (value.current as SortButtonHandle).resetImage();
+            }
+        });
+    }, [sortDirection, buttonKey]);
+
     const sortedData = useMemo(
         () => SortData<Term, string>(
             data,
@@ -119,7 +135,13 @@ const TermDictionary = () => {
 
                 <div className="content-table-title">
                     <span>Назва</span>
-                    <SortButton sortOnClick={toggleSort} />
+                    <SortButton
+                        ref={sortButtons.sortByName}
+                        sortOnClick={() => {
+                            toggleSort('name');
+                            setButtonKey('sortByName');
+                        }}
+                    />
                 </div>
             ),
             dataIndex: 'title',

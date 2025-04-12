@@ -2,10 +2,14 @@
 import './JobsTable.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import {useEffect, useMemo, useState} from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { DeleteOutlined, DownOutlined, EditOutlined } from '@ant-design/icons';
 import BUTTON_LABELS from '@constants/buttonLabels';
 import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
+import { StringComparator } from '@features/AdminPage/SortButton/ComparatorImplementations';
+import SortButton, { SortButtonHandle } from '@features/AdminPage/SortButton/SortButton';
+import SortData from '@features/AdminPage/SortButton/SortLogic';
+import useSortDirection from '@features/AdminPage/SortButton/useSortDirection';
 import { useQuery } from '@tanstack/react-query';
 
 import {
@@ -17,10 +21,6 @@ import useMobx, { useModalContext } from '@/app/stores/root-store';
 
 // eslint-disable-next-line no-restricted-imports
 import JobsModalComponent from '../JobsModal/JobsModal.component';
-import useSortDirection from "@features/AdminPage/SortButton/useSortDirection";
-import SortData from "@features/AdminPage/SortButton/SortLogic";
-import SortButton from "@features/AdminPage/SortButton/SortButton";
-import {StringComparator} from "@features/AdminPage/SortButton/ComparatorImplementations";
 
 const JobsTable = observer(() => {
     const { jobsStore } = useMobx();
@@ -111,6 +111,23 @@ const JobsTable = observer(() => {
     const dataSource = jobsStore.getJobsArray;
 
     const { sortDirection, toggleSort } = useSortDirection();
+
+    const sortButtons = {
+        sortByName: useRef<SortButtonHandle>(null),
+    };
+
+    const [buttonKey, setButtonKey] = useState<string | null>(null);
+
+    useEffect(() => {
+        Object.entries(sortButtons).forEach(([key, value]) => {
+            if (buttonKey === key) {
+                (value.current as SortButtonHandle).changeImage(sortDirection);
+            } else {
+                (value.current as SortButtonHandle).resetImage();
+            }
+        });
+    }, [sortDirection, buttonKey]);
+
     const sortedData = useMemo(
         () => SortData<Job, string>(
             dataSource,
@@ -127,7 +144,13 @@ const JobsTable = observer(() => {
 
                 <div className="content-table-title">
                     <span>Назва вакансії</span>
-                    <SortButton sortOnClick={toggleSort} />
+                    <SortButton
+                        ref={sortButtons.sortByName}
+                        sortOnClick={() => {
+                            toggleSort('name');
+                            setButtonKey('sortByName');
+                        }}
+                    />
                 </div>
             ),
             dataIndex: 'title',

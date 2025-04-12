@@ -3,27 +3,29 @@
 import './News.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import React, {useMemo, useState} from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { DeleteOutlined, DownOutlined, EditOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import BUTTON_LABELS from '@constants/buttonLabels';
 import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
 import NewsModal from '@features/AdminPage/NewsPage/NewsModal/NewsModal.component';
 import PageBar from '@features/AdminPage/PageBar/PageBar.component';
-import SortButton from '@features/AdminPage/SortButton/SortButton';
+import { StringComparator } from '@features/AdminPage/SortButton/ComparatorImplementations';
+import SortButton, {SortButtonHandle} from '@features/AdminPage/SortButton/SortButton';
 import SortData from '@features/AdminPage/SortButton/SortLogic';
 import useSortDirection from '@features/AdminPage/SortButton/useSortDirection';
 import useMobx, { useModalContext } from '@stores/root-store';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 
-import { Button, Dropdown, Empty, Pagination, Popover, Space } from 'antd';
+import {
+    Button, Dropdown, Empty, Pagination, Popover, Space,
+} from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Image from '@/models/media/image.model';
 import News from '@/models/news/news.model';
-import {StringComparator} from "@features/AdminPage/SortButton/ComparatorImplementations";
 
 const Newss: React.FC = observer(() => {
     const { modalStore } = useModalContext();
@@ -71,6 +73,23 @@ const Newss: React.FC = observer(() => {
     const dataSource = newsStore.NewsArray;
 
     const { sortDirection, toggleSort } = useSortDirection();
+
+    const sortButtons = {
+        sortByName: useRef<SortButtonHandle>(null),
+    };
+
+    const [buttonKey, setButtonKey] = useState<string | null>(null);
+
+    useEffect(() => {
+        Object.entries(sortButtons).forEach(([key, value]) => {
+            if (buttonKey === key) {
+                (value.current as SortButtonHandle).changeImage(sortDirection);
+            } else {
+                (value.current as SortButtonHandle).resetImage();
+            }
+        });
+    }, [sortDirection, buttonKey]);
+
     const sortedData = useMemo(
         () => SortData<News, string>(
             dataSource,
@@ -86,7 +105,13 @@ const Newss: React.FC = observer(() => {
             title: (
                 <div className="content-table-title">
                     <span>Назва</span>
-                    <SortButton sortOnClick={toggleSort} />
+                    <SortButton
+                        ref={sortButtons.sortByName}
+                        sortOnClick={() => {
+                            toggleSort('name');
+                            setButtonKey('sortByName');
+                        }}
+                    />
                 </div>
             ),
             dataIndex: 'title',
@@ -128,11 +153,12 @@ const Newss: React.FC = observer(() => {
             render: (value: string) => (
                 <div key={value} className="partner-table-item-name">
                     <p>{value ? dayjs(value).format('YYYY-MM-DD') : ''}</p>
-                    {value && dayjs(value).isAfter(dayjs()) &&
-                        <Popover content={"Заплановано"} trigger="hover">
-                            <InfoCircleOutlined className='info-circle-for-planed-content'/>
-                        </Popover>
-                    }
+                    {value && dayjs(value).isAfter(dayjs())
+                        && (
+                            <Popover content="Заплановано" trigger="hover">
+                                <InfoCircleOutlined className="info-circle-for-planed-content" />
+                            </Popover>
+                        )}
                 </div>
             ),
         },
