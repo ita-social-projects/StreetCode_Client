@@ -139,6 +139,7 @@ const CategoriesMainPage: React.FC = observer(() => {
             ),
             dataIndex: 'title',
             key: 'title',
+            width: '70%',
             render(value) {
                 return (
                     <div>
@@ -151,6 +152,7 @@ const CategoriesMainPage: React.FC = observer(() => {
             title: 'Зображення',
             dataIndex: 'image',
             key: 'image',
+            width: '20%',
             onCell: () => ({
                 style: { padding: '0', margin: '0' },
             }),

@@ -22,7 +22,7 @@
     }
     .position-page-actions{
       display: flex;
-      gap: f.pxToRem(30px);
+      gap: f.pxToRem(2px);
     }
     .position-links{
       @include mut.flexed(row, start,space-between, wrap, 4px);

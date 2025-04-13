@@ -155,6 +155,7 @@ const JobsTable = observer(() => {
             ),
             dataIndex: 'title',
             key: 'title',
+            width: '30%',
         },
         {
             title: 'Заробітня плата',
@@ -165,7 +166,7 @@ const JobsTable = observer(() => {
             title: 'Статус',
             dataIndex: 'status',
             key: 'status',
-
+            width: '30%',
             render: (status: boolean, job: JobShort) => (
                 <Dropdown menu={menuProps} trigger={['click']}>
                     <Button onClick={() => setCurrentId(job.id)}>
@@ -181,6 +182,7 @@ const JobsTable = observer(() => {
             title: 'Дії',
             dataIndex: 'id',
             key: 'actions',
+            width: '10%',
             render: (id: number) => (
                 <div className="partner-page-actions">
                     <DeleteOutlined
