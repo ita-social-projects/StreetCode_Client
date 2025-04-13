@@ -116,6 +116,7 @@ const Newss: React.FC = observer(() => {
             ),
             dataIndex: 'title',
             key: 'title',
+            width: '50%',
             render(value, record) {
                 return (
                     <div onClick={() => window.open(`${FRONTEND_ROUTES.OTHER_PAGES.NEWS}/${record.url}`, '_blank')}>
@@ -125,10 +126,10 @@ const Newss: React.FC = observer(() => {
             },
         },
         {
-            title: 'Картинка',
+            title: 'Зображення',
             dataIndex: 'image',
             key: 'image',
-            width: '25%',
+            width: '20%',
             onCell: () => ({
                 style: { padding: '0', margin: '0' },
             }),
@@ -143,7 +144,7 @@ const Newss: React.FC = observer(() => {
 
         },
         {
-            title: 'Дата публікації',
+            title: 'Дата',
             dataIndex: 'creationDate',
             key: 'creationDate',
             width: '20%',
@@ -166,7 +167,7 @@ const Newss: React.FC = observer(() => {
             title: 'Дії',
             dataIndex: 'action',
             key: 'action',
-            width: '20%',
+            width: '10%',
             render: (value, news, index) => (
                 <div key={`${news.id}${index}1`} className="partner-page-actions">
                     <DeleteOutlined

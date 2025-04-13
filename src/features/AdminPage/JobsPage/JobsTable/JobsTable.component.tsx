@@ -143,7 +143,7 @@ const JobsTable = observer(() => {
             title: (
 
                 <div className="content-table-title">
-                    <span>Назва вакансії</span>
+                    <span>Назва</span>
                     <SortButton
                         ref={sortButtons.sortByName}
                         sortOnClick={() => {

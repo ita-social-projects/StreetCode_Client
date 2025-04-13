@@ -2,7 +2,7 @@ import './TermDictionary.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { DeleteFilled, DownOutlined, EditFilled } from '@ant-design/icons';
+import { DeleteFilled, DeleteOutlined, DownOutlined, EditFilled, EditOutlined } from '@ant-design/icons';
 import { StringComparator } from '@features/AdminPage/SortButton/ComparatorImplementations';
 import SortButton, { SortButtonHandle } from '@features/AdminPage/SortButton/SortButton';
 import SortData from '@features/AdminPage/SortButton/SortLogic';
@@ -146,15 +146,18 @@ const TermDictionary = () => {
             ),
             dataIndex: 'title',
             key: 'title',
+            width: '25%',
         },
         {
             title: 'Опис',
             dataIndex: 'description',
             key: 'description',
+            width: '65%',
         },
         {
             title: 'Дії',
             key: 'action',
+            width: '10%',
             render: (t: Term) => (
                 <Space size="middle">
                     {t.id === 0 ? (
@@ -165,9 +168,8 @@ const TermDictionary = () => {
                                 setTerm(t);
                                 setModal('editTerm');
                             }}
-                        >
-                            <EditFilled className="disableIcon" />
-                        </Button>
+                            icon={<EditOutlined className="disableIcon" />}
+                        />
                     ) : (
                         <Button
                             className="actionButton"
@@ -175,9 +177,8 @@ const TermDictionary = () => {
                                 setTerm(t);
                                 setModal('editTerm');
                             }}
-                        >
-                            <EditFilled className="actionIcon" />
-                        </Button>
+                            icon={<EditOutlined className="actionIcon" />}
+                        />
                     )}
 
                     <Button
@@ -186,9 +187,8 @@ const TermDictionary = () => {
                             setTerm(t);
                             setModal('deleteTerm');
                         }}
-                    >
-                        <DeleteFilled className="actionIcon" />
-                    </Button>
+                        icon={<DeleteOutlined className="actionIcon" />}
+                    />
                 </Space>
             ),
         },
