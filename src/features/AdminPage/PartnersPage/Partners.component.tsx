@@ -149,7 +149,7 @@ const Partners: React.FC = observer(() => {
             ),
             dataIndex: 'title',
             key: 'title',
-            width: '30%',
+            width: '40%',
             render(value, record) {
                 return (
                     <div key={`${value}${record.id}`} className="partner-table-item-name">
@@ -160,10 +160,10 @@ const Partners: React.FC = observer(() => {
             },
         },
         {
-            title: 'Посилання на сайт',
+            title: 'Посилання',
             dataIndex: 'targetUrl',
             key: 'url',
-            width: '28%',
+            width: '20%',
             render: (targeteurl) => (
                 <a
                     className="site-link"
@@ -178,6 +178,7 @@ const Partners: React.FC = observer(() => {
             title: 'Лого',
             dataIndex: 'logo',
             key: 'logo',
+            width: '15%',
             onCell: () => ({
                 style: { padding: '0', margin: '0' },
             }),
@@ -195,7 +196,7 @@ const Partners: React.FC = observer(() => {
             title: 'Соц. мережі',
             dataIndex: 'partnerSourceLinks',
             key: 'partnerSourceLinks',
-            width: '12%',
+            width: '15%',
             render: (links: PartnerSourceLink[], partner) => (
                 <div key={`${links.length}${partner.id}${partner.logoId}`} className="partner-links">
                     {links.map((link) => {

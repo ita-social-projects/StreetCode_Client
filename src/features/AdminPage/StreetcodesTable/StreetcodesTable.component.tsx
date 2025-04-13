@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-    BarChartOutlined, DeleteOutlined, DownOutlined, EditOutlined, RollbackOutlined,
+    DeleteOutlined, DownOutlined, EditOutlined, RollbackOutlined,
 } from '@ant-design/icons';
 import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
 import {
@@ -377,11 +377,6 @@ const StreetcodesTable = () => {
                                 className="actionButton"
                                 onClick={() => handleDeleteStreetcode(record.key)}
                             />
-                            <Link to={`${FRONTEND_ROUTES.ADMIN.ANALYTICS}/${record.key}`}>
-                                <BarChartOutlined
-                                    className="actionButton"
-                                />
-                            </Link>
                         </>
                     ) : (
                         <RollbackOutlined

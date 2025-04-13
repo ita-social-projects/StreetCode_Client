@@ -210,7 +210,7 @@
 }
 
 @mixin admin-page-table-scroller() {
-  max-height: 77vh;
+  max-height: 83vh;
   overflow-y: scroll;
 
   &::-webkit-scrollbar {
