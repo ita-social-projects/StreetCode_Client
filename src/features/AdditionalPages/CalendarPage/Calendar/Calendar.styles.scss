@@ -1,0 +1,134 @@
+@use "@assets/sass/variables/_variables.fonts.scss" as ft;
+@use "@assets/sass/variables/_variables.colors.scss" as c;
+@use "@assets/sass/mixins/_utils.mixins.scss" as mut;
+@use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
+@use "@sass/_utils.functions.scss" as f;
+
+.ant-tooltip-inner {
+  color: black !important;
+}
+
+.calendar-container {
+  position: relative;
+  padding: f.pxToRem(30px);
+  margin: 0 auto;
+  border: f.pxToRem(6px) solid c.$accented-red-color;
+  border-radius: f.pxToRem(50px);
+  border-top: f.pxToRem(60px) solid c.$accented-red-color;
+  background-color: white;
+  z-index: 1000 !important;
+
+  label, .ant-select-selection-item, .ant-select-item-option-content {
+    text-transform: uppercase;
+  }
+}
+
+.calendar-container-wrapper {
+  margin: 0;
+  padding: 0;
+}
+
+.calendar-header {
+  height: f.pxToRem(60px);
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  p {
+    margin: f.pxToRem(6px) f.pxToRem(20px);
+    line-height: 1;
+    color: c.$dark-red-color;
+    font-size: f.pxToRem(30px);
+    font-weight: 500;
+
+    &:first-child {
+      margin-left: f.pxToRem(60px);
+      font-size: f.pxToRem(40px);
+      font-weight: bold;
+    }
+  }
+}
+
+.small-calendar-wrapper {
+  width: 300;
+  display: flex;
+  flex-direction: column;
+}
+
+.small-square {
+  width: f.pxToRem(10px);
+  height: f.pxToRem(10px);
+  rotate: 45deg;
+  background-color: c.$dark-red-color;
+}
+
+.small-circle {
+  flex-shrink: 0;
+  margin-right: f.pxToRem(5px);
+  width: f.pxToRem(8px);
+  height: f.pxToRem(8px);
+  border-radius: 50%;
+  background-color: c.$dark-red-color;
+}
+
+.events::-webkit-scrollbar {
+  width: 5px;
+}
+
+.events::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+}
+
+.events {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  height: 100% !important;
+  min-height: f.pxToRem(20px);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+
+  .badge {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: fit-content;
+    padding-left: f.pxToRem(5px);
+    border-radius: f.pxToRem(5px);
+
+    .badge-text {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+}
+
+.day-view-container {
+  display: flex;
+  gap: f.pxToRem(30px);
+  overflow: hidden;
+}
+
+.back-button {
+  background-color: c.$accented-red-color;
+  color: white;
+  padding: f.pxToRem(5px) f.pxToRem(10px);
+  margin-bottom: f.pxToRem(10px);
+  border-radius: f.pxToRem(5px);
+}
+
+.ant-picker-calendar.ant-picker-calendar-full .ant-picker-calendar-date {
+  height: f.pxToRem(70px) !important;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.ant-picker-calendar-date-content {
+  min-height: f.pxToRem(44px) !important;
+  max-height: 100%;
+  overflow: hidden;
+}

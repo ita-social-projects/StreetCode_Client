@@ -216,6 +216,16 @@ export const API_ROUTES = {
     EMAIL: {
         SEND: 'email/send',
     },
+    EVENT: {
+        GET_ALL: 'events/getAll',
+        GET_ALL_SHORT: 'events/getAllShort',
+        GET: 'events/getById',
+        GET_BY_STREETCODE_ID: 'events/getByStreetcodeId',
+        CREATE: 'events/create',
+        UPDATE: 'events/update',
+        DELETE: 'events/delete',
+        SEND: 'email/send',
+    },
     DONATION: {
         CREATE: 'payment/createInvoice',
     },

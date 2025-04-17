@@ -12,6 +12,9 @@ const FRONTEND_ROUTES = {
         NEWS: '/admin-panel/news',
         JOBS: '/admin-panel/job',
         CONTEXT: '/admin-panel/context',
+        CALENDAR: '/admin-panel/calendar',
+        NEW_EVENT: '/admin-panel/new-event',
+        EDIT_EVENT: '/admin-panel/edit-event',
     },
     OTHER_PAGES: {
         CATALOG: '/catalog',
@@ -22,6 +25,7 @@ const FRONTEND_ROUTES = {
         SUPPORT_US: '/support-us',
         NEWS: '/news',
         ABOUT_US: '/about-us',
+        CALENDAR: '/calendar',
         PROFILE: '/profile',
     },
     AUTH: {

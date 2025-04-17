@@ -1,0 +1,18 @@
+@use "@sass/_utils.functions.scss" as f;
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+$bgImg: '@assets/images/main-page/background.webp';
+
+.calendarPageWrapper {
+    padding-top: f.pxToRem(60px);
+    background: url($bgImg) no-repeat center / 100%;
+    background-position: top;
+}
+
+.calendarPage {
+    @include mut.sized(70%);
+    margin: f.pxToRem(40px) auto;
+}
+
+.hiddenNavBar + .calendarPageWrapper {
+    padding-top: f.pxToRem(20px); 
+}

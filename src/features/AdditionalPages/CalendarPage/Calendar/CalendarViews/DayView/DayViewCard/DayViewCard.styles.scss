@@ -1,0 +1,34 @@
+@use "@assets/sass/variables/_variables.colors.scss" as c;
+@use "@sass/_utils.functions.scss" as f;
+
+.dayViewCard {
+  height: f.pxToRem(400px);
+  width: f.pxToRem(600px);
+  margin: 0 auto;
+}
+
+.events-scroll-container {
+  max-height: f.pxToRem(300px); 
+  overflow-y: auto;
+  padding-right: f.pxToRem(10px); 
+}
+
+.event-item {
+  display: flex;
+  align-items: center;
+  gap: f.pxToRem(10px);
+  border: f.pxToRem(2px) solid c.$accented-red-color;
+  padding: f.pxToRem(10px);
+  margin: f.pxToRem(10px) 0;
+  border-radius: f.pxToRem(10px);
+  cursor: pointer;
+}
+
+.event-year {
+  font-size: 0.8rem;
+}
+
+.ant-card-head-title {
+  text-align: center;
+  text-transform: uppercase;
+}
