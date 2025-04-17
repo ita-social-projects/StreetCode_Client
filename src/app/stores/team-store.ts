@@ -7,7 +7,7 @@ import { PaginationInfo } from '@/models/pagination/pagination.model';
 
 export default class TeamStore {
     public TeamMap = new Map<number, TeamMember>();
-    
+
     private defaultPageSize = 10;
 
     private paginationInfo: PaginationInfo = {
@@ -39,11 +39,11 @@ export default class TeamStore {
     get getTeamArray() {
         return Array.from(this.TeamMap.values());
     }
-    
+
     public setCurrentPage(currPage: number) {
         this.paginationInfo.CurrentPage = currPage;
     }
-    
+
     public set PaginationInfo(paginationInfo: PaginationInfo) {
         this.paginationInfo = paginationInfo;
     }
@@ -52,13 +52,33 @@ export default class TeamStore {
         return this.paginationInfo;
     }
 
-    public getAll = async (pageSize?: number) => {
-        await teamApi.getAll(this.PaginationInfo.CurrentPage, pageSize ?? this.paginationInfo.PageSize)
-            .then((resp) => {
-                this.PaginationInfo.TotalItems = resp.totalAmount;
-                this.setInternalMap(resp.teamMembers);
-            })
-            .catch((error) => console.error(error));
+    public getAll = async (title = '', isMain = false, pageSize?: number) => {
+        try {
+            const validPageSize = pageSize && typeof pageSize === 'number' && pageSize > 0
+                ? pageSize
+                : this.paginationInfo.PageSize;
+
+            const response = await teamApi.getAll(
+                this.PaginationInfo.CurrentPage,
+                validPageSize,
+                title,
+                isMain,
+            );
+
+            if (response && response.totalAmount !== undefined && response.teamMembers) {
+                runInAction(() => {
+                    this.PaginationInfo.TotalItems = response.totalAmount;
+                    this.PaginationInfo.TotalPages = Math.ceil(
+                        response.totalAmount / validPageSize
+                    );
+                    this.setInternalMap(response.teamMembers);
+                });
+            } else {
+                console.warn('Невірна відповідь від API або відсутні теги.');
+            }
+        } catch (error) {
+            console.error('Помилка при отриманні тегів:', error);
+        }
     };
 
     public getById = async (teamId: number) => {

@@ -78,7 +78,7 @@ export default class ContextStore {
     public setCurrentPage(currPage: number) {
         this.paginationInfo.CurrentPage = currPage;
     }
-    
+
     public set PaginationInfo(paginationInfo: PaginationInfo) {
         this.paginationInfo = paginationInfo;
     }
@@ -87,13 +87,29 @@ export default class ContextStore {
         return this.paginationInfo;
     }
 
-    public fetchContexts = async (pageSize?: number) => {
-        await ContextsApi.getAll(this.PaginationInfo.CurrentPage, pageSize ?? this.paginationInfo.PageSize)
-            .then((resp) => {
-                this.PaginationInfo.TotalItems = resp.totalAmount;
-                this.setInternalMap = resp.historicalContexts;
-            })
-            .catch((error) => console.error(error));        
+    public fetchContexts = async (title = '', pageSize?: number) => {
+        try {
+            const currentPage = this.PaginationInfo.CurrentPage;
+            const response = await ContextsApi.getAll(
+                currentPage,
+                pageSize ?? this.paginationInfo.PageSize,
+                title,
+            );
+            if (response && response.totalAmount !== undefined && response.historicalContexts) {
+                runInAction(() => {
+                    this.PaginationInfo.TotalItems = response.totalAmount;
+                    this.PaginationInfo.TotalPages = Math.ceil(
+                        response.totalAmount / (pageSize ?? this.paginationInfo.PageSize),
+                    );
+                    this.setInternalAllTags = response.historicalContexts;
+                    this.setInternalMap = response.historicalContexts; // Оновлюємо ContextMap
+                });
+            } else {
+                console.warn('Невірна відповідь від API або відсутні теги.');
+            }
+        } catch (error) {
+            console.error('Помилка при отриманні тегів:', error);
+        }
     };
 
     public createContext = async (context: ContextCreate) => {

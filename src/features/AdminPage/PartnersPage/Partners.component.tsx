@@ -2,7 +2,7 @@ import './Partners.styles.scss';
 
 import { runInAction } from 'mobx';
 import { observer } from 'mobx-react-lite';
-import React, { useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { DeleteOutlined, DownOutlined, EditOutlined, StarOutlined } from '@ant-design/icons';
 import facebook from '@assets/images/partners/facebook.svg';
 import instagram from '@assets/images/partners/instagram.svg';
@@ -13,8 +13,8 @@ import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
 import ImageStore from '@stores/image-store';
 import useMobx, { useModalContext } from '@stores/root-store';
 import { useQuery } from '@tanstack/react-query';
-
-import { Button, Dropdown, Empty, Pagination, Space } from 'antd';
+import MagnifyingGlass from '@images/header/Magnifying_glass.svg';
+import { Button, Checkbox, Dropdown, Empty, Input, Pagination, Space } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 
 import PartnersApi from '@/app/api/partners/partners.api';
@@ -38,23 +38,20 @@ const Partners: React.FC = observer(() => {
     const [currentPages, setCurrentPages] = useState(1);
     const [amountRequest, setAmountRequest] = useState(10);
     const [selected, setSelected] = useState(10);
+    const [title, setTitle] = useState<string>('');
+    const [isMainFilter, setIsMainFilter] = useState<boolean>(false);
 
     const { isLoading } = useQuery({
-        queryKey: ['partners', partnersStore.PaginationInfo.CurrentPage],
-        queryFn: () => partnersStore.getAll(),
+        queryKey: ['partners', partnersStore.PaginationInfo.CurrentPage, title, isMainFilter],
+        queryFn: () => partnersStore.getAll(title, isMainFilter),
     });
 
     const updatedPartners = () => {
-        Promise.all([
-            partnersStore?.getAll(),
-        ]).then(() => {
+        Promise.all([partnersStore?.getAll(title, isMainFilter)]).then(() => {
             partnersStore?.PartnerMap.forEach((val, key) => {
                 ImageStore.getImageById(val.logoId).then((logo) => {
                     runInAction(() => {
-                        partnersStore.PartnerMap.set(
-                            val.id,
-                            { ...val, logo },
-                        );
+                        partnersStore.PartnerMap.set(val.id, { ...val, logo });
                     });
                 });
             });
@@ -78,7 +75,7 @@ const Partners: React.FC = observer(() => {
                 setAmountRequest(value);
                 setCurrentPages(1);
                 partnersStore.PaginationInfo.PageSize = value;
-                partnersStore.getAll();
+                partnersStore.getAll(title, isMainFilter);
             },
         })),
     };
@@ -91,11 +88,15 @@ const Partners: React.FC = observer(() => {
                     .then(() => {
                         partnersStore.PartnerMap.delete(partnerId);
                     })
-                    .catch(() => { });
+                    .catch(() => {});
                 modalStore.setConfirmationModal('confirmation');
             },
             CONFIRMATION_MESSAGES.DELETE_PARTNER,
         );
+    };
+
+    const handleChangeTitle = (event: ChangeEvent<HTMLInputElement>) => {
+        setTitle(event.target.value);
     };
 
     const columns: ColumnsType<Partner> = [
@@ -198,12 +199,31 @@ const Partners: React.FC = observer(() => {
             <PageBar />
             <div className="partners-page-container">
                 <div className="container-justify-end">
-                    <Button
-                        className="streetcode-custom-button"
-                        onClick={() => setModalAddOpened(true)}
-                    >
-                        {BUTTON_LABELS.ADD_PARTNER}
-                    </Button>
+                    <div className="left-side">
+                        <div className="searchMenuElement">
+                            <Input
+                                className="searchMenuElementInput"
+                                prefix={<MagnifyingGlass />}
+                                onChange={handleChangeTitle}
+                                placeholder="Назва"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="right-side">
+                        <Checkbox
+                            checked={isMainFilter}
+                            onChange={(e) => setIsMainFilter(e.target.checked)}
+                        >
+                        Ключовий партнер
+                        </Checkbox>
+                        <Button
+                            className="streetcode-custom-button"
+                            onClick={() => setModalAddOpened(true)}
+                        >
+                            {BUTTON_LABELS.ADD_TEAM_MEMBER}
+                        </Button>
+                    </div>
                 </div>
                 <Table
                     pagination={false}
@@ -244,7 +264,7 @@ const Partners: React.FC = observer(() => {
                             onChange={(page: number) => {
                                 setCurrentPages(page);
                                 partnersStore.setCurrentPage(page);
-                                partnersStore.getAll();
+                                partnersStore.getAll(title);
                             }}
                         />
                     </div>

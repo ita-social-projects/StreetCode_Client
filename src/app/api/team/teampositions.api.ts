@@ -11,10 +11,11 @@ const PositionsApi = {
         Agent.get<Position>(`${API_ROUTES.POSITION.GET_BY_TITLE}/${title}`)
     ),
 
-    getAll: (page?: number, pageSize?: number) => {
+    getAll: (page?: number, pageSize?: number, title?: string) => {
         const params = Object.entries({
             page: page?.toString() ?? '',
             pageSize: pageSize?.toString() ?? '',
+            title: title ?? '',
         });
 
         const queryParams = params.filter((p) => !!p[1]);

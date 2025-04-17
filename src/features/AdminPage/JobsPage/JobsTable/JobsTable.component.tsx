@@ -2,14 +2,14 @@
 import './JobsTable.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { DeleteOutlined, DownOutlined, EditOutlined } from '@ant-design/icons';
 import BUTTON_LABELS from '@constants/buttonLabels';
 import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
 import { useQuery } from '@tanstack/react-query';
-
+import MagnifyingGlass from '@images/header/Magnifying_glass.svg';
 import {
-    Button, Dropdown, Empty, MenuProps, Pagination, Space, Table,
+    Button, Dropdown, Empty, Input, MenuProps, Pagination, Space, Table,
 } from 'antd';
 
 import JobApi from '@/app/api/job/Job.api';
@@ -27,10 +27,15 @@ const JobsTable = observer(() => {
     const [currentPages, setCurrentPages] = useState(1);
     const [amountRequest, setAmountRequest] = useState(10);
     const [selected, setSelected] = useState(10);
+    const [title, setTitle] = useState<string>('');
     const { isLoading } = useQuery({
-        queryKey: ['jobs', jobsStore.PaginationInfo.CurrentPage],
-        queryFn: () => jobsStore.getAll(),
+        queryKey: ['jobs', jobsStore.PaginationInfo.CurrentPage, title],
+        queryFn: () => jobsStore.getAll(title),
     });
+
+    const handleChangeTitle = (event: ChangeEvent<HTMLInputElement>) => {
+        setTitle(event.target.value);
+    };
 
     const PaginationProps = {
         items: [10, 25, 50].map((value) => ({
@@ -167,6 +172,14 @@ const JobsTable = observer(() => {
     return (
         <div className="partners-page-container">
             <div className="container-justify-end">
+                <div className="searchMenuElement">
+                    <Input
+                        className="searchMenuElementInput"
+                        prefix={<MagnifyingGlass />}
+                        onChange={handleChangeTitle}
+                        placeholder="Назва"
+                    />
+                </div>
                 <Button
                     className="streetcode-custom-button partners-page-add-button"
                     onClick={handleAddButtonClick}

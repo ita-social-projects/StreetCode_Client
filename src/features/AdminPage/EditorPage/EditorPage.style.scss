@@ -7,6 +7,12 @@
     @include mut.admin-page-base-layout();
 
     @include mut.with-font();
+    .ant-tabs-nav {
+        .ant-tabs-tab {
+            font-size: 18px;
+            font-weight: 400;
+        }
+    }
 
     .dimmed {
         @include mut.sized(100%);
@@ -16,11 +22,28 @@
         width: 100%;
     }
 
+    .ant-tabs-tab {
+        display: flex;
+        justify-content: center ;
+        align-items: center ;
+        flex: 1 1 auto;
+        padding: 10px 10px;
+
+        .ant-tabs-tab-btn {
+            display: inline-block;
+            text-align: center;
+            width: 100%;
+        }
+    }
+
+
+
     .ant-tabs-tab:hover{
         color: c.$accented-red-color;
     }
 
     .ant-tabs-tab-active {
+        background-color: rgba(224,64,49,0.08);
         .ant-tabs-tab-btn {
             color: c.$accented-red-color;
         }
@@ -36,7 +59,4 @@
         background-color: c.$dark-red-color;
     }
 
-    .person-event-switch {
-        margin: 0 5px;
-    }
 }

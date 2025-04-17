@@ -1,12 +1,12 @@
 import { API_ROUTES } from '@/app/common/constants/api-routes.constants';
-
 import Agent from '../agent.api';
 
 const JobApi = {
-    getAll: (page?: number, pageSize?: number) => {
+    getAll: (page?: number, pageSize?: number, title?: string) => {
         const params = Object.entries({
             page: page?.toString() ?? '',
             pageSize: pageSize?.toString() ?? '',
+            title: title ?? '',
         });
 
         const queryParams = params.filter((p) => !!p[1]);

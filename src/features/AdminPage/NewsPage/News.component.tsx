@@ -3,15 +3,15 @@
 import './News.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import { DeleteOutlined, DownOutlined, EditOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import NewsModal from '@features/AdminPage/NewsPage/NewsModal/NewsModal.component';
 import PageBar from '@features/AdminPage/PageBar/PageBar.component';
 import useMobx, { useModalContext } from '@stores/root-store';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
-
-import { Button, Dropdown, Empty, Pagination, Popover, Space } from 'antd';
+import MagnifyingGlass from '@images/header/Magnifying_glass.svg';
+import { Button, Dropdown, Empty, Input, Pagination, Popover, Space } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
@@ -30,10 +30,15 @@ const Newss: React.FC = observer(() => {
     const [currentPages, setCurrentPages] = useState(1);
     const [amountRequest, setAmountRequest] = useState(10);
     const [selected, setSelected] = useState(10);
+    const [title, setTitle] = useState<string>('');
     const { isLoading } = useQuery({
-        queryKey: ['news', newsStore.CurrentPage],
-        queryFn: () => newsStore.getAll(),
+        queryKey: ['news', newsStore.CurrentPage, title],
+        queryFn: () => newsStore.getAll(title),
     });
+
+    const handleChangeTitle = (event: ChangeEvent<HTMLInputElement>) => {
+        setTitle(event.target.value);
+    };
 
     const handleDeleteNews = (news: News) => {
         modalStore.setConfirmationModal(
@@ -106,7 +111,7 @@ const Newss: React.FC = observer(() => {
             render: (value: string) => (
                 <div key={value} className="partner-table-item-name">
                     <p>{value ? dayjs(value).format('YYYY-MM-DD') : ''}</p>
-                    {value && dayjs(value).isAfter(dayjs()) && 
+                    {value && dayjs(value).isAfter(dayjs()) &&
                      <Popover content={"Заплановано"} trigger="hover">
                         <InfoCircleOutlined className='info-circle-for-planed-content'/>
                     </Popover>
@@ -144,6 +149,14 @@ const Newss: React.FC = observer(() => {
             <PageBar />
             <div className="partners-page-container">
                 <div className="container-justify-end">
+                    <div className="searchMenuElement">
+                        <Input
+                            className="searchMenuElementInput"
+                            prefix={<MagnifyingGlass />}
+                            onChange={handleChangeTitle}
+                            placeholder="Назва"
+                        />
+                    </div>
                     <Button
                         className="streetcode-custom-button partners-page-add-button"
                         onClick={() => setModalAddOpened(true)}

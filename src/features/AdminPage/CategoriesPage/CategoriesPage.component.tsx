@@ -1,15 +1,15 @@
 import './CategoriesPage.style.scss';
 
 import { observer } from 'mobx-react-lite';
-import React, { useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { DeleteOutlined, DownOutlined, EditOutlined } from '@ant-design/icons';
 import BUTTON_LABELS from '@constants/buttonLabels';
 import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
 import ImageStore from '@stores/image-store';
 import useMobx, { useModalContext } from '@stores/root-store';
 import { useQuery } from '@tanstack/react-query';
-
-import { Button, Dropdown, Empty, Pagination, Space } from 'antd';
+import MagnifyingGlass from '@images/header/Magnifying_glass.svg';
+import { Button, Dropdown, Empty, Input, Pagination, Space } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
@@ -27,9 +27,11 @@ const CategoriesMainPage: React.FC = observer(() => {
     const [currentPages, setCurrentPages] = useState(1);
     const [amountRequest, setAmountRequest] = useState(10);
     const [selected, setSelected] = useState(10);
+    const [title, setTitle] = useState<string>('');
+
     const { isLoading } = useQuery({
-        queryKey: ['categories', sourcesStore.PaginationInfo.CurrentPage],
-        queryFn: () => sourcesStore.fetchSrcCategoriesAll(),
+        queryKey: ['categories', sourcesStore.PaginationInfo.CurrentPage, title],
+        queryFn: () => sourcesStore.fetchSrcCategoriesAll(title),
     });
 
     const updatedCategories = () => {
@@ -86,6 +88,10 @@ const CategoriesMainPage: React.FC = observer(() => {
             },
             CONFIRMATION_MESSAGES.DELETE_CATEGORY,
         );
+    };
+
+    const handleChangeTitle = (event: ChangeEvent<HTMLInputElement>) => {
+        setTitle(event.target.value);
     };
 
     const columns: ColumnsType<SourceCategoryAdmin> = [
@@ -147,6 +153,14 @@ const CategoriesMainPage: React.FC = observer(() => {
         <div className="categories-page">
             <div className="categories-page-container">
                 <div className="container-justify-end">
+                    <div className="searchMenuElement">
+                        <Input
+                            className="searchMenuElementInput"
+                            prefix={<MagnifyingGlass />}
+                            onChange={handleChangeTitle}
+                            placeholder="Назва"
+                        />
+                    </div>
                     <Button
                         className="streetcode-custom-button categories-page-add-button"
                         onClick={() => setModalAddOpened(true)}

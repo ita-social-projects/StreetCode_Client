@@ -3,6 +3,7 @@
 @use "@sass/variables/_variables.colors.scss" as c;
 @use "@sass/_utils.functions.scss" as f;
 
+
 .StreetcodeTableWrapper {
     @include mut.sized(80%);
     overflow: hidden;
@@ -60,7 +61,7 @@
     align-items: center;
     margin-top: 10px;
     margin-right: 30px;
-    justify-content: space-between; 
+    justify-content: space-between;
     align-items: center;
 
     .paginationElement,
@@ -95,7 +96,7 @@
         font-size: 16px;
         color: c.$dark-red-color;
     }
-    
+
 }
 .PaginationSelect .ant-dropdown-trigger {
     color: c.$dark-red-color;

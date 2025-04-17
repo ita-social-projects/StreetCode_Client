@@ -1,14 +1,14 @@
 import './TagsMainPage.style.scss';
 
 import { observer } from 'mobx-react-lite';
-import React, { useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { DeleteOutlined, DownOutlined, EditOutlined } from '@ant-design/icons';
 import BUTTON_LABELS from '@constants/buttonLabels';
 import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
 import useMobx, { useModalContext } from '@stores/root-store';
 import { useQuery } from '@tanstack/react-query';
-
-import { Button, Dropdown, Empty, Pagination, Space } from 'antd';
+import MagnifyingGlass from '@images/header/Magnifying_glass.svg';
+import { Button, Dropdown, Empty, Input, Pagination, Space } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 
 import Tag from '@/models/additional-content/tag.model';
@@ -24,9 +24,11 @@ const TagsMainPage: React.FC = observer(() => {
     const [currentPages, setCurrentPages] = useState(1);
     const [amountRequest, setAmountRequest] = useState(10);
     const [selected, setSelected] = useState(10);
+    const [title, setTitle] = useState<string>('');
+
     const { isLoading } = useQuery({
-        queryKey: ['tags', tagsStore.PaginationInfo.CurrentPage],
-        queryFn: () => tagsStore.fetchAllTags(),
+        queryKey: ['tags', tagsStore.PaginationInfo.CurrentPage, title],
+        queryFn: () => tagsStore.fetchAllTags(title),
     });
 
     const updatedTags = () => {
@@ -64,6 +66,10 @@ const TagsMainPage: React.FC = observer(() => {
             },
             CONFIRMATION_MESSAGES.DELETE_TAGS,
         );
+    };
+
+    const handleChangeTitle = (event: ChangeEvent<HTMLInputElement>) => {
+        setTitle(event.target.value);
     };
 
     const columns: ColumnsType<Tag> = [
@@ -108,6 +114,14 @@ const TagsMainPage: React.FC = observer(() => {
         <div className="tags-page">
             <div className="tags-page-container">
                 <div className="container-justify-end">
+                    <div className="searchMenuElement">
+                        <Input
+                            className="searchMenuElementInput"
+                            prefix={<MagnifyingGlass />}
+                            onChange={handleChangeTitle}
+                            placeholder="Назва"
+                        />
+                    </div>
                     <Button
                         className="streetcode-custom-button tags-page-add-button"
                         onClick={() => setModalAddOpened(true)}

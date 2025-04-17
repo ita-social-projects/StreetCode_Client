@@ -7,16 +7,23 @@ const PartnersApi = {
         Agent.get<Partner>(`${API_ROUTES.PARTNERS.GET}/${id}`)
     ),
 
-    getAll: (page?: number, pageSize?: number) => {
-        const params = Object.entries({
-            page: page?.toString() ?? '',
-            pageSize: pageSize?.toString() ?? '',
-        });
+    getAll: (page?: number, pageSize?: number, title?: string, IsKeyPartner?: boolean) => {
+        const params: Record<string, string> = {};
 
-        const queryParams = params.filter((p) => !!p[1]);
+        if (page !== undefined) params.page = page.toString();
+        if (pageSize !== undefined) params.pageSize = pageSize.toString();
+        if (title !== undefined) params.title = title;
 
-        const searchParams = new URLSearchParams(queryParams);
-        return Agent.get<{ totalAmount: number, partners: Partner[] }>(`${API_ROUTES.PARTNERS.GET_ALL}`, searchParams);
+        if (IsKeyPartner === true) {
+            params.IsKeyPartner = IsKeyPartner.toString();
+        }
+
+        const queryParams = new URLSearchParams(Object.entries(params));
+
+        return Agent.get<{ totalAmount: number, partners: Partner[] }>(
+            `${API_ROUTES.PARTNERS.GET_ALL}`,
+            queryParams,
+        );
     },
 
     getAllByIsKeyPartner: (isKeyPartner : boolean) => (

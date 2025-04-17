@@ -7,7 +7,7 @@ $list-width: 40%;
 
 .list-container {
     @include mut.sized($list-width);
-    max-height: 160px; 
+    max-height: 160px;
     overflow-y: auto;
 
     #list {
@@ -21,12 +21,12 @@ $list-width: 40%;
             font-size: 14px;
         }
     }
-}  
+}
 .input-container {
     display: flex;
     align-items: center;
     vertical-align: center;
-  
+
     .relation-title-input {
       @include mut.sized($list-width);
       margin-left: 10px;
@@ -34,8 +34,8 @@ $list-width: 40%;
       border-radius: 7px;
     }
   }
-  
-  .create-relation-button {  
+
+  .create-relation-button {
     padding: 10px;
     margin-left: 10px;
     border: none;
@@ -46,12 +46,12 @@ $list-width: 40%;
     display: flex;
     align-items: center;
     line-height: 1;
-  
+    
     &:hover {
       background-color: c.$dark-red-color;
     }
   }
-  
+
 
 .relationItem {
     display: flex;
