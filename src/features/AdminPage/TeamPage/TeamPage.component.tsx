@@ -1,8 +1,7 @@
-/* eslint-disable no-restricted-imports */
 import './TeamPage.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { DeleteOutlined, DownOutlined, EditOutlined, StarOutlined } from '@ant-design/icons';
 import BUTTON_LABELS from '@constants/buttonLabels';
 import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
@@ -11,9 +10,9 @@ import SortButton, { SortButtonHandle } from '@features/AdminPage/SortButton/Sor
 import SortData from '@features/AdminPage/SortButton/SortLogic';
 import useSortDirection from '@features/AdminPage/SortButton/useSortDirection';
 import { useQuery } from '@tanstack/react-query';
-
+import MagnifyingGlass from '@images/header/Magnifying_glass.svg';
 import {
-    Button, Dropdown, Empty, Pagination, Space, Table,
+    Button, Dropdown, Empty, Input, Pagination, Space, Table, Checkbox,
 } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 
@@ -31,19 +30,27 @@ import TeamModal from './TeamModal/TeamModal.component';
 const TeamPage = () => {
     const { teamStore } = useMobx();
     const { modalStore } = useModalContext();
-    const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
-    const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
+
+    const [modalAddOpened, setModalAddOpened] = useState(false);
+    const [modalEditOpened, setModalEditOpened] = useState(false);
     const [teamToEdit, setTeamToedit] = useState<TeamMember>();
     const [currentPages, setCurrentPages] = useState(1);
     const [amountRequest, setAmountRequest] = useState(10);
     const [selected, setSelected] = useState(10);
+    const [title, setTitle] = useState('');
+    const [isMainFilter, setIsMainFilter] = useState<boolean>(false);
+
     const { isLoading } = useQuery({
-        queryKey: ['team', teamStore.PaginationInfo.CurrentPage],
-        queryFn: () => teamStore.getAll(),
+        queryKey: ['team', teamStore.PaginationInfo.CurrentPage, title, isMainFilter],
+        queryFn: () => teamStore.getAll(title, isMainFilter),
     });
 
+    const handleChangeTitle = (event: ChangeEvent<HTMLInputElement>) => {
+        setTitle(event.target.value);
+    };
+
     const updatedTeam = () => {
-        Promise.all([teamStore?.getAll()]).then(() => {
+        Promise.all([teamStore?.getAll(title, isMainFilter)]).then(() => {
             teamStore?.TeamMap.forEach((val, key) => {
                 ImageStore.getImageById(val.imageId).then((image) => {
                     teamStore.TeamMap.set(val.id, { ...val, image });
@@ -61,14 +68,14 @@ const TeamPage = () => {
                 setAmountRequest(value);
                 setCurrentPages(1);
                 teamStore.PaginationInfo.PageSize = value;
-                teamStore.getAll();
+                teamStore.getAll(title, isMainFilter);
             },
         })),
     };
 
     useEffect(() => {
         updatedTeam();
-    }, []);
+    }, [title, isMainFilter]);
 
     const handleDeleteTeamMember = (teamId: number) => {
         modalStore.setConfirmationModal(
@@ -76,9 +83,7 @@ const TeamPage = () => {
             () => {
                 teamStore.deleteTeam(teamId).then(() => {
                     teamStore.TeamMap.delete(teamId);
-                }).catch((e) => {
-                    console.error(e);
-                });
+                }).catch(console.error);
                 modalStore.setConfirmationModal('confirmation');
             },
             CONFIRMATION_MESSAGES.DELETE_TEAM_MEMBER,
@@ -145,9 +150,7 @@ const TeamPage = () => {
             render(value, record) {
                 return (
                     <div key={`${value}${record.id}`} className="team-table-item-name">
-                        <p>
-                            {record.name}
-                        </p>
+                        <p>{record.name}</p>
                         {record.isMain ? <StarOutlined /> : ''}
                     </div>
                 );
@@ -161,10 +164,7 @@ const TeamPage = () => {
             render(value, record) {
                 return (
                     <div key={`${value}${record.id}`} className="team-table-item-name">
-                        <p>
-                            {record.positions.map((x) => `${x.position} `)}
-                            {' '}
-                        </p>
+                        <p>{record.positions.map((x) => `${x.position} `)}</p>
                     </div>
                 );
             },
@@ -201,16 +201,16 @@ const TeamPage = () => {
             render: (links: TeamMemberLink[], team) => (
                 <div key={`${links.length}${team.id}${team.imageId}`} className="team-links">
                     {links.map((link) => {
-                        const LogoComponent = LOGO_ICONS.find((logo) => logo.type === link.logoType)!.icon;
+                        const LogoComponent = LOGO_ICONS.find((logo) => logo.type === link.logoType)?.icon;
                         return (
                             <a
                                 key={`${link.id}${link.targetUrl}`}
                                 rel="noreferrer"
-                                target="_blanc"
+                                target="_blank"
                                 className="teamLink"
                                 href={link.targetUrl.toString()}
                             >
-                                <LogoComponent />
+                                {LogoComponent && <LogoComponent />}
                             </a>
                         );
                     })}
@@ -238,23 +238,43 @@ const TeamPage = () => {
                             setModalEditOpened(true);
                         }}
                     />
-
                 </div>
             ),
         },
     ];
+
     return (
         <div className="team-page">
             <PageBar />
             <div className="team-page-container">
                 <div className="container-justify-end">
-                    <Button
-                        className="streetcode-custom-button"
-                        onClick={() => setModalAddOpened(true)}
-                    >
-                        {BUTTON_LABELS.ADD_TEAM_MEMBER}
-                    </Button>
+                    <div className="left-side">
+                        <div className="searchMenuElement">
+                            <Input
+                                className="searchMenuElementInput"
+                                prefix={<MagnifyingGlass />}
+                                onChange={handleChangeTitle}
+                                placeholder="Назва"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="right-side">
+                        <Checkbox
+                            checked={isMainFilter}
+                            onChange={(e) => setIsMainFilter(e.target.checked)}
+                        >
+                        Ключовий учасник
+                        </Checkbox>
+                        <Button
+                            className="streetcode-custom-button"
+                            onClick={() => setModalAddOpened(true)}
+                        >
+                            {BUTTON_LABELS.ADD_TEAM_MEMBER}
+                        </Button>
+                    </div>
                 </div>
+
                 <Table
                     pagination={false}
                     className="team-table"
@@ -295,19 +315,14 @@ const TeamPage = () => {
                             onChange={(page: number) => {
                                 setCurrentPages(page);
                                 teamStore.setCurrentPage(page);
-                                teamStore.getAll();
+                                teamStore.getAll(title, isMainFilter);
                             }}
                         />
                     </div>
                 </div>
             </div>
             <TeamModal open={modalAddOpened} setIsModalOpen={setModalAddOpened} />
-            <TeamModal
-                open={modalEditOpened}
-                setIsModalOpen={setModalEditOpened}
-                teamMember={teamToEdit}
-
-            />
+            <TeamModal open={modalEditOpened} setIsModalOpen={setModalEditOpened} teamMember={teamToEdit} />
         </div>
     );
 };

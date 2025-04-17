@@ -4,26 +4,62 @@
 @use "@sass/_utils.functions.scss" as f;
 
 .searchMenu {
-    margin: 0 10px 10px 10px;
-    @include mut.sized(100%);
+    margin: 40px 10px 10px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
 
     .searchMenuElement {
         display: inline-block;
-        margin-left: 10px
+        margin-left: 5px;
+        flex-grow: 1;
+    }
+
+    .status_button {
+        display: flex;
+        align-items: center;
+        gap: 1px;
+        flex-wrap: wrap;
+        justify-content: flex-start;
     }
 
     .ant-select-selector {
-        @include mut.sized(400px, 35px);
+        height: 40px !important;
+        border-color: c.$accented-red-color;
+        width: 180px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .ant-select-selection-placeholder {
+            color: #000;
+        }
+
+        &:hover {
+            border-color: c.$accented-red-color;
+        }
+
+        &:focus-within {
+            border-color: c.$accented-red-color;
+
+            .ant-select-selection-placeholder {
+                color: c.$accented-red-color !important;
+            }
+        }
+
     }
 
     .ant-input-affix-wrapper {
-        @include mut.sized(300px, 35px);
+        width: 500px;
+        height: 40px;
+        box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        border: 2px solid c.$slider-base-dot-color;
     }
 
     .ant-select-selector,
     .ant-input-affix-wrapper,
     .ant-input-number {
-        @include mut.with-font($font-size: 16px);
+        font-size: 16px;
 
         &:hover {
             border-color: c.$accented-red-color;
@@ -35,15 +71,20 @@
     }
 
     .Button {
-        @include mut.sized(142px, 35px);
-        @include mut.flex-centered();
-        @include mut.full-rounded(12px);
-        @include mut.with-font($font-weight: 400, $font-size: 16px);
-
+        height: 40px !important;
+        width: 170px;
+        min-width: 142px;
+        height: 35px;
+        margin-right: 15px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 5px;
+        font-weight: 400;
+        font-size: 16px;
         background-color: c.$accented-red-color;
         border-color: c.$accented-red-color;
         color: c.$pure-white-color;
-        width: 10rem;
 
         &:hover {
             border-color: c.$dark-red-color;
@@ -58,6 +99,47 @@
     &:hover {
         color: c.$dark-red-color;
         cursor: pointer;
-        scale: 1.2;
+        transform: scale(1.2);
     }
+}
+
+.ant-select-dropdown {
+    border: 1px solid c.$accented-red-color ;
+    text-align: center;
+    margin: 0 ;
+    width: 150px;
+    max-width: none;
+    min-width: 150px !important;
+    padding: 0;
+}
+.ant-select-item{
+    color: #891F16 !important;
+    padding: 0;
+    margin: 0;
+    width: 100% !important;
+    border-bottom: 1px solid #E04031 !important;
+    border-radius: 0 !important;
+}
+.ant-select-item:hover{
+        color: #891F16 !important;
+}
+.ant-select-item-option-selected {
+    color: #E04031 !important;
+    background-color: white  !important;
+}
+
+.ant-select-arrow {
+    color: #000 !important;
+    transition: transform 0.3s ease;
+}
+
+.ant-select-open .ant-select-arrow {
+    transform: rotate(180deg) !important;
+}
+
+.ant-select-open .ant-select-selection-placeholder  {
+    color: #E04031 !important;
+}
+.ant-select-open .ant-select-selection-item{
+    color: #E04031 !important;
 }

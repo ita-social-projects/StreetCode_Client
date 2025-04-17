@@ -1,7 +1,7 @@
 import './TagsMainPage.style.scss';
 
 import { observer } from 'mobx-react-lite';
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, { ChangeEvent,useEffect, useMemo, useRef, useState} from 'react';
 import { DeleteOutlined, DownOutlined, EditOutlined } from '@ant-design/icons';
 import BUTTON_LABELS from '@constants/buttonLabels';
 import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
@@ -10,9 +10,9 @@ import SortData from '@features/AdminPage/SortButton/SortLogic';
 import useSortDirection from '@features/AdminPage/SortButton/useSortDirection';
 import useMobx, { useModalContext } from '@stores/root-store';
 import { useQuery } from '@tanstack/react-query';
-
+import MagnifyingGlass from '@images/header/Magnifying_glass.svg';
 import {
-    Button, Dropdown, Empty, Pagination, Space,
+    Button, Dropdown, Empty, Input, Pagination, Space,
 } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 
@@ -30,9 +30,11 @@ const TagsMainPage: React.FC = observer(() => {
     const [currentPages, setCurrentPages] = useState(1);
     const [amountRequest, setAmountRequest] = useState(10);
     const [selected, setSelected] = useState(10);
+    const [title, setTitle] = useState<string>('');
+
     const { isLoading } = useQuery({
-        queryKey: ['tags', tagsStore.PaginationInfo.CurrentPage],
-        queryFn: () => tagsStore.fetchAllTags(),
+        queryKey: ['tags', tagsStore.PaginationInfo.CurrentPage, title],
+        queryFn: () => tagsStore.fetchAllTags(title),
     });
 
     const updatedTags = () => {
@@ -102,6 +104,10 @@ const TagsMainPage: React.FC = observer(() => {
         [dataSource, sortDirection],
     );
 
+    const handleChangeTitle = (event: ChangeEvent<HTMLInputElement>) => {
+        setTitle(event.target.value);
+    };
+
     const columns: ColumnsType<Tag> = [
         {
             title: (
@@ -155,6 +161,14 @@ const TagsMainPage: React.FC = observer(() => {
         <div className="tags-page">
             <div className="tags-page-container">
                 <div className="container-justify-end">
+                    <div className="searchMenuElement">
+                        <Input
+                            className="searchMenuElementInput"
+                            prefix={<MagnifyingGlass />}
+                            onChange={handleChangeTitle}
+                            placeholder="Назва"
+                        />
+                    </div>
                     <Button
                         className="streetcode-custom-button tags-page-add-button"
                         onClick={() => setModalAddOpened(true)}

@@ -1,15 +1,15 @@
 import './TermDictionary.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, ChangeEvent } from 'react';
 import { DeleteFilled, DeleteOutlined, DownOutlined, EditFilled, EditOutlined } from '@ant-design/icons';
 import { StringComparator } from '@features/AdminPage/SortButton/ComparatorImplementations';
 import SortButton, { SortButtonHandle } from '@features/AdminPage/SortButton/SortButton';
 import SortData from '@features/AdminPage/SortButton/SortLogic';
 import useSortDirection from '@features/AdminPage/SortButton/useSortDirection';
 import useMobx, { useModalContext } from '@stores/root-store';
-
-import { Button, Dropdown, Space, Table } from 'antd';
+import MagnifyingGlass from '@images/header/Magnifying_glass.svg';
+import { Button, Dropdown, Input, Space, Table } from 'antd';
 
 import termsApi from '@/app/api/streetcode/text-content/terms.api';
 import AddTermModal from '@/app/common/components/modals/Terms/AddTerm/AddTermModal.component';
@@ -53,18 +53,19 @@ const TermDictionary = () => {
     const [data, setData] = useState<Term[]>([]);
     const [selected, setSelected] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
-
+    const [searchTitle, setSearchTitle] = useState('');
     const setTableState = async () => {
-        await termsApi.getAll().then((response) => {
-            setData(response);
-        });
+        const terms = await fetchTerms(searchTitle, selected, currentPage);
+        setData(terms);
     };
 
     useEffect(() => {
-        fetchTerms();
-        termsApi.getAll().then(setData);
-    }, []);
+        setTableState();
+    }, [searchTitle, currentPage, selected]);
 
+    const handleChangeTitle = (event: ChangeEvent<HTMLInputElement>) => {
+        setSearchTitle(event.target.value);
+    };
     const handlePageSizeChange = (value: number) => {
         setSelected(value);
         setCurrentPage(1);
@@ -201,14 +202,22 @@ const TermDictionary = () => {
                 <div className="termDictionaryContainer">
                     <div className="dictionaryHeader">
                         <h1>Словник термінів</h1>
-                        <div>
-                            <Button
-                                className="streetcode-custom-button"
-                                onClick={() => setModal('addTerm')}
-                            >
-                                Новий термін
-                            </Button>
+                    </div>
+                    <div className="container-justify-end">
+                        <div className="searchMenuElement">
+                            <Input
+                                className="searchMenuElementInput"
+                                prefix={<MagnifyingGlass />}
+                                onChange={handleChangeTitle}
+                                placeholder="Назва"
+                            />
                         </div>
+                        <Button
+                            className="streetcode-custom-button"
+                            onClick={() => setModal('addTerm')}
+                        >
+                                Новий термін
+                        </Button>
                     </div>
                     <div className="termTable">
                         <Table
@@ -218,11 +227,13 @@ const TermDictionary = () => {
                             pagination={{
                                 current: currentPage,
                                 pageSize: selected,
+                                total: termsStore.PaginationInfo.TotalItems, // total - загальна кількість записів
                                 onChange: (page) => setCurrentPage(page),
                                 showSizeChanger: false,
                                 showTotal: () => <PaginationSelect selected={selected} onChange={handlePageSizeChange} />,
                             }}
                         />
+
                     </div>
                 </div>
                 <AddTermModal term={term} setTerm={setTerm} handleAdd={handleAdd} />
