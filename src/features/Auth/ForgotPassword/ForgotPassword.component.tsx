@@ -1,5 +1,6 @@
 ﻿import './ForgotPassword.styles.scss';
 
+import { useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { LeftOutlined } from '@ant-design/icons';
 import AuthService from '@app/common/services/auth-service/AuthService';
@@ -10,14 +11,29 @@ import { Button, Form, Input, message } from 'antd';
 
 const ForgotPassword: React.FC = () => {
     const [form] = Form.useForm();
-    const handleSendEmail = ({ email } : { email: string }) => {
-        AuthService.sendForgotPassword(email);
-        message.success('Пошту було успішно відправлено');
-    };
     const navigator = useNavigate();
+    const [isValid, setIsValid] = useState<boolean>(false);
+
+    const handleSendEmail = async ({ email } : { email: string }) => {
+        await AuthService.sendForgotPassword(email)
+            .then(() => {
+                message.success('Пошту було успішно відправлено');
+            })
+            .catch(() => {
+                message.error('Сталася помилка. Спробуйте пізніше.');
+            });
+    };
 
     const navigateToLogin = () => {
         navigator(FRONTEND_ROUTES.AUTH.LOGIN);
+    };
+
+    const validateFields = async () => {
+        await form.validateFields().then(() => {
+            setIsValid(true);
+        }).catch(() => {
+            setIsValid(false);
+        });
     };
 
     if (AuthService.isLoggedIn()) {
@@ -39,9 +55,14 @@ const ForgotPassword: React.FC = () => {
                     name="email"
                     rules={[{ required: true, message: 'Введіть пошту' }, { validator: validateEmail }]}
                 >
-                    <Input className="emailInputField" placeholder="Електронна пошта" maxLength={128} />
+                    <Input
+                        onChange={validateFields}
+                        className="emailInputField"
+                        placeholder="Електронна пошта"
+                        maxLength={128}
+                    />
                 </Form.Item>
-                <Button htmlType="submit" className="streetcode-custom-button forgotPasswordButton">
+                <Button disabled={!isValid} htmlType="submit" className="streetcode-custom-button forgotPasswordButton">
                     <p>Відновити пароль</p>
                 </Button>
                 <div onClick={navigateToLogin} className="navigationWrapper">

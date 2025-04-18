@@ -4,7 +4,6 @@
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
 
 .modalContainer {
-
     &.ant-modal {
         .ant-modal-close {
             @include mut.positioned-as(absolute, $left: 90%, $top: -25px);
@@ -79,6 +78,10 @@
             .ant-checkbox-wrapper .ant-checkbox-checked .ant-checkbox-inner {
                 background: red !important;
                 box-shadow: inset 0 0 0 2px white !important;
+            }
+
+            .ant-upload.ant-upload-select:not(.ant-upload-disabled):hover{
+                border-color: c.$dark-red-color;
             }
         }
     }

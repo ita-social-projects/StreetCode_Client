@@ -4,7 +4,7 @@ import './Sources.styles.scss';
 import { observer } from 'mobx-react-lite';
 import { useEffect } from 'react';
 import SlickSlider from '@features/SlickSlider/SlickSlider.component';
-import useMobx, { useStreecodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
+import useMobx, { useStreetcodePageLoaderContext, useStreetcodeDataContext } from '@stores/root-store';
 import BlockHeading from '@streetcode/HeadingBlock/BlockHeading.component';
 
 import useWindowSize from '@/app/common/hooks/stateful/useWindowSize.hook';
@@ -14,7 +14,7 @@ import SourceItem from './SourceItem/SourceItem.component';
 
 const SourcesComponent = () => {
     const { sourcesStore } = useMobx();
-    const streecodePageLoaderContext = useStreecodePageLoaderContext();
+    const streecodePageLoaderContext = useStreetcodePageLoaderContext();
     const { streetcodeStore: { getStreetCodeId } } = useStreetcodeDataContext();
     const windowsize = useWindowSize();
 

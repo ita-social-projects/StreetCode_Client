@@ -411,7 +411,6 @@ const NewStreetcode = () => {
                             .utc(form.getFieldValue('streetcodeSecondDate'))
                             .toDate()
                         : null,
-                    imagesIds: createUpdateMediaStore.getImageIds(),
                     audioId: createUpdateMediaStore.audioId,
                     tags: reindex(selectedTags).map((tag) => ({
                         ...tag,

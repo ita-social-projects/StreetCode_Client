@@ -6,7 +6,7 @@ import './Login.styles.scss';
 import { GoogleLogin } from '@react-oauth/google';
 import React, { useRef, useState } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import AuthService from '@app/common/services/auth-service/AuthService';
 import { ERROR_MESSAGES, INVALID_LOGIN_ATTEMPT } from '@constants/error-messages.constants';
 import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
@@ -21,6 +21,7 @@ const Login: React.FC = () => {
     const recaptchaRef = useRef<ReCAPTCHA>(null);
     const siteKey = window._env_.RECAPTCHA_SITE_KEY;
     const { RECAPTCHA_CHECK } = ERROR_MESSAGES;
+    const location = useLocation();
 
     const handleVerify = () => {
         setIsVerified(true);
@@ -47,7 +48,10 @@ const Login: React.FC = () => {
             try {
                 const token = recaptchaRef?.current?.getValue();
                 await AuthService.loginAsync(login, password, token)
-                    .then(() => navigate(FRONTEND_ROUTES.BASE))
+                    .then(() => {
+                        message.success('Ви успішно увійшли в систему.');
+                        navigate(location.state.previousUrl || FRONTEND_ROUTES.BASE);
+                    })
                     .catch((ex) => {
                         if (ex.response?.data) {
                             Object.keys(ex.response.data.message).forEach((key) => {
@@ -78,7 +82,14 @@ const Login: React.FC = () => {
                 <Form.Item
                     wrapperCol={{ span: 24 }}
                     name="login"
-                    rules={[{ required: true, message: 'Введіть логін' }, { validator: validateEmail }]}
+                    rules={[
+                        {
+                            required: true, message: 'Введіть логін',
+                        },
+                        {
+                            validator: validateEmail,
+                        },
+                    ]}
                 >
                     <Input className="loginInput" maxLength={128} placeholder="Електронна пошта" />
                 </Form.Item>
@@ -86,7 +97,11 @@ const Login: React.FC = () => {
                 <Form.Item
                     wrapperCol={{ span: 24 }}
                     name="password"
-                    rules={[{ required: true, message: 'Введіть пароль' }]}
+                    rules={[
+                        {
+                            required: true, message: 'Введіть пароль',
+                        },
+                    ]}
                 >
                     <Input.Password className="passwordInput" placeholder="Пароль" />
                 </Form.Item>
@@ -125,11 +140,11 @@ const Login: React.FC = () => {
                             message.success('Успішна авторизація через Google!');
                             navigate(FRONTEND_ROUTES.BASE);
                         } catch (error) {
-                            message.error('Помилка входу через Google');
+                            message.error('Помилка входу через Google. Будь ласка, спробуйте ще раз.');
                         }
                     }}
                     onError={() => {
-                        message.error('Не вдалося увійти через Google');
+                        message.error('Помилка входу через Google. Будь ласка, спробуйте ще раз.');
                     }}
                     useOneTap
                 />

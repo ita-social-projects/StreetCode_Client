@@ -27,6 +27,7 @@ import UserStore from '@stores/user-store';
 import NewsStore from './news-store/news-store';
 import StreetcodePageLoaderStore from './streetcode-page-loader-store/streetcode-page-loader-store';
 import CreateUpdateMediaStore from './create-update-media-store';
+import FavouritesCatalogStore from './favourites-catalog-store';
 import JobsStore from './jobs-store';
 import NewStreetcodeInfoStore from './newstreetcode-info-store';
 import PositionsStore from './position-store';
@@ -59,6 +60,7 @@ interface Store {
     relatedTermStore: RelatedTermsStore,
     historicalContextStore: HistoricalContextStore,
     streetcodeCatalogStore: StreetcodesCatalogStore,
+    favouritesCatalogStore: FavouritesCatalogStore,
     streetcodeShortStore: StreetcodeShortStore,
     newStreetcodeInfoStore: NewStreetcodeInfoStore,
     streetcodeCoordinatesStore: StreetcodeCoordinatesStore,
@@ -100,6 +102,7 @@ export const store: Store = {
     relatedTermStore: new RelatedTermsStore(),
     historicalContextStore: new HistoricalContextStore(),
     streetcodeCatalogStore: new StreetcodesCatalogStore(),
+    favouritesCatalogStore: new FavouritesCatalogStore(),
     streetcodeShortStore: new StreetcodeShortStore(),
     newStreetcodeInfoStore: new NewStreetcodeInfoStore(),
     streetcodeCoordinatesStore: new StreetcodeCoordinatesStore(),
@@ -128,10 +131,10 @@ export const modalDataStore:ModalDataStore = {
 };
 
 export const toponymDataStore:ToponymStore = new ToponymStore();
-export const streecodePageLoaderStore:StreetcodePageLoaderStore = new StreetcodePageLoaderStore();
+export const streetcodePageLoaderStore:StreetcodePageLoaderStore = new StreetcodePageLoaderStore();
 export const audioDataStore: AudioStore = new AudioStore();
 
-const streecodePageLoaderContext = createContext(streecodePageLoaderStore);
+const streetcodePageLoaderContext = createContext(streetcodePageLoaderStore);
 const streetcodeContext = createContext(streetcodeDataStore);
 const modalContext = createContext(modalDataStore);
 const toponymContext = createContext(toponymDataStore);
@@ -140,7 +143,7 @@ const audioContext = createContext(audioDataStore);
 export const useStreetcodeDataContext = () => useContext(streetcodeContext);
 export const useModalContext = () => useContext(modalContext);
 export const useToponymContext = () => useContext(toponymContext);
-export const useStreecodePageLoaderContext = () => useContext(streecodePageLoaderContext);
+export const useStreetcodePageLoaderContext = () => useContext(streetcodePageLoaderContext);
 export const useAudioContext = () => useContext(audioContext);
 
 const StoreContext = createContext(store);
