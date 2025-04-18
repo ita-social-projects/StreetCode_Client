@@ -50,7 +50,11 @@ const Login: React.FC = () => {
                 await AuthService.loginAsync(login, password, token)
                     .then(() => {
                         message.success('Ви успішно увійшли в систему.');
-                        navigate(location.state.previousUrl || FRONTEND_ROUTES.BASE);
+                        if (AuthService.isAdmin()) {
+                            navigate(FRONTEND_ROUTES.ADMIN.BASE);
+                        } else {
+                            navigate(location.state.previousUrl || FRONTEND_ROUTES.BASE);
+                        }
                     })
                     .catch((ex) => {
                         if (ex.response?.data) {
@@ -125,7 +129,9 @@ const Login: React.FC = () => {
                 />
                 <p className="registerNav">
                     Немає облікового запису?
-                    <span className="registerNavButton" onClick={navigateRegister}> Зареєструватися</span>
+                    <span className="registerNavButton" onClick={navigateRegister}>
+                        Зареєструватися
+                    </span>
                 </p>
                 <div className="continueWith">
                     <span className="line" />

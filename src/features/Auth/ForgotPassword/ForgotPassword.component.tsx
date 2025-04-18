@@ -1,7 +1,7 @@
 ﻿import './ForgotPassword.styles.scss';
 
-import { useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { LeftOutlined } from '@ant-design/icons';
 import AuthService from '@app/common/services/auth-service/AuthService';
 import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
@@ -13,6 +13,10 @@ const ForgotPassword: React.FC = () => {
     const [form] = Form.useForm();
     const navigator = useNavigate();
     const [isValid, setIsValid] = useState<boolean>(false);
+
+    useEffect(() => {
+        AuthService.logout();
+    }, []);
 
     const handleSendEmail = async ({ email } : { email: string }) => {
         await AuthService.sendForgotPassword(email)
@@ -36,10 +40,6 @@ const ForgotPassword: React.FC = () => {
         });
     };
 
-    if (AuthService.isLoggedIn()) {
-        return <Navigate to={FRONTEND_ROUTES.OTHER_PAGES.PROFILE} />;
-    }
-
     return (
         <div className="forgotPasswordWrapper">
             <Form form={form} className="forgot-password-form" onFinish={handleSendEmail}>
@@ -53,13 +53,23 @@ const ForgotPassword: React.FC = () => {
                 <Form.Item
                     wrapperCol={{ span: 24 }}
                     name="email"
-                    rules={[{ required: true, message: 'Введіть пошту' }, { validator: validateEmail }]}
+                    rules={
+                        [
+                            {
+                                required: true, message: 'Введіть пошту',
+                            },
+                            {
+                                validator: validateEmail,
+                            },
+                        ]
+                    }
                 >
                     <Input
                         onChange={validateFields}
                         className="emailInputField"
                         placeholder="Електронна пошта"
-                        maxLength={128}
+                        showCount
+                        maxLength={256}
                     />
                 </Form.Item>
                 <Button disabled={!isValid} htmlType="submit" className="streetcode-custom-button forgotPasswordButton">

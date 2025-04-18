@@ -11,6 +11,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import AuthService from '@app/common/services/auth-service/AuthService';
+import AdminMenu from '@components/AdminMenu/AdminMenu.component';
 import UserMenu from '@components/UserMenu/UserMenu.component';
 import useEventListener from '@hooks/external/useEventListener.hook';
 import useOnClickOutside from '@hooks/stateful/useClickOutside.hook';
@@ -169,6 +170,18 @@ const HeaderBlock = () => {
         },
     );
 
+    const getMenuComponent = () => {
+        if (isLoggedIn) {
+            return AuthService.isAdmin() ? <AdminMenu /> : <UserMenu />;
+        }
+
+        return (
+            <Button className="loginButton" onClick={navigateToLogin}>
+                Вхід
+            </Button>
+        );
+    };
+
     return (
         <div className="HeaderBlock" ref={dimWrapperRef}>
             <div className={`navBarContainer ${isHeaderHidden ? 'hiddenNavBar' : ''} ${isPageDimmed ? 'dim' : ''}`}>
@@ -245,11 +258,7 @@ const HeaderBlock = () => {
                                 style={isPageDimmed ? { zIndex: '-1' } : undefined}
                             />
                         )}
-                        {isLoggedIn ? <UserMenu /> : (
-                            <Button className="loginButton" onClick={navigateToLogin}>
-                                Вхід
-                            </Button>
-                        ) }
+                        {getMenuComponent()}
                         <Button
                             type="primary"
                             className="participateButton"

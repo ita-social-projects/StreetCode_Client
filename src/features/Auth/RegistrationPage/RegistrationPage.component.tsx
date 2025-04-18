@@ -13,7 +13,6 @@ import validateLength from '@utils/userValidators/validateLength';
 import validatePatternNameSurname from '@utils/userValidators/validatePatternNameSurname';
 import validateRequired from '@utils/userValidators/validateRequired';
 
-
 import { Button, Form, Input, message } from 'antd';
 
 const RegistrationPage: React.FC = () => {
@@ -68,7 +67,7 @@ const RegistrationPage: React.FC = () => {
                             validator: validateRequired("Ім'я"),
                         },
                         {
-                            validator: validateLength("Ім'я", 2, 50),
+                            validator: validateLength(2, 50),
                         },
                         {
                             validator: validatePatternNameSurname("Ім'я"),
@@ -86,7 +85,7 @@ const RegistrationPage: React.FC = () => {
                             validator: validateRequired('Прізвище'),
                         },
                         {
-                            validator: validateLength('Прізвище', 2, 50),
+                            validator: validateLength(2, 50),
                         },
                         {
                             validator: validatePatternNameSurname('Прізвище'),
@@ -106,11 +105,11 @@ const RegistrationPage: React.FC = () => {
                             validator: validateEmail,
                         },
                         {
-                            validator: validateLength('Пошта', 2, 254),
+                            validator: validateLength(2, 256),
                         },
                     ]}
                 >
-                    <Input placeholder="Електронна пошта" maxLength={254} className="registerInputField" />
+                    <Input placeholder="Електронна пошта" maxLength={256} className="registerInputField" />
                 </Form.Item>
                 <Password onPasswordValid={setIsPasswordValid} />
                 <Button
@@ -121,7 +120,7 @@ const RegistrationPage: React.FC = () => {
                     <p>Зареєструватися</p>
                 </Button>
                 <p className="loginNav">
-                    Вже є обликовій запис?
+                    Вже є обліковий запис?
                     <button type="button" onClick={navigateToLogin} className="loginNavButton">&nbsp; Увійти</button>
                 </p>
             </Form>

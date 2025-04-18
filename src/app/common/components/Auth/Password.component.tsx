@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import PasswordChecklist from 'react-password-checklist';
+import validateLength from '@utils/userValidators/validateLength';
 import validatePatternPassword from '@utils/userValidators/validatePassword';
 
 import { Form, Input } from 'antd';
@@ -48,12 +49,14 @@ const Password = ({ onPasswordValid } : Props) => {
                 />
             </Form.Item>
             <PasswordChecklist
-                rules={['minLength', 'number', 'capital', 'lowercase', 'specialChar', 'match']}
+                rules={['minLength', 'maxLength', 'number', 'capital', 'lowercase', 'specialChar', 'match']}
                 minLength={8}
+                maxLength={20}
                 value={password}
                 valueAgain={passwordRepeat}
                 messages={{
                     minLength: 'Мінімальна довжина пароля — 8 символів',
+                    maxLength: 'Максимальна довжина пароля — 20 символів',
                     number: 'Пароль повинен містити принаймні одну цифру',
                     capital: 'Пароль повинен містити принаймні одну ВЕЛИКУ літеру',
                     lowercase: 'Пароль повинен містити принаймні одну маленьку літеру',

@@ -36,10 +36,6 @@ const ForgotPasswordResetComponent: React.FC = () => {
         navigator(FRONTEND_ROUTES.AUTH.LOGIN);
     };
 
-    if (AuthService.isLoggedIn()) {
-        return <Navigate to={FRONTEND_ROUTES.OTHER_PAGES.PROFILE} />;
-    }
-
     return (
         <div className="forgotPasswordResetWrapper">
             <Form form={form} className="forgot-password-reset-form" onFinish={handleUpdatePassword}>
