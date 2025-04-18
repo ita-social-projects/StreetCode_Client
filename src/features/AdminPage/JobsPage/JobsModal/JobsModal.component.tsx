@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
 import ReactQuill from 'react-quill';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
+import BUTTON_LABELS from '@constants/buttonLabels';
 
 import {
     Button, Form, Input, message, Modal, Popover, Select,
@@ -15,9 +16,10 @@ import {
     setQuillEditorContent,
 } from '@/app/common/components/Editor/EditorUtilities/quillUtils.utility';
 import Editor from '@/app/common/components/Editor/QEditor.component';
-
-import POPOVER_CONTENT from './constants/popoverContent';
-import BUTTON_LABELS from '@constants/buttonLabels';
+import MODAL_MESSAGES from '@/app/common/constants/modal-messages.constants';
+import REQUIRED_FIELD_MESSAGES from '@/app/common/constants/required_field_messages.constrants';
+import SUCCESS_MESSAGES from '@/app/common/constants/success-messages.constants';
+import VALIDATION_MESSAGES from '@/app/common/constants/validation-messages.constants';
 
 interface Props {
   open: boolean;
@@ -110,15 +112,15 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
                 await JobApi.update(newJob);
             }
 
-            message.success(POPOVER_CONTENT.SUCCESS, 2);
+            message.success(SUCCESS_MESSAGES.VACANCY_SAVED, 2);
             setIsSaveButtonDisabled(true);
         } catch {
-            message.error(POPOVER_CONTENT.FAIL, 2);
+            message.error(VALIDATION_MESSAGES.INVALID_VALIDATION, 2);
         }
     };
 
     const handleFail = async () => {
-        message.error(POPOVER_CONTENT.FAIL, 2);
+        message.error(VALIDATION_MESSAGES.INVALID_VALIDATION, 2);
     };
 
     const clearModal = () => {
@@ -150,7 +152,7 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
             maskClosable
             centered
             closeIcon={(
-                <Popover content={POPOVER_CONTENT.CANCEL} trigger="hover">
+                <Popover content={MODAL_MESSAGES.REMINDER_TO_SAVE} trigger="hover">
                     <CancelBtn className="iconSize" onClick={clearModal} />
                 </Popover>
             )}
@@ -172,7 +174,7 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
                 <Form.Item
                     label="Назва вакансії"
                     name="title"
-                    rules={[{ required: true, message: 'Введіть назву вакансії' }]}
+                    rules={[{ required: true, message: REQUIRED_FIELD_MESSAGES.ENTER_VACANCY_TITLE }]}
                 >
                     <Input showCount maxLength={maxLengths.maxLengthVacancyName} onChange={handleInputChange} />
                 </Form.Item>
@@ -206,7 +208,7 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
                 <Form.Item
                     label="Заробітня плата"
                     name="salary"
-                    rules={[{ required: true, message: 'Введіть заробітню плату' }]}
+                    rules={[{ required: true, message: REQUIRED_FIELD_MESSAGES.ENTER_SALARY }]}
                 >
                     <Input showCount maxLength={maxLengths.maxLengthVacancySalary} onChange={handleInputChange} />
                 </Form.Item>
@@ -218,7 +220,7 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
                         }}
                         disabled={isSaveButtonDisabled}
                     >
-                      {BUTTON_LABELS.SAVE}
+                        {BUTTON_LABELS.SAVE}
                     </Button>
                 </div>
             </Form>

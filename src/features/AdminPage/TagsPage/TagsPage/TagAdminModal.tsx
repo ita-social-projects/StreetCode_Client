@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 import '@features/AdminPage/AdminModal.styles.scss';
 
 import CancelBtn from '@images/utils/Cancel_btn.svg';
@@ -11,11 +12,13 @@ import {
     Button, Form, Input, message, Modal, Popover,
 } from 'antd';
 
+import MODAL_MESSAGES from '@/app/common/constants/modal-messages.constants';
+import REQUIRED_FIELD_MESSAGES from '@/app/common/constants/required_field_messages.constrants';
+import SUCCESS_MESSAGES from '@/app/common/constants/success-messages.constants';
+import VALIDATION_MESSAGES from '@/app/common/constants/validation-messages.constants';
 import normaliseWhitespaces from '@/app/common/utils/normaliseWhitespaces';
 import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
 import Tag from '@/models/additional-content/tag.model';
-
-import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 
 interface SourceModalProps {
     isModalVisible: boolean;
@@ -63,7 +66,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
     const validateTag = uniquenessValidator(
         () => (tagsStore.getTagArray.map((tag) => tag.title)),
         () => (initialData?.title),
-        'Тег з такою назвою вже існує',
+        VALIDATION_MESSAGES.DUPLICATE_TAG_TITLE,
     );
 
     const onSubmit = async (formData: any) => {
@@ -96,7 +99,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
         try {
             await form.validateFields();
             form.submit();
-            message.success(`Тег успішно ${isEditing ? 'змінено' : 'додано'}!`, 2);
+            message.success(SUCCESS_MESSAGES.TAG_SAVED, 2);
             setIsSaveButtonDisabled(true);
         } catch (error) {
             message.config({
@@ -105,7 +108,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                 maxCount: 3,
                 prefixCls: 'my-message',
             });
-            message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
+            message.error(VALIDATION_MESSAGES.INVALID_VALIDATION);
         }
     };
 
@@ -114,9 +117,8 @@ const SourceModal: React.FC<SourceModalProps> = ({
             open={isModalVisible}
             onCancel={closeModal}
             className="modalContainer"
-            centered
             closeIcon={(
-                <Popover content={POPOVER_CONTENT.CANCEL} trigger="hover">
+                <Popover content={MODAL_MESSAGES.REMINDER_TO_SAVE} trigger="hover">
                     <CancelBtn className="iconSize" onClick={handleCancel} />
                 </Popover>
             )}
@@ -127,7 +129,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                 layout="vertical"
                 onFinish={onSubmit}
                 initialValues={initialData}
-                onKeyDown={(e) => (e.key === 'Enter' ? e.preventDefault() : '')}
+                onKeyDown={(e) => (e.key == 'Enter' ? e.preventDefault() : '')}
                 onValuesChange={updateSaveButtonState}
             >
                 <div className="center">
@@ -136,12 +138,12 @@ const SourceModal: React.FC<SourceModalProps> = ({
                 <Form.Item
                     name="title"
                     label="Назва: "
-                    rules={[{ required: true, message: 'Введіть назву' },
+                    rules={[{ required: true, message: REQUIRED_FIELD_MESSAGES.ENTER_TITLE },
                         { validator: validateTag },
                     ]}
                     getValueProps={(value: string) => ({ value: normaliseWhitespaces(value) })}
                 >
-                    <Input placeholder="Title" maxLength={50} showCount />
+                    <Input maxLength={50} showCount />
                 </Form.Item>
                 <div className="center">
                     <Button

@@ -1,6 +1,8 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { RuleObject } from 'rc-field-form/lib/interface';
 
 import { SUPPORTED_IMAGE_FILE_TYPES } from '@/app/common/constants/file-types.constants';
+import VALIDATION_MESSAGES from '@/app/common/constants/validation-messages.constants';
 
 const imageExtensionValidator = (_: RuleObject, file: any): Promise<void> => {
     if (file) {
@@ -17,7 +19,7 @@ const imageExtensionValidator = (_: RuleObject, file: any): Promise<void> => {
             return Promise.resolve();
         }
 
-        return Promise.reject(new Error('Тільки файли з розширенням webp, jpeg, png, jpg дозволені!'));
+        return Promise.reject(new Error(VALIDATION_MESSAGES.INVALID_IMAGE_FORMAT));
     }
 
     return Promise.reject();

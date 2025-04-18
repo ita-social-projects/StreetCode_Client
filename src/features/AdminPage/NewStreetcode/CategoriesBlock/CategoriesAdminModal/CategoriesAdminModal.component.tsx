@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import ReactQuill from 'react-quill';
 import getNewMinNegativeId from '@app/common/utils/newIdForStore';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
+import BUTTON_LABELS from '@constants/buttonLabels';
 import { ModelState } from '@models/enums/model-state';
 import useMobx from '@stores/root-store';
 
@@ -18,14 +19,16 @@ import {
     setQuillEditorContent,
 } from '@/app/common/components/Editor/EditorUtilities/quillUtils.utility';
 import Editor from '@/app/common/components/Editor/QEditor.component';
+import MODAL_MESSAGES from '@/app/common/constants/modal-messages.constants';
+import REQUIRED_FIELD_MESSAGES from '@/app/common/constants/required_field_messages.constrants';
+import SUCCESS_MESSAGES from '@/app/common/constants/success-messages.constants';
+import VALIDATION_MESSAGES from '@/app/common/constants/validation-messages.constants';
 import SourceModal from '@/features/AdminPage/CategoriesPage/CategoriesPage/CategoryAdminModal.component';
 import {
     SourceCategoryName,
     StreetcodeCategoryContent,
     StreetcodeCategoryContentUpdate,
 } from '@/models/sources/sources.model';
-import POPOVER_CONTENT from '@/features/AdminPage/JobsPage/JobsModal/constants/popoverContent';
-import BUTTON_LABELS from "@constants/buttonLabels";
 
 interface Props {
     character_limit?: number;
@@ -68,7 +71,7 @@ const CategoriesModal = ({
 
     const getAvailableCategories = async (isNewCat: boolean): Promise<SourceCategoryName[] | undefined> => {
         try {
-            const categories = await SourcesApi.getAllCategories().then(resp => resp.categories);
+            const categories = await SourcesApi.getAllCategories().then((resp) => resp.categories);
             sourcesAdminStore.setInternalSourceCategories(categories);
 
             const selected = sourceCreateUpdateStreetcode.streetcodeCategoryContents
@@ -147,8 +150,8 @@ const CategoriesModal = ({
         indexOfPersistedCategory: number,
         isEditedCategoryPersisted: boolean,
     ) => {
-        let ids: (number | undefined)[] = sourceCreateUpdateStreetcode.streetcodeCategoryContents.map((x) => x.id);
-        let filteredIds: number[] = ids.filter((id): id is number => id !== undefined);
+        const ids: (number | undefined)[] = sourceCreateUpdateStreetcode.streetcodeCategoryContents.map((x) => x.id);
+        const filteredIds: number[] = ids.filter((id): id is number => id !== undefined);
         if (!isEditedCategoryPersisted) {
             sourceCreateUpdateStreetcode
                 .addSourceCategoryContent({
@@ -229,13 +232,13 @@ const CategoriesModal = ({
             checkQuillEditorTextLength(editorCharacterCount, maxLength);
             if (validateTextChange()) {
                 form.submit();
-                message.success('Категорію для фанатів успішно додано!');
+                message.success(SUCCESS_MESSAGES.CATEGORY_FAN_ADDED);
                 setIsSaveButtonDisabled(true);
             } else {
                 throw new Error();
             }
         } catch (error) {
-            message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
+            message.error(VALIDATION_MESSAGES.INVALID_VALIDATION);
         }
     };
 
@@ -250,6 +253,8 @@ const CategoriesModal = ({
         }
     };
 
+    const handleInputChange = () => setIsSaveButtonDisabled(false);
+
     const handleAdd = async (value: string) => {
         if (value === 'addCategory') {
             setIsAddModalVisible(true);
@@ -259,8 +264,6 @@ const CategoriesModal = ({
     };
 
     const handleDisabled = (categoryId: number) => !availableCategories.some((c) => c.id === categoryId);
-
-    const handleInputChange = () => setIsSaveButtonDisabled(false);
 
     return (
         <Modal
@@ -275,7 +278,7 @@ const CategoriesModal = ({
             maskClosable
             centered
             closeIcon={(
-                <Popover content={POPOVER_CONTENT.CANCEL} trigger="hover">
+                <Popover content={MODAL_MESSAGES.REMINDER_TO_SAVE} trigger="hover">
                     <CancelBtn className="iconSize" onClick={clearModal} />
                 </Popover>
             )}
@@ -291,7 +294,7 @@ const CategoriesModal = ({
                 <Form.Item
                     label="Категорія:"
                     name="category"
-                    rules={[{ required: true, message: 'Введіть Категорію' }]}
+                    rules={[{ required: true, message: REQUIRED_FIELD_MESSAGES.ENTER_CATEGORY }]}
                 >
                     <Select
                         key="selectForFansCategory"

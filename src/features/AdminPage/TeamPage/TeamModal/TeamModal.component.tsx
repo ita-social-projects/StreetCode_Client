@@ -27,12 +27,15 @@ import { UploadChangeParam } from 'antd/es/upload';
 
 import PositionsApi from '@/app/api/team/teampositions.api';
 import validateSocialLink from '@/app/common/components/modals/validators/socialLinkValidator';
+import { ERROR_MESSAGES } from '@/app/common/constants/error-messages.constants';
+import MODAL_MESSAGES from '@/app/common/constants/modal-messages.constants';
+import REQUIRED_FIELD_MESSAGES from '@/app/common/constants/required_field_messages.constrants';
+import SUCCESS_MESSAGES from '@/app/common/constants/success-messages.constants';
+import VALIDATION_MESSAGES from '@/app/common/constants/validation-messages.constants';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import TeamLink from '@/features/AdminPage/TeamPage/TeamLink.component';
 import Audio from '@/models/media/audio.model';
 import Image from '@/models/media/image.model';
-
-import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 
 const TeamModal: React.FC<{
     teamMember?: TeamMember, open: boolean,
@@ -101,7 +104,7 @@ const TeamModal: React.FC<{
     useEffect(() => {
         setWaitingForApiResponse(false);
         if (actionSuccess) {
-            message.success('Члена команди успішно додано/оновлено!');
+            message.success(SUCCESS_MESSAGES.TEAM_MEMBER_SAVED);
             setActionSuccess(false);
         }
     }, [actionSuccess]);
@@ -121,6 +124,13 @@ const TeamModal: React.FC<{
             imageId.current = 0;
         }
     }, [teamMember, open, form]);
+
+    useEffect(() => {
+        if (fileList.length === 0) {
+            form.setFieldsValue({ image: undefined });
+            form.validateFields(['image']).catch(() => {});
+        }
+    }, [fileList]);
 
     const getNewId = (objects: Array<{ id: number }>) => {
         let minId = Math.min(...objects.map((t) => t.id));
@@ -195,12 +205,12 @@ const TeamModal: React.FC<{
             form.submit();
             setIsSaveButtonDisabled(true);
         } catch (error) {
-            message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
+            message.error(VALIDATION_MESSAGES.INVALID_VALIDATION);
         }
     };
 
-    const onSuccessfulSubmitPosition = async (formValues: any) => {
-        message.loading('Зберігання...');
+    const onSuccesfulSubmitPosition = async (formValues: any) => {
+        message.loading(MODAL_MESSAGES.SAVING);
         teamSourceLinks.forEach((el, index) => {
             if (el.id < 0) {
                 teamSourceLinks[index].id = 0;
@@ -239,7 +249,7 @@ const TeamModal: React.FC<{
             }
             setActionSuccess(true);
         } catch (error: unknown) {
-            message.error('Не вдалось оновити/створити члена команди. Спробуйте ще раз.');
+            message.error(ERROR_MESSAGES.TEAM_MEMBER_COULD_NOT_LOAD);
             setWaitingForApiResponse(false);
         }
     };
@@ -257,6 +267,7 @@ const TeamModal: React.FC<{
         if (await checkFile(param.file)) {
             setFileList(param.fileList);
         }
+
         handleInputChange();
     };
 
@@ -267,7 +278,7 @@ const TeamModal: React.FC<{
             className="modalContainer"
             footer={null}
             closeIcon={(
-                <Popover content={POPOVER_CONTENT.CANCEL} trigger="hover">
+                <Popover content={MODAL_MESSAGES.REMINDER_TO_SAVE} trigger="hover">
                     <CancelBtn className="iconSize" onClick={closeAndCleanData} />
                 </Popover>
             )}
@@ -276,7 +287,7 @@ const TeamModal: React.FC<{
                 <Form
                     form={form}
                     layout="vertical"
-                    onFinish={onSuccessfulSubmitPosition}
+                    onFinish={onSuccesfulSubmitPosition}
                 >
                     <div className="center">
                         <h2>
@@ -296,7 +307,7 @@ const TeamModal: React.FC<{
                     <Form.Item
                         name="name"
                         label="Прізвище та ім'я: "
-                        rules={[{ required: true, message: "Введіть прізвище та ім'я" }]}
+                        rules={[{ required: true, message: REQUIRED_FIELD_MESSAGES.ENTER_SURNAME_NAME }]}
                     >
                         <Input maxLength={41} showCount onChange={handleInputChange} />
                     </Form.Item>
@@ -329,7 +340,7 @@ const TeamModal: React.FC<{
                         rules={[
                             {
                                 required: true,
-                                message: 'Будь ласка, завантажте фото',
+                                message: REQUIRED_FIELD_MESSAGES.ADD_PHOTO,
                             },
                             { validator: combinedImageValidator(false) },
                         ]}
@@ -343,7 +354,8 @@ const TeamModal: React.FC<{
                             beforeUpload={checkFile}
                             onChange={handleFileChange}
                             onPreview={(e) => {
-                                setFilePreview(e); setPreviewOpen(true);
+                                setFilePreview(e);
+                                setPreviewOpen(true);
                             }}
                             onRemove={handleRemove}
                             uploadTo="image"
@@ -390,7 +402,7 @@ const TeamModal: React.FC<{
                     <Form.Item
                         name="logotype"
                         label="Соціальна мережа"
-                        rules={[{ required: true, message: 'Оберіть соц. мережу' }]}
+                        rules={[{ required: true, message: REQUIRED_FIELD_MESSAGES.SELECT_SOCIAL_NETWORK }]}
                         style={{ minWidth: '135px' }}
                     >
                         <Select
@@ -405,9 +417,11 @@ const TeamModal: React.FC<{
                         className="url-input"
                         name="url"
                         rules={[
-                            { required: true, message: 'Введіть посилання' },
+                            { required: true, message: REQUIRED_FIELD_MESSAGES.ENTER_LINK },
                             {
                                 validator: (_, value) => {
+                                    if (!value) return Promise.resolve();
+
                                     const socialName = teamLinksForm.getFieldValue('logotype');
                                     return validateSocialLink<LogoType>(
                                         value,

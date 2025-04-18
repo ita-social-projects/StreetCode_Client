@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import { ModelState } from '@models/enums/model-state';
 import { RelatedFigureCreateUpdate, RelatedFigureShort } from '@models/streetcode/related-figure.model';
 
-import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
-import Streetcode, { StreetcodeShort } from '@/models/streetcode/streetcode-types.model';
-
-import InputPanel from './components/InputPanel.component';
-import RelationsList from './components/RelatedFigureList.component';
-import SelectWithCustomSuffix from '@/app/common/components/SelectWithCustomSuffix';
 import { Select } from 'antd';
+
+import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
+import SelectWithCustomSuffix from '@/app/common/components/SelectWithCustomSuffix';
+import { StreetcodeShort } from '@/models/streetcode/streetcode-types.model';
 
 interface Props {
     currentStreetcodeId: number | null;

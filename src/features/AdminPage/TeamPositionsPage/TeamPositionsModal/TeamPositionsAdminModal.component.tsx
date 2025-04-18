@@ -1,16 +1,25 @@
+/* eslint-disable import/extensions */
 /* eslint-disable max-len */
 import CancelBtn from '@images/utils/Cancel_btn.svg';
+
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
+import BUTTON_LABELS from '@constants/buttonLabels';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import Position from '@models/additional-content/teampositions.model';
 import useMobx from '@stores/root-store';
-import { Button, Form, Input, message, Modal, Popover, UploadFile } from 'antd';
-import {parseJsonNumber} from "ajv/dist/runtime/parseJson";
+import { parseJsonNumber } from 'ajv/dist/runtime/parseJson';
+
+import {
+    Button, Form, Input, message, Modal, Popover, UploadFile,
+} from 'antd';
 import position = parseJsonNumber.position;
+import MODAL_MESSAGES from '@/app/common/constants/modal-messages.constants';
+import REQUIRED_FIELD_MESSAGES from '@/app/common/constants/required_field_messages.constrants';
+import SUCCESS_MESSAGES from '@/app/common/constants/success-messages.constants';
+import VALIDATION_MESSAGES from '@/app/common/constants/validation-messages.constants';
 import normaliseWhitespaces from '@/app/common/utils/normaliseWhitespaces';
 import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
-import BUTTON_LABELS from "@constants/buttonLabels";
 
 interface TeamPositionsAdminProps {
     setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -23,9 +32,9 @@ const TeamPositionsAdminModalComponent: React.FC<TeamPositionsAdminProps> = obse
     isModalVisible,
     setIsModalOpen,
     initialData,
-    isNewPosition
+    isNewPosition,
 }) => {
-    const {teamPositionsStore} = useMobx();
+    const { teamPositionsStore } = useMobx();
     const [form] = Form.useForm();
     const isEditing = !!initialData;
     const closeModal = () => {
@@ -43,9 +52,9 @@ const TeamPositionsAdminModalComponent: React.FC<TeamPositionsAdminProps> = obse
     }, [initialData, isModalVisible, form]);
 
     const validatePosition = uniquenessValidator(
-        ()=>(teamPositionsStore.getPositionsArray.map((position) => position.position)), 
-        ()=>(initialData?.position), 
-        'Позиція з такою назвою вже існує'
+        () => (teamPositionsStore.getPositionsArray.map((position) => position.position)),
+        () => (initialData?.position),
+        VALIDATION_MESSAGES.DUPLICATE_POSITION_TITLE,
     );
 
     const onSubmit = async (formData: any) => {
@@ -78,7 +87,7 @@ const TeamPositionsAdminModalComponent: React.FC<TeamPositionsAdminProps> = obse
         try {
             await form.validateFields();
             form.submit();
-            message.success(`Позицію успішно ${isEditing ? 'змінено' : 'додано'}!`);
+            message.success(SUCCESS_MESSAGES.POSITION_SAVED);
         } catch (error) {
             message.config({
                 top: 100,
@@ -86,7 +95,7 @@ const TeamPositionsAdminModalComponent: React.FC<TeamPositionsAdminProps> = obse
                 maxCount: 3,
                 prefixCls: 'my-message',
             });
-            message.error("Будь ласка, заповніть всі обов'язкові поля та перевірте валідність ваших даних");
+            message.error(VALIDATION_MESSAGES.INVALID_VALIDATION);
         }
     };
 
@@ -103,7 +112,7 @@ const TeamPositionsAdminModalComponent: React.FC<TeamPositionsAdminProps> = obse
             maskClosable
             centered
             closeIcon={(
-                <Popover content="Зберіг? Тоді виходь!" trigger="hover">
+                <Popover content={MODAL_MESSAGES.REMINDER_TO_SAVE} trigger="hover">
                     <CancelBtn className="iconSize" onClick={handleCancel} />
                 </Popover>
             )}
@@ -114,7 +123,7 @@ const TeamPositionsAdminModalComponent: React.FC<TeamPositionsAdminProps> = obse
                     layout="vertical"
                     onFinish={onSubmit}
                     initialValues={initialData}
-                    onKeyDown={(e) => e.key === 'Enter' ? e.preventDefault() : ''}
+                    onKeyDown={(e) => (e.key === 'Enter' ? e.preventDefault() : '')}
                 >
                     <div className="center">
                         <h2>{isEditing ? 'Редагувати позицію' : 'Додати позицію'}</h2>
@@ -122,12 +131,12 @@ const TeamPositionsAdminModalComponent: React.FC<TeamPositionsAdminProps> = obse
                     <Form.Item
                         name="position"
                         label="Назва: "
-                        rules={[{required: true, message: 'Введіть назву', max: MAX_LENGTH.title},
-                            {validator: validatePosition}
+                        rules={[{ required: true, message: REQUIRED_FIELD_MESSAGES.ENTER_TITLE, max: MAX_LENGTH.title },
+                            { validator: validatePosition },
                         ]}
                         getValueProps={(value) => ({ value: normaliseWhitespaces(value) })}
                     >
-                        <Input maxLength={MAX_LENGTH.title} showCount/>
+                        <Input maxLength={MAX_LENGTH.title} showCount />
                     </Form.Item>
 
                     <div className="center">

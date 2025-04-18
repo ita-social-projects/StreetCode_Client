@@ -2,8 +2,11 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Youtube from 'react-youtube';
 import Video from '@models/media/video.model';
+
 import { Button, Input } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
+
+import REQUIRED_FIELD_MESSAGES from '@/app/common/constants/required_field_messages.constrants';
 import TextInputInfo from '@/features/AdminPage/NewStreetcode/TextBlock/InputType/TextInputInfo.model';
 import { Text } from '@/models/streetcode/text-contents.model';
 
@@ -49,7 +52,7 @@ const LinkEditor = ({
     const handleLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target as HTMLInputElement;
         const isTitleEmptyOrSpaces = !inputInfo?.title || /^\s*$/.test(inputInfo.title);
-        if (value && !isTitleEmptyOrSpaces) { 
+        if (value && !isTitleEmptyOrSpaces) {
             const id = getYouTubeId(value);
             setInputInfo((info) => ({ ...info, link: value }));
             if (id) {
@@ -83,12 +86,12 @@ const LinkEditor = ({
         <FormItem
             name="video"
             label="Відео"
-            rules={[{ pattern: youtubeRegex, message: 'Вставте, будь ласка, тільки youtube.com посилання. Це поле не підтримує інші формати URL' }]}
-        >   
+            rules={[{ pattern: youtubeRegex, message: REQUIRED_FIELD_MESSAGES.ENTER_YOUTUBE_LINK }]}
+        >
             <div className="youtube-block">
                 <Input
                     title="video"
-                    className={isTitleEmpty ? "smallerInputDisabled" : "smallerInput"}
+                    className={isTitleEmpty ? 'smallerInputDisabled' : 'smallerInput'}
                     placeholder="Прик.: https://youtube.com/watch?=v3siIQi4nCQ або https://youtu.be/v3siIQi4nCQ"
                     name="link"
                     onChange={handleLinkChange}
