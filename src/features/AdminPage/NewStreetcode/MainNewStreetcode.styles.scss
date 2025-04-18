@@ -97,7 +97,7 @@ $articlesImg: "@assets/images/sources/Articles.webp";
         .ant-input-focused,
         .ant-select-focused,
         .ant-picker-focused,
-        .my-picker :hover{
+        .ant-picker:hover{
             border-color: c.$accented-red-color;
             box-shadow: none !important;
         }
@@ -123,6 +123,10 @@ $articlesImg: "@assets/images/sources/Articles.webp";
                 border-color: c.$accented-red-color;
                 box-shadow: none;
             }
+        }
+
+        .ant-upload-list-item-file path:nth-of-type(2) {
+            fill: c.$dark-red-color;
         }
 
         .ant-form-item-label >label{
