@@ -2,11 +2,10 @@
 
 import { RuleObject } from 'antd/es/form';
 
-const validatePatternUserName = (fieldName: string) => (_: RuleObject, value: string) => {
+const validatePatternUserName = () => (_: RuleObject, value: string) => {
     if (value && !USERNAME_REGEX.test(value)) {
         return Promise.reject(
-            new Error(`${fieldName} може містити лише літери латиниці 
-            (малі), цифри та спец. символи`),
+            new Error('Дозволені лише літери, пробіли, дефіси (-) та апострофи (\').'),
         );
     }
     return Promise.resolve();
