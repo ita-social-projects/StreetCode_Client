@@ -71,10 +71,10 @@ jest.mock("@stores/root-store", () => ({
     },
     streetcodeShortStore: {
       fetchStreetcodesAll: jest.fn().mockResolvedValue([]), // Mock the fetch function
-      streetcodes: [
-        { id: "1", title: "Streetcode 1" },
-        { id: "2", title: "Streetcode 2" },
-      ],
+      StreetcodesShortMap: new Map([
+        [1, { id: 1, title: "Streetcode 1" }],
+        [2, { id: 2, title: "Streetcode 2" }],
+      ]),
     },
   })
 }));
