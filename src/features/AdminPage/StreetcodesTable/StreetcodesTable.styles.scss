@@ -8,6 +8,9 @@
     @include mut.sized(81%);
     overflow: visible;
     float: right;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
     
     .ScrollableTableContainer{
         max-height: 77vh !important;
@@ -63,6 +66,11 @@
 .ant-pagination-item-active {
     color: white;
     border: 1px solid #891F16 !important;
+}
+
+.underTableZone{
+    margin-top: auto;
+    margin-bottom: 20px;
 }
 
 .underTableElement {

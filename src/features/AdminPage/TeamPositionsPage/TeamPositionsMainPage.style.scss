@@ -6,6 +6,7 @@
 .positions-page{
   @include mut.admin-page-base-layout();
   margin-top: 0;
+  height: 93vh;
 
   .container-justify-end {
     display: flex;
@@ -15,6 +16,8 @@
 }
   .positions-page-container{
     @include mut.sized(100%);
+    display: flex;
+    flex-direction: column;
 
     .positions-table-logo{
       max-width: 90%;
@@ -39,8 +42,8 @@
     .site-link{
       word-break: break-all
     }
-    .underTableElement {
-        padding-bottom: 10px;
+    .underTableZone{
+      margin-top: auto;
     }
     .searchMenuElement {
       margin: 20px 10px 10px 10px;

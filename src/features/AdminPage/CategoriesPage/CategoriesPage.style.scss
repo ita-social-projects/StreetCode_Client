@@ -6,6 +6,7 @@
 .categories-page{
     @include mut.admin-page-base-layout();
     margin-top: 0;
+    height: 93vh;
 
     .container-justify-end {
         margin-bottom: 20px;
@@ -16,6 +17,8 @@
     }
     .categories-page-container{
         @include mut.sized(100%);
+        display: flex;
+        flex-direction: column;
 
         .categories-table-logo{
             max-width: 90%;
@@ -39,9 +42,8 @@
         .site-link{
             word-break: break-all
         }
-
-        .underTableElement {
-            padding-bottom: 10px;
+        .underTableZone{
+            margin-top: auto;
         }
 
         .searchMenuElement {

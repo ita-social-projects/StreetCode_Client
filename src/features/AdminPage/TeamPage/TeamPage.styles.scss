@@ -37,6 +37,8 @@
 
     .team-page-container{
         @include mut.sized(81%);
+        display: flex;
+        flex-direction: column;
 
         .team-table-logo{
             display: block; 
@@ -61,9 +63,10 @@
             word-break: break-all
         }
 
-        .underTableElement {
-            padding-bottom: 10px;
+        .underTableZone{
+            margin-top: auto;
         }
+
         .searchMenuElement {
             margin: 40px 10px 10px 10px;
             display: flex;

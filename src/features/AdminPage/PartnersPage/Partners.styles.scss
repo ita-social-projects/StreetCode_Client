@@ -73,6 +73,7 @@
         .partners-table{
             @include mut.admin-page-table-scroller();
             margin-top: f.pxToRem(20px);
+            max-height: 77vh;
         }
 
         .partner-table-item-name {
@@ -81,10 +82,6 @@
 
         .site-link {
             word-break: break-all;
-        }
-
-        .underTableElement {
-            padding-bottom: 10px;
         }
 
         .searchMenuElement {
