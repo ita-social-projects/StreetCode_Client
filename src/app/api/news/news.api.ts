@@ -27,7 +27,7 @@ const NewsApi = {
 
         return Agent.get<{ totalAmount: number, news: News[] }>(`${API_ROUTES.NEWS.GET_ALL}`, searchParams);
     },
-
+      
     create: (news: NewsCreate) => (
         Agent.post<News>(`${API_ROUTES.NEWS.CREATE}`, news)
     ),

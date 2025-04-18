@@ -1,23 +1,24 @@
 import './SlickSlider.styles.scss';
 
-import { FC, memo, useCallback, useEffect, useRef } from 'react';
+import {
+    FC, memo, useCallback, useEffect, useRef,
+} from 'react';
 import Slider from 'react-slick';
+import classNames from 'classnames';
 
 import SliderProps, { defaultSliderProps } from './index';
 
-import classNames from 'classnames'
 const GenericSlider: FC<SliderProps> = ({
     children,
     onClick,
     swipeOnClick,
-    secondPreset=false,
+    secondPreset = false,
     initialSlide,
     ...sliderProps
 }) => {
     const sliderRef = useRef<Slider>(null);
 
     useEffect(() => {
-        console.log("slick go to " + initialSlide);
         sliderRef.current?.slickGoTo(initialSlide ?? 0);
     }, [initialSlide]);
 
@@ -35,15 +36,15 @@ const GenericSlider: FC<SliderProps> = ({
     }, [onClick, swipeOnClick]);
 
     const classProps = classNames(
-        {'nonInfiniteSlider' : !sliderProps.infinite},
-        {'secondPreset' : secondPreset}
-    )
+        { nonInfiniteSlider: !sliderProps.infinite },
+        { secondPreset },
+    );
 
     return (
         <div className="sliderClass">
-            <Slider 
+            <Slider
                 ref={sliderRef}
-                key={initialSlide} 
+                key={initialSlide}
                 {...sliderProps}
                 className={classProps}
             >

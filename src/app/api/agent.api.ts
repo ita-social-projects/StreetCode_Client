@@ -4,13 +4,13 @@
 /* eslint-disable no-underscore-dangle */
 import { redirect } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { API_ROUTES } from '@constants/api-routes.constants';
 import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 
 import GetAllToponymsRequest from '@/models/toponyms/getAllToponyms.request';
 
-import { API_ROUTES } from '../common/constants/api-routes.constants';
 import AuthService from '../common/services/auth-service/AuthService';
 
 const defaultBaseUrl = process.env.NODE_ENV === 'development'
