@@ -42,10 +42,13 @@ jest.mock('@stores/root-store', () => ({
         imageStore: mockImageStore,
         streetcodeShortStore: {
             fetchStreetcodesAll: jest.fn().mockResolvedValue([]), // Mock the fetch function
-            streetcodes: [
-                { id: '1', title: 'Streetcode 1' },
-                { id: '2', title: 'Streetcode 2' },
-            ],
+            StreetcodesShortMap: new Map(),
+            PaginationInfo: {
+                PageSize: 10,
+                TotalPages: 1,
+                TotalItems: 1,
+                CurrentPage: 1,
+            },
         },
     }),
     useModalContext: jest.fn(() => ({

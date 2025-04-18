@@ -2,7 +2,7 @@
 import './JobsTable.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { DeleteOutlined, DownOutlined, EditOutlined } from '@ant-design/icons';
 import BUTTON_LABELS from '@constants/buttonLabels';
 import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
@@ -25,7 +25,7 @@ const JobsTable = observer(() => {
     const { modalStore } = useModalContext();
     const [open, setOpen] = useState(false);
 
-    const { isLoading } = useQuery({
+    const { isLoading, refetch } = useQuery({
         queryKey: ['jobs', jobsStore.PaginationInfo.CurrentPage],
         queryFn: () => jobsStore.getAll(),
     });
@@ -35,16 +35,12 @@ const JobsTable = observer(() => {
             'confirmation',
             () => {
                 JobApi.deleteJob(id)
-                    .then(
-                        () => {
-                            jobsStore.JobsMap.delete(id);
-                        },
-                    )
-                    .catch(
-                        (e) => {
-                            console.error(e);
-                        },
-                    );
+                    .then(() => {
+                        jobsStore.JobsMap.delete(id);
+                    })
+                    .catch((e) => {
+                        console.error(e);
+                    });
                 modalStore.setConfirmationModal('confirmation');
             },
             CONFIRMATION_MESSAGES.DELETE_VACANCY,
@@ -63,7 +59,6 @@ const JobsTable = observer(() => {
 
     const handleMenuClick: MenuProps['onClick'] = async (opt) => {
         try {
-            const selectedKey = +opt.key;
             const currentStatus: boolean = opt.key === '0';
             modalStore.setConfirmationModal(
                 'confirmation',
@@ -138,12 +133,6 @@ const JobsTable = observer(() => {
         },
     ];
 
-    useEffect(() => {
-        if (!open) {
-            jobsStore.getAll();
-        }
-    }, [open]);
-
     const handleAddButtonClick = () => {
         setCurrentId(0);
         setOpen(true);
@@ -159,11 +148,6 @@ const JobsTable = observer(() => {
                     {BUTTON_LABELS.ADD_VACANCY}
                 </Button>
             </div>
-            <JobsModalComponent
-                currentId={currentId}
-                open={open}
-                setOpen={setOpen}
-            />
             <Table
                 pagination={false}
                 columns={columnsNames}
@@ -196,6 +180,12 @@ const JobsTable = observer(() => {
                     />
                 </div>
             </div>
+            <JobsModalComponent
+                currentId={currentId}
+                open={open}
+                setOpen={setOpen}
+                afterSubmit={refetch}
+            />
         </div>
     );
 });

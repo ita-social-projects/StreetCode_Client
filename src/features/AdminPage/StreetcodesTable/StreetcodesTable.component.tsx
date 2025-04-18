@@ -6,9 +6,7 @@ import { Link } from 'react-router-dom';
 import {
     BarChartOutlined, DeleteOutlined, DownOutlined, EditOutlined, RollbackOutlined,
 } from '@ant-design/icons';
-
 import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
-
 import sortOptions from '@features/AdminPage/StreetcodesTable/constants/sortOptions';
 import STREETCODE_STATES from '@features/AdminPage/StreetcodesTable/constants/streetcodeStates';
 import { format } from 'date-fns';
@@ -298,10 +296,18 @@ const StreetcodesTable = () => {
             let currentStatus = '';
 
             switch (streetcode.status) {
-            case STREETCODE_STATES.DRAFT.key: { currentStatus = STREETCODE_STATES.DRAFT.label; break; }
-            case STREETCODE_STATES.PUBLISHED.key: { currentStatus = STREETCODE_STATES.PUBLISHED.label; break; }
-            case STREETCODE_STATES.DELETED.key: { currentStatus = STREETCODE_STATES.DELETED.label; break; }
-            default: { currentStatus = STREETCODE_STATES.DRAFT.label; break; }
+            case STREETCODE_STATES.DRAFT.key:
+                currentStatus = STREETCODE_STATES.DRAFT.label;
+                break;
+            case STREETCODE_STATES.PUBLISHED.key:
+                currentStatus = STREETCODE_STATES.PUBLISHED.label;
+                break;
+            case STREETCODE_STATES.DELETED.key:
+                currentStatus = STREETCODE_STATES.DELETED.label;
+                break;
+            default:
+                currentStatus = STREETCODE_STATES.DRAFT.label;
+                break;
             }
             const mapedStreetCode = {
                 key: streetcode.id,

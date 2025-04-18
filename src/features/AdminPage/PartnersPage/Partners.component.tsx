@@ -1,8 +1,7 @@
 import './Partners.styles.scss';
 
-import { runInAction } from 'mobx';
 import { observer } from 'mobx-react-lite';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { DeleteOutlined, EditOutlined, StarOutlined } from '@ant-design/icons';
 import facebook from '@assets/images/partners/facebook.svg';
 import instagram from '@assets/images/partners/instagram.svg';
@@ -10,7 +9,6 @@ import twitter from '@assets/images/partners/twitterNew.svg';
 import youtube from '@assets/images/partners/youtube.svg';
 import BUTTON_LABELS from '@constants/buttonLabels';
 import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
-import ImageStore from '@stores/image-store';
 import useMobx, { useModalContext } from '@stores/root-store';
 import { useQuery } from '@tanstack/react-query';
 
@@ -30,38 +28,23 @@ import PartnerModal from './PartnerModal/PartnerModal.component';
 const LogoType = [twitter, instagram, facebook, youtube];
 
 const Partners: React.FC = observer(() => {
-    const { partnersStore } = useMobx();
+    const { partnersStore, streetcodeShortStore } = useMobx();
     const { modalStore } = useModalContext();
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
-    const [partnerToEdit, setPartnerToedit] = useState<Partner>();
+    const [partnerToEdit, setPartnerToEdit] = useState<Partner>();
 
-    const { isLoading } = useQuery({
+    const { isLoading: isLoadingPartners, refetch: refetchPartners } = useQuery({
         queryKey: ['partners', partnersStore.PaginationInfo.CurrentPage],
         queryFn: () => partnersStore.getAll(),
     });
 
-    const updatedPartners = () => {
-        Promise.all([
-            partnersStore?.getAll(),
-        ]).then(() => {
-            partnersStore?.PartnerMap.forEach((val, key) => {
-                ImageStore.getImageById(val.logoId).then((logo) => {
-                    runInAction(() => {
-                        partnersStore.PartnerMap.set(
-                            val.id,
-                            { ...val, logo },
-                        );
-                    });
-                });
-            });
-        }).then(() => {
-            partnersStore.setInternalMap(partnersStore.getPartnerArray);
-        });
-    };
-    useEffect(() => {
-        updatedPartners();
-    }, [modalAddOpened, modalEditOpened]);
+    const { isLoading: isLoadingStreetcodesShort, refetch: refetchStreetcodesShort } = useQuery({
+        queryKey: ['streetcodesShort', streetcodeShortStore.PaginationInfo.CurrentPage],
+        queryFn: () => streetcodeShortStore.fetchStreetcodesAll(),
+    });
+
+    const isLoading = isLoadingPartners || isLoadingStreetcodesShort;
 
     const handleDeletePartner = (partnerId: number) => {
         modalStore.setConfirmationModal(
@@ -97,13 +80,13 @@ const Partners: React.FC = observer(() => {
             dataIndex: 'targetUrl',
             key: 'url',
             width: '28%',
-            render: (targeteurl) => (
+            render: (targetUrl) => (
                 <a
                     className="site-link"
-                    key={`${targeteurl.href}`}
-                    href={targeteurl.href}
+                    key={`${targetUrl.href}`}
+                    href={targetUrl.href}
                 >
-                    {targeteurl.title ?? targeteurl.href}
+                    {targetUrl.title ?? targetUrl.href}
                 </a>
             ),
         },
@@ -164,7 +147,7 @@ const Partners: React.FC = observer(() => {
                         key={`${partner.id}${index}222`}
                         className="actionButton"
                         onClick={() => {
-                            setPartnerToedit(partner);
+                            setPartnerToEdit(partner);
                             setModalEditOpened(true);
                         }}
                     />
@@ -220,12 +203,24 @@ const Partners: React.FC = observer(() => {
                         </div>
                     </div>
                 </div>
-                <PartnerModal open={modalAddOpened} setIsModalOpen={setModalAddOpened} isStreetcodeVisible />
+                <PartnerModal
+                    open={modalAddOpened}
+                    setIsModalOpen={setModalAddOpened}
+                    isStreetcodeVisible
+                    afterSubmit={() => {
+                        refetchPartners();
+                        refetchStreetcodesShort();
+                    }}
+                />
                 <PartnerModal
                     open={modalEditOpened}
                     setIsModalOpen={setModalEditOpened}
                     partnerItem={partnerToEdit}
                     isStreetcodeVisible
+                    afterSubmit={() => {
+                        refetchPartners();
+                        refetchStreetcodesShort();
+                    }}
                 />
             </div>
         </div>

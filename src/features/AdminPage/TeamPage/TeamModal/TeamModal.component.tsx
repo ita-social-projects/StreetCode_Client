@@ -35,9 +35,16 @@ import Image from '@/models/media/image.model';
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 
 const TeamModal: React.FC<{
-    teamMember?: TeamMember, open: boolean,
-    setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>, afterSubmit?: (team: TeamCreateUpdate) => void
-}> = observer(({ teamMember, open, setIsModalOpen, afterSubmit }) => {
+    teamMember?: TeamMember,
+    open: boolean,
+    setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>,
+    afterSubmit?: (team: TeamCreateUpdate) => void
+}> = observer(({
+    teamMember,
+    open,
+    setIsModalOpen,
+    afterSubmit,
+}) => {
     const LOGO_TYPES = Object.keys(LogoType).filter((key) => Number.isNaN(Number(key)));
     const [form] = Form.useForm();
     const { teamStore } = useMobx();
@@ -139,11 +146,9 @@ const TeamModal: React.FC<{
 
         if (selectedIndex < 0) {
             const id = getNewId(selectedPositions);
-
             setSelectedPositions([...selectedPositions, { id, position: selectedValue }]);
         } else {
             const selected = positions[selectedIndex];
-
             setSelectedPositions([...selectedPositions, { ...selected, position: selectedValue }]);
         }
     };
@@ -237,6 +242,7 @@ const TeamModal: React.FC<{
             if (afterSubmit) {
                 afterSubmit(team);
             }
+
             setActionSuccess(true);
         } catch (error: unknown) {
             message.error('Не вдалось оновити/створити члена команди. Спробуйте ще раз.');

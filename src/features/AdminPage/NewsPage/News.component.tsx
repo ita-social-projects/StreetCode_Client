@@ -5,6 +5,8 @@ import './News.styles.scss';
 import { observer } from 'mobx-react-lite';
 import React, { useState } from 'react';
 import { DeleteOutlined, EditOutlined, InfoCircleOutlined } from '@ant-design/icons';
+import BUTTON_LABELS from '@constants/buttonLabels';
+import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
 import NewsModal from '@features/AdminPage/NewsPage/NewsModal/NewsModal.component';
 import PageBar from '@features/AdminPage/PageBar/PageBar.component';
 import useMobx, { useModalContext } from '@stores/root-store';
@@ -18,8 +20,6 @@ import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
 import Image from '@/models/media/image.model';
 import News from '@/models/news/news.model';
-import BUTTON_LABELS from "@constants/buttonLabels";
-import CONFIRMATION_MESSAGES from "@constants/confirmationMessages";
 
 const Newss: React.FC = observer(() => {
     const { modalStore } = useModalContext();
@@ -28,7 +28,7 @@ const Newss: React.FC = observer(() => {
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
     const [newsToEdit, setNewsToEdit] = useState<News>();
 
-    const { isLoading } = useQuery({
+    const { isLoading, refetch } = useQuery({
         queryKey: ['news', newsStore.CurrentPage],
         queryFn: () => newsStore.getAll(),
     });
@@ -37,11 +37,13 @@ const Newss: React.FC = observer(() => {
         modalStore.setConfirmationModal(
             'confirmation',
             () => {
-                newsStore.deleteNews(news.id).then(() => {
-                    imagesStore.deleteImage(news.imageId);
-                }).catch((e) => {
-                    console.error(e);
-                });
+                newsStore.deleteNews(news.id)
+                    .then(() => {
+                        imagesStore.deleteImage(news.imageId);
+                    })
+                    .catch((e) => {
+                        console.error(e);
+                    });
                 modalStore.setConfirmationModal('confirmation');
             },
             CONFIRMATION_MESSAGES.DELETE_NEWS,
@@ -90,11 +92,12 @@ const Newss: React.FC = observer(() => {
             render: (value: string) => (
                 <div key={value} className="partner-table-item-name">
                     <p>{value ? dayjs(value).format('YYYY-MM-DD') : ''}</p>
-                    {value && dayjs(value).isAfter(dayjs()) && 
-                     <Popover content={"Заплановано"} trigger="hover">
-                        <InfoCircleOutlined className='info-circle-for-planed-content'/>
-                    </Popover>
-                    }
+                    {value && dayjs(value).isAfter(dayjs())
+                     && (
+                         <Popover content="Заплановано" trigger="hover">
+                             <InfoCircleOutlined className="info-circle-for-planed-content" />
+                         </Popover>
+                     )}
                 </div>
             ),
         },
@@ -118,11 +121,11 @@ const Newss: React.FC = observer(() => {
                             setModalEditOpened(true);
                         }}
                     />
-
                 </div>
             ),
         },
     ];
+
     return (
         <div className="partners-page">
             <PageBar />
@@ -167,11 +170,16 @@ const Newss: React.FC = observer(() => {
                         />
                     </div>
                 </div>
-                <NewsModal open={modalAddOpened} setIsModalOpen={setModalAddOpened} />
+                <NewsModal
+                    open={modalAddOpened}
+                    setIsModalOpen={setModalAddOpened}
+                    afterSubmit={() => refetch()}
+                />
                 <NewsModal
                     open={modalEditOpened}
                     setIsModalOpen={setModalEditOpened}
                     newsItem={newsToEdit}
+                    afterSubmit={() => refetch()}
                 />
             </div>
         </div>

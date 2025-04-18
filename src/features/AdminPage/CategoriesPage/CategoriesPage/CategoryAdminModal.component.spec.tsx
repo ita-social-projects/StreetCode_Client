@@ -133,6 +133,10 @@ describe('CategoryAdminModal', () => {
             userEvent.upload(uploader, new File(['(⌐□_□)'], 'new-image.jpg', { type: 'image/jpg' }));
         });
 
+        await waitFor(() => {
+            expect(saveButton).not.toBeDisabled();
+        });
+
         await waitFor(() => userEvent.click(saveButton));
 
         await waitFor(() => {

@@ -1,7 +1,7 @@
 import './ContextMainPage.style.scss';
 
 import { observer } from 'mobx-react-lite';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import BUTTON_LABELS from '@constants/buttonLabels';
 import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
@@ -21,18 +21,10 @@ const ContextMainPage: React.FC = observer(() => {
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
     const [contextToEdit, setContextToEdit] = useState<Context>();
 
-    const { isLoading } = useQuery({
+    const { isLoading, refetch } = useQuery({
         queryKey: ['contexts', contextStore.PaginationInfo.CurrentPage],
         queryFn: () => contextStore.fetchContexts(),
     });
-
-    const updatedContexts = () => {
-        contextStore.fetchContexts();
-    };
-
-    useEffect(() => {
-        updatedContexts();
-    }, [modalAddOpened, modalEditOpened]);
 
     const handleDeleteContext = (contextId: number) => {
         modalStore.setConfirmationModal(
@@ -135,13 +127,16 @@ const ContextMainPage: React.FC = observer(() => {
             <ContextAdminModalComponent
                 isModalVisible={modalAddOpened}
                 setIsModalOpen={setModalAddOpened}
+                afterSubmit={refetch}
             />
             <ContextAdminModalComponent
                 isModalVisible={modalEditOpened}
                 setIsModalOpen={setModalEditOpened}
                 initialData={contextToEdit}
+                afterSubmit={refetch}
             />
         </div>
     );
 });
+
 export default ContextMainPage;

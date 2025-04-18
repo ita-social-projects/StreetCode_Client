@@ -10,7 +10,6 @@ import ImagesApi from '@api/media/images.api';
 import FileUploader from '@components/FileUploader/FileUploader.component';
 import combinedImageValidator, { checkFile } from '@components/modals/validators/combinedImageValidator';
 import BUTTON_LABELS from '@constants/buttonLabels';
-import { useAsync } from '@hooks/stateful/useAsync.hook';
 import Audio from '@models/media/audio.model';
 import Image from '@models/media/image.model';
 import { SourceCategoryAdmin } from '@models/sources/sources.model';
@@ -34,6 +33,7 @@ interface SourceModalProps {
     setIsModalOpen: Dispatch<SetStateAction<boolean>>;
     initialData?: SourceCategoryAdmin;
     isNewCategory?: (data: boolean) => void;
+    afterSubmit?: () => void;
 }
 
 const SourceModal: React.FC<SourceModalProps> = ({
@@ -41,6 +41,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
     setIsModalOpen,
     initialData,
     isNewCategory,
+    afterSubmit,
 }) => {
     const { sourcesAdminStore } = useMobx();
     const [form] = Form.useForm();
@@ -51,8 +52,6 @@ const SourceModal: React.FC<SourceModalProps> = ({
     const isEditing = !!initialData;
     const [fileList, setFileList] = useState<UploadFile[]>([]);
     const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
-
-    useAsync(() => sourcesAdminStore.fetchSourceCategories(), []);
 
     const createFileListData = (img: Image) => {
         if (!initialData) {
@@ -124,6 +123,10 @@ const SourceModal: React.FC<SourceModalProps> = ({
 
         if (isNewCategory !== undefined) {
             isNewCategory(true);
+        }
+
+        if (afterSubmit) {
+            afterSubmit();
         }
     };
 
