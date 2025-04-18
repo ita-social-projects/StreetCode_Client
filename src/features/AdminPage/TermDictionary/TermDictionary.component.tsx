@@ -200,9 +200,6 @@ const TermDictionary = () => {
             <div className="wrapper">
                 <PageBar />
                 <div className="termDictionaryContainer">
-                    <div className="dictionaryHeader">
-                        <h1>Словник термінів</h1>
-                    </div>
                     <div className="container-justify-end">
                         <div className="searchMenuElement">
                             <Input
