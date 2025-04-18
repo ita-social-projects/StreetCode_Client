@@ -459,35 +459,33 @@ const StreetcodesTable = () => {
                     }}
                 />
             </div>
-            <div>
-                <div className="underTableZone">
-                    <br />
-                    <div className="underTableElement">
-                        <div className="PaginationSelect">
-                            <p>Рядків на сторінці</p>
-                            <Dropdown menu={{ items: PaginationProps.items, className: 'classss' }} trigger={['click']}>
-                                <Button>
-                                    <Space>
-                                        {selected}
-                                        <DownOutlined />
-                                    </Space>
-                                </Button>
-                            </Dropdown>
-                        </div>
-                        <Pagination
-                            className="paginationElement"
-                            showSizeChanger={false}
-                            defaultCurrent={1}
-                            current={currentPages}
-                            total={totalItems}
-                            pageSize={amountRequest}
-                            onChange={(page: number) => {
-                                setCurrentPages(page);
-                                setPageRequest(page);
-                                setRequest();
-                            }}
-                        />
+            <div className="underTableZone">
+                <br />
+                <div className="underTableElement">
+                    <div className="PaginationSelect">
+                        <p>Рядків на сторінці</p>
+                        <Dropdown menu={{ items: PaginationProps.items, className: 'classss' }} trigger={['click']}>
+                            <Button>
+                                <Space>
+                                    {selected}
+                                    <DownOutlined />
+                                </Space>
+                            </Button>
+                        </Dropdown>
                     </div>
+                    <Pagination
+                        className="paginationElement"
+                        showSizeChanger={false}
+                        defaultCurrent={1}
+                        current={currentPages}
+                        total={totalItems}
+                        pageSize={amountRequest}
+                        onChange={(page: number) => {
+                            setCurrentPages(page);
+                            setPageRequest(page);
+                            setRequest();
+                        }}
+                    />
                 </div>
             </div>
         </div>

@@ -8,8 +8,9 @@
     @include mut.sized(81%);
     overflow: visible;
     float: right;
-
+    
     .ScrollableTableContainer{
+        max-height: 77vh !important;
         @include mut.admin-page-table-scroller();
     }
 

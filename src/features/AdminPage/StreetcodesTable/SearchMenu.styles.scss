@@ -4,24 +4,24 @@
 @use "@sass/_utils.functions.scss" as f;
 
 .searchMenu {
-    margin: 40px 10px 10px 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    margin-bottom: 10px;
 
     .searchMenuElement {
         display: inline-block;
-        margin-left: 5px;
+        margin-right: 0;
         flex-grow: 1;
     }
 
     .status_button {
         display: flex;
+        flex-direction: row;
         align-items: center;
         gap: 1px;
-        flex-wrap: wrap;
-        justify-content: flex-start;
+
     }
 
     .ant-select-selector {
@@ -72,7 +72,7 @@
 
     .Button {
         height: 40px !important;
-        width: 170px;
+        width: 100%;
         min-width: 142px;
         height: 35px;
         margin-right: 15px;
