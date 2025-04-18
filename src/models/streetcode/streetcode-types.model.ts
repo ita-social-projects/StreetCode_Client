@@ -121,7 +121,6 @@ export interface StreetcodeCreate {
     eventEndOrPersonDeathDate: Date | null,
     dateString: string,
     tags: StreetcodeTag[],
-    imagesIds: Array<number>,
     audioId: number | null,
     streetcodeType: StreetcodeType,
     text: TextCreateUpdate | null,
