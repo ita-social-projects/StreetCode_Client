@@ -3,6 +3,7 @@
 
 .job-table {
     @include mut.admin-page-table-scroller();
+    margin-top: 20px;
     .ant-btn-primary:disabled {
         background-color: c.$lighter-gray-color;
         color: c.$pure-white-color;

@@ -19,6 +19,7 @@
         margin-top: 3rem;
     }
     .container-justify-end{
+        margin-top: f.pxToRem(40px);
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -28,6 +29,10 @@
             display: flex;
             align-items: center;
             flex-grow: 1;
+
+            .searchMenuElement{
+                margin: 0;
+            }
         }
 
         .right-side {
@@ -37,6 +42,9 @@
 
             .ant-checkbox-wrapper {
                 font-size: 16px;
+            }
+            .ant-btn{
+                margin: 0 !important;
             }
         }
     }
