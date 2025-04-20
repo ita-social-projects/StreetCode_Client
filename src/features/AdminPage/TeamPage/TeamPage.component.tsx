@@ -47,6 +47,7 @@ const TeamPage = () => {
 
     const handleChangeTitle = (event: ChangeEvent<HTMLInputElement>) => {
         setTitle(event.target.value);
+        setCurrentPages(1);
     };
 
     const updatedTeam = () => {
@@ -76,6 +77,11 @@ const TeamPage = () => {
     useEffect(() => {
         updatedTeam();
     }, [title, isMainFilter]);
+    useEffect(() => {
+        setCurrentPages(1);
+        teamStore.setCurrentPage(1);
+        teamStore.getAll();
+    }, [title]);
 
     const handleDeleteTeamMember = (teamId: number) => {
         modalStore.setConfirmationModal(
@@ -262,7 +268,10 @@ const TeamPage = () => {
                     <div className="right-side">
                         <Checkbox
                             checked={isMainFilter}
-                            onChange={(e) => setIsMainFilter(e.target.checked)}
+                            onChange={(e) => {
+                                setIsMainFilter(e.target.checked);
+                                setCurrentPages(1);  // Reset to first page when filter changes
+                            }}
                         >
                         Ключовий учасник
                         </Checkbox>

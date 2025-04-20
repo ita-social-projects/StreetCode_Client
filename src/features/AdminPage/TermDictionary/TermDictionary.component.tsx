@@ -2,16 +2,15 @@ import './TermDictionary.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import { useEffect, useMemo, useRef, useState, ChangeEvent } from 'react';
-import { DeleteFilled, DeleteOutlined, DownOutlined, EditFilled, EditOutlined } from '@ant-design/icons';
+import { DeleteOutlined, DownOutlined, EditOutlined } from '@ant-design/icons';
 import { StringComparator } from '@features/AdminPage/SortButton/ComparatorImplementations';
 import SortButton, { SortButtonHandle } from '@features/AdminPage/SortButton/SortButton';
 import SortData from '@features/AdminPage/SortButton/SortLogic';
 import useSortDirection from '@features/AdminPage/SortButton/useSortDirection';
 import useMobx, { useModalContext } from '@stores/root-store';
 import MagnifyingGlass from '@images/header/Magnifying_glass.svg';
-import { Button, Dropdown, Input, Space, Table } from 'antd';
+import { Button, Dropdown, Input, Space, Table, Pagination } from 'antd';
 
-import termsApi from '@/app/api/streetcode/text-content/terms.api';
 import AddTermModal from '@/app/common/components/modals/Terms/AddTerm/AddTermModal.component';
 import DeleteTermModal from '@/app/common/components/modals/Terms/DeleteTerm/DeleteTermModal.component';
 import EditTermModal from '@/app/common/components/modals/Terms/EditTerm/EditTermModal.component';
@@ -54,6 +53,7 @@ const TermDictionary = () => {
     const [selected, setSelected] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
     const [searchTitle, setSearchTitle] = useState('');
+
     const setTableState = async () => {
         const terms = await fetchTerms(searchTitle, selected, currentPage);
         setData(terms);
@@ -63,9 +63,15 @@ const TermDictionary = () => {
         setTableState();
     }, [searchTitle, currentPage, selected]);
 
+    useEffect(() => {
+        setCurrentPage(1);
+        fetchTerms(searchTitle, selected, 1);
+    }, [searchTitle]);
+
     const handleChangeTitle = (event: ChangeEvent<HTMLInputElement>) => {
         setSearchTitle(event.target.value);
     };
+
     const handlePageSizeChange = (value: number) => {
         setSelected(value);
         setCurrentPage(1);
@@ -133,7 +139,6 @@ const TermDictionary = () => {
     const columns = [
         {
             title: (
-
                 <div className="content-table-title">
                     <span>Назва</span>
                     <SortButton
@@ -161,27 +166,15 @@ const TermDictionary = () => {
             width: '10%',
             render: (t: Term) => (
                 <Space size="middle">
-                    {t.id === 0 ? (
-                        <Button
-                            className="actionButton"
-                            disabled
-                            onClick={() => {
-                                setTerm(t);
-                                setModal('editTerm');
-                            }}
-                            icon={<EditOutlined className="disableIcon" />}
-                        />
-                    ) : (
-                        <Button
-                            className="actionButton"
-                            onClick={() => {
-                                setTerm(t);
-                                setModal('editTerm');
-                            }}
-                            icon={<EditOutlined className="actionIcon" />}
-                        />
-                    )}
-
+                    <Button
+                        className="actionButton"
+                        onClick={() => {
+                            setTerm(t);
+                            setModal('editTerm');
+                        }}
+                        icon={<EditOutlined className="actionIcon" />}
+                        disabled={t.id === 0}
+                    />
                     <Button
                         className="actionButton"
                         onClick={() => {
@@ -216,7 +209,7 @@ const TermDictionary = () => {
                             className="streetcode-custom-button"
                             onClick={() => setModal('addTerm')}
                         >
-                                Новий термін
+                            Новий термін
                         </Button>
                     </div>
                     <div className="termTable">
@@ -224,16 +217,22 @@ const TermDictionary = () => {
                             columns={columns}
                             dataSource={sortedData}
                             rowKey={({ id }) => id}
-                            pagination={{
-                                current: currentPage,
-                                pageSize: selected,
-                                total: termsStore.PaginationInfo.TotalItems, // total - загальна кількість записів
-                                onChange: (page) => setCurrentPage(page),
-                                showSizeChanger: false,
-                                showTotal: () => <PaginationSelect selected={selected} onChange={handlePageSizeChange} />,
-                            }}
+                            pagination={false}
                         />
-
+                    </div>
+                </div>
+                <div className="underTableZone">
+                    <br />
+                    <div className="underTableElement">
+                        <PaginationSelect selected={selected} onChange={handlePageSizeChange} />
+                        <Pagination
+                            className="paginationElement"
+                            showSizeChanger={false}
+                            current={currentPage}
+                            total={termsStore.PaginationInfo.TotalItems}
+                            pageSize={selected}
+                            onChange={(page) => setCurrentPage(page)}
+                        />
                     </div>
                 </div>
                 <AddTermModal term={term} setTerm={setTerm} handleAdd={handleAdd} />

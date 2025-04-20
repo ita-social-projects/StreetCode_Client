@@ -77,6 +77,12 @@ const CategoriesMainPage: React.FC = observer(() => {
         updatedCategories();
     }, [modalAddOpened, modalEditOpened]);
 
+    useEffect(() => {
+        setCurrentPages(1);
+        sourcesStore.setCurrentPage(1);
+        sourcesStore.fetchSrcCategoriesAll(title);
+    }, [title]);
+
     const handleDeleteCategory = (categoryId: number | undefined) => {
         modalStore.setConfirmationModal(
             'confirmation',

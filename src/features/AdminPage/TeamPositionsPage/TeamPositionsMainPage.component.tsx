@@ -24,40 +24,39 @@ import TeamPositionsAdminModal from './TeamPositionsModal/TeamPositionsAdminModa
 const TeamPositionsMainPage: React.FC = observer(() => {
     const { modalStore } = useModalContext();
     const { teamPositionsStore } = useMobx();
-    const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
-    const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
+    const [modalAddOpened, setModalAddOpened] = useState(false);
+    const [modalEditOpened, setModalEditOpened] = useState(false);
     const [positionToEdit, setPositionToEdit] = useState<Position>();
-    const [currentPages, setCurrentPages] = useState(1);
     const [amountRequest, setAmountRequest] = useState(10);
     const [selected, setSelected] = useState(10);
-    const [title, setTitle] = useState<string>('');
+    const [title, setTitle] = useState('');
+    const [debouncedTitle, setDebouncedTitle] = useState('');
+    const currentPage = teamPositionsStore.PaginationInfo.CurrentPage;
 
-    const { isLoading, data } = useQuery({
-        queryKey: ['positions', teamPositionsStore.PaginationInfo.CurrentPage, title],
-        queryFn: () => teamPositionsStore.fetchPositions(title),
+    const { isLoading, data, refetch } = useQuery({
+        queryKey: ['positions', debouncedTitle, currentPage, amountRequest],
+        queryFn: () => teamPositionsStore.fetchPositions(debouncedTitle, amountRequest),
+        enabled: false,
+        keepPreviousData: true,
     });
-    console.log('Positions data:', data);
-    const updatedPositions = () => {
-        teamPositionsStore.fetchPositions();
-    };
 
     useEffect(() => {
-        updatedPositions();
-    }, [modalAddOpened, modalEditOpened]);
+        const timeout = setTimeout(() => {
+            teamPositionsStore.setCurrentPage(1); // <-- Спочатку оновлення сторінки
+            setDebouncedTitle(title);
+        }, 400);
 
-    const PaginationProps = {
-        items: [10, 25, 50].map((value) => ({
-            key: value.toString(),
-            label: value.toString(),
-            onClick: () => {
-                setSelected(value);
-                setAmountRequest(value);
-                setCurrentPages(1);
-                teamPositionsStore.PaginationInfo.PageSize = value;
-                teamPositionsStore.fetchPositions();
-            },
-        })),
+        return () => clearTimeout(timeout);
+    }, [title]);
+
+    useEffect(() => {
+        refetch();
+    }, [debouncedTitle, currentPage, amountRequest]);
+
+    const handleChangeTitle = (event: ChangeEvent<HTMLInputElement>) => {
+        setTitle(event.target.value);
     };
+
     const handleDeletePosition = (positionId: number) => {
         modalStore.setConfirmationModal(
             'confirmation',
@@ -73,11 +72,6 @@ const TeamPositionsMainPage: React.FC = observer(() => {
             CONFIRMATION_MESSAGES.DELETE_POSITION,
         );
     };
-
-    const handleChangeTitle = (event: ChangeEvent<HTMLInputElement>) => {
-        setTitle(event.target.value);
-    };
-
     const dataSource = teamPositionsStore.getPositionsArray;
 
     const { sortDirection, toggleSort } = useSortDirection();
@@ -197,7 +191,19 @@ const TeamPositionsMainPage: React.FC = observer(() => {
                     <div className="underTableElement">
                         <div className="PaginationSelect">
                             <p>Рядків на сторінці</p>
-                            <Dropdown menu={{ items: PaginationProps.items }} trigger={['click']}>
+                            <Dropdown menu={{
+                                    items: [10, 25, 50].map((value) => ({
+                                        key: value.toString(),
+                                        label: value.toString(),
+                                        onClick: () => {
+                                            setSelected(value);
+                                            setAmountRequest(value);
+                                            teamPositionsStore.setCurrentPage(1);
+                                        },
+                                    })),
+                                }}
+                                trigger={['click']}
+                            >
                                 <Button>
                                     <Space>
                                         {selected}
@@ -209,14 +215,11 @@ const TeamPositionsMainPage: React.FC = observer(() => {
                         <Pagination
                             className="paginationElement"
                             showSizeChanger={false}
-                            defaultCurrent={1}
-                            current={currentPages}
+                            current={currentPage}
                             total={teamPositionsStore.PaginationInfo.TotalItems}
                             pageSize={amountRequest}
-                            onChange={(page: number) => {
-                                setCurrentPages(page);
+                            onChange={(page) => {
                                 teamPositionsStore.setCurrentPage(page);
-                                teamPositionsStore.fetchPositions();
                             }}
                         />
                     </div>

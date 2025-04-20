@@ -95,6 +95,12 @@ const Newss: React.FC = observer(() => {
         });
     }, [sortDirection, buttonKey]);
 
+    useEffect(() => {
+        setCurrentPages(1);
+        newsStore.setCurrentPage(1);
+        newsStore.getAll(title);
+    }, [title]);
+
     const sortedData = useMemo(
         () => SortData<News, string>(
             dataSource,

@@ -41,34 +41,37 @@ const Partners: React.FC = observer(() => {
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
     const [partnerToEdit, setPartnerToedit] = useState<Partner>();
-    const [currentPages, setCurrentPages] = useState(1);
-    const [amountRequest, setAmountRequest] = useState(10);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
     const [selected, setSelected] = useState(10);
-    const [title, setTitle] = useState<string>('');
-    const [isMainFilter, setIsMainFilter] = useState<boolean>(false);
+    const [title, setTitle] = useState('');
+    const [isMainFilter, setIsMainFilter] = useState(false);
 
     const { isLoading } = useQuery({
         queryKey: ['partners', partnersStore.PaginationInfo.CurrentPage, title, isMainFilter],
         queryFn: () => partnersStore.getAll(title, isMainFilter),
     });
 
-    const updatedPartners = () => {
-        Promise.all([partnersStore?.getAll(title, isMainFilter)]).then(() => {
-            partnersStore?.PartnerMap.forEach((val, key) => {
+    useEffect(() => {
+        const updatePartners = async () => {
+            await Promise.all([partnersStore?.getAll(title, isMainFilter)]);
+            partnersStore?.PartnerMap.forEach((val) => {
                 ImageStore.getImageById(val.logoId).then((logo) => {
                     runInAction(() => {
                         partnersStore.PartnerMap.set(val.id, { ...val, logo });
                     });
                 });
             });
-        }).then(() => {
             partnersStore.setInternalMap(partnersStore.getPartnerArray);
-        });
-    };
+        };
+        updatePartners();
+    }, [modalAddOpened, modalEditOpened, title, isMainFilter]);
 
     useEffect(() => {
-        updatedPartners();
-    }, [modalAddOpened, modalEditOpened]);
+        setCurrentPage(1);
+        partnersStore.setCurrentPage(1);
+        partnersStore.getAll(title);
+    }, [title]);
 
     const { PageSize, TotalItems } = partnersStore.PaginationInfo;
 
@@ -78,8 +81,8 @@ const Partners: React.FC = observer(() => {
             label: value.toString(),
             onClick: () => {
                 setSelected(value);
-                setAmountRequest(value);
-                setCurrentPages(1);
+                setPageSize(value);
+                setCurrentPage(1);
                 partnersStore.PaginationInfo.PageSize = value;
                 partnersStore.getAll(title, isMainFilter);
             },
@@ -103,6 +106,7 @@ const Partners: React.FC = observer(() => {
 
     const handleChangeTitle = (event: ChangeEvent<HTMLInputElement>) => {
         setTitle(event.target.value);
+        setCurrentPage(1);
     };
 
     const dataSource = partnersStore.getPartnerArray || [];
@@ -233,7 +237,7 @@ const Partners: React.FC = observer(() => {
                         key={`${partner.id}${index}222`}
                         className="actionButton"
                         onClick={() => {
-                            setPartnerToedit(partner);
+                            setPartnerToEdit(partner);
                             setModalEditOpened(true);
                         }}
                     />
@@ -306,11 +310,11 @@ const Partners: React.FC = observer(() => {
                             className="paginationElement"
                             showSizeChanger={false}
                             defaultCurrent={1}
-                            current={currentPages}
+                            current={currentPage}
                             total={TotalItems}
-                            pageSize={amountRequest}
+                            pageSize={pageSize}
                             onChange={(page: number) => {
-                                setCurrentPages(page);
+                                setCurrentPage(page);
                                 partnersStore.setCurrentPage(page);
                                 partnersStore.getAll(title);
                             }}

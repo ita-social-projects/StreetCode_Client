@@ -57,6 +57,12 @@ const ContextMainPage: React.FC = observer(() => {
         updatedContexts();
     }, [modalAddOpened, modalEditOpened]);
 
+    useEffect(() => {
+        setCurrentPages(1);
+        contextStore.setCurrentPage(1);
+        contextStore.fetchContexts();
+    }, [title]);
+
     const handleDeleteContext = (contextId: number) => {
         modalStore.setConfirmationModal(
             'confirmation',

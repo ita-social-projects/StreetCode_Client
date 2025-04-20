@@ -31,32 +31,35 @@ const TagsMainPage: React.FC = observer(() => {
     const [amountRequest, setAmountRequest] = useState(10);
     const [selected, setSelected] = useState(10);
     const [title, setTitle] = useState<string>('');
+    const [debouncedTitle, setDebouncedTitle] = useState<string>('');
 
     const { isLoading } = useQuery({
-        queryKey: ['tags', tagsStore.PaginationInfo.CurrentPage, title],
-        queryFn: () => tagsStore.fetchAllTags(title),
+        queryKey: ['tags', tagsStore.PaginationInfo.CurrentPage, debouncedTitle],
+        queryFn: () => tagsStore.fetchAllTags(debouncedTitle),
+        enabled: false,
+        keepPreviousData: true,
     });
 
     const updatedTags = () => {
-        tagsStore.fetchAllTags();
-    };
-    const PaginationProps = {
-        items: [10, 25, 50].map((value) => ({
-            key: value.toString(),
-            label: value.toString(),
-            onClick: () => {
-                setSelected(value);
-                setAmountRequest(value);
-                setCurrentPages(1);
-                tagsStore.PaginationInfo.PageSize = value;
-                tagsStore.fetchAllTags();
-            },
-        })),
+        tagsStore.fetchAllTags(debouncedTitle);
     };
 
     useEffect(() => {
+        const timeout = setTimeout(() => {
+            tagsStore.setCurrentPage(1);
+            setDebouncedTitle(title);
+        }, 400);
+
+        return () => clearTimeout(timeout);
+    }, [title]);
+
+    useEffect(() => {
         updatedTags();
-    }, [modalAddOpened, modalEditOpened]);
+    }, [debouncedTitle, currentPages, amountRequest]);
+
+    const handleChangeTitle = (event: ChangeEvent<HTMLInputElement>) => {
+        setTitle(event.target.value);
+    };
 
     const handleDeleteTag = (tagId: number) => {
         modalStore.setConfirmationModal(
@@ -103,10 +106,6 @@ const TagsMainPage: React.FC = observer(() => {
         ),
         [dataSource, sortDirection],
     );
-
-    const handleChangeTitle = (event: ChangeEvent<HTMLInputElement>) => {
-        setTitle(event.target.value);
-    };
 
     const columns: ColumnsType<Tag> = [
         {
@@ -157,6 +156,21 @@ const TagsMainPage: React.FC = observer(() => {
             ),
         },
     ];
+
+    const PaginationProps = {
+        items: [10, 25, 50].map((value) => ({
+            key: value.toString(),
+            label: value.toString(),
+            onClick: () => {
+                setSelected(value);
+                setAmountRequest(value);
+                setCurrentPages(1);
+                tagsStore.PaginationInfo.PageSize = value;
+                tagsStore.fetchAllTags(debouncedTitle);
+            },
+        })),
+    };
+
     return (
         <div className="tags-page">
             <div className="tags-page-container">
@@ -218,7 +232,7 @@ const TagsMainPage: React.FC = observer(() => {
                             onChange={(page: number) => {
                                 setCurrentPages(page);
                                 tagsStore.setCurrentPage(page);
-                                tagsStore.fetchAllTags();
+                                tagsStore.fetchAllTags(debouncedTitle);
                             }}
                         />
                     </div>

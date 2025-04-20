@@ -4,14 +4,12 @@
 @use "@sass/_utils.functions.scss" as f;
 
 .wrapper{
-    display: flex;
     gap: f.pxToRem(28px);
 }
 
 .termDictionaryCover {
     @include mut.admin-page-base-layout();
     .wrapper {
-
 
         .PageBarContainer {
             width: 16%;

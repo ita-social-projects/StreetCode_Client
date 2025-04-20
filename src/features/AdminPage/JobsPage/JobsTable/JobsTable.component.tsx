@@ -133,6 +133,12 @@ const JobsTable = observer(() => {
         });
     }, [sortDirection, buttonKey]);
 
+    useEffect(() => {
+        setCurrentPages(1);
+        jobsStore.setCurrentPage(1);
+        jobsStore.getAll(title);
+    }, [title]);
+
     const sortedData = useMemo(
         () => SortData<Job, string>(
             dataSource,
