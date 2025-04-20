@@ -3,30 +3,43 @@
 @use "@sass/variables/_variables.colors.scss" as c;
 @use "@sass/_utils.functions.scss" as f;
 
-.wrapper{
+.wrapper {
+    display: flex;
     gap: f.pxToRem(28px);
 }
 
 .termDictionaryCover {
     @include mut.admin-page-base-layout();
+
     .wrapper {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        gap: 2%;
 
         .PageBarContainer {
-            width: 16%;
+            width: 16% !important;
+        }
+
+        .termDictionaryContainer {
+            width: 80% !important;
         }
     }
 }
-.container-justify-end {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-}
+
 .termDictionaryContainer {
     @include mut.sized(81%);
     display: flex;
     flex-direction: column;
     gap: f.pxToRem(20px);
+
+    .container-justify-end {
+        display: flex;
+        justify-content: space-between;
+        margin-top: f.pxToRem(40px);
+        align-items: center;
+        width: 100%;
+    }
 
     .dictionaryHeader {
         display: grid;
@@ -34,142 +47,152 @@
         margin-bottom: f.pxToRem(40px);
         padding: 0 f.pxToRem(28px);
     }
+
+    .termTable{
         @include mut.admin-page-table-scroller();
     }
 
-    .searchMenuElement {
-        margin: 40px 10px 10px 10px;
-        display: flex;
-        align-items: center;
-        width: 100%;
-        flex-grow: 1;
-        max-width: 500px;
-        border-radius: 4px;
-    }
+}
 
-    .ant-input-affix-wrapper {
-        width: 500px;
-        height: 40px;
-        padding: 0 10px;
-        box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-        border: 2px solid c.$slider-base-dot-color;
-        border-radius: 6px;
-    }
+.searchMenuElement {
+    margin: 40px 0px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    flex-grow: 1;
+    max-width: 500px;
+    border-radius: 4px;
+}
 
-    .streetcode-custom-button {
-        margin-left: f.pxToRem(20px);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 40px;
-        width: 200px;
-        font-size: 16px;
-        background-color: c.$accented-red-color;
-        border: 2px solid c.$accented-red-color;
-        color: c.$pure-white-color;
-        border-radius: 5px !important;
+.ant-input-affix-wrapper {
+    width: 500px;
+    height: 40px;
+    padding: 0 10px;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    border: 2px solid c.$slider-base-dot-color;
+    border-radius: 6px;
+}
 
-        &:hover {
-            background-color: c.$dark-red-color;
-            border-color: c.$dark-red-color;
-        }
-    }
+.streetcode-custom-button {
+    margin-left: f.pxToRem(20px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    width: 200px;
+    font-size: 16px;
+    background-color: c.$accented-red-color;
+    border: 2px solid c.$accented-red-color;
+    color: c.$pure-white-color;
+    border-radius: 5px !important;
 
-    .searchMenuElement {
-        margin: 40px 10px 10px 10px;
-        display: flex;
-        align-items: center;
-        width: 100%;
-        flex-grow: 1;
-        max-width: 500px;
-        border-radius: 4px;
-    }
-
-    .ant-input-affix-wrapper {
-        width: 500px;
-        height: 40px;
-        padding: 0 10px;
-        box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-        border: 2px solid c.$slider-base-dot-color;
-        border-radius: 6px;
-    }
-
-    .streetcode-custom-button {
-        margin-left: f.pxToRem(20px);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 40px;
-        width: 200px;
-        font-size: 16px;
-        background-color: c.$accented-red-color;
-        border: 2px solid c.$accented-red-color;
-        color: c.$pure-white-color;
-        border-radius: 5px !important;
-
-        &:hover {
-            background-color: c.$dark-red-color;
-            border-color: c.$dark-red-color;
-        }
-
-    .termTable {
+    &:hover {
+        background-color: c.$dark-red-color;
+        border-color: c.$dark-red-color;
     }
 }
 
-.controls{
+.searchMenuElement {
+    margin: 40px 10px 10px 10px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    flex-grow: 1;
+    max-width: 500px;
+    border-radius: 4px;
+}
+
+.ant-input-affix-wrapper {
+    width: 500px;
+    height: 40px;
+    padding: 0 10px;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    border: 2px solid c.$slider-base-dot-color;
+    border-radius: 6px;
+}
+
+.streetcode-custom-button {
+    margin-left: f.pxToRem(20px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    width: 200px;
+    font-size: 16px;
+    background-color: c.$accented-red-color;
+    border: 2px solid c.$accented-red-color;
+    color: c.$pure-white-color;
+    border-radius: 5px !important;
+
+    &:hover {
+        background-color: c.$dark-red-color;
+        border-color: c.$dark-red-color;
+    }
+
+    .termTable {}
+}
+
+.controls {
     position: relative;
-    button{
+
+    button {
         border-radius: f.pxToRem(5px);
         font-size: 12pt;
         text-align: center;
         height: max-content;
         border: 0.025rem solid c.$dark-red-color;
         color: c.$dark-red-color;
-        &:hover{
+
+        &:hover {
             box-shadow: 0.2rem 0.2rem 0.2rem 0.2rem c.$dark-red-color;
             color: rgb(255, 255, 255);
         }
     }
 }
 
-.actionButton{
+.actionButton {
     border: none;
     background: transparent;
 
-    .actionIcon{
+    .actionIcon {
         color: c.$dark-red-color;
 
-        &:hover{
+        &:hover {
             scale: 1.35;
             transition: all 0.125s;
         }
     }
-    .disableIcon{
+
+    .disableIcon {
         color: lightgray;
     }
 }
 
-.ant-table{
+.ant-table {
     .ant-table-thead .ant-table-cell {
         background-color: transparent;
-        #text{
+
+        #text {
             color: white;
         }
     }
-    .ant-table-tbody > tr.ant-table-row:hover > td {
+
+    .ant-table-tbody>tr.ant-table-row:hover>td {
         transform: none !important;
     }
 }
-.ant-pagination-item{
+
+.ant-pagination-item {
     border: 0.02rem solid transparent;
     color: c.$dark-red-color;
-    a{
+
+    a {
         color: c.$dark-red-color;
     }
 }
+
 .PaginationSelect {
     display: flex;
     align-items: center;
     gap: 10px;
 }
-

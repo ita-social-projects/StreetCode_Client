@@ -68,7 +68,7 @@
         }
 
         .partner-links {
-            @include mut.flexed(row, start, space-between, wrap, 4px);
+            @include mut.flexed(row, center, start, nowrap, 4px);
         }
         .partners-table{
             @include mut.admin-page-table-scroller();
