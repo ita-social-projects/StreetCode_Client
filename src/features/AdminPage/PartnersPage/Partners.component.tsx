@@ -237,7 +237,7 @@ const Partners: React.FC = observer(() => {
                         key={`${partner.id}${index}222`}
                         className="actionButton"
                         onClick={() => {
-                            setPartnerToEdit(partner);
+                            setPartnerToedit(partner);
                             setModalEditOpened(true);
                         }}
                     />

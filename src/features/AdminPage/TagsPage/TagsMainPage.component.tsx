@@ -37,7 +37,7 @@ const TagsMainPage: React.FC = observer(() => {
         queryKey: ['tags', tagsStore.PaginationInfo.CurrentPage, debouncedTitle],
         queryFn: () => tagsStore.fetchAllTags(debouncedTitle),
         enabled: false,
-        keepPreviousData: true,
+        placeholderData: (previousData) => previousData,
     });
 
     const updatedTags = () => {

@@ -117,19 +117,19 @@ export default class NewsStore {
 
     public createNews = async (news: News) => {
         await NewsApi.create(news)
-            .then(() => this.getAll(this.PaginationInfo.PageSize))
+            .then(() => this.getAll('', this.PaginationInfo.PageSize))
             .catch((error) => console.error(error));
     };
 
     public updateNews = async (news: News) => {
         await NewsApi.update(news)
-            .then(() => this.getAll(this.PaginationInfo.PageSize))
+            .then(() => this.getAll('', this.PaginationInfo.PageSize))
             .catch((error) => console.error(error));
     };
 
     public deleteNews = async (newsId: number) => {
         await NewsApi.delete(newsId)
-            .then(() => this.getAll(this.PaginationInfo.PageSize))
+            .then(() => this.getAll('', this.PaginationInfo.PageSize))
             .catch((error) => console.error(error));
     };
 }

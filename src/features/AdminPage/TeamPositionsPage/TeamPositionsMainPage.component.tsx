@@ -37,12 +37,12 @@ const TeamPositionsMainPage: React.FC = observer(() => {
         queryKey: ['positions', debouncedTitle, currentPage, amountRequest],
         queryFn: () => teamPositionsStore.fetchPositions(debouncedTitle, amountRequest),
         enabled: false,
-        keepPreviousData: true,
+        placeholderData: (previousData) => previousData,
     });
 
     useEffect(() => {
         const timeout = setTimeout(() => {
-            teamPositionsStore.setCurrentPage(1); // <-- Спочатку оновлення сторінки
+            teamPositionsStore.setCurrentPage(1);
             setDebouncedTitle(title);
         }, 400);
 
