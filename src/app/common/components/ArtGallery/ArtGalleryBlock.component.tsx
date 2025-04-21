@@ -247,7 +247,7 @@ const ArtGallery = ({
     <div>
       {(((streetcodeArtSlides.length > 0 && (isAdmin || visibleSlidesCount > 0)) || isConfigurationGallery)) && (
         <div id={isConfigurationGallery?"config-art-gallery":"art-gallery"} className="artGalleryWrapper">
-          <div className="artGalleryContainer container">
+          <div className="artGalleryContainer">
             <BlockHeading headingText={title} />
             {title === "Шаблони" && (
               <div className="container-for-arts-block">
