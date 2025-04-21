@@ -101,9 +101,11 @@ const TermDictionary = () => {
             termsStore.updateTerm(upd.id, term);
             setData(data?.map(
                 (t) => (t.id === upd?.id
-                    ? { ...t,
+                    ? {
+                        ...t,
                         title: upd?.title as string,
-                        description: upd.description === undefined ? '' : upd.description as string } : t),
+                        description: upd.description === undefined ? '' : upd.description as string
+                    } : t),
             ));
         }
     };
@@ -217,21 +219,22 @@ const TermDictionary = () => {
                             pagination={false}
                         />
                     </div>
-                </div>
-                <div className="underTableZone">
-                    <br />
-                    <div className="underTableElement">
-                        <PaginationSelect selected={selected} onChange={handlePageSizeChange} />
-                        <Pagination
-                            className="paginationElement"
-                            showSizeChanger={false}
-                            current={currentPage}
-                            total={termsStore.PaginationInfo.TotalItems}
-                            pageSize={selected}
-                            onChange={(page) => setCurrentPage(page)}
-                        />
+                    <div className="underTableZone">
+                        <br />
+                        <div className="underTableElement">
+                            <PaginationSelect selected={selected} onChange={handlePageSizeChange} />
+                            <Pagination
+                                className="paginationElement"
+                                showSizeChanger={false}
+                                current={currentPage}
+                                total={termsStore.PaginationInfo.TotalItems}
+                                pageSize={selected}
+                                onChange={(page) => setCurrentPage(page)}
+                            />
+                        </div>
                     </div>
                 </div>
+
                 <AddTermModal term={term} setTerm={setTerm} handleAdd={handleAdd} />
                 <DeleteTermModal term={term} handleDelete={handleDelete} />
                 <EditTermModal term={term} handleEdit={handleEdit} />

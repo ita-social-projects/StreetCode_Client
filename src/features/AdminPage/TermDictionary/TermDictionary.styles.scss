@@ -48,8 +48,12 @@
         padding: 0 f.pxToRem(28px);
     }
 
-    .termTable{
+    .termTable {
         @include mut.admin-page-table-scroller();
+    }
+
+    .underTableZone { 
+        display: flex;
     }
 
 }

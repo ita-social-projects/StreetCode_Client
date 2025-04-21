@@ -6,7 +6,6 @@
 
 .ant-drawer .ant-drawer-body {
   padding-top: 0;
-  padding-bottom: f.pxToRem(33px);
 }
 
 .ant-drawer-content-wrapper {
@@ -15,33 +14,29 @@
 
 .grid-container {
   display: grid;
-  grid-template-columns: 0% 100%;
+  grid-template-columns: 0 100%;
   position: absolute;
   left: 20%;
   height: 100vh;
 }
 
 .customSlider {
-  position: absolute;
-  top: f.pxToRem(13px);
-  max-height: f.pxToRem(365px);
+  top: f.pxToRem(10px);
+  max-height: f.pxToRem(379px);
   width: 25%;
 }
 
 $track-width: f.pxToRem(1.5px);
 
 .customSlider-track {
-  top: f.pxToRem(8px);
   width: $track-width;
   background: c.$normal-gray-color;
-  position: relative;
 }
 
 .thumb {
   cursor: default;
   position: absolute;
   transform: translateX(calc(-50% + $track-width / 2));
-  z-index: 100;
   background: c.$dark-red-color;
   border: f.pxToRem(6px) solid c.$dark-red-color;
   display: block;
@@ -92,7 +87,7 @@ $track-width: f.pxToRem(1.5px);
 
     * {
       @include mut.with-font(ft.$closer-text-font, $font-size: 16px);
-      line-height: f.pxToEm(22px);
+      line-height: f.pxToEm(24px);
     }
   }
 
@@ -106,31 +101,28 @@ $track-width: f.pxToRem(1.5px);
 
   .socialIconHeaderContainer {
     position: absolute;
-    top: 24rem;
+    margin-top: f.pxToEm(23px);
     padding-left: f.pxToRem(7px);
     @include mut.with-font($font-weight: 300, $font-size: 16px);
 
     >* {
       display: inline;
-      margin-top: pxToRem(40px);
-      margin-right: pxToRem(14.62px);
       padding-right: 0.7rem;
     }
   }
 
   .customSlider {
     top: f.pxToRem(5px);
-    max-height: f.pxToRem(322px);
+    max-height: f.pxToRem(303px);
   }
 
   .ant-drawer-content-wrapper {
     border-radius: 0 0 0 f.pxToRem(50px);
-    height: f.pxToRem(525px);
+    height: f.pxToRem(450px);
   }
 
   .ant-drawer-content {
     border-radius: 0 0 0 f.pxToRem(50px);
-    height: f.pxToRem(525px);
   }
 
   .thumb {
