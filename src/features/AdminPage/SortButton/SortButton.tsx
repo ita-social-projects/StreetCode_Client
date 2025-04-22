@@ -1,8 +1,8 @@
 import './SortButton.styles.scss';
 
-import unsortedSortButton from '@images/admin-panel/sort button default.png';
-import ascendSortButton from '@images/admin-panel/sort button sort1.png';
-import descendSortButton from '@images/admin-panel/sort button sort2.png';
+import unsortedSortButton from '@images/admin-panel/sort-button-default.png';
+import ascendSortButton from '@images/admin-panel/sort-button-sort1.png';
+import descendSortButton from '@images/admin-panel/sort-button-sort2.png';
 
 import React, {forwardRef, useImperativeHandle, useState} from 'react';
 import { SortDirection } from '@features/AdminPage/SortButton/useSortDirection';
