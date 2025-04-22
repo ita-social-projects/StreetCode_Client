@@ -7,7 +7,7 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
 import { useMediaQuery } from 'react-responsive';
 import AuthService from '@/app/common/services/auth-service/AuthService';
-import exitBtnImg from '@assets/images/admin-panel/ExitIcon.webp';
+import ExitBtn from '@assets/images/admin-panel/ExitIcon.svg';
 
 
 const PageBar = () => {
@@ -44,7 +44,7 @@ const PageBar = () => {
             </div>
             <div className="ExitButton">
                 <button type="button" onClick={handleLogout}>
-                    <img src={exitBtnImg} alt="Exit" className="exit-btn-icon" />
+                    <ExitBtn className="exit-btn-icon" />
                     Вихід
                 </button>
             </div>
