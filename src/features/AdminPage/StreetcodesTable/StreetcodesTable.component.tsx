@@ -6,6 +6,10 @@ import { Link } from 'react-router-dom';
 import {
     BarChartOutlined, DeleteOutlined, DownOutlined, EditOutlined, RollbackOutlined,
 } from '@ant-design/icons';
+
+import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
+
+import sortOptions from '@features/AdminPage/StreetcodesTable/constants/sortOptions';
 import STREETCODE_STATES from '@features/AdminPage/StreetcodesTable/constants/streetcodeStates';
 import { format } from 'date-fns';
 import { uk } from 'date-fns/locale';
@@ -15,9 +19,9 @@ import {
 } from 'antd';
 import Table from 'antd/es/table/Table';
 
-import sortOptions from '@features/AdminPage/StreetcodesTable/constants/sortOptions';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
 import FRONTEND_ROUTES from '@/app/common/constants/frontend-routes.constants';
+// eslint-disable-next-line import/extensions
 import { useModalContext } from '@/app/stores/root-store';
 import GetAllStreetcodesRequest from '@/models/streetcode/getAllStreetcodes.request';
 
@@ -137,7 +141,7 @@ const StreetcodesTable = () => {
             modalStore.setConfirmationModal(
                 'confirmation',
                 () => handleChangeStatusConfirmation(currentStatus, selectedKey),
-                'Ви впевнені, що хочете змінити статус цього history-коду?',
+                CONFIRMATION_MESSAGES.CHANGE_STREETCODE_STATUS,
                 isConfirmationModalVisible,
                 handleCancelConfirmation,
             );
@@ -154,6 +158,26 @@ const StreetcodesTable = () => {
     const menuProps = {
         items,
         onClick: handleMenuClick,
+    };
+
+    const handleDeleteStreetcode = (streetcodeId: number) => {
+        modalStore.setConfirmationModal(
+            'confirmation',
+            () => {
+                StreetcodesApi.delete(streetcodeId)
+                    .then(() => {
+                        setMapedStreetCodes(mapedStreetCodes
+                            .filter((s) => s.key !== streetcodeId));
+                    })
+                    .catch((e) => {
+                        console.error(e);
+                    });
+                modalStore.setConfirmationModal('confirmation');
+            },
+            CONFIRMATION_MESSAGES.DELETE_STREETCODE,
+        );
+
+        deleteFormDB(streetcodeId);
     };
 
     const columnsNames = [
@@ -179,7 +203,7 @@ const StreetcodesTable = () => {
             title: 'Статус',
             dataIndex: 'status',
             key: 'status',
-            width: '20%',
+            width: '10%',
             onCell: (record: MapedStreetCode) => ({
                 onClick: () => {
                     setCurrentStreetcodeOption(record.key);
@@ -196,6 +220,15 @@ const StreetcodesTable = () => {
                     </Button>
                 </Dropdown>
             ),
+        },
+        {
+            title: 'Автор',
+            dataIndex: 'author',
+            key: 'author',
+            width: '10%',
+            onCell: (record: MapedStreetCode) => ({
+                onClick: () => window.open(`${FRONTEND_ROUTES.ADMIN.BASE}/${record.url}`, '_blank'),
+            }),
         },
         {
             title: 'Останні зміни',
@@ -225,25 +258,7 @@ const StreetcodesTable = () => {
                             </Link>
                             <DeleteOutlined
                                 className="actionButton"
-                                onClick={(event) => {
-                                    modalStore.setConfirmationModal(
-                                        'confirmation',
-                                        () => {
-                                            StreetcodesApi.delete(record.key)
-                                                .then(() => {
-                                                    setMapedStreetCodes(mapedStreetCodes
-                                                        .filter((s) => s.key !== record.key));
-                                                })
-                                                .catch((e) => {
-                                                    console.error(e);
-                                                });
-                                            modalStore.setConfirmationModal('confirmation');
-                                        },
-                                        'Ви впевнені, що хочете видалити цей history-код?',
-                                    );
-
-                                    deleteFormDB(record.key);
-                                }}
+                                onClick={() => handleDeleteStreetcode(record.key)}
                             />
                             <Link to={`${FRONTEND_ROUTES.ADMIN.ANALYTICS}/${record.key}`}>
                                 <BarChartOutlined
@@ -268,7 +283,8 @@ const StreetcodesTable = () => {
         status: string,
         date: string,
         name: string,
-        url: string
+        url: string,
+        author: string,
     }
 
     const fetchPaginatedData = async () => {
@@ -298,6 +314,7 @@ const StreetcodesTable = () => {
                 ),
                 name: streetcode.title,
                 url: streetcode.transliterationUrl,
+                author: streetcode.createdBy,
             };
             mapedStreetCodesBuffer.push(mapedStreetCode);
         });

@@ -4,19 +4,17 @@
 @use "@sass/_utils.functions.scss" as f;
 
 .termDictionaryCover {
+    @include mut.admin-page-base-layout();
     .wrapper {
-        display: grid;
-        grid-template-columns: 14% 85%;
-
+        
+        
         .PageBarContainer {
             width: unset;
-            padding-top: f.pxToRem(100px);
         }
     }
 }
 
 .termDictionaryContainer {
-    padding-top: f.pxToRem(100px);
     flex-wrap:wrap;
     gap: f.pxToRem(10px);
 

@@ -2,30 +2,49 @@
 /* eslint-disable no-restricted-imports */
 /* eslint-disable import/extensions */
 import { observer } from 'mobx-react-lite';
-import { FC, ReactNode } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { FC, ReactNode, useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { UserRole } from '@models/user/user.model';
 
 import FRONTEND_ROUTES from '../constants/frontend-routes.constants';
 import AuthService from '../services/auth-service/AuthService';
 
-type PropsWithChildren = { children: ReactNode };
-const ProtectedComponent:FC<PropsWithChildren> = ({ children }) => {
+type PropsWithChildren = { children: ReactNode, allowedRoles: UserRole[] | null };
+const ProtectedComponent:FC<PropsWithChildren> = ({ children, allowedRoles = null }) => {
     const navigate = useNavigate();
+    const [isAllowed, setIsAllowed] = useState<boolean>(false);
     const isLoggedIn = AuthService.isLoggedIn();
+    const location = useLocation();
+
+    useEffect(() => {
+        if (!AuthService.isLoggedIn()) {
+            AuthService.refreshTokenAsync()
+                .catch(() => navigate(FRONTEND_ROUTES.AUTH.LOGIN));
+        }
+
+        const currentUserRole = AuthService.getUserRole();
+        if (currentUserRole != null
+            && allowedRoles
+            && !allowedRoles.includes(currentUserRole)) {
+            navigate(FRONTEND_ROUTES.OTHER_PAGES.ERROR404);
+        }
+
+        setIsAllowed(true);
+    }, [allowedRoles, navigate]);
 
     if (!isLoggedIn) {
         AuthService.refreshTokenAsync()
-            .catch(() => navigate(FRONTEND_ROUTES.ADMIN.LOGIN));
+            .catch(() => navigate(FRONTEND_ROUTES.AUTH.LOGIN, {
+                state: {
+                    previousUrl: location.pathname,
+                },
+            }));
         return null;
-    }else{
-        if (!AuthService.isAdmin()) {
-            return <Navigate to={FRONTEND_ROUTES.OTHER_PAGES.ERROR404} />;
-        }
     }
 
     return (
         <>
-            {children}
+            {isAllowed ? children : null}
         </>
     );
 };

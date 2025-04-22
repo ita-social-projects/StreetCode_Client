@@ -13,7 +13,6 @@ import { ModelState } from '@models/enums/model-state';
 import { ArtCreateUpdate } from '@models/media/art.model';
 
 import { Button, Modal, Upload, Typography } from 'antd';
-const { Text } = Typography;
 import type { UploadFile, UploadFileStatus } from 'antd/es/upload/interface';
 
 import FileUploader from '@/app/common/components/FileUploader/FileUploader.component';
@@ -22,6 +21,9 @@ import Audio from '@/models/media/audio.model';
 
 import PreviewImageModal from './PreviewImageModal/PreviewImageModal.component';
 import { checkImageFileType } from '@/app/common/components/modals/validators/imageValidator';
+import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
+const { Text } = Typography;
+import combinedImageValidator from "@components/modals/validators/combinedImageValidator";
 
 const DownloadBlock = () => {
     const { id } = useParams<any>();
@@ -33,9 +35,9 @@ const DownloadBlock = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [visibleModal, setVisibleModal] = useState(false);
     const [visibleDeleteButton, setVisibleDeleteButton] = useState(false);
-    const [visibleError, setVisibleError] = useState(false);
     const artsToRemoveIdxs = useRef<Set<string>>(new Set());
     const isSecondRender = useRef<boolean>(false);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
     useAsync(async () => {
         if (artStore.arts.length === 0 && parseId && !isSecondRender.current) {
@@ -63,7 +65,6 @@ const DownloadBlock = () => {
     
 
     const handleRemove = useCallback((param: UploadFile) => {
-        setVisibleError(false)
         if (isArtInSlides(param.uid)) {
             alert('Ви не можете виділити цей файл для видалення оскільки він є у існуючих слайдах');
             return;
@@ -83,7 +84,6 @@ const DownloadBlock = () => {
     }, []);
 
     const onPreview = async (file: UploadFile) => {
-        setVisibleError(false)
         const artIdx = artStore.arts.findIndex((a) => a.id.toString() === file.uid);
         if (artIdx !== -1) {
             setArtPreviewIdx(artIdx);
@@ -92,7 +92,6 @@ const DownloadBlock = () => {
     };
 
     const onSuccessUploadImage = action((file: Image | Audio) => {
-        setVisibleError(false);
         let image: Image = file as Image;
         const newId = artStore.getMaxArtId + 1;
 
@@ -143,13 +142,17 @@ const DownloadBlock = () => {
         setVisibleDeleteButton(false);
     };
 
-    const handleBeforeUpload = (file: UploadFile) => {
-        const isImage = checkImageFileType(file.type);
-        if (!isImage) {
-            setVisibleError(true);
-        }
-
-        return isImage || Upload.LIST_IGNORE;
+    const beforeFileUpload = async (file: UploadFile) => {
+        const validator = combinedImageValidator(true);
+        return validator({}, file)
+            .then(() => {
+                setErrorMessage(null);
+                return true;
+            })
+            .catch((error: Error) => {
+                setErrorMessage(error.message);
+                return false;
+            });
     };
 
     return (
@@ -160,7 +163,7 @@ const DownloadBlock = () => {
                 fileList={fileList}
                 multiple={true}
                 uploadTo="image"
-                beforeUpload={handleBeforeUpload}
+                beforeUpload={beforeFileUpload}
                 onSuccessUpload={onSuccessUploadImage}
                 onPreview={onPreview}
                 onRemove={handleRemove}
@@ -179,20 +182,19 @@ const DownloadBlock = () => {
             >
                 <p>+ Додати</p>
             </FileUploader>
-            {visibleError &&
-                <Text className="arts-error" type="danger">Тільки файли з розширенням webp, jpeg, png, jpg дозволені!</Text>
-            }
+            {errorMessage
+                && <Text className="arts-error" type="danger">{errorMessage}</Text>}
             {visibleDeleteButton ? (
                 <Button
                     className="delete-arts-button"
                     danger
-                    onClick={() => {setVisibleModal(true);setVisibleError(false)}}
+                    onClick={() => { setVisibleModal(true); }}
                 >
 Видалити
                 </Button>
             ) : <></>}
             <Modal
-                title="Ви впевнені, що хочете видалити цей арт?"
+                title={CONFIRMATION_MESSAGES.DELETE_ART}
                 open={visibleModal}
                 onOk={onRemoveArtsSubmit}
                 onCancel={handleCancelModalRemove}

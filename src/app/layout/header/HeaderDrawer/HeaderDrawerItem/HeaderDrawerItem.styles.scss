@@ -4,7 +4,7 @@
 @use "@sass/mixins/_utils.mixins.scss" as mut;
 @use "@sass/mixins/_vendor.mixins.scss" as vnd;
 
-.headerItem{
+.headerItem {
     background-color: transparent;
     border: none;
     text-align: left;
@@ -12,7 +12,7 @@
     text-decoration: none;
 }
 
-.headerItem:hover {    
+.headerItem:hover {
     cursor: pointer;
     color: c.$dark-red-color;
 }
@@ -24,4 +24,16 @@
 
     @include mut.sized(100%, 2px);
     @include mut.positioned-as(absolute, $bottom: 0, $left: 0);
+}
+
+#active {
+    @include mut.with-font($font-size: 24px);
+    transition: all 0.5s;
+}
+
+@media (max-width: 1024px) {
+    #active {
+        @include mut.with-font($font-size: 18px);
+        transition: all 0.5s;
+    }
 }

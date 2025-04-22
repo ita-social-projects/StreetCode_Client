@@ -6,6 +6,7 @@ import { act } from "react-dom/test-utils";
 import Tag, { TagCreate } from "@/models/additional-content/tag.model";
 import TagsApi from "@/app/api/additional-content/tags.api";
 import { message } from "antd";
+import BUTTON_LABELS from "@constants/buttonLabels";
 
 jest.mock("antd", () => {
     const antd = jest.requireActual("antd");
@@ -86,7 +87,7 @@ describe("PartnerModal", () => {
         render(<TagAdminModal isModalVisible={true} setIsModalOpen={() => { }} />);
 
         const nameInput = screen.getByRole("textbox", { name: /назва:/i });
-        const button = screen.getByRole("button", { name: /зберегти/i });
+        const button = screen.getByRole("button", { name: BUTTON_LABELS.SAVE });
 
         act(() => {
             userEvent.type(nameInput, "New Tag");
@@ -106,7 +107,7 @@ describe("PartnerModal", () => {
         render(<TagAdminModal isModalVisible={true} setIsModalOpen={() => { }} initialData={{ id: 1, title: "Old Tag" } as Tag} />);
 
         const nameInput = screen.getByRole("textbox", { name: /назва:/i });
-        const button = screen.getByRole("button", { name: /зберегти/i });
+        const button = screen.getByRole("button", { name: BUTTON_LABELS.SAVE });
 
         await waitFor(() => {
             expect(nameInput).toHaveValue("Old Tag");
@@ -130,7 +131,7 @@ describe("PartnerModal", () => {
         render(<TagAdminModal isModalVisible={true} setIsModalOpen={() => { }} />);
 
         const nameInput = screen.getByRole("textbox", { name: /назва:/i }) as HTMLInputElement;
-        const button = screen.getByRole("button", { name: /зберегти/i });
+        const button = screen.getByRole("button", { name: BUTTON_LABELS.SAVE });
 
         act(() => {
             userEvent.clear(nameInput);
@@ -148,7 +149,7 @@ describe("PartnerModal", () => {
         render(<TagAdminModal isModalVisible={true} setIsModalOpen={() => { }} />);
 
         const nameInput = screen.getByRole("textbox", { name: /назва:/i }) as HTMLInputElement;
-        const button = screen.getByRole("button", { name: /зберегти/i });
+        const button = screen.getByRole("button", { name: BUTTON_LABELS.SAVE });
 
         act(() => {
             userEvent.clear(nameInput);

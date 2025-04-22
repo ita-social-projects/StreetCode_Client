@@ -1,11 +1,10 @@
-import { render, screen } from '@testing-library/react';
-
-// eslint-disable-next-line import/extensions
-import FromDateToString from '@utils/FromDateToString';
 import StreetcodeImage from '@models/media/image.model';
 import Streetcode, { Status, StreetcodeType } from '@models/streetcode/streetcode-types.model';
 import { Fact } from '@models/streetcode/text-contents.model';
 import TimelineItem from '@models/timeline/chronology.model';
+import { render, screen } from '@testing-library/react';
+// eslint-disable-next-line import/extensions
+import FromDateToString from '@utils/FromDateToString';
 
 import '@testing-library/jest-dom';
 
@@ -101,6 +100,7 @@ const getTestStreetcode = ():Streetcode => ({
     targets: [],
     streetcodePartners: [],
     rank: '',
+    createdBy: '',
 });
 
 const getTestImage = ():StreetcodeImage => ({

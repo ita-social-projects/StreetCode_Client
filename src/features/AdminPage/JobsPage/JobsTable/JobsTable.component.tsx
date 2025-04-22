@@ -1,8 +1,11 @@
+/* eslint-disable import/extensions */
 import './JobsTable.styles.scss';
 
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import { DeleteOutlined, DownOutlined, EditOutlined } from '@ant-design/icons';
+import BUTTON_LABELS from '@constants/buttonLabels';
+import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
 import { useQuery } from '@tanstack/react-query';
 
 import {
@@ -12,6 +15,7 @@ import {
 import JobApi from '@/app/api/job/Job.api';
 import useMobx, { useModalContext } from '@/app/stores/root-store';
 
+// eslint-disable-next-line no-restricted-imports
 import JobsModalComponent from '../JobsModal/JobsModal.component';
 
 const JobsTable = observer(() => {
@@ -43,7 +47,7 @@ const JobsTable = observer(() => {
                     );
                 modalStore.setConfirmationModal('confirmation');
             },
-            'Ви впевненні що хочете видалити вакансію?',
+            CONFIRMATION_MESSAGES.DELETE_VACANCY,
         );
     };
     const items: MenuProps['items'] = [
@@ -63,19 +67,17 @@ const JobsTable = observer(() => {
             const currentStatus: boolean = opt.key === '0';
             modalStore.setConfirmationModal(
                 'confirmation',
-                async () => {
+                () => {
                     try {
-                        await JobApi.changeStatus(currentId, currentStatus);
-
+                        JobApi.changeStatus(currentId, currentStatus);
                         jobsStore.setInternalMap(jobsStore.getJobsArray
                             .map((job) => (job.id === currentId ? { ...job, status: currentStatus } : job)));
-
                         modalStore.setConfirmationModal('confirmation');
                     } catch (e) {
                         console.error(e);
                     }
                 },
-                'Ви впевнені, що хочете змінити статус вакансії?',
+                CONFIRMATION_MESSAGES.CHANGE_VACANCY_STATUS,
             );
         } catch (error) {
             console.error(error);
@@ -154,7 +156,7 @@ const JobsTable = observer(() => {
                     className="streetcode-custom-button partners-page-add-button"
                     onClick={handleAddButtonClick}
                 >
-                    Додати нову вакансію
+                    {BUTTON_LABELS.ADD_VACANCY}
                 </Button>
             </div>
             <JobsModalComponent

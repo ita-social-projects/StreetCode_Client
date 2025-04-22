@@ -9,6 +9,7 @@ import { Button, Form, Input, message, Modal, Popover, UploadFile } from 'antd';
 import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 import normaliseWhitespaces from '@/app/common/utils/normaliseWhitespaces';
 import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
+import BUTTON_LABELS from "@constants/buttonLabels";
 
 interface ContextAdminProps {
     setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -121,7 +122,7 @@ const ContextAdminModalComponent: React.FC<ContextAdminProps> = observer(({
                     onKeyDown={(e) => e.key === 'Enter' ? e.preventDefault() : ''}
                 >
                     <div className="center">
-                        <h2>{isEditing ? 'Редагувати контекст' : 'Додати новий контекст'}</h2>
+                        <h2>{isEditing ? 'Редагувати контекст' : 'Додати контекст'}</h2>
                     </div>
                     <Form.Item
                         name="title"
@@ -136,11 +137,11 @@ const ContextAdminModalComponent: React.FC<ContextAdminProps> = observer(({
 
                     <div className="center">
                         <Button
-								            disabled={isSaveButtonDisabled}
+							disabled={isSaveButtonDisabled}
                             className="streetcode-custom-button"
                             onClick={() => handleOk()}
                         >
-                            Зберегти
+                            {BUTTON_LABELS.SAVE}
                         </Button>
                     </div>
                 </Form>

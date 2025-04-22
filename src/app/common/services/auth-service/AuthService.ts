@@ -1,8 +1,9 @@
 /* eslint-disable class-methods-use-this */
+import UsersApi from '@api/users/users.api';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 
 import AuthApi from '@/app/api/authentication/auth.api';
-import { RefreshTokenRequest, UserRegisterRequest } from '@/models/user/user.model';
+import { RefreshTokenRequest, UserRegisterRequest, UserRole } from '@/models/user/user.model';
 
 interface CustomJwtPayload extends JwtPayload {
     role: string;
@@ -14,7 +15,7 @@ export default class AuthService {
     private static refreshTokenStorageName = 'RefreshToken';
 
     public static getAccessToken(): string | null {
-        return localStorage.getItem(this.accessTokenStorageName);
+        return localStorage.getItem(AuthService.accessTokenStorageName);
     }
 
     public static isLoggedIn(): boolean {
@@ -24,6 +25,15 @@ export default class AuthService {
         }
 
         return true;
+    }
+
+    public static async refreshOnTokenExpiry(): Promise<boolean> {
+        try {
+            await AuthService.refreshTokenAsync();
+            return true;
+        } catch (err) {
+            return false;
+        }
     }
 
     public static logout() {
@@ -37,13 +47,32 @@ export default class AuthService {
     ) {
         return AuthApi.login({ login, password, captchaToken })
             .then((response) => {
-                localStorage.setItem(this.accessTokenStorageName, response.accessToken);
-                localStorage.setItem(this.refreshTokenStorageName, response.refreshToken);
+                localStorage.setItem(AuthService.accessTokenStorageName, response.accessToken);
+                localStorage.setItem(AuthService.refreshTokenStorageName, response.refreshToken);
             })
             .catch((error) => {
                 console.error(error);
                 return Promise.reject(error);
             });
+    }
+
+    public static async sendForgotPassword(email: string) {
+        await UsersApi.forgotPassword({ email }).catch((error) => {
+            console.error(error);
+            return Promise.reject(error);
+        });
+    }
+
+    public static async sendForgotPasswordUpdate(
+        password: string,
+        confirmPassword: string,
+        username: string | null,
+        token: string | null,
+    ) {
+        await UsersApi.updateForgotPassword({ password, confirmPassword, username, token }).catch((error) => {
+            console.error(error);
+            return Promise.reject(error);
+        });
     }
 
     public static async registerAsync(
@@ -62,13 +91,13 @@ export default class AuthService {
             const oldAccesstoken = this.getAccessToken();
             if (!AuthService.isAccessTokenHasValidSignature(oldAccesstoken)) {
                 const error = new Error('Invalid signature of access token');
-                return Promise.reject(error);
+                throw error;
             }
 
             const refreshToken = this.getRefreshToken();
             if (!refreshToken) {
                 const error = new Error('Refresh token doesn`t exists');
-                return Promise.reject(error);
+                throw error;
             }
 
             const refreshTokenRequest: RefreshTokenRequest = {
@@ -77,10 +106,12 @@ export default class AuthService {
             };
 
             const response = await AuthApi.refreshToken(refreshTokenRequest);
-            localStorage.setItem(this.accessTokenStorageName, response.accessToken);
+            localStorage.setItem(AuthService.accessTokenStorageName, response.accessToken);
         } catch (error) {
-            console.error(error);
-            return Promise.reject(error);
+            if (error instanceof Error) {
+                console.error(error);
+                return Promise.reject(error);
+            }
         }
     };
 
@@ -108,31 +139,51 @@ export default class AuthService {
     }
 
     private static getRefreshToken() {
-        return localStorage.getItem(this.refreshTokenStorageName);
+        return localStorage.getItem(AuthService.refreshTokenStorageName);
     }
 
     private static clearTokenData() {
-        localStorage.removeItem(this.accessTokenStorageName);
-        localStorage.removeItem(this.refreshTokenStorageName);
+        localStorage.removeItem(AuthService.accessTokenStorageName);
+        localStorage.removeItem(AuthService.refreshTokenStorageName);
     }
 
     public static isAdmin(): boolean {
         const token = this.getAccessToken();
-        if (!token) return false;
+        if (!token) {
+            return false;
+        }
 
         const decodedToken = this.getDecodedAccessToken(token);
-        if (!decodedToken || !decodedToken.role) return false;
+        if (!decodedToken || !decodedToken.role) {
+            return false;
+        }
 
         return decodedToken.role === 'Admin';
     }
 
+    public static getUserRole(): UserRole | null {
+        const token = this.getAccessToken();
+        if (!token) {
+            return null;
+        }
+
+        const decodedToken = this.getDecodedAccessToken(token);
+        if (!decodedToken || !decodedToken.role) {
+            return null;
+        }
+
+        const role = decodedToken.role as keyof typeof UserRole;
+
+        return UserRole[role];
+    }
+
     static async googleLoginAsync(idToken: string | undefined): Promise<void> {
         try {
-            const response = await AuthApi.loginGoogle(idToken);
+            const response = await AuthApi.loginGoogle({ idToken });
             const { accessToken, refreshToken } = response;
 
-            localStorage.setItem(this.accessTokenStorageName, accessToken);
-            localStorage.setItem(this.refreshTokenStorageName, refreshToken);
+            localStorage.setItem(AuthService.accessTokenStorageName, accessToken);
+            localStorage.setItem(AuthService.refreshTokenStorageName, refreshToken);
 
             console.log('Успішна авторизація через Google!');
         } catch (error) {
