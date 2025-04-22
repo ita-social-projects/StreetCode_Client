@@ -1,8 +1,12 @@
 import './Partners.styles.scss';
 
+import MagnifyingGlass from '@images/header/Magnifying_glass.svg';
+
 import { runInAction } from 'mobx';
 import { observer } from 'mobx-react-lite';
-import React, { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react';
+import React, {
+    ChangeEvent, useEffect, useMemo, useRef, useState,
+} from 'react';
 import { DeleteOutlined, DownOutlined, EditOutlined, StarOutlined } from '@ant-design/icons';
 import facebook from '@assets/images/partners/facebook.svg';
 import instagram from '@assets/images/partners/instagram.svg';
@@ -17,7 +21,7 @@ import useSortDirection from '@features/AdminPage/SortButton/useSortDirection';
 import ImageStore from '@stores/image-store';
 import useMobx, { useModalContext } from '@stores/root-store';
 import { useQuery } from '@tanstack/react-query';
-import MagnifyingGlass from '@images/header/Magnifying_glass.svg';
+
 import {
     Button, Checkbox, Dropdown, Empty, Input, Pagination, Space,
 } from 'antd';

@@ -1,18 +1,22 @@
 import './ContextMainPage.style.scss';
 
+import MagnifyingGlass from '@images/header/Magnifying_glass.svg';
+
 import { observer } from 'mobx-react-lite';
-import React, { ChangeEvent,useEffect, useMemo, useRef, useState} from 'react';
+import React, {
+    ChangeEvent, useEffect, useMemo, useRef, useState,
+} from 'react';
 import { DeleteOutlined, DownOutlined, EditOutlined } from '@ant-design/icons';
 import BUTTON_LABELS from '@constants/buttonLabels';
 import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
 import ContextAdminModalComponent from '@features/AdminPage/ContextPage/ContextModal/ContextAdminModal.component';
 import { StringComparator } from '@features/AdminPage/SortButton/ComparatorImplementations';
-import SortButton, {SortButtonHandle} from '@features/AdminPage/SortButton/SortButton';
+import SortButton, { SortButtonHandle } from '@features/AdminPage/SortButton/SortButton';
 import SortData from '@features/AdminPage/SortButton/SortLogic';
 import useSortDirection from '@features/AdminPage/SortButton/useSortDirection';
 import useMobx, { useModalContext } from '@stores/root-store';
 import { useQuery } from '@tanstack/react-query';
-import MagnifyingGlass from '@images/header/Magnifying_glass.svg';
+
 import {
     Button, Dropdown, Empty, Input, Pagination, Space,
 } from 'antd';
