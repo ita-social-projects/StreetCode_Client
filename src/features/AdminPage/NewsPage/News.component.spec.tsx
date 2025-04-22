@@ -3,6 +3,7 @@
 /* eslint-disable no-restricted-imports */
 import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
+import BUTTON_LABELS from '@constants/buttonLabels';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen } from '@testing-library/react';
 
@@ -11,7 +12,6 @@ import '@testing-library/jest-dom';
 import { MockPagination, MockPaginationProps } from '../../../../__mocks__/antd/antd';
 
 import Newss from './News.component';
-import BUTTON_LABELS from "@constants/buttonLabels";
 
 const getPaginationInfoMpckFn = () => {
     const mockFn = jest.fn();

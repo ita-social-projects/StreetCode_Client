@@ -1,10 +1,10 @@
 import './SortButton.styles.scss';
 
-import unsortedSortButton from '@images/admin-panel/sort-button-default.png';
-import ascendSortButton from '@images/admin-panel/sort-button-sort1.png';
-import descendSortButton from '@images/admin-panel/sort-button-sort2.png';
+import unsortedSortButton from '@images/admin-panel/sort-button-default.svg';
+import ascendSortButton from '@images/admin-panel/sort-button-sort1.svg';
+import descendSortButton from '@images/admin-panel/sort-button-sort2.svg';
 
-import React, {forwardRef, useImperativeHandle, useState} from 'react';
+import React, { forwardRef, useImperativeHandle, useState } from 'react';
 import { SortDirection } from '@features/AdminPage/SortButton/useSortDirection';
 
 const images = [
@@ -25,6 +25,7 @@ interface SortButtonProps {
 const SortButton: React.FC<SortButtonProps> = forwardRef<SortButtonHandle, SortButtonProps>(
     ({ sortOnClick }, ref) => {
         const [imageIndex, setImageIndex] = useState(0);
+        const Icon = images[imageIndex];
 
         function resetImage() {
             setImageIndex(0);
@@ -47,7 +48,7 @@ const SortButton: React.FC<SortButtonProps> = forwardRef<SortButtonHandle, SortB
                         sortOnClick();
                     }}
                 >
-                    <img src={images[imageIndex]} alt="sort button" />
+                    <Icon />
                 </button>
             </div>
         );
