@@ -13,11 +13,11 @@ module.exports = {
     open: true,
     port: "3000",
     historyApiFallback: true,
+    // DEV.NOTE: uncomment and change names of files according to your generated ones
+    
     // https: {
-      // DEV.NOTE: uncomment and change names of files according to your generated ones
-
-      // key: fs.readFileSync("cert\\localhost+1-key.pem"),
-      // cert: fs.readFileSync("cert\\localhost+1.pem"),
+    //   key: fs.readFileSync('./cert/localhost+1-key.pem'),
+    //   cert: fs.readFileSync('./cert/localhost+1.pem'),
     // },
   },
   module: {

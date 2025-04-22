@@ -111,3 +111,9 @@ $loadImg: '@assets/images/catalog/loading.webp';
         margin: pxToRem(84px) 0;
     }
 }
+
+.content-table-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}

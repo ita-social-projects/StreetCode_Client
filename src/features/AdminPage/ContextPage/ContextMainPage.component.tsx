@@ -1,15 +1,25 @@
 import './ContextMainPage.style.scss';
 
+import MagnifyingGlass from '@images/header/Magnifying_glass.svg';
+
 import { observer } from 'mobx-react-lite';
-import React, { useEffect, useState } from 'react';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import React, {
+    ChangeEvent, useEffect, useMemo, useRef, useState,
+} from 'react';
+import { DeleteOutlined, DownOutlined, EditOutlined } from '@ant-design/icons';
 import BUTTON_LABELS from '@constants/buttonLabels';
 import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
 import ContextAdminModalComponent from '@features/AdminPage/ContextPage/ContextModal/ContextAdminModal.component';
+import { StringComparator } from '@features/AdminPage/SortButton/ComparatorImplementations';
+import SortButton, { SortButtonHandle } from '@features/AdminPage/SortButton/SortButton';
+import SortData from '@features/AdminPage/SortButton/SortLogic';
+import useSortDirection from '@features/AdminPage/SortButton/useSortDirection';
 import useMobx, { useModalContext } from '@stores/root-store';
 import { useQuery } from '@tanstack/react-query';
 
-import { Button, Empty, Pagination } from 'antd';
+import {
+    Button, Dropdown, Empty, Input, Pagination, Space,
+} from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 
 import Context from '@/models/additional-content/context.model';
@@ -20,19 +30,42 @@ const ContextMainPage: React.FC = observer(() => {
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
     const [contextToEdit, setContextToEdit] = useState<Context>();
+    const [currentPages, setCurrentPages] = useState(1);
+    const [amountRequest, setAmountRequest] = useState(10);
+    const [selected, setSelected] = useState(10);
+    const [title, setTitle] = useState<string>('');
 
     const { isLoading } = useQuery({
-        queryKey: ['contexts', contextStore.PaginationInfo.CurrentPage],
-        queryFn: () => contextStore.fetchContexts(),
+        queryKey: ['contexts', contextStore.PaginationInfo.CurrentPage, title],
+        queryFn: () => contextStore.fetchContexts(title),
     });
 
     const updatedContexts = () => {
         contextStore.fetchContexts();
     };
 
+    const PaginationProps = {
+        items: [10, 25, 50].map((value) => ({
+            key: value.toString(),
+            label: value.toString(),
+            onClick: () => {
+                setSelected(value);
+                setAmountRequest(value);
+                setCurrentPages(1);
+                contextStore.PaginationInfo.PageSize = value;
+                contextStore.fetchContexts();
+            },
+        })),
+    };
     useEffect(() => {
         updatedContexts();
     }, [modalAddOpened, modalEditOpened]);
+
+    useEffect(() => {
+        setCurrentPages(1);
+        contextStore.setCurrentPage(1);
+        contextStore.fetchContexts();
+    }, [title]);
 
     const handleDeleteContext = (contextId: number) => {
         modalStore.setConfirmationModal(
@@ -50,9 +83,54 @@ const ContextMainPage: React.FC = observer(() => {
         );
     };
 
+    const handleChangeTitle = (event: ChangeEvent<HTMLInputElement>) => {
+        setTitle(event.target.value);
+    };
+
+    const dataSource = contextStore.getContextArray;
+
+    const { sortDirection, toggleSort } = useSortDirection();
+
+    const sortButtons = {
+        sortByName: useRef<SortButtonHandle>(null),
+    };
+
+    const [buttonKey, setButtonKey] = useState<string | null>(null);
+
+    useEffect(() => {
+        Object.entries(sortButtons).forEach(([key, value]) => {
+            if (buttonKey === key) {
+                (value.current as SortButtonHandle).changeImage(sortDirection);
+            } else {
+                (value.current as SortButtonHandle).resetImage();
+            }
+        });
+    }, [sortDirection, buttonKey]);
+
+    const sortedData = useMemo(
+        () => SortData<Context, string>(
+            dataSource,
+            sortDirection,
+            (itemToCompare: Context) => itemToCompare?.title,
+            StringComparator,
+        ),
+        [dataSource, sortDirection],
+    );
+
     const columns: ColumnsType<Context> = [
         {
-            title: 'Назва',
+            title: (
+                <div className="content-table-title">
+                    <span>Назва</span>
+                    <SortButton
+                        ref={sortButtons.sortByName}
+                        sortOnClick={() => {
+                            toggleSort('name');
+                            setButtonKey('sortByName');
+                        }}
+                    />
+                </div>
+            ),
             dataIndex: 'title',
             key: 'title',
             render(value) {
@@ -92,6 +170,14 @@ const ContextMainPage: React.FC = observer(() => {
         <div className="context-page">
             <div className="contexts-page-container">
                 <div className="container-justify-end">
+                    <div className="searchMenuElement">
+                        <Input
+                            className="searchMenuElementInput"
+                            prefix={<MagnifyingGlass />}
+                            onChange={handleChangeTitle}
+                            placeholder="Назва"
+                        />
+                    </div>
                     <Button
                         className="streetcode-custom-button partners-page-add-button"
                         onClick={() => setModalAddOpened(true)}
@@ -103,7 +189,7 @@ const ContextMainPage: React.FC = observer(() => {
                     pagination={false}
                     className="partners-table"
                     columns={columns}
-                    dataSource={contextStore.getContextArray || []}
+                    dataSource={sortedData || []}
                     rowKey="id"
                     locale={{
                         emptyText: isLoading ? (
@@ -118,15 +204,28 @@ const ContextMainPage: React.FC = observer(() => {
                 <div className="underTableZone">
                     <br />
                     <div className="underTableElement">
+                        <div className="PaginationSelect">
+                            <p>Рядків на сторінці</p>
+                            <Dropdown menu={{ items: PaginationProps.items }} trigger={['click']}>
+                                <Button>
+                                    <Space>
+                                        {selected}
+                                        <DownOutlined />
+                                    </Space>
+                                </Button>
+                            </Dropdown>
+                        </div>
                         <Pagination
                             className="paginationElement"
                             showSizeChanger={false}
                             defaultCurrent={1}
-                            current={contextStore.PaginationInfo.CurrentPage}
+                            current={currentPages}
                             total={contextStore.PaginationInfo.TotalItems}
-                            pageSize={contextStore.PaginationInfo.PageSize}
-                            onChange={(value: any) => {
-                                contextStore.setCurrentPage(value);
+                            pageSize={amountRequest}
+                            onChange={(page: number) => {
+                                setCurrentPages(page);
+                                contextStore.setCurrentPage(page);
+                                contextStore.fetchContexts();
                             }}
                         />
                     </div>

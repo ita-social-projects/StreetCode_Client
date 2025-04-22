@@ -6,19 +6,25 @@
 
 .PageBarContainer {
     @include mut.with-font(ft.$closer-text-font, $font-weight: 400, $font-size: 20px);
-    @include mut.sized(20%);
+    @include mut.sized(16%);
     float: left;
-    display: flex;
+    height: 100vh;
+    display: column;
     justify-content: start;
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.25);
+}
+
+.LogoContainer {
+    padding: f.pxToRem(30px) 0 f.pxToRem(50px) f.pxToRem(30px);
 }
 
 .BarContainer {
-    @include mut.flexed(column, $align-items: flex-start, $gap: 10px);
+    @include mut.flexed(column, $align-items: flex-start, $gap: 0px);
 
-    position: fixed;
     .Link {
+        width: 100%;
         color:black;
-        margin-bottom: 10px;
+        padding: 16px 0 16px f.pxToRem(32px);
         &:hover {
             cursor: pointer;
             color: c.$dark-red-color
@@ -30,9 +36,31 @@
         @include vnd.vendored(transition, 'scale .3s ease');
 
         &.active {
-            color: c.$text-red-color;
-            text-decoration: underline;
-            text-underline-offset: f.pxToRem(5px);
+            background-color: rgba(224,64,49,0.08);
+            border-left: 8px solid #E04031;
+            padding: 16px 0 16px f.pxToRem(24px);
+        }
+    }
+}
+
+.ExitButton {
+    width: f.pxToRem(51px);
+    height: f.pxToRem(24px);
+    position: fixed;
+    bottom: f.pxToRem(50px);
+    left: f.pxToRem(30px);
+
+    button {
+        display: inline-flex;
+        align-items: center;
+
+        color: #1D1F23;
+        &:hover {
+            color: #E04031;
+        }
+        
+        .exit-btn-icon {
+            margin-right: 4px;
         }
     }
 }

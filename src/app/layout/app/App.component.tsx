@@ -24,6 +24,9 @@ const CopyrightText = `Джерело: «Historycode: історія на кож
 const App = () => {
     const { pathname } = useLocation();
     const { modalStore: { isPageDimmed } } = useModalContext();
+
+    const isAdminPanel = pathname.startsWith('/admin-panel');
+
     return (
         <div className="mainBlockWrapper" style={{ position: 'relative' }}>
             <ListenTextModal />
@@ -31,7 +34,7 @@ const App = () => {
             <CopyWithCopyright copyrightText={CopyrightText}>
                 <ModalWrapper />
             </CopyWithCopyright>
-            <HeaderBlock />
+            {!isAdminPanel && <HeaderBlock />}
             <div className="mainWrapper">
                 <div className={`${isPageDimmed ? 'dimmed' : ''}`} />
                 <CopyWithCopyright copyrightText={CopyrightText} className='mainBlockWrapper'>
@@ -46,9 +49,9 @@ const App = () => {
                     )}
                 </CopyWithCopyright>
             </div>
-            <div className="footerWrapper">
+            {!isAdminPanel && <div className="footerWrapper">
                 <Footer />
-            </div>
+            </div>}
         </div>
     );
 };
