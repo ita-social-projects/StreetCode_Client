@@ -124,7 +124,7 @@ jest.mock('antd/es/upload', () => () => <div>Upload</div>);
 describe('Partners.component', () => {    
     const queryClient = new QueryClient();
     
-    test.skip('should render without crashing', async () => {
+    test('should render without crashing', async () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
