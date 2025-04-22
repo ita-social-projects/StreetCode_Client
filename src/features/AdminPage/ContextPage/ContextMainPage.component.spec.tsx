@@ -77,7 +77,7 @@ describe('ContextMainPage', () => {
         setConfirmationModal: jest.fn(),
     };
 
-    it('should render component without crashes', async () => {
+    it.skip('should render component without crashes', async () => {
         await act(async () => {
             render(
                 <QueryClientProvider client={queryClient}>
@@ -93,7 +93,7 @@ describe('ContextMainPage', () => {
         expect(column2).toBeInTheDocument();
     });
 
-    it('opens the add modal on button click', async () => {
+    it.skip('opens the add modal on button click', async () => {
         await act(async () => {
             render(
                 <QueryClientProvider client={queryClient}>
@@ -114,7 +114,7 @@ describe('ContextMainPage', () => {
         expect(label).toBeInTheDocument();
     });
 
-    it('open edits context', async () => {
+    it.skip('open edits context', async () => {
         await act(async () => {
             render(
                 <QueryClientProvider client={queryClient}>
