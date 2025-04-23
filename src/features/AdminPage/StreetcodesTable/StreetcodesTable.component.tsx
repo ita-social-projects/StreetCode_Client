@@ -1,14 +1,19 @@
 import './SearchMenu.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-    BarChartOutlined, DeleteOutlined, DownOutlined, EditOutlined, RollbackOutlined,
+    DeleteOutlined, DownOutlined, EditOutlined, RollbackOutlined,
 } from '@ant-design/icons';
-
 import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
-
+import {
+    NumberComparator,
+    StringComparator,
+} from '@features/AdminPage/SortButton/ComparatorImplementations';
+import SortButton, { SortButtonHandle } from '@features/AdminPage/SortButton/SortButton';
+import SortData from '@features/AdminPage/SortButton/SortLogic';
+import useSortDirection, { SortDirection } from '@features/AdminPage/SortButton/useSortDirection';
 import sortOptions from '@features/AdminPage/StreetcodesTable/constants/sortOptions';
 import STREETCODE_STATES from '@features/AdminPage/StreetcodesTable/constants/streetcodeStates';
 import { format } from 'date-fns';
@@ -49,8 +54,8 @@ const StreetcodesTable = () => {
     const [isConfirmationModalVisible, setIsConfirmationModalVisible] = useState(false);
     const [deleteStreetcode, deleteFormDB] = useState<number>(0);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const amountRequest = 10;
-
+    const [selected, setSelected] = useState(10);
+    const [amountRequest, setAmountRequest] = useState(10);
     const requestDefault: GetAllStreetcodesRequest = {
         Page: pageRequest,
         Amount: amountRequest,
@@ -58,6 +63,64 @@ const StreetcodesTable = () => {
         Sort: sortOptions.UpdatedAtDesc,
         Filter: null,
     };
+
+    const { sortDirection, toggleSort, activeKey } = useSortDirection();
+
+    const sortButtons = {
+        sortByName: useRef<SortButtonHandle>(null),
+        sortByIndex: useRef<SortButtonHandle>(null),
+        sortByAuthor: useRef<SortButtonHandle>(null),
+        sortByDate: useRef<SortButtonHandle>(null),
+    };
+
+    const [buttonKey, setButtonKey] = useState<string | null>(null);
+
+    useEffect(() => {
+        Object.entries(sortButtons).forEach(([key, value]) => {
+            if (buttonKey === key) {
+                (value.current as SortButtonHandle).changeImage(sortDirection);
+            } else {
+                (value.current as SortButtonHandle).resetImage();
+            }
+        });
+    }, [sortDirection, buttonKey]);
+
+    const sortingDelegates = {
+        name: () => SortData<MapedStreetCode, string>(
+            mapedStreetCodes,
+            sortDirection,
+            (itemToCompare: MapedStreetCode) => itemToCompare?.name,
+            StringComparator,
+        ),
+        index: () => SortData<MapedStreetCode, number>(
+            mapedStreetCodes,
+            sortDirection,
+            (itemToCompare: MapedStreetCode) => itemToCompare?.index,
+            NumberComparator,
+        ),
+        author: () => SortData<MapedStreetCode, string>(
+            mapedStreetCodes,
+            sortDirection,
+            (itemToCompare: MapedStreetCode) => itemToCompare?.author,
+            StringComparator,
+        ),
+        date: () => SortData<MapedStreetCode, string>(
+            mapedStreetCodes,
+            sortDirection,
+            (itemToCompare: MapedStreetCode) => itemToCompare?.date,
+            StringComparator,
+        ),
+    };
+
+    const sortedData = useMemo(
+        () => {
+            if (activeKey && activeKey in sortingDelegates) {
+                return sortingDelegates[activeKey as keyof typeof sortingDelegates]();
+            }
+            return mapedStreetCodes;
+        },
+        [mapedStreetCodes, sortDirection, activeKey, sortingDelegates],
+    );
 
     const [requestGetAll, setRequestGetAll] = useState<GetAllStreetcodesRequest>(requestDefault);
 
@@ -179,21 +242,53 @@ const StreetcodesTable = () => {
 
         deleteFormDB(streetcodeId);
     };
-
+    const PaginationProps = {
+        items: [10, 25, 50].map((value) => ({
+            key: value.toString(),
+            label: value.toString(),
+            onClick: () => {
+                setSelected(value);
+                setAmountRequest(value);
+                setRequest();
+            },
+        })),
+    };
     const columnsNames = [
         {
-            title: 'Назва history-коду',
+            title: (
+                <div className="content-table-title">
+                    <span>Назва</span>
+                    <SortButton
+                        ref={sortButtons.sortByName}
+                        sortOnClick={() => {
+                            toggleSort('name');
+                            setButtonKey('sortByName');
+                        }}
+                    />
+                </div>
+            ),
             dataIndex: 'name',
-            width: '40%',
+            width: '18%',
             key: 'name',
             onCell: (record: MapedStreetCode) => ({
                 onClick: () => window.open(`${FRONTEND_ROUTES.ADMIN.BASE}/${record.url}`, '_blank'),
             }),
         },
         {
-            title: 'Номер history-коду',
+            title: (
+                <div className="content-table-title">
+                    <span>Номер</span>
+                    <SortButton
+                        ref={sortButtons.sortByIndex}
+                        sortOnClick={() => {
+                            toggleSort('index');
+                            setButtonKey('sortByIndex');
+                        }}
+                    />
+                </div>
+            ),
             dataIndex: 'index',
-            width: '10%',
+            width: '18%',
             key: 'index',
             onCell: (record: MapedStreetCode) => ({
                 onClick: () => window.open(`${FRONTEND_ROUTES.ADMIN.BASE}/${record.url}`, '_blank'),
@@ -203,7 +298,7 @@ const StreetcodesTable = () => {
             title: 'Статус',
             dataIndex: 'status',
             key: 'status',
-            width: '10%',
+            width: '18%',
             onCell: (record: MapedStreetCode) => ({
                 onClick: () => {
                     setCurrentStreetcodeOption(record.key);
@@ -222,19 +317,41 @@ const StreetcodesTable = () => {
             ),
         },
         {
-            title: 'Автор',
+            title: (
+                <div className="content-table-title">
+                    <span>Автор</span>
+                    <SortButton
+                        ref={sortButtons.sortByAuthor}
+                        sortOnClick={() => {
+                            toggleSort('author');
+                            setButtonKey('sortByAuthor');
+                        }}
+                    />
+                </div>
+            ),
             dataIndex: 'author',
             key: 'author',
-            width: '10%',
+            width: '18%',
             onCell: (record: MapedStreetCode) => ({
                 onClick: () => window.open(`${FRONTEND_ROUTES.ADMIN.BASE}/${record.url}`, '_blank'),
             }),
         },
         {
-            title: 'Останні зміни',
+            title: (
+                <div className="content-table-title">
+                    <span>Історія</span>
+                    <SortButton
+                        ref={sortButtons.sortByDate}
+                        sortOnClick={() => {
+                            toggleSort('date');
+                            setButtonKey('sortByDate');
+                        }}
+                    />
+                </div>
+            ),
             dataIndex: 'date',
             key: 'date',
-            width: '15%',
+            width: '18%',
             onCell: (record: MapedStreetCode) => ({
                 onClick: () => window.open(`${FRONTEND_ROUTES.ADMIN.BASE}/${record.url}`, '_blank'),
             }),
@@ -242,7 +359,7 @@ const StreetcodesTable = () => {
         {
             title: 'Дії',
             dataIndex: 'action',
-            width: 100,
+            width: '10%',
             key: 'action',
             render: (_: unknown, record: MapedStreetCode) => (
                 <>
@@ -260,11 +377,6 @@ const StreetcodesTable = () => {
                                 className="actionButton"
                                 onClick={() => handleDeleteStreetcode(record.key)}
                             />
-                            <Link to={`${FRONTEND_ROUTES.ADMIN.ANALYTICS}/${record.key}`}>
-                                <BarChartOutlined
-                                    className="actionButton"
-                                />
-                            </Link>
                         </>
                     ) : (
                         <RollbackOutlined
@@ -331,10 +443,10 @@ const StreetcodesTable = () => {
     return (
         <div className="StreetcodeTableWrapper">
             <SearchMenu setStatus={setStatusRequest} setTitle={setTitleRequest} setRequest={setRequest} />
-            <div>
+            <div className="ScrollableTableContainer">
                 <Table
                     columns={columnsNames}
-                    dataSource={isLoading ? [] : mapedStreetCodes}
+                    dataSource={isLoading ? [] : sortedData}
                     pagination={false}
                     locale={{
                         emptyText: isLoading ? (
@@ -347,24 +459,33 @@ const StreetcodesTable = () => {
                     }}
                 />
             </div>
-            <div>
-                <div className="underTableZone">
-                    <br />
-                    <div className="underTableElement">
-                        <Pagination
-                            className="paginationElement"
-                            showSizeChanger={false}
-                            defaultCurrent={1}
-                            current={currentPages}
-                            total={totalItems}
-                            pageSize={amountRequest}
-                            onChange={(page: number) => {
-                                setCurrentPages(page);
-                                setPageRequest(page);
-                                setRequest();
-                            }}
-                        />
+            <div className="underTableZone">
+                <br />
+                <div className="underTableElement">
+                    <div className="PaginationSelect">
+                        <p>Рядків на сторінці</p>
+                        <Dropdown menu={{ items: PaginationProps.items, className: 'classss' }} trigger={['click']}>
+                            <Button>
+                                <Space>
+                                    {selected}
+                                    <DownOutlined />
+                                </Space>
+                            </Button>
+                        </Dropdown>
                     </div>
+                    <Pagination
+                        className="paginationElement"
+                        showSizeChanger={false}
+                        defaultCurrent={1}
+                        current={currentPages}
+                        total={totalItems}
+                        pageSize={amountRequest}
+                        onChange={(page: number) => {
+                            setCurrentPages(page);
+                            setPageRequest(page);
+                            setRequest();
+                        }}
+                    />
                 </div>
             </div>
         </div>

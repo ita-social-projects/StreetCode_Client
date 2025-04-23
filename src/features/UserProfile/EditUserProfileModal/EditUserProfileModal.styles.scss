@@ -35,22 +35,26 @@
   .editFormWrapper{
     @include mut.flexed(
       row,
-      $justify-content: center,
+      $justify-content: flex-start,
       $align-items: flex-start,
       $gap: 51px
     );
+    flex-wrap: wrap;
 
     .editFormImageWrapper{
-      @include mut.sizedImportant(256px, 584px);
+      @include mut.sizedImportant(240px, 507px);
       @include mut.flexed(
         column,
         $align-items: center,
         $justify-content: flex-start,
-        $gap: 25px
       );
 
       .ant-form-item{
         @include mut.rem-margined(0, 0, 0, 0);
+      }
+
+      .ant-upload, .ant-upload-wrapper, .ant-upload-list {
+        @include mut.sizedImportant(240px, 320px);
       }
 
       .ant-upload-list:has(.ant-upload-list-item-container){
@@ -63,10 +67,11 @@
       .ant-form-item-explain-error,
       .formatText{
         text-align: center;
+        margin: 10px 0 25px;
       }
 
       .imageButtonWrapper{
-        @include mut.flexed(column, $align-items: center, $gap: 16px);
+        @include mut.flexed(column, $align-items: center, $gap: 10px);
         @include mut.sized(100%, auto);
 
         .editImageButton,
@@ -111,7 +116,7 @@
     }
 
     .editFormUserInfoWrapper{
-      @include mut.sizedImportant(489px, auto);
+      @include mut.sizedImportant(431px, auto);
 
       .formItemFirst{
         .ant-form-item{
@@ -120,7 +125,7 @@
       }
 
       .ant-form-item{
-        @include mut.rem-margined(8px, 0, 0, 0);
+        @include mut.rem-margined(15px, 0, 0, 0);
 
         .ant-form-item-label{
           @include mut.rem-padded(0, 0, 0, 0)
@@ -135,7 +140,6 @@
         .ant-form-item-control{
           .ant-form-item-control-input{
             .ant-form-item-control-input-content{
-
               .ant-input-affix-wrapper,
               .ant-select-selector {
                 @include mut.sized(100%, 44px)
@@ -159,18 +163,25 @@
           }
         }
       }
+    }
+  }
 
-      .areaTextInput{
-        .ant-input{
-          max-height: f.pxToEm(350px);
-          min-height: f.pxToEm(350px);
-        }
+  .editAboutYourselfWrapper{
+    margin-top: 15px;
+
+    label {
+      color: c.$label-light-grey-color;
+    }
+
+    .areaTextInput {
+      textarea {
+        color: c.$lighter-black-color;
       }
     }
   }
 
   &.ant-modal {
-    @include mut.sizedImportant(886px, auto);
+    @include mut.sizedImportant(812px, auto);
 
     .ant-modal-close {
       box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
@@ -191,13 +202,17 @@
     .ant-modal-content {
       @include mut.full-rounded(50px, $overflow: visible);
       padding: f.pxToRem(40px);
-      @include mut.sized(886px, auto);
+      @include mut.sized(812px, auto);
       @include mut.flexed(
         column,
         $justify-content: center,
         $align-items: center,
-        $gap: 51px
+        $gap: 22px
       );
+
+      .ant-modal-header {
+        margin-bottom: 0;
+      }
 
       .center{
         display: flex;
@@ -244,7 +259,7 @@
 
       .formItem{
         label{
-          color: c.$darkish-gray-color;
+          color: c.$label-light-grey-color;
         }
       }
 
@@ -294,7 +309,7 @@
 
       .saveButton{
         .ant-btn{
-          @include mut.sizedImportant(279px, 53px);
+          @include mut.sizedImportant(193px, 53px);
         }
       }
 

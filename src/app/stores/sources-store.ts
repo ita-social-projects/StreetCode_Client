@@ -6,7 +6,7 @@ import { PaginationInfo } from '@/models/pagination/pagination.model';
 export default class SourcesStore {
     public srcCategoriesMap = new Map<number, SourceCategory>();
     public srcCategoriesContentMap = new Map<number, StreetcodeCategoryContent>();
-    
+
     private defaultPageSize = 10;
 
     private paginationInfo: PaginationInfo = {
@@ -29,11 +29,11 @@ export default class SourcesStore {
         this.srcCategoriesContentMap.clear();
         srcCategories.forEach(this.setCategoryItem);
     }
-    
+
     public setCurrentPage(currPage: number) {
         this.paginationInfo.CurrentPage = currPage;
     }
-    
+
     public set PaginationInfo(paginationInfo: PaginationInfo) {
         this.paginationInfo = paginationInfo;
     }
@@ -58,13 +58,25 @@ export default class SourcesStore {
         }
     };
 
-    public fetchSrcCategoriesAll = async (pageSize?: number) => {
-        await sourcesApi.getAllCategories(this.PaginationInfo.CurrentPage, pageSize ?? this.paginationInfo.PageSize)
-            .then((resp) => {
-                this.PaginationInfo.TotalItems = resp.totalAmount;
-                this.setInternalCategoriesMap(resp.categories);
-            })
-            .catch((error) => console.error(error));
+    public fetchSrcCategoriesAll = async (title?: string, pageSize?: number) => {
+        try {
+            const currentPage = this.PaginationInfo.CurrentPage;
+            const size = pageSize ?? this.paginationInfo.PageSize;
+
+            const response = await sourcesApi.getAllCategories(currentPage, size, title);
+
+            if (response && response.totalAmount !== undefined && response.categories) {
+                runInAction(() => {
+                    this.paginationInfo.TotalItems = response.totalAmount;
+                    this.paginationInfo.TotalPages = Math.ceil(response.totalAmount / size);
+                    this.setInternalCategoriesMap(response.categories);
+                });
+            } else {
+                console.warn('Невірна відповідь від API або відсутні категорії.');
+            }
+        } catch (error) {
+            console.error('Помилка при отриманні категорій:', error);
+        }
     };
 
     public createSourceCategory = async (srcCategory: SourceCategory) => {

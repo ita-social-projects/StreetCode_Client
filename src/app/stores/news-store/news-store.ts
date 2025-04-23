@@ -1,4 +1,4 @@
-import { action, computed, makeAutoObservable, observable } from 'mobx';
+import { action, computed, makeAutoObservable, observable, runInAction } from 'mobx';
 import NewsApi from '@api/news/news.api';
 import News from '@models/news/news.model';
 import dayjs from 'dayjs';
@@ -90,32 +90,46 @@ export default class NewsStore {
             });
     };
 
-    public getAll = async (pageSize?: number) => {
-        await NewsApi.getAll(this.CurrentPage, pageSize ?? this.paginationInfo.PageSize)
-            .then((resp) => {
-                this.PaginationInfo.TotalItems = resp.totalAmount;
-                this.setNewsMap(resp.news);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+    public getAll = async (title = '', pageSize?: number) => {
+        try {
+            const currentPage = this.PaginationInfo.CurrentPage;
+            const response = await NewsApi.getAll(
+                currentPage,
+                pageSize ?? this.paginationInfo.PageSize,
+                title,
+            );
+
+            if (response && response.totalAmount !== undefined && response.news) {
+                runInAction(() => {
+                    this.PaginationInfo.TotalItems = response.totalAmount;
+                    this.PaginationInfo.TotalPages = Math.ceil(
+                        response.totalAmount / (pageSize ?? this.paginationInfo.PageSize),
+                    );
+                    this.setNewsMap(response.news);
+                });
+            } else {
+                console.warn('Невірна відповідь від API або відсутні теги.');
+            }
+        } catch (error) {
+            console.error('Помилка при отриманні тегів:', error);
+        }
     };
 
     public createNews = async (news: News) => {
         await NewsApi.create(news)
-            .then(() => this.getAll(this.PaginationInfo.PageSize))
+            .then(() => this.getAll('', this.PaginationInfo.PageSize))
             .catch((error) => console.error(error));
     };
 
     public updateNews = async (news: News) => {
         await NewsApi.update(news)
-            .then(() => this.getAll(this.PaginationInfo.PageSize))
+            .then(() => this.getAll('', this.PaginationInfo.PageSize))
             .catch((error) => console.error(error));
     };
 
     public deleteNews = async (newsId: number) => {
         await NewsApi.delete(newsId)
-            .then(() => this.getAll(this.PaginationInfo.PageSize))
+            .then(() => this.getAll('', this.PaginationInfo.PageSize))
             .catch((error) => console.error(error));
     };
 }

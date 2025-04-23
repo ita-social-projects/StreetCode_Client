@@ -7,9 +7,20 @@ const TermsApi = {
         Agent.get<Term>(`${API_ROUTES.TERMS.GET}/${id}`)
     ),
 
-    getAll: () => (
-        Agent.get<Term[]>(`${API_ROUTES.TERMS.GET_ALL}`)
-    ),
+    getAll: (page: number, pageSize: number, title = '') => {
+        const params = Object.entries({
+            page,
+            pageSize,
+            title,
+        });
+
+        const queryParams = params.filter(([_, value]) => value !== undefined && value !== '');
+        const searchParams = new URLSearchParams(queryParams);
+
+        return Agent.get<{ totalAmount: number; terms: Term[] }>(
+            `${API_ROUTES.TERMS.GET_ALL}?${searchParams.toString()}`
+        );
+    },
 
     create: (term: Term) => (
         Agent.post<Term>(`${API_ROUTES.TERMS.CREATE}`, term)

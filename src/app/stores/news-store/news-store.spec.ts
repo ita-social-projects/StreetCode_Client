@@ -104,7 +104,7 @@ describe('news-store', () => {
         ]);
 
         it('calls query with getAll', async () => {
-            await store.getAll(testPagination.PageSize);
+            await store.getAll('', testPagination.PageSize);
 
             expect(getAllResolver).toHaveBeenCalled();
         });

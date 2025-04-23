@@ -36,6 +36,7 @@ export default class TagsStore {
     }
 
     private set setInternalCatalog(tags: Tag[]) {
+        this.TagCatalogMap.clear();
         tags.forEach(this.setCatalogItem);
     }
 
@@ -74,11 +75,11 @@ export default class TagsStore {
     get getTagCatalogArray() {
         return Array.from(this.TagCatalogMap.values());
     }
-    
+
     public setCurrentPage(currPage: number) {
         this.paginationInfo.CurrentPage = currPage;
     }
-    
+
     public set PaginationInfo(paginationInfo: PaginationInfo) {
         this.paginationInfo = paginationInfo;
     }
@@ -87,13 +88,30 @@ export default class TagsStore {
         return this.paginationInfo;
     }
 
-    public fetchAllTags = async (pageSize?: number) => {
-        await tagsApi.getAll(this.PaginationInfo.CurrentPage, pageSize ?? this.paginationInfo.PageSize)
-            .then((resp) => {
-                this.PaginationInfo.TotalItems = resp.totalAmount;
-                this.setInternalAllTags = resp.tags;
-            })
-            .catch((error) => console.error(error));
+    public fetchAllTags = async (title = '', pageSize?: number) => {
+        try {
+            const currentPage = this.PaginationInfo.CurrentPage;
+
+            const response = await tagsApi.getAll(
+                currentPage,
+                pageSize ?? this.PaginationInfo.PageSize,
+                title,
+            );
+
+            if (response && response.totalAmount !== undefined && response.tags) {
+                runInAction(() => {
+                    this.PaginationInfo.TotalItems = response.totalAmount;
+                    this.PaginationInfo.TotalPages = Math.ceil(
+                        response.totalAmount / (pageSize ?? this.PaginationInfo.PageSize),
+                    );
+                    this.setInternalAllTags = response.tags;
+                });
+            } else {
+                console.warn('Невірна відповідь від API або відсутні теги.');
+            }
+        } catch (error) {
+            console.error('Помилка при отриманні тегів:', error);
+        }
     };
 
     public fetchTagByStreetcodeId = async (streetcodeId: number) => {

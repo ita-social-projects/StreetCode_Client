@@ -2,14 +2,18 @@
 import './JobsTable.styles.scss';
 
 import { observer } from 'mobx-react-lite';
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { DeleteOutlined, DownOutlined, EditOutlined } from '@ant-design/icons';
 import BUTTON_LABELS from '@constants/buttonLabels';
 import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
+import { StringComparator } from '@features/AdminPage/SortButton/ComparatorImplementations';
+import SortButton, { SortButtonHandle } from '@features/AdminPage/SortButton/SortButton';
+import SortData from '@features/AdminPage/SortButton/SortLogic';
+import useSortDirection from '@features/AdminPage/SortButton/useSortDirection';
 import { useQuery } from '@tanstack/react-query';
-
+import MagnifyingGlass from '@images/header/Magnifying_glass.svg';
 import {
-    Button, Dropdown, Empty, MenuProps, Pagination, Space, Table,
+    Button, Dropdown, Empty, Input, MenuProps, Pagination, Space, Table,
 } from 'antd';
 
 import JobApi from '@/app/api/job/Job.api';
@@ -24,12 +28,32 @@ const JobsTable = observer(() => {
     const [currentId, setCurrentId] = useState<number>(0);
     const { modalStore } = useModalContext();
     const [open, setOpen] = useState(false);
-
+    const [currentPages, setCurrentPages] = useState(1);
+    const [amountRequest, setAmountRequest] = useState(10);
+    const [selected, setSelected] = useState(10);
+    const [title, setTitle] = useState<string>('');
     const { isLoading } = useQuery({
-        queryKey: ['jobs', jobsStore.PaginationInfo.CurrentPage],
-        queryFn: () => jobsStore.getAll(),
+        queryKey: ['jobs', jobsStore.PaginationInfo.CurrentPage, title],
+        queryFn: () => jobsStore.getAll(title),
     });
 
+    const handleChangeTitle = (event: ChangeEvent<HTMLInputElement>) => {
+        setTitle(event.target.value);
+    };
+
+    const PaginationProps = {
+        items: [10, 25, 50].map((value) => ({
+            key: value.toString(),
+            label: value.toString(),
+            onClick: () => {
+                setSelected(value);
+                setAmountRequest(value);
+                setCurrentPages(1);
+                jobsStore.PaginationInfo.PageSize = value;
+                jobsStore.getAll();
+            },
+        })),
+    };
     const DeleteJob = (id: number) => {
         modalStore.setConfirmationModal(
             'confirmation',
@@ -89,11 +113,60 @@ const JobsTable = observer(() => {
         onClick: handleMenuClick,
     };
 
+    const dataSource = jobsStore.getJobsArray;
+
+    const { sortDirection, toggleSort } = useSortDirection();
+
+    const sortButtons = {
+        sortByName: useRef<SortButtonHandle>(null),
+    };
+
+    const [buttonKey, setButtonKey] = useState<string | null>(null);
+
+    useEffect(() => {
+        Object.entries(sortButtons).forEach(([key, value]) => {
+            if (buttonKey === key) {
+                (value.current as SortButtonHandle).changeImage(sortDirection);
+            } else {
+                (value.current as SortButtonHandle).resetImage();
+            }
+        });
+    }, [sortDirection, buttonKey]);
+
+    useEffect(() => {
+        setCurrentPages(1);
+        jobsStore.setCurrentPage(1);
+        jobsStore.getAll(title);
+    }, [title]);
+
+    const sortedData = useMemo(
+        () => SortData<Job, string>(
+            dataSource,
+            sortDirection,
+            (itemToCompare: Job) => itemToCompare?.title,
+            StringComparator,
+        ),
+        [dataSource, sortDirection],
+    );
+
     const columnsNames = [
         {
-            title: 'Назва вакансії',
+            title: (
+
+                <div className="content-table-title">
+                    <span>Назва</span>
+                    <SortButton
+                        ref={sortButtons.sortByName}
+                        sortOnClick={() => {
+                            toggleSort('name');
+                            setButtonKey('sortByName');
+                        }}
+                    />
+                </div>
+            ),
             dataIndex: 'title',
             key: 'title',
+            width: '30%',
         },
         {
             title: 'Заробітня плата',
@@ -104,7 +177,7 @@ const JobsTable = observer(() => {
             title: 'Статус',
             dataIndex: 'status',
             key: 'status',
-
+            width: '30%',
             render: (status: boolean, job: JobShort) => (
                 <Dropdown menu={menuProps} trigger={['click']}>
                     <Button onClick={() => setCurrentId(job.id)}>
@@ -120,6 +193,7 @@ const JobsTable = observer(() => {
             title: 'Дії',
             dataIndex: 'id',
             key: 'actions',
+            width: '10%',
             render: (id: number) => (
                 <div className="partner-page-actions">
                     <DeleteOutlined
@@ -152,6 +226,14 @@ const JobsTable = observer(() => {
     return (
         <div className="partners-page-container">
             <div className="container-justify-end">
+                <div className="searchMenuElement">
+                    <Input
+                        className="searchMenuElementInput"
+                        prefix={<MagnifyingGlass />}
+                        onChange={handleChangeTitle}
+                        placeholder="Назва"
+                    />
+                </div>
                 <Button
                     className="streetcode-custom-button partners-page-add-button"
                     onClick={handleAddButtonClick}
@@ -167,7 +249,7 @@ const JobsTable = observer(() => {
             <Table
                 pagination={false}
                 columns={columnsNames}
-                dataSource={jobsStore.getJobsArray || []}
+                dataSource={sortedData || []}
                 className="job-table"
                 rowKey="id"
                 locale={{
@@ -183,15 +265,28 @@ const JobsTable = observer(() => {
             <div className="underTableZone">
                 <br />
                 <div className="underTableElement">
+                    <div className="PaginationSelect">
+                        <p>Рядків на сторінці</p>
+                        <Dropdown menu={{ items: PaginationProps.items }} trigger={['click']}>
+                            <Button>
+                                <Space>
+                                    {selected}
+                                    <DownOutlined />
+                                </Space>
+                            </Button>
+                        </Dropdown>
+                    </div>
                     <Pagination
                         className="paginationElement"
                         showSizeChanger={false}
                         defaultCurrent={1}
                         current={jobsStore.PaginationInfo.CurrentPage}
                         total={jobsStore.PaginationInfo.TotalItems}
-                        pageSize={jobsStore.PaginationInfo.PageSize}
-                        onChange={(value: any) => {
-                            jobsStore.setCurrentPage(value);
+                        pageSize={amountRequest}
+                        onChange={(page: number) => {
+                            setCurrentPages(page);
+                            jobsStore.setCurrentPage(page);
+                            jobsStore.getAll();
                         }}
                     />
                 </div>

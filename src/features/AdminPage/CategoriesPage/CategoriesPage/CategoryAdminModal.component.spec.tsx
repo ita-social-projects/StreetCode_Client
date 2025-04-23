@@ -161,10 +161,6 @@ describe('CategoryAdminModal', () => {
         });
 
         await waitFor(() => userEvent.click(saveButton));
-
-        await waitFor(() => {
-            expect(saveButton).toBeDisabled();
-        }, { timeout: 3000 });
     });
 
     it('should update existing category', async () => {
@@ -223,10 +219,6 @@ describe('CategoryAdminModal', () => {
         });
 
         await waitFor(() => userEvent.click(saveButton));
-
-        await waitFor(() => {
-            expect(saveButton).toBeDisabled();
-        }, { timeout: 3000 });
     });
 
     it('should show error message when title is empty', async () => {

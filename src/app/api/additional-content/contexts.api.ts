@@ -7,17 +7,18 @@ const ContextsApi = {
         Agent.get<Context>(`${API_ROUTES.CONTEXTS.GET_BY_ID}/${id}`)
     ),
 
-    getAll: (page?: number, pageSize?: number) => {
-        const params = Object.entries({
-            page: page?.toString() ?? '',
-            pageSize: pageSize?.toString() ?? '',
-        });
+    getAll: (page?: number, pageSize?: number, title?: string) => {
+        const params: Record<string, string> = {};
 
-        const queryParams = params.filter((p) => !!p[1]);
+        if (page) params.page = page.toString();
+        if (pageSize) params.pageSize = pageSize.toString();
+        if (title) params.title = title;
 
-        const searchParams = new URLSearchParams(queryParams);
+        const searchParams = new URLSearchParams(params);
 
-        return Agent.get<{ totalAmount: number, historicalContexts: Context[] }>(`${API_ROUTES.CONTEXTS.GET_ALL}`, searchParams);
+        const url = `${API_ROUTES.CONTEXTS.GET_ALL}?${searchParams.toString()}`;
+
+        return Agent.get<{ totalAmount: number, historicalContexts: Context[] }>(url);
     },
 
     create: (tag: ContextCreate) => (

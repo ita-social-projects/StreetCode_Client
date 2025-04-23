@@ -29,11 +29,11 @@ export default class PartnersStore {
     public setItem = (partner: Partner) => {
         this.PartnerMap.set(partner.id, partner);
     };
-    
+
     public setCurrentPage(currPage: number) {
         this.paginationInfo.CurrentPage = currPage;
     }
-    
+
     public set PaginationInfo(paginationInfo: PaginationInfo) {
         this.paginationInfo = paginationInfo;
     }
@@ -60,13 +60,24 @@ export default class PartnersStore {
         return Array.from(this.PartnerMap.values());
     }
 
-    public getAll = async (pageSize?: number) => {
-        await partnersApi.getAll(this.PaginationInfo.CurrentPage, pageSize ?? this.paginationInfo.PageSize)
-            .then((resp) => {
-                this.PaginationInfo.TotalItems = resp.totalAmount;
-                this.setInternalMap(resp.partners);
-            })
-            .catch((error) => console.error(error));
+    public getAll = async (title = '', IsKeyPartner = false, pageSize?: number) => {
+        try {
+            const currentPage = this.PaginationInfo.CurrentPage;
+
+            const response = await partnersApi.getAll(currentPage, pageSize ?? this.paginationInfo.PageSize, title, IsKeyPartner);
+
+            if (response && response.totalAmount !== undefined && response.partners) {
+
+                this.PaginationInfo.TotalItems = response.totalAmount;
+                this.PaginationInfo.TotalPages = Math.ceil(response.totalAmount / (pageSize ?? this.paginationInfo.PageSize));
+
+                this.setInternalMap(response.partners);
+            } else {
+                console.warn('Невірна відповідь від API або відсутні партнери.');
+            }
+        } catch (error) {
+            console.error('Помилка при отриманні партнерів:', error);
+        }
     };
 
     public fetchPartnersByStreetcodeId = async (streetcodeId: number) => {
