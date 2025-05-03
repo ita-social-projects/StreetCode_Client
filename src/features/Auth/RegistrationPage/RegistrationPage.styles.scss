@@ -115,6 +115,7 @@
 
     .registerButton{
       @include mut.sized(100%, 60px);
+      margin-left: 0;
 
       p{
         @include mut.with-font(
