@@ -78,7 +78,7 @@ export default class TeamPositionsStore {
     public setCurrentPage(currPage: number) {
         this.paginationInfo.CurrentPage = currPage;
     }
-    
+
     public set PaginationInfo(paginationInfo: PaginationInfo) {
         this.paginationInfo = paginationInfo;
     }
@@ -93,13 +93,30 @@ export default class TeamPositionsStore {
         // } catch (error: unknown) { /* empty */ }
     };
 
-    public fetchPositions = async (pageSize?: number) => {
-        await teampositionsApi.getAll(this.PaginationInfo.CurrentPage, pageSize ?? this.paginationInfo.PageSize)
-            .then((resp) => {
-                this.PaginationInfo.TotalItems = resp.totalAmount;
-                this.setInternalMap = resp.positions;
-            })
-            .catch((error) => console.error(error));
+    public fetchPositions = async (title = '', pageSize?: number) => {
+        try {
+            const currentPage = this.PaginationInfo.CurrentPage;
+            const response = await teampositionsApi.getAll(
+                currentPage,
+                pageSize ?? this.paginationInfo.PageSize,
+                title,
+            );
+
+            if (response && response.totalAmount !== undefined && response.positions) {
+                runInAction(() => {
+                    this.PaginationInfo.TotalItems = response.totalAmount;
+                        this.PaginationInfo.TotalPages = Math.ceil(
+                            response.totalAmount / (pageSize ?? this.paginationInfo.PageSize),
+                        );
+                        this.setInternalMap = response.positions;
+                    });
+                    return response.positions;
+                } else {
+                    console.warn('Невірна відповідь від API або відсутні теги.');
+                }
+            } catch (error) {
+                console.error('Помилка при отриманні тегів:', error);
+            }
     };
 
     public fetchAllPositionsWithMembers = async () => {

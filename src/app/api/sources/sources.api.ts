@@ -3,18 +3,21 @@ import { API_ROUTES } from '@constants/api-routes.constants';
 import { SourceCategory, SourceCategoryAdmin, SourceCategoryName, StreetcodeCategoryContent } from '@models/sources/sources.model';
 
 const SourcesApi = {
-    getAllCategories: (page?: number, pageSize?: number) => {
+    getAllCategories: (page?: number, pageSize?: number, title?: string) => {
         const params = Object.entries({
             page: page?.toString() ?? '',
             pageSize: pageSize?.toString() ?? '',
+            title: title ?? '',
         });
 
-        const queryParams = params.filter((p) => !!p[1]);
+        const queryParams = params.filter(([, value]) => !!value);
 
         const searchParams = new URLSearchParams(queryParams);
+
         return Agent.get<{
-            totalAmount: number,
-            categories: SourceCategory[] }>(`${API_ROUTES.SOURCES.GET_ALL_CATEGORIES}`, searchParams);
+                totalAmount: number,
+                categories: SourceCategory[]
+            }>(`${API_ROUTES.SOURCES.GET_ALL_CATEGORIES}`, searchParams);
     },
 
     getAllNames: () => (

@@ -1,5 +1,5 @@
 import { PaginationInfo } from "@/models/pagination/pagination.model";
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 import JobApi from "../api/job/Job.api";
 
 export default class JobsStore {
@@ -26,11 +26,11 @@ export default class JobsStore {
     public setItem = (job: Job) => {
         this.JobsMap.set(job.id, job);
     };
-    
+
     public setCurrentPage(currPage: number) {
         this.paginationInfo.CurrentPage = currPage;
     }
-    
+
     public set PaginationInfo(paginationInfo: PaginationInfo) {
         this.paginationInfo = paginationInfo;
     }
@@ -43,13 +43,28 @@ export default class JobsStore {
         return Array.from(this.JobsMap.values());
     }
 
-    public getAll = async (pageSize?: number) => {
-        await JobApi.getAll(this.PaginationInfo.CurrentPage, pageSize ?? this.paginationInfo.PageSize)
-            .then((resp) => {
-                this.PaginationInfo.TotalItems = resp.totalAmount;
-                this.setInternalMap(resp.jobs);
-                console.log(resp)
-            })
-            .catch((error) => console.error(error));
+    public getAll = async (title = '', pageSize?: number) => {
+        try {
+            const currentPage = this.PaginationInfo.CurrentPage;
+            const response = await JobApi.getAll(
+                currentPage,
+                pageSize ?? this.paginationInfo.PageSize,
+                title,
+            );
+
+            if (response && response.totalAmount !== undefined && response.jobs) {
+                runInAction(() => {
+                    this.PaginationInfo.TotalItems = response.totalAmount;
+                    this.PaginationInfo.TotalPages = Math.ceil(
+                        response.totalAmount / (pageSize ?? this.paginationInfo.PageSize),
+                    );
+                    this.setInternalMap(response.jobs);
+                });
+            } else {
+                console.warn('Невірна відповідь від API або відсутні теги.');
+            }
+        } catch (error) {
+            console.error('Помилка при отриманні тегів:', error);
+        }
     };
 }

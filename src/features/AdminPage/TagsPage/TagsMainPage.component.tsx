@@ -1,19 +1,25 @@
 import './TagsMainPage.style.scss';
 
 import { observer } from 'mobx-react-lite';
-import React, { useEffect, useState } from 'react';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import React, { ChangeEvent,useEffect, useMemo, useRef, useState} from 'react';
+import { DeleteOutlined, DownOutlined, EditOutlined } from '@ant-design/icons';
 import BUTTON_LABELS from '@constants/buttonLabels';
 import CONFIRMATION_MESSAGES from '@constants/confirmationMessages';
+import SortButton, {SortButtonHandle} from '@features/AdminPage/SortButton/SortButton';
+import SortData from '@features/AdminPage/SortButton/SortLogic';
+import useSortDirection from '@features/AdminPage/SortButton/useSortDirection';
 import useMobx, { useModalContext } from '@stores/root-store';
 import { useQuery } from '@tanstack/react-query';
-
-import { Button, Empty, Pagination } from 'antd';
+import MagnifyingGlass from '@images/header/Magnifying_glass.svg';
+import {
+    Button, Dropdown, Empty, Input, Pagination, Space,
+} from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 
 import Tag from '@/models/additional-content/tag.model';
 
 import TagAdminModal from './TagsPage/TagAdminModal';
+import {StringComparator} from "@features/AdminPage/SortButton/ComparatorImplementations";
 
 const TagsMainPage: React.FC = observer(() => {
     const { modalStore } = useModalContext();
@@ -21,19 +27,39 @@ const TagsMainPage: React.FC = observer(() => {
     const [modalAddOpened, setModalAddOpened] = useState<boolean>(false);
     const [modalEditOpened, setModalEditOpened] = useState<boolean>(false);
     const [tagToEdit, setTagToEdit] = useState<Tag>();
+    const [currentPages, setCurrentPages] = useState(1);
+    const [amountRequest, setAmountRequest] = useState(10);
+    const [selected, setSelected] = useState(10);
+    const [title, setTitle] = useState<string>('');
+    const [debouncedTitle, setDebouncedTitle] = useState<string>('');
 
     const { isLoading } = useQuery({
-        queryKey: ['tags', tagsStore.PaginationInfo.CurrentPage],
-        queryFn: () => tagsStore.fetchAllTags(),
+        queryKey: ['tags', tagsStore.PaginationInfo.CurrentPage, debouncedTitle],
+        queryFn: () => tagsStore.fetchAllTags(debouncedTitle),
+        enabled: false,
+        placeholderData: (previousData) => previousData,
     });
 
     const updatedTags = () => {
-        tagsStore.fetchAllTags();
+        tagsStore.fetchAllTags(debouncedTitle);
     };
 
     useEffect(() => {
+        const timeout = setTimeout(() => {
+            tagsStore.setCurrentPage(1);
+            setDebouncedTitle(title);
+        }, 400);
+
+        return () => clearTimeout(timeout);
+    }, [title]);
+
+    useEffect(() => {
         updatedTags();
-    }, [modalAddOpened, modalEditOpened]);
+    }, [debouncedTitle, currentPages, amountRequest]);
+
+    const handleChangeTitle = (event: ChangeEvent<HTMLInputElement>) => {
+        setTitle(event.target.value);
+    };
 
     const handleDeleteTag = (tagId: number) => {
         modalStore.setConfirmationModal(
@@ -51,9 +77,50 @@ const TagsMainPage: React.FC = observer(() => {
         );
     };
 
+    const dataSource = tagsStore.getAllTagsArray;
+
+    const { sortDirection, toggleSort } = useSortDirection();
+
+    const sortButtons = {
+        sortByName: useRef<SortButtonHandle>(null),
+    };
+
+    const [buttonKey, setButtonKey] = useState<string | null>(null);
+
+    useEffect(() => {
+        Object.entries(sortButtons).forEach(([key, value]) => {
+            if (buttonKey === key) {
+                (value.current as SortButtonHandle).changeImage(sortDirection);
+            } else {
+                (value.current as SortButtonHandle).resetImage();
+            }
+        });
+    }, [sortDirection, buttonKey]);
+
+    const sortedData = useMemo(
+        () => SortData<Tag, string>(
+            dataSource,
+            sortDirection,
+            (itemToCompare: Tag) => itemToCompare?.title,
+            StringComparator,
+        ),
+        [dataSource, sortDirection],
+    );
+
     const columns: ColumnsType<Tag> = [
         {
-            title: 'Назва',
+            title: (
+                <div className="content-table-title">
+                    <span>Назва</span>
+                    <SortButton
+                        ref={sortButtons.sortByName}
+                        sortOnClick={() => {
+                            toggleSort('name');
+                            setButtonKey('sortByName');
+                        }}
+                    />
+                </div>
+            ),
             dataIndex: 'title',
             key: 'title',
             render(value, record) {
@@ -89,10 +156,33 @@ const TagsMainPage: React.FC = observer(() => {
             ),
         },
     ];
+
+    const PaginationProps = {
+        items: [10, 25, 50].map((value) => ({
+            key: value.toString(),
+            label: value.toString(),
+            onClick: () => {
+                setSelected(value);
+                setAmountRequest(value);
+                setCurrentPages(1);
+                tagsStore.PaginationInfo.PageSize = value;
+                tagsStore.fetchAllTags(debouncedTitle);
+            },
+        })),
+    };
+
     return (
         <div className="tags-page">
             <div className="tags-page-container">
                 <div className="container-justify-end">
+                    <div className="searchMenuElement">
+                        <Input
+                            className="searchMenuElementInput"
+                            prefix={<MagnifyingGlass />}
+                            onChange={handleChangeTitle}
+                            placeholder="Назва"
+                        />
+                    </div>
                     <Button
                         className="streetcode-custom-button tags-page-add-button"
                         onClick={() => setModalAddOpened(true)}
@@ -100,34 +190,49 @@ const TagsMainPage: React.FC = observer(() => {
                         {BUTTON_LABELS.ADD_TAG}
                     </Button>
                 </div>
-                <Table
-                    pagination={false}
-                    className="tags-table"
-                    columns={columns}
-                    dataSource={tagsStore.getAllTagsArray || []}
-                    rowKey="id"
-                    locale={{
-                        emptyText: isLoading ? (
-                            <div className="loadingWrapper">
-                                <div id="loadingGif" />
-                            </div>
-                        ) : (
-                            <Empty description="Дані відсутні" />
-                        ),
-                    }}
-                />
+                <div className="ScrollableTableContainer">
+                    <Table
+                        pagination={false}
+                        className="tags-table"
+                        columns={columns}
+                        dataSource={sortedData || []}
+                        rowKey="id"
+                        locale={{
+                            emptyText: isLoading ? (
+                                <div className="loadingWrapper">
+                                    <div id="loadingGif" />
+                                </div>
+                            ) : (
+                                <Empty description="Дані відсутні" />
+                            ),
+                        }}
+                    />
+                </div>
                 <div className="underTableZone">
                     <br />
                     <div className="underTableElement">
+                        <div className="PaginationSelect">
+                            <p>Рядків на сторінці</p>
+                            <Dropdown menu={{ items: PaginationProps.items }} trigger={['click']}>
+                                <Button>
+                                    <Space>
+                                        {selected}
+                                        <DownOutlined />
+                                    </Space>
+                                </Button>
+                            </Dropdown>
+                        </div>
                         <Pagination
                             className="paginationElement"
                             showSizeChanger={false}
                             defaultCurrent={1}
-                            current={tagsStore.PaginationInfo.CurrentPage}
+                            current={currentPages}
                             total={tagsStore.PaginationInfo.TotalItems}
-                            pageSize={tagsStore.PaginationInfo.PageSize}
-                            onChange={(value: any) => {
-                                tagsStore.setCurrentPage(value);
+                            pageSize={amountRequest}
+                            onChange={(page: number) => {
+                                setCurrentPages(page);
+                                tagsStore.setCurrentPage(page);
+                                tagsStore.fetchAllTags(debouncedTitle);
                             }}
                         />
                     </div>

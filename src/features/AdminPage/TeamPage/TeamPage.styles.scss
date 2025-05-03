@@ -6,25 +6,54 @@
 .team-page{
    @include mut.admin-page-base-layout();
 
-    .container-justify-end{
+   .container-justify-end {
+    margin-top: f.pxToRem(40px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+
+    .left-side {
         display: flex;
-        justify-content: end;
+        align-items: center;
+        flex-grow: 1;
+
+        .searchMenuElement{
+            margin: 0;
+        }
     }
+
+    .right-side {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+
+        .ant-checkbox-wrapper {
+            font-size: 16px;
+        }
+    }
+}
+
+
     .team-page-container{
-        @include mut.sized(80%);
+        @include mut.sized(81%);
+        display: flex;
+        flex-direction: column;
 
         .team-table-logo{
+            display: block; 
             height: f.pxToRem(40px);
-            margin: 0;
+            margin: 0 auto;
             padding: 0
         }
         .team-page-actions{
-            @include mut.flexed(row, start,space-between);
+            @include mut.flexed(row, center, center, nowrap, 4px);
         }
         .team-links{
-            @include mut.flexed(row, start,space-between, wrap, 4px);
+            @include mut.flexed(row, center, center, nowrap, 4px);
         }
         .team-table{
+            @include mut.admin-page-table-scroller();
             margin-top: f.pxToRem(20px);
         }
         .team-table-item-name{
@@ -33,9 +62,47 @@
         .site-link{
             word-break: break-all
         }
-        
-        .underTableElement {
-            padding-bottom: 10px;
+
+        .underTableZone{
+            margin-top: auto;
+        }
+
+        .searchMenuElement {
+            margin: 40px 10px 10px 10px;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            flex-grow: 1;
+            max-width: 500px;
+            border-radius: 4px;
+        }
+
+        .ant-input-affix-wrapper {
+            width: 500px;
+            height: 40px;
+            padding: 0 10px;
+            box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+            border: 2px solid c.$slider-base-dot-color;
+            border-radius: 6px;
+        }
+
+        .streetcode-custom-button {
+            margin-left: f.pxToRem(20px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 40px;
+            width: 200px;
+            font-size: 16px;
+            background-color: c.$accented-red-color;
+            border: 2px solid c.$accented-red-color;
+            color: c.$pure-white-color;
+            border-radius: 5px !important;
+
+            &:hover {
+                background-color: c.$dark-red-color;
+                border-color: c.$dark-red-color;
+            }
         }
     }
 }

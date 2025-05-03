@@ -3,10 +3,19 @@
 @use "@sass/variables/_variables.colors.scss" as c;
 @use "@sass/_utils.functions.scss" as f;
 
+
 .StreetcodeTableWrapper {
-    @include mut.sized(80%);
-    overflow: hidden;
+    @include mut.sized(81%);
+    overflow: visible;
     float: right;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    
+    .ScrollableTableContainer{
+        max-height: 77vh !important;
+        @include mut.admin-page-table-scroller();
+    }
 
     .ant-btn-primary:disabled {
         background-color: c.$lighter-gray-color;
@@ -36,16 +45,12 @@
     }
 }
 
-.paginationButton>li {
-    border-color: c.$accented-red-color;
-
-    a {
-        color: c.$accented-red-color;
-    }
-}
-
 .ant-table table {
     @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 18px);
+}
+
+.ant-table-tbody>tr{
+    height: 7vh;
 }
 
 .ant-table-tbody>tr>td {
@@ -58,11 +63,23 @@
     }
 }
 
+.ant-pagination-item-active {
+    color: white;
+    border: 1px solid #891F16 !important;
+}
+
+.underTableZone{
+    margin-top: auto;
+    margin-bottom: 20px;
+}
+
 .underTableElement {
     display: inline-block;
     align-items: center;
     margin-top: 10px;
     margin-right: 30px;
+    justify-content: space-between;
+    align-items: center;
 
     .paginationElement,
     .pageAmountElement {
@@ -78,10 +95,32 @@
     }
 
     .paginationElement {
+        align-items: center;
         float: right;
     }
 
     .pageAmountElement {
         float: right;
     }
+    .PaginationSelect {
+        margin-left: 10px;
+        font-family: ft.$roboto-font !important;
+        align-items: center;
+        justify-content: center;
+        float: right;
+        display: flex;
+        gap: 10px;
+        font-size: 16px;
+        color: c.$dark-red-color;
+    }
+
+}
+.PaginationSelect .ant-dropdown-trigger {
+    color: c.$dark-red-color;
+}
+.PaginationSelect .ant-btn-default
+{
+    border-color: c.$dark-red-color;
+    width: 56px;
+    height: 29px;
 }

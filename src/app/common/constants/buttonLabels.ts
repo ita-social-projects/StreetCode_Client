@@ -17,7 +17,7 @@ export const BUTTON_LABELS = {
     ADD_VACANCY: 'Додати вакансію',
     ADD_PDF: 'Додати в кабінет',
     SAVE_STREETCODE: 'Зберегти history-код',
-    CREATE_STREETCODE: 'Додати history-код',
+    CREATE_STREETCODE: 'Додати History-код',
     SEARCH_STREETCODE: 'Пошук history-кодів',
     SEARCH_TOPONYM: 'Пошук топонімів',
     CHOOSE_TEMPLATE: 'Обрати шаблон',
