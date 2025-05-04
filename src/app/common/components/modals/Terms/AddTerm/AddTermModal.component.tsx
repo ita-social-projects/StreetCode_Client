@@ -45,6 +45,7 @@ const AddTermModal = ({ handleAdd, term, setTerm } : Props) => {
     };
     const handleOk = async () => {
         try {
+            await form.validateFields();
             form.submit();
             message.success('термін успішно додано!', 2);
         } catch (error) {
