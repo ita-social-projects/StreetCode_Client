@@ -15,6 +15,7 @@ import ukUAlocaleDatePicker from 'antd/es/date-picker/locale/uk_UA';
 
 import TagsApi from '@/app/api/additional-content/tags.api';
 import StreetcodesApi from '@/app/api/streetcode/streetcodes.api';
+import SelectWithCustomSuffix from '@/app/common/components/SelectWithCustomSuffix';
 import createTagValidator from '@/app/common/utils/selectValidation.utility';
 import Tag, { StreetcodeTag, StreetcodeTagUpdate } from '@/models/additional-content/tag.model';
 import { StreetcodeType } from '@/models/streetcode/streetcode-types.model';
@@ -23,7 +24,6 @@ import DragableTags from './DragableTags/DragableTags.component';
 import PopoverForTagContent from './PopoverForTagContent/PopoverForTagContent.component';
 import DatePickerPart from './DatePickerPart.component';
 import FileInputsPart from './FileInputsPart.component';
-import SelectWithCustomSuffix from '@/app/common/components/SelectWithCustomSuffix';
 
 interface TagPreviewProps {
     width: number;
@@ -68,7 +68,7 @@ const MainBlockAdmin = React.memo(({
         setErrorMessage,
     );
     const newLineLengthInSymbols = 65;
-    const [teaserValue, setTeaserValue] = useState<string | null>(null);    
+    const [teaserValue, setTeaserValue] = useState<string | null>(null);
 
     const handleInputChange = (fieldName: string, value: unknown) => {
         onChange(fieldName, value);
@@ -150,15 +150,15 @@ const MainBlockAdmin = React.memo(({
         setSelectedTags(selectedTags.filter((t) => t.title !== deselectedValue));
     };
 
-    useEffect (() => {
-        if(!teaserValue){
+    useEffect(() => {
+        if (!teaserValue) {
             setTeaserValue(form.getFieldValue('teaser'));
         }
-    }, [form.getFieldValue('teaser')])
+    }, [form.getFieldValue('teaser')]);
 
     const calculateCustomTeaserSymbolsCount = (teaserValue: string) => {
         const baseSymbolsCount = teaserValue.length;
-        const newLinesCount = (teaserValue.match(/\n/g) || []).length ;
+        const newLinesCount = (teaserValue.match(/\n/g) || []).length;
         return baseSymbolsCount - newLinesCount + newLinesCount * newLineLengthInSymbols;
     };
 
@@ -166,7 +166,7 @@ const MainBlockAdmin = React.memo(({
         const totalCount = calculateCustomTeaserSymbolsCount(value);
 
         if (totalCount > teaserMaxCharCount) {
-            form.setFieldsValue({ [fieldName]: teaserValue })
+            form.setFieldsValue({ [fieldName]: teaserValue });
             return false;
         }
 
@@ -213,7 +213,7 @@ const MainBlockAdmin = React.memo(({
                 ]}
                 name="streetcodeNumber"
             >
-                <InputNumber type='number'/>
+                <InputNumber type="number" />
             </Form.Item>
 
             <div className="display-flex-row p-margin">
@@ -429,16 +429,15 @@ const MainBlockAdmin = React.memo(({
                     rules={[{ required: true, message: 'Введіть тизер'}]}
                 >
                     <Input.TextArea
-                        value={teaserValue || ""}
+                        value={teaserValue || ''}
                         showCount={{
-                            formatter: ({value}) => 
-                                `${calculateCustomTeaserSymbolsCount(value)} / ${teaserMaxCharCount}`
+                            formatter: ({ value }) => `${calculateCustomTeaserSymbolsCount(value)} / ${teaserMaxCharCount}`,
                         }}
                         className="textarea-teaser"
                         onChange={(e) => {
-                            if(handleTeaserChange('teaser', e.target.value)){
-                                handleInputChange(Form.Item.name, e.target.value)
-                            }   
+                            if (handleTeaserChange('teaser', e.target.value)) {
+                                handleInputChange(Form.Item.name, e.target.value);
+                            }
                         }}
                     />
                 </Form.Item>
@@ -447,4 +446,5 @@ const MainBlockAdmin = React.memo(({
         </div>
     );
 });
+
 export default MainBlockAdmin;

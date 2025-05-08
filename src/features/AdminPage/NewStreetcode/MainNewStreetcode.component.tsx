@@ -18,6 +18,8 @@ import TextsApi from '@app/api/streetcode/text-content/texts.api';
 import useMobx from '@app/stores/root-store';
 import ArtGallery from '@components/ArtGallery/ArtGalleryBlock.component';
 import ArtGalleryDndContext from '@components/ArtGallery/context/ArtGalleryDndContext';
+import SubmitButton from '@components/SubmitButton.component';
+import BUTTON_LABELS from '@constants/buttonLabels';
 import StreetcodeArtsBlock from '@features/AdminPage/NewStreetcode/StreetcodeArtsBlock/StreetcodeArtsBlock.component';
 import PageBar from '@features/AdminPage/PageBar/PageBar.component';
 import StreetcodeCoordinate from '@models/additional-content/coordinate.model';
@@ -66,19 +68,17 @@ import {
     Text,
     TextCreateUpdate,
 } from '@/models/streetcode/text-contents.model';
-import { TransactionLink, TransactionLinkUpdate } from '@/models/transactions/transaction-link.model';
 
 import ARBlock from './ARBlock/ARBlock.component';
 import CategoriesBlock from './CategoriesBlock/CategoriesBlock.component';
 import RelatedFiguresBlock from './HistoryRelations/HistoryRelations.component';
 import InterestingFactsBlock from './InterestingFactsBlock/InterestingFactsBlock.component';
 import MainBlockAdmin from './MainBlock/MainBlockAdmin.component';
+import MapBlockAdmin from './MapBlock/MapBlockAdmin.component';
 import PartnerBlockAdmin from './PartnerBlock/PartnerBlockAdmin.components';
 import SubtitleBlock from './SubtitileBlock/SubtitleBlock.component';
 import TextBlock from './TextBlock/TextBlock.component';
 import TimelineBlockAdmin from './TimelineBlock/TimelineBlockAdmin.component';
-import MapBlockAdmin from './MapBlock/MapBlockAdmin.component';
-import BUTTON_LABELS from "@constants/buttonLabels";
 
 dayjs.extend(utc);
 dayjs.extend(tz);
@@ -695,30 +695,30 @@ const NewStreetcode = () => {
                     </div>
 
                     <div className="submit-button-row">
-                      <Button
-                        className="streetcode-custom-button submit-button"
-                        onClick={onFinish}
-                        name={BUTTON_LABELS.DRAFT}
-                        htmlType="submit"
-                      >
-                        {BUTTON_LABELS.DRAFT}
-                      </Button>
-                      <Modal
-                        title="Ви впевнені, що хочете опублікувати цей history-код?"
-                        open={visibleModal}
-                        onOk={handleModalOk}
-                        onCancel={handleCancelModalRemove}
-                        okText={BUTTON_LABELS.SUBMIT}
-                        cancelText={BUTTON_LABELS.CANCEL}
-                      />
-                      <Button
-                        htmlType="submit"
-                        className="streetcode-custom-button submit-button"
-                        onClick={handleRemove}
-                        name={BUTTON_LABELS.PUBLISH}
-                      >
-                        {BUTTON_LABELS.PUBLISH}
-                      </Button>    
+                        <Button
+                            className="streetcode-custom-button submit-button"
+                            onClick={onFinish}
+                            name={BUTTON_LABELS.DRAFT}
+                            htmlType="submit"
+                        >
+                            {BUTTON_LABELS.DRAFT}
+                        </Button>
+                        <Modal
+                            title="Ви впевнені, що хочете опублікувати цей history-код?"
+                            open={visibleModal}
+                            onOk={handleModalOk}
+                            onCancel={handleCancelModalRemove}
+                            okText={BUTTON_LABELS.SUBMIT}
+                            cancelText={BUTTON_LABELS.CANCEL}
+                        />
+                        <SubmitButton
+                            form={form}
+                            className="streetcode-custom-button submit-button"
+                            name={BUTTON_LABELS.PUBLISH}
+                            onClick={handleRemove}
+                        >
+                            {BUTTON_LABELS.PUBLISH}
+                        </SubmitButton>
                     </div>
                 </div>
             </ConfigProvider>

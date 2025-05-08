@@ -9,7 +9,7 @@ import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
 import useMobx from '@stores/root-store';
 
 import {
-    Button, Form, Input, message, Modal, Popover, UploadFile,
+    Form, Input, message, Modal, Popover, UploadFile,
 } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
@@ -27,6 +27,7 @@ import POPOVER_CONTENT from '@/features/AdminPage/JobsPage/JobsModal/constants/p
 import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
 import BUTTON_LABELS from "@constants/buttonLabels";
 import combinedImageValidator, { checkFile } from '@components/modals/validators/combinedImageValidator';
+import SubmitButton from "@components/SubmitButton.component";
 
 interface Props {
     fact?: FactCreate,
@@ -61,10 +62,16 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
         setFileList([]);
     };
 
-    const validateFact = uniquenessValidator(
-        () => (factsStore.getFactArray.map( (fact) => fact.title)),
+    const validateFactTitle = uniquenessValidator(
+        () => (factsStore.getFactArray.map((fact) => fact.title)),
         () => (fact?.title),
         'Факт з такою назвою вже існує',
+    );
+
+    const validateFactContent = uniquenessValidator(
+        () => (factsStore.getFactArray.map((fact) => fact.factContent)),
+        () => (fact?.factContent),
+        'Факт з таким основним текстом вже існує',
     );
 
     useEffect(() => {
@@ -179,9 +186,10 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                         </div>
                         <Form.Item
                             name="title"
-                            label="Заголовок: "
-                            rules={[{ required: true, message: 'Введіть заголовок, будь ласка' },
-                                { validator: validateFact}
+                            label="Заголовок:"
+                            rules={[
+                                { required: true, message: 'Введіть заголовок, будь ласка' },
+                                { validator: validateFactTitle},
                             ]}
                         >
                             <Input maxLength={68} showCount onChange={(e) => onChange('title', e.target.value)} />
@@ -189,8 +197,11 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
 
                         <Form.Item
                             name="factContent"
-                            label="Основний текст: "
-                            rules={[{ required: true, message: 'Введіть oсновний текст, будь ласка' }]}
+                            label="Основний текст:"
+                            rules={[
+                                { required: true, message: 'Введіть oсновний текст, будь ласка' },
+                                { validator: validateFactContent },
+                            ]}
                         >
                             <TextArea
                                 value="Type"
@@ -236,7 +247,7 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
 
                         <Form.Item
                             name="imageDescription"
-                            label="Підпис фото: "
+                            label="Підпис фото:"
                         >
                             <Input
                                 maxLength={200}
@@ -245,13 +256,13 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
                             />
                         </Form.Item>
                         <div className="center">
-                            <Button
-                                disabled={fileList?.length === 0 || !hasUploadedPhoto}
+                            <SubmitButton
+                                form={form}
                                 className="streetcode-custom-button"
                                 onClick={() => handleOk()}
                             >
                                 {BUTTON_LABELS.SAVE}
-                            </Button>
+                            </SubmitButton>
                         </div>
                     </Form>
                 </div>
@@ -259,7 +270,6 @@ const InterestingFactsAdminModal = ({ fact, open, setModalOpen, onChange }: Prop
             <Popover content="popupContent" trigger="hover" />
             <PreviewFileModal file={fileList?.at(0) ?? null} opened={previewOpen} setOpened={setPreviewOpen} />
         </div>
-
     );
 };
 

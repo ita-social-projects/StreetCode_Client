@@ -4,9 +4,12 @@ import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
 import ReactQuill from 'react-quill';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
+import SubmitButton from '@components/SubmitButton.component';
+import BUTTON_LABELS from '@constants/buttonLabels';
+import { JOB_SALARY } from '@constants/regex.constants';
 
 import {
-    Button, Form, Input, message, Modal, Popover, Select,
+    Form, Input, message, Modal, Popover, Select,
 } from 'antd';
 
 import JobApi from '@/app/api/job/Job.api';
@@ -17,7 +20,6 @@ import {
 import Editor from '@/app/common/components/Editor/QEditor.component';
 
 import POPOVER_CONTENT from './constants/popoverContent';
-import BUTTON_LABELS from '@constants/buttonLabels';
 
 interface Props {
   open: boolean;
@@ -45,7 +47,6 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
     const textEditor = useRef<ReactQuill | null>(null);
     const [current, setCurrent] = useState<Job>(emptyJob);
     const [editorCharacterCount, setEditorCharacterCount] = useState<number>(0);
-    const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
 
     const fetchJobData = async () => {
         if (open && currentId !== 0) {
@@ -111,7 +112,6 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
             }
 
             message.success(POPOVER_CONTENT.SUCCESS, 2);
-            setIsSaveButtonDisabled(true);
         } catch {
             message.error(POPOVER_CONTENT.FAIL, 2);
         }
@@ -126,16 +126,11 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
         setOpen(false);
     };
 
-    const handleInputChange = () => {
-        setIsSaveButtonDisabled(false);
-    };
-
     const handleEditorChange = (content: string) => {
         setCurrent({
             ...current,
             description: content,
         });
-        handleInputChange();
     };
 
     return (
@@ -144,7 +139,6 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
             open={open}
             onCancel={() => {
                 setOpen(false);
-                setIsSaveButtonDisabled(true);
             }}
             footer={null}
             maskClosable
@@ -174,13 +168,12 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
                     name="title"
                     rules={[{ required: true, message: 'Введіть назву вакансії' }]}
                 >
-                    <Input showCount maxLength={maxLengths.maxLengthVacancyName} onChange={handleInputChange} />
+                    <Input showCount maxLength={maxLengths.maxLengthVacancyName} />
                 </Form.Item>
                 <Form.Item label="Статус вакансії" name="status">
                     <Select
                         key="statusSelectInput"
                         className="status-select-input"
-                        onChange={handleInputChange}
                     >
                         <Select.Option key="active" value="setActive">
                           Активна
@@ -206,20 +199,25 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
                 <Form.Item
                     label="Заробітня плата"
                     name="salary"
-                    rules={[{ required: true, message: 'Введіть заробітню плату' }]}
+                    rules={[
+                        { required: true, message: 'Введіть заробітню плату' },
+                        {
+                            pattern: JOB_SALARY,
+                            message: 'Заробітня плата повинна бути числом',
+                        },
+                    ]}
                 >
-                    <Input showCount maxLength={maxLengths.maxLengthVacancySalary} onChange={handleInputChange} />
+                    <Input showCount maxLength={maxLengths.maxLengthVacancySalary} />
                 </Form.Item>
                 <div className="center">
-                    <Button
+                    <SubmitButton
+                        form={form}
+                        initialData={current}
                         className="streetcode-custom-button"
-                        onClick={() => {
-                            form.submit();
-                        }}
-                        disabled={isSaveButtonDisabled}
+                        onClick={() => form.submit()}
                     >
-                      {BUTTON_LABELS.SAVE}
-                    </Button>
+                        {BUTTON_LABELS.SAVE}
+                    </SubmitButton>
                 </div>
             </Form>
         </Modal>

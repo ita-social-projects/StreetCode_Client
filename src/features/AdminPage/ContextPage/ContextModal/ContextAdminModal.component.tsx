@@ -1,15 +1,23 @@
 /* eslint-disable max-len */
 import CancelBtn from '@images/utils/Cancel_btn.svg';
+
 import { observer } from 'mobx-react-lite';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import SubmitButton from '@components/SubmitButton.component';
+import BUTTON_LABELS from '@constants/buttonLabels';
+import { COMMON_TITLE } from '@constants/regex.constants';
 import { useAsync } from '@hooks/stateful/useAsync.hook';
 import Context from '@models/additional-content/context.model';
 import useMobx from '@stores/root-store';
-import { Button, Form, Input, message, Modal, Popover, UploadFile } from 'antd';
-import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
+
+import {
+    Form, Input, message, Modal, Popover,
+} from 'antd';
+
 import normaliseWhitespaces from '@/app/common/utils/normaliseWhitespaces';
 import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
-import BUTTON_LABELS from "@constants/buttonLabels";
+
+import POPOVER_CONTENT from '../../JobsPage/JobsModal/constants/popoverContent';
 
 interface ContextAdminProps {
     setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -22,16 +30,14 @@ const ContextAdminModalComponent: React.FC<ContextAdminProps> = observer(({
     isModalVisible,
     setIsModalOpen,
     initialData,
-    isNewContext
+    isNewContext,
 }) => {
-    const {contextStore} = useMobx();
+    const { contextStore } = useMobx();
     const [form] = Form.useForm();
     const isEditing = !!initialData;
-	const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
 
     const closeModal = () => {
         setIsModalOpen(false);
-			  setIsSaveButtonDisabled(true);
     };
 
     useAsync(() => contextStore.fetchContexts(), []);
@@ -45,9 +51,9 @@ const ContextAdminModalComponent: React.FC<ContextAdminProps> = observer(({
     }, [initialData, isModalVisible, form]);
 
     const validateContext = uniquenessValidator(
-        ()=>(contextStore.getContextArray.map((context) => context.title)), 
-        ()=>(initialData?.title), 
-        'Контекст з такою назвою вже існує'
+        () => (contextStore.getContextArray.map((context) => context.title)),
+        () => (initialData?.title),
+        'Контекст з такою назвою вже існує',
     );
 
     const onSubmit = async (formData: any) => {
@@ -58,7 +64,9 @@ const ContextAdminModalComponent: React.FC<ContextAdminProps> = observer(({
             title: (formData.title as string).trim(),
         };
 
-        if (currentContext.title === initialData?.title) return;
+        if (currentContext.title === initialData?.title) {
+            return;
+        }
 
         if (currentContext.id) {
             await contextStore.updateContext(currentContext as Context);
@@ -81,7 +89,6 @@ const ContextAdminModalComponent: React.FC<ContextAdminProps> = observer(({
             await form.validateFields();
             form.submit();
             message.success(`Контекст успішно ${isEditing ? 'змінено' : 'додано'}!`);
-			setIsSaveButtonDisabled(true);
         } catch (error) {
             message.config({
                 top: 100,
@@ -96,8 +103,6 @@ const ContextAdminModalComponent: React.FC<ContextAdminProps> = observer(({
     const MAX_LENGTH = {
         title: 50,
     };
-
-		const handleInputChange = () => setIsSaveButtonDisabled(false);
 
     return (
         <Modal
@@ -119,30 +124,36 @@ const ContextAdminModalComponent: React.FC<ContextAdminProps> = observer(({
                     layout="vertical"
                     onFinish={onSubmit}
                     initialValues={initialData}
-                    onKeyDown={(e) => e.key === 'Enter' ? e.preventDefault() : ''}
+                    onKeyDown={(e) => (e.key === 'Enter' ? e.preventDefault() : '')}
                 >
                     <div className="center">
                         <h2>{isEditing ? 'Редагувати контекст' : 'Додати контекст'}</h2>
                     </div>
                     <Form.Item
                         name="title"
-                        label="Назва: "
-                        rules={[{required: true, message: 'Введіть назву', max: MAX_LENGTH.title},
-                            {validator: validateContext}
+                        label="Назва:"
+                        rules={[
+                            { required: true, message: 'Введіть назву', max: MAX_LENGTH.title },
+                            { validator: validateContext },
+                            {
+                                pattern: COMMON_TITLE,
+                                message: 'Назва не повинна містити спеціальних символів або цифр',
+                            },
                         ]}
                         getValueProps={(value) => ({ value: normaliseWhitespaces(value) })}
                     >
-                        <Input maxLength={MAX_LENGTH.title} showCount onChange={handleInputChange} />
+                        <Input maxLength={MAX_LENGTH.title} showCount />
                     </Form.Item>
 
                     <div className="center">
-                        <Button
-							disabled={isSaveButtonDisabled}
+                        <SubmitButton
+                            form={form}
+                            initialData={initialData}
                             className="streetcode-custom-button"
                             onClick={() => handleOk()}
                         >
                             {BUTTON_LABELS.SAVE}
-                        </Button>
+                        </SubmitButton>
                     </div>
                 </Form>
             </div>

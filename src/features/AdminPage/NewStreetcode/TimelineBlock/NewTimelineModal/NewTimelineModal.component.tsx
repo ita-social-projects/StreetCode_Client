@@ -5,25 +5,25 @@ import '@features/AdminPage/AdminModal.styles.scss';
 import { observer } from 'mobx-react-lite';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import getNewMinNegativeId from '@app/common/utils/newIdForStore';
-import useMobx from '@stores/root-store';
 import CancelBtn from '@assets/images/utils/Cancel_btn.svg';
+import SubmitButton from '@components/SubmitButton.component';
+import BUTTON_LABELS from '@constants/buttonLabels';
 import { ModelState } from '@models/enums/model-state';
+import useMobx from '@stores/root-store';
 import dayjs from 'dayjs';
 
 import {
-    Button,
     DatePicker, Form, Input, message, Modal, Popover, Select,
 } from 'antd';
 
 import createTagValidator from '@/app/common/utils/selectValidation.utility';
+import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
+import POPOVER_CONTENT from '@/features/AdminPage/JobsPage/JobsModal/constants/popoverContent';
 import TimelineItem, {
     dateTimePickerTypes,
     DateViewPatternToDatePickerType,
     HistoricalContext, HistoricalContextUpdate, selectDateOptionsforTimeline,
 } from '@/models/timeline/chronology.model';
-import POPOVER_CONTENT from '@/features/AdminPage/JobsPage/JobsModal/constants/popoverContent';
-import uniquenessValidator from '@/app/common/utils/uniquenessValidator';
-import BUTTON_LABELS from "@constants/buttonLabels";
 
 interface NewTimelineModalProps {
     timelineItem?: TimelineItem;
@@ -37,11 +37,10 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
     const [form] = Form.useForm();
     const selectedContext = useRef<HistoricalContext[]>([]);
     const [dateTimePickerType, setDateTimePickerType] = useState<
-        'date' | 'month' | 'year' | 'season-year'>(timelineItem == undefined ? 'date' : DateViewPatternToDatePickerType(timelineItem.dateViewPattern));
+        'date' | 'month' | 'year' | 'season-year'>(timelineItem === undefined ? 'date' : DateViewPatternToDatePickerType(timelineItem.dateViewPattern));
 
     const [errorMessage, setErrorMessage] = useState<string>('');
     const [tagInput, setTagInput] = useState('');
-	const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
     const [selectContextOpen, setSelectContextOpen] = useState(false);
     const selectInputContainerRef = useRef<HTMLDivElement | null>(null);
 
@@ -98,7 +97,7 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
     const GetDateBasedOnFormat = (date: Date) => {
         let seconds = 0;
         // specific GMT+202 Ukraine timezone before 1/5/1924, where seconds are truncated by browser
-        if (GetLocalMinutesOffset(date) == 122) {
+        if (GetLocalMinutesOffset(date) === 122) {
             seconds = 4;
         }
         date.setHours(0, GetLocalMinutesOffset(date), seconds, 0);
@@ -118,10 +117,16 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
         }
     };
 
-    const validateTimelineItem = uniquenessValidator(
+    const validateTimelineTitle = uniquenessValidator(
         () => (timelineItemStore.getTimelineItemArray.map((item) => item.title)),
         () => (timelineItem?.title),
         'Хронологія з такою назвою вже існує',
+    );
+
+    const validateTimelineDescription = uniquenessValidator(
+        () => (timelineItemStore.getTimelineItemArray.map((item) => item.description as string)),
+        () => (timelineItem?.description),
+        'Хронологія з таким описом вже існує',
     );
 
     const onSuccesfulSubmit = (formValues: any) => {
@@ -208,7 +213,6 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
             await form.validateFields();
             form.submit();
             message.success('Хронологію успішно додано!', 2);
-            setIsSaveButtonDisabled(true);
         } catch (error) {
             message.config({
                 top: 100,
@@ -220,10 +224,6 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
         }
     };
 
-    const handleInputChange = () => {
-        setIsSaveButtonDisabled(false);
-    }
-
     return (
         <Modal
             className="modalContainer"
@@ -231,7 +231,6 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
             onCancel={() => {
                 setIsModalOpen(false);
                 setDateTimePickerType('date');
-                setIsSaveButtonDisabled(true);
             }}
             footer={null}
             maskClosable
@@ -257,16 +256,15 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                         label="Назва: "
                         rules={[
                             { required: true, message: 'Введіть назву', max: MAX_LENGTH.title },
-                            { validator: validateTimelineItem },
+                            { validator: validateTimelineTitle },
                         ]}
                     >
                         <Input
                             maxLength={MAX_LENGTH.title}
                             showCount
-							onChange={(e) => {
-								onChange('title', e.target.value);
-								handleInputChange();
-							}}
+                            onChange={(e) => {
+                                onChange('title', e.target.value);
+                            }}
                             data-testid="input-title"
                         />
                     </Form.Item>
@@ -279,7 +277,6 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                                 onChange={(val) => {
                                     setDateTimePickerType(val);
                                     onChange('date', val);
-																		handleInputChange();
                                 }}
                                 data-testid="select-date"
                             />
@@ -303,9 +300,8 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                                             ? 'yyyy'
                                             : 'yyyy, mm')}
                                     onChange={(value) => {
-										onChange('date', value?.toString())
-										handleInputChange();
-									}}
+                                        onChange('date', value?.toString());
+                                    }}
                                     data-testid="date-picker"
                                 />
                             </Form.Item>
@@ -329,9 +325,8 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                                 value={tagInput}
                                 onSearch={handleSearch}
                                 onChange={(e) => {
-																						onChange('historicalContexts', e);
-																						handleInputChange();
-																					}}
+                                    onChange('historicalContexts', e);
+                                }}
                             >
                                 {historicalContextStore.historicalContextArray.map((cntx) => (
                                     <Select.Option key={cntx.id} value={cntx.title}>
@@ -354,32 +349,35 @@ const NewTimelineModal: React.FC<NewTimelineModalProps> = observer(({ timelineIt
                     <Form.Item
                         name="description"
                         label="Опис: "
-                        rules={[{ required: true, message: 'Введіть опис' }]}
+                        rules={[
+                            { required: true, message: 'Введіть опис' },
+                            { validator: validateTimelineDescription },
+                        ]}
                     >
                         <Input.TextArea
                             maxLength={MAX_LENGTH.description}
                             showCount
-							onChange={(e) => {
-								onChange('description', e.target.value);
-								handleInputChange();
-							}}
+                            onChange={(e) => {
+                                onChange('description', e.target.value);
+                            }}
                             data-testid="textarea-description"
                         />
 
                     </Form.Item>
                     <div className="center">
-                        <Button
-														disabled={isSaveButtonDisabled}
+                        <SubmitButton
+                            form={form}
                             className="streetcode-custom-button"
                             onClick={() => handleOk()}
                             data-testid="button-save"
                         >
                             {BUTTON_LABELS.SAVE}
-                        </Button>
+                        </SubmitButton>
                     </div>
                 </Form>
             </div>
         </Modal>
     );
 });
+
 export default NewTimelineModal;
