@@ -25,7 +25,7 @@ const AuthApi = {
             .then((response) => response.data)
     ),
     login: (loginParams: UserLoginRequest) => (
-        instance.post<UserLoginResponse>(API_ROUTES.AUTH.LOGIN, loginParams)
+        instance.post<UserLoginResponse>(`${API_ROUTES.AUTH.LOGIN}?captcha=true`, loginParams)
             .then((response) => response.data)
     ),
     loginGoogle: (googleLoginRequest: { idToken: string | undefined }) => (
