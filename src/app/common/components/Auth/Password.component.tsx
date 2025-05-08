@@ -1,16 +1,19 @@
 ﻿import './Password.styles.scss';
 
 import React, { useState } from 'react';
-import PasswordChecklist from 'react-password-checklist';
+import PasswordStrengthIndicator from '@components/Auth/PasswordStrengthIndicator/PasswordStrengthIndicator';
+import validateConfirmPassword from '@utils/userValidators/validateConfirmPassword';
 import validatePatternPassword from '@utils/userValidators/validatePassword';
+import validateRequired from '@utils/userValidators/validateRequired';
 
 import { Form, Input } from 'antd';
 
 interface Props {
-    onPasswordValid: (field: boolean) => void;
+    setIsPasswordValid: (field: boolean) => void;
+    isPasswordValid: boolean;
 }
 
-const Password = ({ onPasswordValid } : Props) => {
+const Password = ({ setIsPasswordValid, isPasswordValid } : Props) => {
     const [password, setPassword] = useState('');
     const [passwordRepeat, setPasswordRepeat] = useState('');
 
@@ -22,66 +25,67 @@ const Password = ({ onPasswordValid } : Props) => {
         setPasswordRepeat(event.target.value);
     };
 
-    const validatePassword = (isValid: boolean) => {
-        onPasswordValid(isValid);
-    };
-
     return (
-        <>
-            <Form.Item
-                wrapperCol={{ span: 24 }}
-                name="password"
-                rules={[
-                    {
-                        required: true, message: 'Введіть пароль',
-                    },
-                    {
-                        validator: validatePatternPassword(),
-                    },
-                ]}
-            >
-                <Input.Password
-                    value={password}
-                    onChange={handleInputPasswordChange}
-                    placeholder="Пароль"
-                    className="registerInputField"
+        <div className="passwordInputsWrapper">
+            <div className="firstPasswordInputWrapper">
+                <Form.Item
+                    wrapperCol={{ span: 24 }}
+                    name="password"
+                    label="Пароль"
+                    className="formItem"
+                    rules={[
+                        {
+                            validator: validateRequired('Пароль'),
+                        },
+                        {
+                            validator: validatePatternPassword(),
+                        },
+                    ]}
+                >
+                    <Input.Password
+                        value={password}
+                        className="passwordInputField"
+                        onChange={handleInputPasswordChange}
+                        maxLength={20}
+                    />
+                </Form.Item>
+                <p
+                    className={`passwordMessage ${
+                        !isPasswordValid && password.length > 0 ? 'passwordMessageInvalid' : ''
+                    }`}
+                >
+                    Від 8 до 20 символів, велика і мала літера, цифра, спеціальний символ.
+                </p>
+                <PasswordStrengthIndicator
+                    password={password}
+                    setIsPasswordValid={setIsPasswordValid}
                 />
-            </Form.Item>
-            <PasswordChecklist
-                rules={['minLength', 'number', 'capital', 'lowercase', 'specialChar', 'match']}
-                minLength={8}
-                value={password}
-                valueAgain={passwordRepeat}
-                messages={{
-                    minLength: 'Мінімальна довжина пароля — 8 символів',
-                    number: 'Пароль повинен містити принаймні одну цифру',
-                    capital: 'Пароль повинен містити принаймні одну ВЕЛИКУ літеру',
-                    lowercase: 'Пароль повинен містити принаймні одну маленьку літеру',
-                    specialChar: 'Пароль повинен містити принаймні один неалфавітно-цифровий символ',
-                    match: 'Пароль співпадає',
-                }}
-                onChange={(isValid) => validatePassword(isValid)}
-            />
+            </div>
             <Form.Item
                 wrapperCol={{ span: 24 }}
                 name="passwordConfirmation"
+                label="Підтвердження паролю"
+                className="formItem"
                 rules={[
                     {
-                        required: true, message: 'Введіть пароль підтведження',
+                        validator: validateRequired('Пароль підтвердження'),
                     },
                     {
                         validator: validatePatternPassword(),
+                    },
+                    {
+                        validator: validateConfirmPassword(password),
                     },
                 ]}
             >
                 <Input.Password
                     value={passwordRepeat}
+                    className="passwordInputField"
                     onChange={handleInputPasswordRepeatChange}
-                    placeholder="Повторіть пароль"
-                    className="registerInputField"
+                    maxLength={20}
                 />
             </Form.Item>
-        </>
+        </div>
     );
 };
 
