@@ -33,6 +33,7 @@ jest.mock("@stores/root-store", () => ({
     default: () => ({
         tagsStore: {
             getTagArray: [{id: 999, title: "existing tag"}] as Tag[],
+            getAllTagsArray: [{id: 998, title: "existing tag"}] as Tag[],
             fetchAllTags: jest.fn().mockResolvedValue([]),
             createTag: (tag: TagCreate) => { TagsApi.create(tag) },
             updateTag: (tag: Tag) => { TagsApi.update(tag) },
