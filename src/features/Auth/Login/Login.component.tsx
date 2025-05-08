@@ -14,6 +14,7 @@ import { UserRole } from '@models/user/user.model';
 import validateEmail from '@utils/userValidators/validateEmail';
 
 import { Button, Form, Input, message } from 'antd';
+import useMobx from '@stores/root-store';
 
 const Login: React.FC = () => {
     const navigate = useNavigate();
@@ -52,15 +53,17 @@ const Login: React.FC = () => {
 
         try {
             const token = recaptchaRef?.current?.getValue();
-            const response = await AuthService.loginAsync(login, password, token);
+            await AuthService.loginAsync(login, password, token);
 
-            const userRole = UserRole[(response.user.role as unknown) as keyof typeof UserRole];
+            const userJson = localStorage.getItem('authorizedUser');
+            const user = userJson ? JSON.parse(userJson) : null;
+            const userRole = UserRole[(user.role as unknown) as keyof typeof UserRole];
+
             if (userRole === UserRole.Admin) {
                 navigate(FRONTEND_ROUTES.ADMIN.BASE);
             } else {
                 navigate(location.state.previousUrl || FRONTEND_ROUTES.BASE);
             }
-
             message.success('Ви успішно увійшли в систему.');
             recaptchaRef.current?.reset();
         } catch (ex: any) {

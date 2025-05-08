@@ -49,7 +49,7 @@ export default class AuthService {
             .then((response) => {
                 localStorage.setItem(AuthService.accessTokenStorageName, response.accessToken);
                 localStorage.setItem(AuthService.refreshTokenStorageName, response.refreshToken);
-                return response;
+                localStorage.setItem('authorizedUser', JSON.stringify(response.user));
             })
             .catch((error) => {
                 console.error(error);
@@ -185,6 +185,7 @@ export default class AuthService {
 
             localStorage.setItem(AuthService.accessTokenStorageName, accessToken);
             localStorage.setItem(AuthService.refreshTokenStorageName, refreshToken);
+            localStorage.setItem('authorizedUser', JSON.stringify(response.user));
 
             console.log('Успішна авторизація через Google!');
         } catch (error) {
