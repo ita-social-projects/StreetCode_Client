@@ -3,13 +3,13 @@ import axios from 'axios';
 
 import { API_ROUTES } from '@/app/common/constants/api-routes.constants';
 import {
-    GoogleLoginRequest,
+    ConfirmEmail,
     RefreshTokenRequest,
     RefreshTokenResponce,
     UserLoginRequest,
     UserLoginResponse,
     UserRegisterRequest,
-    UserRegisterResponse,
+    UserRegisterResponse, ValidateToken,
 } from '@/models/user/user.model';
 
 const defaultBaseUrl = process.env.NODE_ENV === 'development'
@@ -37,6 +37,12 @@ const AuthApi = {
     refreshToken: (tokenTokenPapams: RefreshTokenRequest) => (
         instance.post<RefreshTokenResponce>(API_ROUTES.AUTH.REFRESH_TOKEN, tokenTokenPapams)
             .then((response) => response.data)
+    ),
+    confirmEmail: (confirmEmailRequest: ConfirmEmail) => (
+        instance.post<boolean>(API_ROUTES.AUTH.CONFIRM_EMAIL, confirmEmailRequest)
+    ),
+    validateToken: (validateTokenRequest: ValidateToken) => (
+        instance.post<boolean>(API_ROUTES.AUTH.VALIDATE_TOKEN, validateTokenRequest)
     ),
 };
 export default AuthApi;

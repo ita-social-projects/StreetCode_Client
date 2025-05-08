@@ -3,7 +3,7 @@ import UsersApi from '@api/users/users.api';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 
 import AuthApi from '@/app/api/authentication/auth.api';
-import { RefreshTokenRequest, UserRegisterRequest, UserRole } from '@/models/user/user.model';
+import { RefreshTokenRequest, UserRegisterRequest, UserRole, ValidateToken } from '@/models/user/user.model';
 
 interface CustomJwtPayload extends JwtPayload {
     role: string;
@@ -69,10 +69,11 @@ export default class AuthService {
         username: string | null,
         token: string | null,
     ) {
-        await UsersApi.updateForgotPassword({ password, confirmPassword, username, token }).catch((error) => {
-            console.error(error);
-            return Promise.reject(error);
-        });
+        await UsersApi.updateForgotPassword({ password, confirmPassword, username, token })
+            .catch((error) => {
+                console.error(error);
+                return Promise.reject(error);
+            });
     }
 
     public static async registerAsync(
@@ -80,6 +81,15 @@ export default class AuthService {
     ) {
         try {
             await AuthApi.register(request);
+        } catch (error) {
+            console.error(error);
+            return Promise.reject(error);
+        }
+    }
+
+    public static async ValidateTokenAsync(request: ValidateToken) {
+        try {
+            await AuthApi.validateToken(request);
         } catch (error) {
             console.error(error);
             return Promise.reject(error);
