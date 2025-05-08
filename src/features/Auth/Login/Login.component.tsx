@@ -10,9 +10,11 @@ import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import AuthService from '@app/common/services/auth-service/AuthService';
 import { ERROR_MESSAGES, INVALID_LOGIN_ATTEMPT } from '@constants/error-messages.constants';
 import FRONTEND_ROUTES from '@constants/frontend-routes.constants';
+import { UserRole } from '@models/user/user.model';
 import validateEmail from '@utils/userValidators/validateEmail';
 
 import { Button, Form, Input, message } from 'antd';
+import useMobx from '@stores/root-store';
 
 const Login: React.FC = () => {
     const navigate = useNavigate();
@@ -44,27 +46,33 @@ const Login: React.FC = () => {
     };
 
     const handleLogin = async ({ login, password }: any) => {
-        if (isVerified) {
-            try {
-                const token = recaptchaRef?.current?.getValue();
-                await AuthService.loginAsync(login, password, token)
-                    .then(() => {
-                        message.success('Ви успішно увійшли в систему.');
-                        navigate(location.state.previousUrl || FRONTEND_ROUTES.BASE);
-                    })
-                    .catch((ex) => {
-                        if (ex.response?.data) {
-                            Object.keys(ex.response.data.message).forEach((key) => {
-                                message.error(`${ex.response.data[key].message}`);
-                            });
-                        }
-                    });
-                recaptchaRef.current?.reset();
-            } catch (error) {
+        if (!isVerified) {
+            message.error(RECAPTCHA_CHECK);
+            return;
+        }
+
+        try {
+            const token = recaptchaRef?.current?.getValue();
+            await AuthService.loginAsync(login, password, token);
+
+            const userRole = AuthService.getUserRole();
+
+            if (userRole === UserRole.Admin) {
+                navigate(FRONTEND_ROUTES.ADMIN.BASE);
+            } else {
+                navigate(location.state?.previousUrl || FRONTEND_ROUTES.BASE);
+            }
+            message.success('Ви успішно увійшли в систему.');
+            recaptchaRef.current?.reset();
+        } catch (ex: any) {
+            if (ex.response.data) {
+                console.log(ex);
+                ex.response.data.forEach((key: any) => {
+                    message.error(`${key.message}`);
+                });
+            } else {
                 message.error(INVALID_LOGIN_ATTEMPT);
             }
-        } else {
-            message.error(RECAPTCHA_CHECK);
         }
     };
 
