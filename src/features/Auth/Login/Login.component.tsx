@@ -55,14 +55,12 @@ const Login: React.FC = () => {
             const token = recaptchaRef?.current?.getValue();
             await AuthService.loginAsync(login, password, token);
 
-            const userJson = localStorage.getItem('authorizedUser');
-            const user = userJson ? JSON.parse(userJson) : null;
-            const userRole = UserRole[(user.role as unknown) as keyof typeof UserRole];
+            const userRole = AuthService.getUserRole();
 
             if (userRole === UserRole.Admin) {
                 navigate(FRONTEND_ROUTES.ADMIN.BASE);
             } else {
-                navigate(location.state.previousUrl || FRONTEND_ROUTES.BASE);
+                navigate(location.state?.previousUrl || FRONTEND_ROUTES.BASE);
             }
             message.success('Ви успішно увійшли в систему.');
             recaptchaRef.current?.reset();

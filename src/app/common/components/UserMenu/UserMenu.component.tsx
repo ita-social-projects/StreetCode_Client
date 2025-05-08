@@ -12,9 +12,7 @@ import { Dropdown, MenuProps, Space } from 'antd';
 const UserMenu = () => {
     const navigator = useNavigate();
 
-    const userJSON = localStorage.getItem('authorizedUser');
-    const authorizedUser = userJSON ? JSON.parse(userJSON) : null;
-    const userRole = UserRole[(authorizedUser?.role as unknown) as keyof typeof UserRole];
+    const userRole = AuthService.getUserRole();
 
     const items: MenuProps['items'] = [
         {
@@ -29,8 +27,6 @@ const UserMenu = () => {
                 </p>
             ),
             onClick: () => {
-                console.log(authorizedUser?.role);
-                console.log(userRole);
                 if (userRole === UserRole.Admin) {
                     navigator(FRONTEND_ROUTES.ADMIN.BASE);
                 } else {
