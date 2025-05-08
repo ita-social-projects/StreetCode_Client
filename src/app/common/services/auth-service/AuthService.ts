@@ -49,6 +49,7 @@ export default class AuthService {
             .then((response) => {
                 localStorage.setItem(AuthService.accessTokenStorageName, response.accessToken);
                 localStorage.setItem(AuthService.refreshTokenStorageName, response.refreshToken);
+                return response;
             })
             .catch((error) => {
                 console.error(error);
