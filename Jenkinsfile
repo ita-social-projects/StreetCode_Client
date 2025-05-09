@@ -116,10 +116,10 @@ pipeline {
             }
         }
         stage('Build image') {
-            /*when {
+            when {
                 branch pattern: "release/[0-9].[0-9].[0-9]", comparator: "REGEXP"
                
-            }*/
+            }
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'docker-login-streetcode', passwordVariable: 'password', usernameVariable: 'username')]){
@@ -177,7 +177,7 @@ stage('Trivy Security Scan') {
             }
         }
 
-        /*
+        
     stage('Deploy Stage'){
         when {
                 expression { IS_IMAGE_PUSH == true }
@@ -212,10 +212,10 @@ stage('Trivy Security Scan') {
                 }  
             }
      }
-     */
+     
 
 
-     /*
+     
          stage('WHAT IS THE NEXT STEP') {
        when {
                 expression { IS_IMAGE_PUSH == true }
@@ -258,7 +258,7 @@ stage('Trivy Security Scan') {
       }
     }
 
-*/
+
 
 
 
@@ -307,7 +307,7 @@ stage('Trivy Security Scan') {
 
 
 
-/*
+
     stage('Sync after release') {
         when {
            expression { isSuccess == '1' }
@@ -336,7 +336,7 @@ stage('Trivy Security Scan') {
     }
 
 
-    */
+    
 
 
     /*
