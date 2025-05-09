@@ -123,12 +123,43 @@ pipeline {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'docker-login-streetcode', passwordVariable: 'password', usernameVariable: 'username')]){
-                        sh "docker build -t ${username}/streetcode_client:latest ."
+                        env.DOCKER_USERNAME = username
+                        sh "docker build -t ${env.DOCKER_USERNAME}/streetcode_client:latest ."
                         IS_IMAGE_BUILDED = true
                     }
                 }
             }
         }
+
+stage('Trivy Security Scan') {
+             when {
+                expression { IS_IMAGE_BUILDED == true }
+            }   
+            steps {
+                script {
+                     def imagesToScan = [
+                "${env.DOCKER_USERNAME}/streetcode_client:latest"
+            ]
+             imagesToScan.each { image ->
+                echo "Running Trivy scan on ${image}"
+                // Run Trivy scan and display the output in the console log ( || true - don't fail on exit code)
+                sh """
+                    docker run --rm \
+                    -v /var/run/docker.sock:/var/run/docker.sock \
+                    aquasec/trivy image --no-progress --severity HIGH,CRITICAL --exit-code 1 ${image} || true
+                """
+            }
+                }
+            }
+        }
+
+
+
+
+
+
+
+
         stage('Push image') {
             when {
                 expression { IS_IMAGE_BUILDED == true }
@@ -145,6 +176,8 @@ pipeline {
                 }
             }
         }
+
+        
     stage('Deploy Stage'){
         when {
                 expression { IS_IMAGE_PUSH == true }
@@ -179,6 +212,10 @@ pipeline {
                 }  
             }
      }
+     
+
+
+     
          stage('WHAT IS THE NEXT STEP') {
        when {
                 expression { IS_IMAGE_PUSH == true }
@@ -220,6 +257,11 @@ pipeline {
             }
       }
     }
+
+
+
+
+
     /*
    stage('Deploy prod') {
          agent { 
@@ -262,6 +304,10 @@ pipeline {
         }
     }
 */
+
+
+
+
     stage('Sync after release') {
         when {
            expression { isSuccess == '1' }
@@ -288,6 +334,11 @@ pipeline {
             }
         }
     }
+
+
+    
+
+
     /*
     stage('Rollback Prod') {  
         agent { 
