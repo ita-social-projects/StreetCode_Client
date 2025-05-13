@@ -17,7 +17,9 @@ export default class TextVideoStore {
 
     public fetchStreetcodeText = async (id: number): Promise<Text> => {
         const text = await TextsApi.getByStreetcodeId(id);
-        text.textContent = await TextsApi.updateParsed(text);
+        if (text) {
+            text.textContent = await TextsApi.updateParsed(text);
+        }
         this.Text = text;
         return text;
     };
