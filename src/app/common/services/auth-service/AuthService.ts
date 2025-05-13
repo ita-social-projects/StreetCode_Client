@@ -38,6 +38,7 @@ export default class AuthService {
 
     public static logout() {
         this.clearTokenData();
+        window.location.reload();
     }
 
     public static loginAsync(
