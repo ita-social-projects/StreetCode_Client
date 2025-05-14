@@ -116,10 +116,12 @@ pipeline {
             }
         }
         stage('Build image') {
+            /*
             when {
                 branch pattern: "release/[0-9].[0-9].[0-9]", comparator: "REGEXP"
                
             }
+            */
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'docker-login-streetcode', passwordVariable: 'password', usernameVariable: 'username')]){
