@@ -185,9 +185,10 @@ stage('Trivy Security Scan') {
                 expression { IS_IMAGE_PUSH == true }
             }  
         steps {
-            input message: 'Do you want to approve Staging deployment?', ok: 'Yes', submitter: 'admin_1, ira_zavushchak , dev'
+            //input message: 'Do you want to approve Staging deployment?', ok: 'Yes', submitter: 'admin_1, ira_zavushchak , dev'
                 script {
                     try{
+                        input message: 'Do you want to approve Staging deployment?', ok: 'Yes', submitter: 'admin_1, ira_zavushchak , dev'
                     checkout scmGit(
                       branches: [[name: 'main']],
                      userRemoteConfigs: [[credentialsId: 'StreetcodeGithubCreds', url: 'git@github.com:ita-social-projects/Streetcode-DevOps.git']])
