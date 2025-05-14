@@ -209,6 +209,17 @@ stage('Trivy Security Scan') {
                     sleep 10
                     docker compose --env-file /etc/environment up -d"""
 
+                     if (currentBuild.result == 'SUCCESS') {
+                sendDiscordNotification('SUCCESS', 'Deployment to Stage completed successfully.')
+            } else if (currentBuild.result == 'ABORTED') {
+                sendDiscordNotification('ABORTED', 'Deployment to Stage was aborted.')
+            } else if (currentBuild.result == 'FAILURE') {
+                sendDiscordNotification('FAILED', 'Deployment to Stage failed.')
+            }
+                   /*
+                    sendDiscordNotification('SUCCESS', 'Deployment to Stage completed successfully.')
+                    */
+
                 }  
             }
      }
@@ -246,10 +257,16 @@ stage('Trivy Security Scan') {
                docker network prune -f
                sleep 10
                docker compose --env-file /etc/environment up -d"""
-               
+
+               sendDiscordNotification('ABORTED', 'Deployment to Stage was aborted and rolled back.')
             }
             
          }
+         failure {
+            script {
+                sendDiscordNotification('FAILED', 'Unexpected failure in "WHAT IS THE NEXT STEP" stage.')
+            }
+        }
          success {
                 script {
                     isSuccess = '1'
@@ -368,4 +385,31 @@ stage('Trivy Security Scan') {
     */
     }   
     
+}
+
+
+
+
+def sendDiscordNotification(status, message) {
+    withCredentials([string(credentialsId: 'WEBHOOK_URL', variable: 'DISCORD_WEBHOOK_URL')]) {
+        def jsonMessage = """
+        {
+            "content": "$status: $message",
+            "embeds": [
+                {
+                    "title": "Deployment Status",
+                    "fields": [
+                        {"name": "Environment", "value": "Stage", "inline": true},
+                        {"name": "Pipeline Name", "value": "$env.JOB_NAME", "inline": true},
+                        {"name": "Status", "value": "$status", "inline": true},
+                        {"name": "Deployment Tag", "value": "$env.CODE_VERSION", "inline": true},
+                        {"name": "Date and Time", "value": "${new Date().format('yyyy-MM-dd HH:mm:ss')}", "inline": true},
+                        {"name": "Pipeline Link", "value": "[Click here]($env.BUILD_URL)", "inline": true}
+                    ]
+                }
+            ]
+        }
+        """
+        sh """curl -X POST -H 'Content-Type: application/json' -d '$jsonMessage' "\$DISCORD_WEBHOOK_URL" """
+}
 }
