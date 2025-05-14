@@ -187,8 +187,24 @@ stage('Trivy Security Scan') {
         steps {
             //input message: 'Do you want to approve Staging deployment?', ok: 'Yes', submitter: 'admin_1, ira_zavushchak , dev'
                 script {
+                     def proceed = false
                     try{
                         input message: 'Do you want to approve Staging deployment?', ok: 'Yes', submitter: 'admin_1, ira_zavushchak , dev'
+                        proceed = true
+                    
+                    }  catch (Exception e) {
+                if (e.toString().contains("FlowInterruptedException") || e.getMessage()?.contains('Rejected by')) {
+                    sendDiscordNotification('ABORTED', 'Deployment to Stage was aborted by user.')
+                    currentBuild.result = 'ABORTED'
+                    return
+                } else {
+                    sendDiscordNotification('FAILED', "Deployment to Stage failed: ${e?.getMessage() ?: 'Unknown error'}")
+                    throw e
+                }
+            }
+
+            if (proceed){
+                try{
                     checkout scmGit(
                       branches: [[name: 'main']],
                      userRemoteConfigs: [[credentialsId: 'StreetcodeGithubCreds', url: 'git@github.com:ita-social-projects/Streetcode-DevOps.git']])
@@ -212,15 +228,16 @@ stage('Trivy Security Scan') {
                     docker network prune -f
                     sleep 10
                     docker compose --env-file /etc/environment up -d"""
-                    } catch (Exception e) {
-                if (e.getMessage()?.contains('Rejected by')) {
-                    sendDiscordNotification('ABORTED', 'Deployment to Stage was aborted by user.')
-                    error("Aborted by user") // Mark as aborted
-                } else {
-                    sendDiscordNotification('FAILED', "Deployment to Stage failed: ${e.getMessage()}")
+                     sendDiscordNotification('SUCCESS', 'Deployment to Stage completed successfully.')
+                }
+                catch (Exception e) {
+                    sendDiscordNotification('FAILED', "Deployment to Stage failed: ${e?.getMessage() ?: 'Unknown error'}")
                     throw e
                 }
+
             }
+
+            
 
                     
 
@@ -228,6 +245,8 @@ stage('Trivy Security Scan') {
                    /*
                     sendDiscordNotification('SUCCESS', 'Deployment to Stage completed successfully.')
                     */
+
+
 
                 }  
             }
