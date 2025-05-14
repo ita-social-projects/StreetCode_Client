@@ -187,6 +187,7 @@ stage('Trivy Security Scan') {
         steps {
             input message: 'Do you want to approve Staging deployment?', ok: 'Yes', submitter: 'admin_1, ira_zavushchak , dev'
                 script {
+                    try{
                     checkout scmGit(
                       branches: [[name: 'main']],
                      userRemoteConfigs: [[credentialsId: 'StreetcodeGithubCreds', url: 'git@github.com:ita-social-projects/Streetcode-DevOps.git']])
@@ -210,14 +211,19 @@ stage('Trivy Security Scan') {
                     docker network prune -f
                     sleep 10
                     docker compose --env-file /etc/environment up -d"""
+                    }
 
-                     if (currentBuild.result == 'SUCCESS') {
-                sendDiscordNotification('SUCCESS', 'Deployment to Stage completed successfully.')
-            } else if (currentBuild.result == 'ABORTED') {
-                sendDiscordNotification('ABORTED', 'Deployment to Stage was aborted.')
-            } else if (currentBuild.result == 'FAILURE') {
-                sendDiscordNotification('FAILED', 'Deployment to Stage failed.')
+                    catch (org.jenkinsci.plugins.workflow.steps.InputStepExecution.InputRejectedException e) {
+                
+                sendDiscordNotification('ABORTED', 'Deployment to Stage was aborted by user.')
+                error("Aborted by user")
+            } catch (e) {
+                
+                sendDiscordNotification('FAILED', "Deployment to Stage failed: ${e.getMessage()}")
+                throw e
             }
+
+                    
                    /*
                     sendDiscordNotification('SUCCESS', 'Deployment to Stage completed successfully.')
                     */
