@@ -211,15 +211,15 @@ stage('Trivy Security Scan') {
                     docker network prune -f
                     sleep 10
                     docker compose --env-file /etc/environment up -d"""
-                    } catch (FlowInterruptedException e) {
-   
-    sendDiscordNotification('ABORTED', 'Deployment to Stage was aborted by user.')
-    error("Aborted by user")  
-} catch (Exception e) {
-    
-    sendDiscordNotification('FAILED', "Deployment to Stage failed: ${e.getMessage()}")
-    throw e
-}
+                    } catch (Exception e) {
+                if (e.getMessage()?.contains('Rejected by')) {
+                    sendDiscordNotification('ABORTED', 'Deployment to Stage was aborted by user.')
+                    error("Aborted by user") // Mark as aborted
+                } else {
+                    sendDiscordNotification('FAILED', "Deployment to Stage failed: ${e.getMessage()}")
+                    throw e
+                }
+            }
 
                     
 
