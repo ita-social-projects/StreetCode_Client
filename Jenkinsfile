@@ -116,19 +116,52 @@ pipeline {
             }
         }
         stage('Build image') {
+            /*
             when {
                 branch pattern: "release/[0-9].[0-9].[0-9]", comparator: "REGEXP"
                
             }
+            */
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'docker-login-streetcode', passwordVariable: 'password', usernameVariable: 'username')]){
-                        sh "docker build -t ${username}/streetcode_client:latest ."
+                        env.DOCKER_USERNAME = username
+                        sh "docker build -t ${env.DOCKER_USERNAME}/streetcode_client:latest ."
                         IS_IMAGE_BUILDED = true
                     }
                 }
             }
         }
+
+stage('Trivy Security Scan') {
+             when {
+                expression { IS_IMAGE_BUILDED == true }
+            }   
+            steps {
+                script {
+                     def imagesToScan = [
+                "${env.DOCKER_USERNAME}/streetcode_client:latest"
+            ]
+             imagesToScan.each { image ->
+                echo "Running Trivy scan on ${image}"
+                // Run Trivy scan and display the output in the console log ( || true - don't fail on exit code)
+                sh """
+                    docker run --rm \
+                    -v /var/run/docker.sock:/var/run/docker.sock \
+                    aquasec/trivy image --no-progress --severity HIGH,CRITICAL --exit-code 1 ${image} || true
+                """
+            }
+                }
+            }
+        }
+
+
+
+
+
+
+
+
         stage('Push image') {
             when {
                 expression { IS_IMAGE_BUILDED == true }
@@ -145,13 +178,33 @@ pipeline {
                 }
             }
         }
+
+        
     stage('Deploy Stage'){
         when {
                 expression { IS_IMAGE_PUSH == true }
             }  
         steps {
-            input message: 'Do you want to approve Staging deployment?', ok: 'Yes', submitter: 'admin_1, ira_zavushchak , dev'
+            //input message: 'Do you want to approve Staging deployment?', ok: 'Yes', submitter: 'admin_1, ira_zavushchak , dev'
                 script {
+                     def proceed = false
+                    try{
+                        input message: 'Do you want to approve Staging deployment?', ok: 'Yes', submitter: 'admin_1, ira_zavushchak , dev'
+                        proceed = true
+                    
+                    }  catch (Exception e) {
+                if (e.toString().contains("FlowInterruptedException") || e.getMessage()?.contains('Rejected by')) {
+                    sendDiscordNotification('ABORTED', 'Deployment to Stage was aborted by user.')
+                    currentBuild.result = 'ABORTED'
+                    error("Aborted by user ") 
+                } else {
+                    sendDiscordNotification('FAILED', "Deployment to Stage failed: ${e?.getMessage() ?: 'Unknown error'}")
+                    throw e
+                }
+            }
+
+            if (proceed){
+                try{
                     checkout scmGit(
                       branches: [[name: 'main']],
                      userRemoteConfigs: [[credentialsId: 'StreetcodeGithubCreds', url: 'git@github.com:ita-social-projects/Streetcode-DevOps.git']])
@@ -175,10 +228,22 @@ pipeline {
                     docker network prune -f
                     sleep 10
                     docker compose --env-file /etc/environment up -d"""
+                     sendDiscordNotification('SUCCESS', 'Deployment to Stage completed successfully.')
+                }
+                catch (Exception e) {
+                    sendDiscordNotification('FAILED', "Deployment to Stage failed: ${e?.getMessage() ?: 'Unknown error'}")
+                    throw e
+                }
+
+            }
+                   /*
+                    sendDiscordNotification('SUCCESS', 'Deployment to Stage completed successfully.')
+                    */
 
                 }  
             }
      }
+          
          stage('WHAT IS THE NEXT STEP') {
        when {
                 expression { IS_IMAGE_PUSH == true }
@@ -209,10 +274,16 @@ pipeline {
                docker network prune -f
                sleep 10
                docker compose --env-file /etc/environment up -d"""
-               
+
+               sendDiscordNotification('ABORTED', 'Deployment to Stage was aborted and rolled back.')
             }
             
          }
+         failure {
+            script {
+                sendDiscordNotification('FAILED', 'Unexpected failure in "WHAT IS THE NEXT STEP" stage.')
+            }
+        }
          success {
                 script {
                     isSuccess = '1'
@@ -220,6 +291,11 @@ pipeline {
             }
       }
     }
+
+
+
+
+
     /*
    stage('Deploy prod') {
          agent { 
@@ -262,6 +338,10 @@ pipeline {
         }
     }
 */
+
+
+
+
     stage('Sync after release') {
         when {
            expression { isSuccess == '1' }
@@ -288,6 +368,11 @@ pipeline {
             }
         }
     }
+
+
+    
+
+
     /*
     stage('Rollback Prod') {  
         agent { 
@@ -317,4 +402,31 @@ pipeline {
     */
     }   
     
+}
+
+
+
+
+def sendDiscordNotification(status, message) {
+    withCredentials([string(credentialsId: 'WEBHOOK_URL', variable: 'DISCORD_WEBHOOK_URL')]) {
+        def jsonMessage = """
+        {
+            "content": "$status: $message",
+            "embeds": [
+                {
+                    "title": "Deployment Status",
+                    "fields": [
+                        {"name": "Environment", "value": "Stage", "inline": true},
+                        {"name": "Pipeline Name", "value": "$env.JOB_NAME", "inline": true},
+                        {"name": "Status", "value": "$status", "inline": true},
+                        {"name": "Deployment Tag", "value": "$env.CODE_VERSION", "inline": true},
+                        {"name": "Date and Time", "value": "${new Date().format('yyyy-MM-dd HH:mm:ss')}", "inline": true},
+                        {"name": "Pipeline Link", "value": "[Click here]($env.BUILD_URL)", "inline": true}
+                    ]
+                }
+            ]
+        }
+        """
+        sh """curl -X POST -H 'Content-Type: application/json' -d '$jsonMessage' "\$DISCORD_WEBHOOK_URL" """
+}
 }
