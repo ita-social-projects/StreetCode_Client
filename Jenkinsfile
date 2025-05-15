@@ -196,7 +196,7 @@ stage('Trivy Security Scan') {
                 if (e.toString().contains("FlowInterruptedException") || e.getMessage()?.contains('Rejected by')) {
                     sendDiscordNotification('ABORTED', 'Deployment to Stage was aborted by user.')
                     currentBuild.result = 'ABORTED'
-                    error("Aborted by user") 
+                    error("Aborted by user ") 
                 } else {
                     sendDiscordNotification('FAILED', "Deployment to Stage failed: ${e?.getMessage() ?: 'Unknown error'}")
                     throw e
