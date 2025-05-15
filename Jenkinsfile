@@ -196,7 +196,7 @@ stage('Trivy Security Scan') {
                 if (e.toString().contains("FlowInterruptedException") || e.getMessage()?.contains('Rejected by')) {
                     sendDiscordNotification('ABORTED', 'Deployment to Stage was aborted by user.')
                     currentBuild.result = 'ABORTED'
-                    return
+                    error("Aborted by user") 
                 } else {
                     sendDiscordNotification('FAILED', "Deployment to Stage failed: ${e?.getMessage() ?: 'Unknown error'}")
                     throw e
@@ -236,25 +236,14 @@ stage('Trivy Security Scan') {
                 }
 
             }
-
-            
-
-                    
-
-                    
                    /*
                     sendDiscordNotification('SUCCESS', 'Deployment to Stage completed successfully.')
                     */
 
-
-
                 }  
             }
      }
-     
-
-
-     
+          
          stage('WHAT IS THE NEXT STEP') {
        when {
                 expression { IS_IMAGE_PUSH == true }
