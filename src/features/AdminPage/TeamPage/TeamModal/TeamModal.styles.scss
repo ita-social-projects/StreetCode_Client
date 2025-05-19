@@ -8,7 +8,7 @@
     justify-content: space-between;
 
     &-flex {
-        display: flex;
+        display: inline-block;
         justify-self: center;
     }
 
@@ -18,9 +18,8 @@
 }
 
 .link-container {
-    gap: f.pxToRem(5px);
+    gap: f.pxToRem(20px);
     display: flex;
-    align-items: start;
     position: relative;
 
     .error-message{
@@ -41,7 +40,13 @@
         padding: 10px 20px;
     }
 }
-
+.ant-form-item-control-input-content{
+    .ant-btn{
+    margin: auto;
+    padding: auto;
+    border-radius: 200px;
+}
+}
 .positions-block {
     display: flex;
     flex-direction: column;

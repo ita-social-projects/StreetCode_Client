@@ -28,8 +28,10 @@ const DeleteTermModal = ({ handleDelete, term } : Props) => {
                 handleDelete(term?.id as number);
                 setModal('deleteTerm');
             }}
+            okText="Підтвердити"
+            cancelText="Скасувати"
         >
-            <h2>Ви впевнені, що бажаєте видалити визначення?</h2>
+            <h2>Ви впевнені, що хочете видалити це визначення?</h2>
             <p>
                 {term?.description}
             </p>

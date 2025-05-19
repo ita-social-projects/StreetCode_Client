@@ -17,6 +17,10 @@
     color: c.$ant-menu-text-color;
     margin-bottom: f.pxToRem(5px);
 }
+.ant-picker{
+    height: 43.33px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.25);
+}
 .image-form-item{
     margin-top: f.pxToRem(25px);
 }

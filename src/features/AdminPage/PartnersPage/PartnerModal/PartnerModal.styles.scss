@@ -8,19 +8,115 @@
     justify-content: space-between;
 
     &-flex {
-        display: flex;
+        display: inline-block;
         justify-self: center;
     }
 
     p {
         margin-left: 5px;
     }
+    label{
+        font-size: 16px;
+        margin-left: 5px;
+    }
+    box-shadow: none !important;
+}
+.plus_button{
+
+}
+.ant-btn-default{
+    border-color: c.$ant-menu-color;
+}
+.plus-button{
+    height: 30px;
+    width: 30px;
+    padding-left: 7.5px;
+}
+.close-button{
+    height: 70px;
+    height: 150px;
+}
+.ant-select{
+    height: 35px;
+}
+.ant-select-selector{
+    height: 43.33px !important;
+}
+.ant-select-selection-search-input{
+    height: 10px;
+}
+.add-social-media-button{
+     border-radius: 10px;
+}
+   .ant-input-affix-wrapper{
+   span{
+    height: 35px;
+    display: inline-flex;
+    align-items: center;
+   }
 }
 
-.link-container {
-    gap: 5px;
+.ant-upload-select{
+    padding-left: 2px;
+    background-color: white !important;
+    align-items: center;
+    color: #797979;
+        width: 130px !important;
+        height: 150px !important;
+    }
+.ant-upload-wrapper {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: auto !important;
+    height: 180px;
+    border: solid #D3CDCA 1px;
+    background-color: white;
+    border-radius: 10px;
+    padding-top: 14px;
+    padding-left: 9px;
+    flex-shrink: 0;
+}
+.modalContainer-content{
+    .ant-btn{
+    height: 40px;
+    border-radius: 10px;
+}
+
+
+.ant-input-textarea-show-count{
+    height: 135px !important;
+    .ant-input-data-count{
+    margin-top: 10px;
+    bottom: -40px;
+   }
+}
+.ant-form-item-label{
+    label{
+        font-size: 16px !important;
+    }
+}
+}
+.ant-upload{
     display: flex;
-    align-items: start;
+    flex-direction: column;
+    span{
+        font-size: 14px;
+        width: 125px;
+        p{
+            margin-top: 10px;
+        }
+    }
+    svg{
+        width: 40px;
+    }
+}
+.save{
+    width: 10px;
+}
+.link-container {
+    gap: 20px;
+    display: inline-block;
 }
 
 .partner-modal-container {
@@ -46,14 +142,16 @@
         }
     }
 }
-
+.line-form-item{
+    box-shadow: none !important;
+}
 .save{
     min-height: 50px;
 }
 .link-container{
     padding:5px;
     margin-bottom: 20px;
-    border: solid c.$lighter-gray-color 1px ;
+    border: solid c.$lighter-gray-color 1px;
     border-radius: 7px;
 }
 .link-container:hover{
@@ -81,9 +179,12 @@
 .close-button {
     top: -5;
     right: 0;
-    background-color: c.$ant-menu-color;
-    color: c.$pure-white-color;
-    height: 30px;
+    background-color: white;
+    color: black;
+    height: 40px;
+    width: 100px;
+    border-color: c.$ant-menu-color;
+    border-radius: 3px;
 }
 .close-button:hover {
     background-color: c.$dark-red-color;

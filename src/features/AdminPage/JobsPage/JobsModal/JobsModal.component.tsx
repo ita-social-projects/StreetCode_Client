@@ -155,7 +155,7 @@ const JobsModal = ({ open, setOpen, currentId }: Props) => {
                 </Popover>
             )}
         >
-            <div className="center">
+            <div className="header_modal">
                 <h2>
                     {currentId === 0 ? 'Додати' : 'Редагувати'}
                     {' '}

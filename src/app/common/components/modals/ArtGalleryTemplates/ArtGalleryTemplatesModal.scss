@@ -13,8 +13,7 @@ $articlesImg: "@assets/images/sources/Articles.webp";
     @include mut.flex-centered();
     @include mut.rounded($top-left: 70px, $top-right: 70px);
     h1 {
-        color: c.$pure-white-color;
-        @include mut.with-font(ft.$closer-text-font, $font-weight: 500, $font-size: 40px);
+        @include mut.with-font(ft.$closer-text-font, $font-weight: 700, $font-size: 40px);
     }
 }
 

@@ -89,7 +89,6 @@ const ArtGalleryTemplatesModal: React.FC<ArtGalleryTemplatesModalProps> = ({
     >
       <div
         className="ArtGalleryImgContainer"
-        style={{ backgroundImage: `url(${ModalBg})` }}
       >
         <h1>Шаблони</h1>
       </div>

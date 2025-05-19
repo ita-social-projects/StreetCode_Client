@@ -15,7 +15,7 @@ import Audio from '@models/media/audio.model';
 import Image from '@models/media/image.model';
 import { SourceCategoryAdmin } from '@models/sources/sources.model';
 import useMobx from '@stores/root-store';
-
+import UploadImg from '@assets/images/admin-panel/upload-image.svg';
 import {
     Button, Form, Input, message, Modal, Popover,
     UploadFile,
@@ -196,7 +196,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                     onFinish={onSubmit}
                     initialValues={initialData}
                 >
-                    <div className="center">
+                    <div className="header_modal">
                         <h2>{isEditing ? 'Редагувати категорію' : 'Додати категорію'}</h2>
                     </div>
                     <Form.Item
@@ -239,7 +239,8 @@ const SourceModal: React.FC<SourceModalProps> = ({
                                 }]
                                 : []}
                         >
-                            <p>Виберіть чи перетягніть файл</p>
+                            <UploadImg className="upload-image" />
+                            <p>Перетягніть файл сюди або натисніть для завантаження</p>
                         </FileUploader>
                     </Form.Item>
                     <div className="center">

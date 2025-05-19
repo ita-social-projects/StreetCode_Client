@@ -11,6 +11,7 @@ import BUTTON_LABELS from '@constants/buttonLabels';
 import PreviewFileModal from '@features/AdminPage/NewStreetcode/MainBlock/PreviewFileModal/PreviewFileModal.component';
 import SOCIAL_OPTIONS from '@features/AdminPage/PartnersPage/PartnerModal/constants/socialOptions';
 import useMobx from '@stores/root-store';
+import UploadImg from '@assets/images/admin-panel/upload-image.svg';
 
 import {
     Button, Checkbox, Form, Input, message,
@@ -332,30 +333,32 @@ const PartnerModal: React.FC< {
                         layout="vertical"
                         onFinish={onSuccesfulSubmitPartner}
                     >
-                        <div className="center">
+                        <div className="header_modal">
                             <h2>
+                                <b>
                                 {partnerItem ? 'Редагувати' : 'Додати'}
                                 {' '}
 партнера
+                                </b>
                             </h2>
                         </div>
                         <div className="checkbox-container">
                             <Form.Item
                                 className="line-form-item"
-                                name="isKeyPartner"
+                                name="isVisibleEverywhere"
                                 valuePropName="checked"
-                                label="Ключовий партнер: "
                             >
                                 <Checkbox onChange={handleInputChange} />
+                                <label>Видимий для всіх</label>
                             </Form.Item>
 
                             <Form.Item
                                 className="line-form-item"
-                                name="isVisibleEverywhere"
+                                name="isKeyPartner"
                                 valuePropName="checked"
-                                label="Видимий для всіх: "
                             >
                                 <Checkbox onChange={handleInputChange} />
+                                <label>Ключовий партнер</label>
                             </Form.Item>
                         </div>
 
@@ -425,7 +428,8 @@ const PartnerModal: React.FC< {
                                     imageId.current = image.id;
                                 }}
                             >
-                                <p>Виберіть чи перетягніть файл</p>
+                                <UploadImg className="upload-image" />
+                                <p>Перетягніть файл сюди або натисніть для завантаження</p>
                             </FileUploader>
                         </Form.Item>
                         <PreviewFileModal
@@ -433,25 +437,6 @@ const PartnerModal: React.FC< {
                             setOpened={setPreviewOpen}
                             file={filePreview}
                         />
-
-                        {isStreetcodeVisible ? (
-                            <Form.Item name="partnersStreetcodes" label="History-коди: ">
-                                <Select
-                                    mode="multiple"
-                                    onChange={handleInputChange}
-                                    onSelect={onStreetcodeSelect}
-                                    onDeselect={onStreetcodeDeselect}
-                                >
-                                    {streetcodeShortStore.streetcodes.map((s) => (
-                                        <Select.Option key={`${s.id}`} value={s.title}>
-                                            {s.title}
-                                        </Select.Option>
-                                    ))}
-                                </Select>
-                            </Form.Item>
-                        ) : (
-                            ''
-                        )}
                     </Form>
                 </div>
                 <div className="partner-source-list">
@@ -528,7 +513,7 @@ const PartnerModal: React.FC< {
                                     <Input min={1} maxLength={255} showCount />
                                 </Form.Item>
 
-                                <Form.Item label=" ">
+                                <Form.Item label=" " className="plus_button">
                                     <Popover content="Додати" trigger="hover">
                                         <Button htmlType="submit" className="plus-button">
                                             <PlusOutlined />
