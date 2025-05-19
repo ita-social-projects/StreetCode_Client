@@ -82,7 +82,7 @@ const AddTermModal = ({ handleAdd, term, setTerm } : Props) => {
                 </FormItem>
                 <FormItem
                     name="description"
-                    label="Визначення"
+                    label="Опис"
                     rules={[{ required: true, message: 'Введіть опис' }]}
                 >
                     <TextArea

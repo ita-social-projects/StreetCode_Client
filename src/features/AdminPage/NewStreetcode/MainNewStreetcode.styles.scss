@@ -5,6 +5,9 @@
 $articlesImg: "@assets/images/sources/Articles.webp";
 
 .newStreetcodeContainer {
+    .streetcode-custom-button{
+        width: 250px;
+    }
     @include mut.admin-page-base-layout();
 
     .adminContainer
@@ -130,7 +133,7 @@ $articlesImg: "@assets/images/sources/Articles.webp";
         }
 
         .ant-form-item-label >label{
-            @include mut.with-font($font-size: 16px);
+            @include mut.with-font($font-size: 20px);
         }
 
         .ant-upload:hover {

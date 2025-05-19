@@ -3,8 +3,23 @@
 @use "@assets/sass/variables/_variables.colors.scss" as c;
 @use "@assets/sass/mixins/_utils.mixins.scss" as mut;
 @use "@assets/sass/mixins/_vendor.mixins.scss" as vnd;
-
-.deleteModal .ant-modal-content{
+.ant-modal-wrap{
+    align-items: center;
+}
+.deleteModal {
+    text-align: center;
+    .ant-btn-default{
+        border-color: c.$dark-gray-color;
+    }
+    .ant-modal-footer{
+        text-align: center;
+        button{
+        height: 40px;
+    }
+    }
+    .ant-modal-content{
+        width: 700px;
+        margin-left: -100px;
     .submit{
         border-radius: f.pxToRem(5px);
         font-size: 12pt;
@@ -17,21 +32,20 @@
             color: rgb(255, 255, 255);
         }
     }
-}
+}}
 
 .deleteModal .ant-modal-body{
     h2{
         text-align: center;
         padding-bottom: 2%;
-        color: c.$dark-red-color;
     }
 }
 
 .deleteModal .ant-modal-close {
-    @include mut.positioned-as(absolute, $left: 90%, $top: -25px);
-        @include mut.circular(80px, c.$pure-white-color);
+    @include mut.positioned-as(absolute, $left: 95%, $top: -25px);
+        @include mut.circular(60px, c.$pure-white-color);
         border: 2px solid c.$modal-hover-color;
-    
+
         &:hover {
             background-color: c.$modal-hover-color;
         }

@@ -46,7 +46,7 @@ const ContextAdminModalComponent: React.FC<ContextAdminProps> = observer(({
 
     const validateContext = uniquenessValidator(
         ()=>(contextStore.getContextArray.map((context) => context.title)), 
-        ()=>(initialData?.title), 
+        ()=>(initialData?.title),
         'Контекст з такою назвою вже існує'
     );
 
@@ -121,7 +121,7 @@ const ContextAdminModalComponent: React.FC<ContextAdminProps> = observer(({
                     initialValues={initialData}
                     onKeyDown={(e) => e.key === 'Enter' ? e.preventDefault() : ''}
                 >
-                    <div className="center">
+                    <div className="header_modal">
                         <h2>{isEditing ? 'Редагувати контекст' : 'Додати контекст'}</h2>
                     </div>
                     <Form.Item

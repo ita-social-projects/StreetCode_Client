@@ -24,7 +24,7 @@ import {
     Form, Input, message, Modal, Popover, Select, UploadFile,
 } from 'antd';
 import { UploadChangeParam } from 'antd/es/upload';
-
+import UploadImg from '@assets/images/admin-panel/upload-image.svg';
 import PositionsApi from '@/app/api/team/teampositions.api';
 import validateSocialLink from '@/app/common/components/modals/validators/socialLinkValidator';
 import base64ToUrl from '@/app/common/utils/base64ToUrl.utility';
@@ -278,7 +278,7 @@ const TeamModal: React.FC<{
                     layout="vertical"
                     onFinish={onSuccessfulSubmitPosition}
                 >
-                    <div className="center">
+                    <div className="header_modal">
                         <h2>
                             {teamMember ? 'Редагувати' : 'Додати'}
                             {' '}
@@ -353,7 +353,8 @@ const TeamModal: React.FC<{
                             }}
                             defaultFileList={getImageAsFileInArray()}
                         >
-                            <p>Виберіть чи перетягніть файл</p>
+                            <UploadImg className="upload-image" />
+                            <p>Перетягніть файл сюди або натисніть для завантаження</p>
                         </FileUploader>
                     </Form.Item>
                     <PreviewFileModal opened={previewOpen} setOpened={setPreviewOpen} file={filePreview} />
@@ -390,7 +391,7 @@ const TeamModal: React.FC<{
                     <Form.Item
                         name="logotype"
                         label="Соціальна мережа"
-                        rules={[{ required: true, message: 'Оберіть соц. мережу' }]}
+                        rules={[{ required: false, message: 'Оберіть соц. мережу' }]}
                         style={{ minWidth: '135px' }}
                     >
                         <Select
@@ -405,7 +406,7 @@ const TeamModal: React.FC<{
                         className="url-input"
                         name="url"
                         rules={[
-                            { required: true, message: 'Введіть посилання' },
+                            { required: false, message: 'Введіть посилання' },
                             {
                                 validator: (_, value) => {
                                     const socialName = teamLinksForm.getFieldValue('logotype');

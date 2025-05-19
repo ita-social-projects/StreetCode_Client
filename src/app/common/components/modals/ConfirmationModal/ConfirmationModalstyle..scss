@@ -1,0 +1,31 @@
+@use "@sass/mixins/_utils.mixins.scss" as mut;
+@use "@sass/variables/_variables.fonts.scss" as ft;
+@use "@sass/variables/_variables.colors.scss" as c;
+@use "@sass/_utils.functions.scss" as f;
+
+.confirmation-text {
+  text-align: center;
+  font-weight: bold;
+}
+.confirmation-modal {
+    .ant-modal-close {
+    @include mut.positioned-as(absolute, $left: 92%, $top: -25px);
+        @include mut.circular(60px, c.$pure-white-color);
+        border: 2px solid c.$modal-hover-color;
+
+        &:hover {
+            background-color: c.$modal-hover-color;
+        }
+}
+    .ant-btn-default{
+        border-color: c.$dark-gray-color;
+    }
+  .ant-modal-footer {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    button{
+        height: 40px;
+    }
+  }
+}

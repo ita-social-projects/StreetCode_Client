@@ -43,8 +43,8 @@ const TeamPositionsAdminModalComponent: React.FC<TeamPositionsAdminProps> = obse
     }, [initialData, isModalVisible, form]);
 
     const validatePosition = uniquenessValidator(
-        ()=>(teamPositionsStore.getPositionsArray.map((position) => position.position)), 
-        ()=>(initialData?.position), 
+        ()=>(teamPositionsStore.getPositionsArray.map((position) => position.position)),
+        ()=>(initialData?.position),
         'Позиція з такою назвою вже існує'
     );
 
@@ -116,7 +116,7 @@ const TeamPositionsAdminModalComponent: React.FC<TeamPositionsAdminProps> = obse
                     initialValues={initialData}
                     onKeyDown={(e) => e.key === 'Enter' ? e.preventDefault() : ''}
                 >
-                    <div className="center">
+                    <div className="header_modal">
                         <h2>{isEditing ? 'Редагувати позицію' : 'Додати позицію'}</h2>
                     </div>
                     <Form.Item

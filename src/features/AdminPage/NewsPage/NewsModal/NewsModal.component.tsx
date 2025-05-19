@@ -7,7 +7,7 @@
 import './NewsModal.styles.scss';
 
 import CancelBtn from '@images/utils/Cancel_btn.svg';
-
+import UploadImg from '@assets/images/admin-panel/upload-image.svg';
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
 import ReactQuill from 'react-quill';
@@ -306,7 +306,7 @@ const NewsModal: React.FC<{
                             creationDate: newsItem ? dayjs(newsItem.creationDate) : undefined,
                         }}
                     >
-                        <div className="center">
+                        <div className="header_modal">
                             <h2>
                                 {newsItem ? 'Редагувати' : 'Додати'}
                                 {' '}
@@ -403,7 +403,8 @@ const NewsModal: React.FC<{
                                 onChange={handleFileChange}
 
                             >
-                                <p>Виберіть чи перетягніть файл</p>
+                                <UploadImg className="upload-image" />
+                                <p>Перетягніть файл сюди або натисніть для завантаження</p>
                             </FileUploader>
                         </Form.Item>
 
@@ -412,9 +413,9 @@ const NewsModal: React.FC<{
                             label="Дата публікації: "
                             rules={[{ required: true, message: 'Введіть дату' }]}
                         >
-                            <DatePicker 
-                                showTime 
-                                allowClear={false} 
+                            <DatePicker
+                                showTime
+                                allowClear={false}
                                 onChange={handleInputChange} 
                                 disabledDate={current => current && current.isBefore(dayjs().startOf('day'))}
                             />

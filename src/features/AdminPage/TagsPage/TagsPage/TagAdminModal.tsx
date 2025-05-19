@@ -130,7 +130,7 @@ const SourceModal: React.FC<SourceModalProps> = ({
                 onKeyDown={(e) => (e.key === 'Enter' ? e.preventDefault() : '')}
                 onValuesChange={updateSaveButtonState}
             >
-                <div className="center">
+                <div className="header_modal">
                     <h2>{isEditing ? 'Редагувати тег' : 'Додати тег'}</h2>
                 </div>
                 <Form.Item

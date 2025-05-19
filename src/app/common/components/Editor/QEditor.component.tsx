@@ -145,7 +145,7 @@ const Editor: React.FC<EditorProps> = ({
                     </span>
                 )}
                 <div className="charsCounter">
-                    Символи: {characterCount}/{maxChars}
+                    {characterCount}/{maxChars}
                 </div>
             </div>
         </>
